@@ -1,12 +1,29 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.1';
-import { convertMoney } from '../engine/currency.js?v=0.13.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=0.13.1';
-import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=0.13.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=0.14.0';
+import { convertMoney } from '../engine/currency.js?v=0.14.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=0.14.0';
+import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=0.14.0';
 
-const outcome = (status, code, message, options = {}) => ({ status, code, message, condition: options.condition ?? null, field: options.field ?? null });
+const CHECK_KINDS = Object.freeze({
+  CLIENT_INPUT: 'CLIENT_INPUT',
+  COUNTRY_DATA: 'COUNTRY_DATA',
+  INDIVIDUAL_REVIEW: 'INDIVIDUAL_REVIEW',
+});
+const outcome = (status, code, message, options = {}) => ({
+  status,
+  code,
+  message,
+  condition: options.condition ?? null,
+  field: options.field ?? null,
+  kind: options.kind ?? null,
+});
+const conditionalOutcome = (code, message, options = {}) => outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, code, message, options);
+const clientCondition = (code, message, options = {}) => conditionalOutcome(code, message, { ...options, kind: CHECK_KINDS.CLIENT_INPUT });
+const countryCondition = (code, message, options = {}) => conditionalOutcome(code, message, { ...options, kind: CHECK_KINDS.COUNTRY_DATA });
+const reviewCondition = (code, message, options = {}) => conditionalOutcome(code, message, { ...options, kind: CHECK_KINDS.INDIVIDUAL_REVIEW });
 const EU_EEA_SWISS = new Set(['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DE', 'DK', 'EE', 'FI', 'FR', 'GR', 'HU', 'IE', 'IS', 'IT', 'LI', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'CH']);
+const unresolvedKinds = new Set(Object.values(CHECK_KINDS));
 const fits = (checks) => checks.some(({ status }) => status === ROUTE_STATUSES.UNSUITABLE) ? 'DOES_NOT_MEET'
-  : checks.some(({ status }) => [ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED, ROUTE_STATUSES.PRELIMINARY_SUITABLE].includes(status)) ? 'UNKNOWN' : 'MEETS';
+  : checks.some(({ kind }) => unresolvedKinds.has(kind)) ? 'UNKNOWN' : 'MEETS';
 
 function normalizeProfile(profile = {}, context) {
   const family = profile.family || {};
@@ -119,11 +136,11 @@ function familyThreshold(rule, profile) {
 function applicationChecks(route, indexes, profile) {
   const checks = [];
   const allowed = route.allowed_nationalities;
-  if (!Array.isArray(allowed) || allowed.length === 0) checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'nationality_rule_missing', 'Допустимые гражданства для маршрута не исследованы.'));
+  if (!Array.isArray(allowed) || allowed.length === 0) checks.push(countryCondition('nationality_rule_missing', 'Допустимые гражданства для маршрута не исследованы.'));
   else {
     const nationality = profile.applicationNationality;
     if (nationality === 'RU' && !['YES', 'NO'].includes(route.russian_citizens_allowed)) {
-      checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'russian_nationality_rule_unknown', 'Доступность маршрута для граждан РФ не подтверждена.'));
+      checks.push(countryCondition('russian_nationality_rule_unknown', 'Доступность маршрута для граждан РФ не подтверждена.'));
     } else {
       const allowedByCategory = nationality === 'RU' ? route.russian_citizens_allowed === 'YES' && allowed.includes('THIRD_COUNTRY')
         : nationality === 'ES' ? allowed.includes('ES')
@@ -138,7 +155,7 @@ function applicationChecks(route, indexes, profile) {
     }
   }
   if (!profile.currentCountry || !profile.currentStatus || profile.applicationMethods.length === 0) {
-    checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'application_details_missing', 'Нужно уточнить место, статус и допустимый способ подачи.', { field: 'residence' }));
+    checks.push(clientCondition('application_details_missing', 'Нужно уточнить место, статус и допустимый способ подачи.', { field: 'residence' }));
   } else {
     const routeMethods = new Set(route.application_methods || []);
     const selected = profile.applicationMethods.includes('ANY')
@@ -150,27 +167,27 @@ function applicationChecks(route, indexes, profile) {
         if (!routeMethods.has('IN_COUNTRY')) return outcome(ROUTE_STATUSES.UNSUITABLE, 'in_country_method_not_allowed', 'Подача внутри целевой страны не предусмотрена.');
         if (route.in_country_application_allowed === 'YES') return outcome(ROUTE_STATUSES.SUITABLE, 'in_country_method_allowed', 'Подача внутри целевой страны предусмотрена.');
         if (route.in_country_application_allowed === 'NO') return outcome(ROUTE_STATUSES.UNSUITABLE, 'in_country_method_not_allowed', 'Подача внутри целевой страны не предусмотрена.');
-        return outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'in_country_method_unknown', 'Правило подачи внутри целевой страны не подтверждено.');
+        return countryCondition('in_country_method_unknown', 'Правило подачи внутри целевой страны не подтверждено.');
       }
       if (method === 'RUSSIA') {
         if (!routeMethods.has('CURRENT_COUNTRY')) return outcome(ROUTE_STATUSES.UNSUITABLE, 'russia_method_not_allowed', 'Консульская подача из России не предусмотрена.');
         if (route.application_from_russia === 'YES') return outcome(ROUTE_STATUSES.SUITABLE, 'russia_method_allowed', 'Подача из России предусмотрена.');
         if (route.application_from_russia === 'NO') return outcome(ROUTE_STATUSES.UNSUITABLE, 'russia_method_not_allowed', 'Подача из России не предусмотрена.');
-        return outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'russia_method_unknown', 'Возможность подачи из России не подтверждена.');
+        return countryCondition('russia_method_unknown', 'Возможность подачи из России не подтверждена.');
       }
       if (method !== 'CURRENT_COUNTRY' || !routeMethods.has('CURRENT_COUNTRY')) return outcome(ROUTE_STATUSES.UNSUITABLE, 'current_country_method_not_allowed', 'Консульская подача в текущей стране не предусмотрена.');
       if (profile.currentCountry === targetCountry) return outcome(ROUTE_STATUSES.UNSUITABLE, 'current_country_is_target', 'CURRENT_COUNTRY не применяется внутри целевой страны.');
       if (profile.currentCountry === 'RU') {
         if (route.application_from_russia === 'YES') return outcome(ROUTE_STATUSES.SUITABLE, 'current_country_russia_allowed', 'Консульская подача в России предусмотрена.');
         if (route.application_from_russia === 'NO') return outcome(ROUTE_STATUSES.UNSUITABLE, 'current_country_russia_not_allowed', 'Консульская подача в России не предусмотрена.');
-        return outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'current_country_russia_unknown', 'Возможность консульской подачи в России не подтверждена.');
+        return countryCondition('current_country_russia_unknown', 'Возможность консульской подачи в России не подтверждена.');
       }
       if (route.requires_legal_residence_in_application_country !== 'YES') return outcome(ROUTE_STATUSES.SUITABLE, 'current_country_method_allowed', 'Консульская подача в текущей стране предусмотрена.');
       if (confirmedResidentStatuses.has(profile.currentStatus)) return outcome(ROUTE_STATUSES.SUITABLE, 'current_country_residence_confirmed', 'Подтверждённый статус позволяет консульскую подачу в текущей стране.');
-      if (profile.currentStatus === 'OTHER_LEGAL_STATUS') return outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'current_country_status_clarification', 'Нужно уточнить, является ли текущий законный статус резидентским.', { field: 'residence.current_status' });
+      if (profile.currentStatus === 'OTHER_LEGAL_STATUS') return clientCondition('current_country_status_clarification', 'Нужно уточнить, является ли текущий законный статус резидентским.', { field: 'residence.current_status' });
       return outcome(ROUTE_STATUSES.UNSUITABLE, 'current_country_residence_required', 'Для консульской подачи требуется подтверждённый резидентский статус в текущей стране или подача из России.');
     };
-    const methodRank = { SUITABLE: 6, SUITABLE_WITH_CONDITIONS: 5, PRELIMINARY_SUITABLE: 4, INSUFFICIENT_COUNTRY_DATA: 3, INDIVIDUAL_REVIEW_REQUIRED: 2, UNSUITABLE: 1 };
+    const methodRank = { SUITABLE: 3, SUITABLE_WITH_CONDITIONS: 2, UNSUITABLE: 1 };
     const methodChecks = selected.map(evaluateMethod);
     methodChecks.sort((a, b) => methodRank[b.status] - methodRank[a.status]);
     checks.push(methodChecks[0]);
@@ -190,18 +207,20 @@ function incomeEvaluation(route, indexes, profile, context) {
       : outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'future_uruguayan_family_link_required', 'Маршрут станет доступен только после брака или официально признанной семейной связи с гражданином Уругвая.', { condition: 'Заключить брак или подтвердить предусмотренную законом семейную связь с гражданином Уругвая.' });
     return { ...base, checks: [check], thresholdEur: null, incomeTypeFit: 'NOT_APPLICABLE', incomeFit: 'NOT_APPLICABLE' };
   }
-  if (!profile.plannedBasis) return { ...base, checks: [outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_type_missing', 'Нужно указать основной тип дохода.', { field: 'income.primary.type' })], thresholdEur: null, incomeTypeFit: 'UNKNOWN', incomeFit: 'UNKNOWN' };
+  if (!profile.plannedBasis) return { ...base, checks: [clientCondition('income_type_missing', 'Нужно указать основной тип дохода.', { field: 'income.primary.type' })], thresholdEur: null, incomeTypeFit: 'UNKNOWN', incomeFit: 'UNKNOWN' };
   let basisChecks = [];
   if (rule.separateBasis) {
     const basisSelected = rule.scenarios.includes(profile.plannedBasis);
-    basisChecks = [outcome(basisSelected && rule.individualReview ? ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED : ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'separate_route_basis_required', rule.separateBasis)];
+    basisChecks = [basisSelected && rule.individualReview
+      ? reviewCondition('separate_route_basis_required', rule.separateBasis)
+      : conditionalOutcome('separate_route_basis_required', rule.separateBasis, { condition: rule.separateBasis })];
     if (!rule.fundsIncomeType) return { ...base, checks: basisChecks, thresholdEur: null, incomeTypeFit: 'NOT_APPLICABLE', incomeFit: 'NOT_APPLICABLE', basisMissing: !basisSelected };
   }
   if (!rule.fundsIncomeType && !rule.incomeTypes.includes(incomeType)) return { ...base, checks: [outcome(ROUTE_STATUSES.UNSUITABLE, 'income_type_incompatible', 'Тип дохода несовместим с правилами этого маршрута.')], thresholdEur: null, thresholdUsd: null, incomeTypeFit: 'DOES_NOT_MEET', incomeFit: 'NOT_APPLICABLE' };
   if (rule.fixedIncomeThresholdUsd != null) {
     const thresholdUsd = Number(rule.fixedIncomeThresholdUsd);
     const checks = [...basisChecks];
-    if (profile.monthlyIncomeUsd == null) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_missing', 'Нужно указать подтверждаемый доход.', { field: 'income.primary.amount' }));
+    if (profile.monthlyIncomeUsd == null) checks.push(clientCondition('income_missing', 'Нужно указать подтверждаемый доход.', { field: 'income.primary.amount' }));
     else if (profile.monthlyIncomeUsd <= thresholdUsd) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_fixed_usd_threshold', `Подтверждаемый доход должен быть больше ${thresholdUsd} USD в месяц. Сейчас подтверждается около ${Math.round(profile.monthlyIncomeUsd)} USD.`));
     else checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_above_fixed_usd_threshold', `Подтверждаемый доход превышает ${thresholdUsd} USD в месяц.`));
     return {
@@ -218,27 +237,27 @@ function incomeEvaluation(route, indexes, profile, context) {
     const message = route.country_id === 'UY'
       ? 'Фиксированный минимальный доход не установлен: достаточность и документы о средствах оцениваются индивидуально.'
       : 'Требуется индивидуальная оценка бизнес-плана и проекта.';
-    return { ...base, checks: [outcome(ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED, 'individual_income_review', message)], thresholdEur: null, incomeTypeFit: 'MEETS', incomeFit: 'UNKNOWN', incomeGuidance: route.country_id === 'UY' ? 'Официального фиксированного порога нет. Ориентиры: минимальная зарплата с 1 июля 2026 года — 25 383 UYU (примерно 640 USD) в месяц; в одном публичном личном опыте заявитель сообщил о принятии 650 USD в месяц. Это не официальный минимум и не гарантия решения.' : null };
+    return { ...base, checks: [reviewCondition('individual_income_review', message)], thresholdEur: null, incomeTypeFit: 'MEETS', incomeFit: 'UNKNOWN', incomeGuidance: route.country_id === 'UY' ? 'Официального фиксированного порога нет. Ориентиры: минимальная зарплата с 1 июля 2026 года — 25 383 UYU (примерно 640 USD) в месяц; в одном публичном личном опыте заявитель сообщил о принятии 650 USD в месяц. Это не официальный минимум и не гарантия решения.' : null };
   }
   if (rule.meansDeclaration) {
     const checks = profile.monthlyIncomeUsd == null
-      ? [outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_missing', 'Нужно указать средства для проживания и подтвердить их декларацией.', { field: 'income.primary.amount' })]
+      ? [clientCondition('income_missing', 'Нужно указать средства для проживания и подтвердить их декларацией.', { field: 'income.primary.amount' })]
       : [outcome(ROUTE_STATUSES.SUITABLE, 'means_declaration_required', 'Официальный фиксированный минимум не установлен; потребуется декларация о достаточных средствах.')];
     return { ...base, checks, thresholdEur: null, incomeTypeFit: 'MEETS', incomeFit: profile.monthlyIncomeUsd == null ? 'UNKNOWN' : 'MEETS', incomeGuidance: 'Официального фиксированного порога нет. Ориентиры: минимальная зарплата с 1 июля 2026 года — 25 383 UYU (примерно 640 USD) в месяц; в одном публичном личном опыте заявитель сообщил о принятии 650 USD в месяц. Это не официальный минимум и не гарантия решения.' };
   }
-  if (rule.missingSalaryThreshold) return { ...base, checks: [outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'hq_salary_missing', 'Зарплатный порог проверяется после получения конкретного предложения работы.')], thresholdEur: null, incomeTypeFit: 'NOT_APPLICABLE', incomeFit: 'UNKNOWN' };
+  if (rule.missingSalaryThreshold) return { ...base, checks: [reviewCondition('hq_salary_missing', 'Зарплатный порог проверяется после получения конкретного предложения работы.')], thresholdEur: null, incomeTypeFit: 'NOT_APPLICABLE', incomeFit: 'UNKNOWN' };
   const incomeRule = indexes.routeIncome.get(`${route.route_id}:${rule.fundsIncomeType || incomeType}`);
-  if (!incomeRule) return { ...base, checks: [outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'income_rule_missing', 'Подтверждённое правило дохода отсутствует.')], thresholdEur: null, incomeTypeFit: 'MEETS', incomeFit: 'UNKNOWN' };
+  if (!incomeRule) return { ...base, checks: [countryCondition('income_rule_missing', 'Подтверждённое правило дохода отсутствует.')], thresholdEur: null, incomeTypeFit: 'MEETS', incomeFit: 'UNKNOWN' };
   const thresholdEur = familyThreshold(incomeRule, profile);
   const checks = [...basisChecks];
-  if (profile.monthlyIncomeUsd == null) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_missing', 'Подтверждаемый доход не указан.', { field: 'income.primary.amount' }));
+  if (profile.monthlyIncomeUsd == null) checks.push(clientCondition('income_missing', 'Подтверждаемый доход не указан.', { field: 'income.primary.amount' }));
   else if (incomeEur < thresholdEur) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_threshold', `Подтверждаемый доход составляет около ${Math.round(incomeEur)} EUR, требование маршрута — ${Math.round(thresholdEur)} EUR в месяц.`));
   else if (incomeEur < thresholdEur * 1.1) checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_meets_threshold_close', 'Доход соответствует официальному порогу, запас составляет менее 10%.'));
   else checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_meets_threshold', 'Доход превышает семейный порог.'));
   if (rule.socialSecurityReview) {
     if (profile.incomeSourceCountry === 'ES') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'dnv_foreign_income_source_required', 'Для DNV основная работа или профессиональная деятельность должна быть связана преимущественно с работодателем или заказчиками за пределами Испании.'));
     else checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'dnv_foreign_income_source', 'Для DNV потребуется подтвердить иностранного работодателя или заказчиков и допустимую долю деятельности в Испании.'));
-    if (profile.bankCountry === 'RU') checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'russian_bank_documents_open', 'Приём выписок российского банка требует подтверждения.'));
+    if (profile.bankCountry === 'RU') checks.push(reviewCondition('russian_bank_documents_open', 'Приём выписок российского банка требует подтверждения.'));
     const contractor = ['CONTRACTOR', 'FREELANCE_OR_SELF_EMPLOYED'].includes(profile.plannedBasis);
     const message = contractor
       ? 'Для DNV самостоятельному специалисту потребуется регистрация в испанской системе социального страхования (RETA).'
@@ -249,7 +268,7 @@ function incomeEvaluation(route, indexes, profile, context) {
 }
 
 function familyChecks(route, indexes, profile) {
-  if (profile.adults == null || profile.partnerIncluded == null || profile.children == null) return [outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'family_answer_missing', 'Нужно уточнить состав семьи.', { field: 'family' })];
+  if (profile.adults == null || profile.partnerIncluded == null || profile.children == null) return [clientCondition('family_answer_missing', 'Нужно уточнить состав семьи.', { field: 'family' })];
   if (route.route_id === 'UY_FAMILY_LINK') {
     return [outcome(ROUTE_STATUSES.SUITABLE, 'family_link_evaluated_as_route_condition', 'Семейная связь с гражданином Уругвая оценивается как условие самого маршрута.')];
   }
@@ -263,7 +282,7 @@ function familyChecks(route, indexes, profile) {
   }
   if (!profile.partnerIncluded && profile.children.length === 0) return [outcome(ROUTE_STATUSES.SUITABLE, 'no_dependants', 'Зависимые члены семьи отсутствуют.')];
   const rule = indexes.routeFamily.get(route.route_id);
-  if (!rule) return [outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'family_rule_missing', 'Семейные правила не структурированы.')];
+  if (!rule) return [countryCondition('family_rule_missing', 'Семейные правила не структурированы.')];
   const checks = [];
   let partnerCanBeIncluded = true;
   if (profile.partnerIncluded) {
@@ -273,10 +292,10 @@ function familyChecks(route, indexes, profile) {
       checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'partner_not_allowed', 'Партнёра нельзя включить в этот маршрут.'));
     } else {
       partnerCanBeIncluded = false;
-      checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'partner_rule_unknown', 'Возможность включить партнёра не подтверждена.'));
+      checks.push(countryCondition('partner_rule_unknown', 'Возможность включить партнёра не подтверждена.'));
     }
   }
-  if (profile.partnerIncluded && partnerCanBeIncluded && !profile.relationshipType) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'relationship_type_missing', 'Уточните тип отношений.', { field: 'family.relationship_type' }));
+  if (profile.partnerIncluded && partnerCanBeIncluded && !profile.relationshipType) checks.push(clientCondition('relationship_type_missing', 'Уточните тип отношений.', { field: 'family.relationship_type' }));
   if (profile.partnerIncluded && partnerCanBeIncluded && profile.relationshipType) {
     const accepted = Array.isArray(rule.accepted_relationship_types) && rule.accepted_relationship_types.includes(profile.relationshipType);
     const value = profile.relationshipType === 'UNREGISTERED_PARTNER'
@@ -284,7 +303,7 @@ function familyChecks(route, indexes, profile) {
       : accepted ? 'YES' : 'NO';
     checks.push(value === 'YES' ? outcome(ROUTE_STATUSES.SUITABLE, 'relationship_recognized', 'Тип отношений признаётся.')
       : value === 'NO' ? outcome(ROUTE_STATUSES.UNSUITABLE, 'relationship_not_recognized', 'Этот тип отношений не позволяет включить партнёра.')
-        : outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'relationship_rule_unknown', 'Признание этого типа отношений не подтверждено.'));
+        : countryCondition('relationship_rule_unknown', 'Признание этого типа отношений не подтверждено.'));
     if (value === 'YES' && profile.relationshipType === 'UNREGISTERED_PARTNER' && rule.notes) {
       checks.push(outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'unregistered_partner_evidence_required', rule.notes, { condition: rule.notes }));
     }
@@ -293,47 +312,47 @@ function familyChecks(route, indexes, profile) {
     const field = profile.relationshipType === 'UNREGISTERED_PARTNER' ? 'same_sex_unregistered_partner_allowed' : 'same_sex_partner_allowed';
     checks.push(rule[field] === 'YES' ? outcome(ROUTE_STATUSES.SUITABLE, 'same_sex_family_recognized', 'Однополая семья признаётся.')
       : rule[field] === 'NO' ? outcome(ROUTE_STATUSES.UNSUITABLE, 'same_sex_family_not_recognized', 'Однополая семья не признаётся для этого маршрута.')
-        : outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'same_sex_family_rule_unknown', 'Признание однополой семьи не подтверждено.'));
+        : countryCondition('same_sex_family_rule_unknown', 'Признание однополой семьи не подтверждено.'));
   }
   if (profile.children.length > 0) checks.push(rule.children_allowed === 'YES'
     ? outcome(ROUTE_STATUSES.SUITABLE, 'children_allowed', 'Дети могут быть включены.')
     : rule.children_allowed === 'NO' ? outcome(ROUTE_STATUSES.UNSUITABLE, 'children_not_allowed', 'Детей нельзя включить в этот маршрут.')
-      : outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'children_rule_unknown', 'Возможность включить детей не подтверждена.'));
+      : countryCondition('children_rule_unknown', 'Возможность включить детей не подтверждена.'));
   if (rule.dependent_child_age_limit != null) for (const child of profile.children) {
-    if (child.age_years == null) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'child_age_missing', 'Уточните возраст ребёнка.', { field: 'family.children.age_years' }));
+    if (child.age_years == null) checks.push(clientCondition('child_age_missing', 'Уточните возраст ребёнка.', { field: 'family.children.age_years' }));
     else if (child.age_years >= Number(rule.dependent_child_age_limit)) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'child_age_limit', 'Возраст ребёнка превышает подтверждённый предел зависимого ребёнка.'));
   }
-  if (profile.children.some((child) => child.parenthood_complex === true)) checks.push(outcome(ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED, 'complex_parenthood', 'Сложная ситуация родительства требует индивидуальной проверки.'));
+  if (profile.children.some((child) => child.parenthood_complex === true)) checks.push(reviewCondition('complex_parenthood', 'Сложная ситуация родительства требует индивидуальной проверки.'));
   return checks.length ? checks : [outcome(ROUTE_STATUSES.SUITABLE, 'family_ok', 'Семейная конфигурация соответствует маршруту.')];
 }
 
 function goalChecks(route, indexes, profile) {
-  if (!profile.goal) return [outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'long_term_goal_missing', 'Уточните долгосрочную цель.', { field: 'goal.long_term' })];
+  if (!profile.goal) return [clientCondition('long_term_goal_missing', 'Уточните долгосрочную цель.', { field: 'goal.long_term' })];
   if (profile.goal === 'TEMPORARY_RESIDENCE_SUFFICIENT' || profile.goal === 'UNDECIDED') return [outcome(ROUTE_STATUSES.SUITABLE, 'temporary_goal', 'Маршрут предоставляет первоначальный статус проживания.')];
   const rule = indexes.routeStatus.get(route.route_id);
-  if (!rule) return [outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'long_term_rule_missing', 'Долгосрочный путь не заполнен.')];
+  if (!rule) return [countryCondition('long_term_rule_missing', 'Долгосрочный путь не заполнен.')];
   const citizenshipGoal = profile.goal.startsWith('CITIZENSHIP_');
   const field = citizenshipGoal ? 'path_to_citizenship' : 'path_to_pr';
   const label = citizenshipGoal ? 'гражданству' : 'ПМЖ';
   const hardRequired = ['PR_REQUIRED', 'CITIZENSHIP_REQUIRED'].includes(profile.goal);
   const checks = [];
   if (['YES', 'DIRECT'].includes(rule[field])) checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'long_term_path', `Маршрут засчитывается в путь к ${label}.`));
-  else if (rule[field] === 'CONDITIONAL' && route.country_id === 'UY') checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'long_term_conditional', `Для пути к ${label} может потребоваться переход на другой статус проживания; это нужно подтвердить до долгосрочного планирования.`));
-  else if (rule[field] === 'CONDITIONAL') checks.push(outcome(ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED, 'long_term_conditional', `Путь к ${label} требует индивидуальной проверки.`));
+  else if (rule[field] === 'CONDITIONAL' && route.country_id === 'UY') checks.push(conditionalOutcome('long_term_conditional', `Для пути к ${label} может потребоваться переход на другой статус проживания; это нужно подтвердить до долгосрочного планирования.`, { condition: `Подтвердить, как выбранный статус засчитывается в путь к ${label}.` }));
+  else if (rule[field] === 'CONDITIONAL') checks.push(reviewCondition('long_term_conditional', `Путь к ${label} требует индивидуальной проверки.`));
   else if (hardRequired && rule[field] === 'NO') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'long_term_unavailable', `Подтверждённого пути к ${label} нет.`));
   else if (rule[field] === 'NO') checks.push(outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'long_term_preference_unavailable', `Желаемый путь к ${label} не подтверждён, но первоначальный ВНЖ доступен.`, { condition: 'Учесть отсутствие подтверждённого долгосрочного пути.' }));
-  else checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'long_term_path_unknown', `Данные о пути к ${label} отсутствуют.`));
+  else checks.push(countryCondition('long_term_path_unknown', `Данные о пути к ${label} отсутствуют.`));
   if (citizenshipGoal && rule.language_exam_required === 'YES') {
     if (profile.languageReadiness === 'NO' && profile.goal === 'CITIZENSHIP_REQUIRED') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'language_required', 'Для обязательной цели требуется языковой экзамен.'));
     else if (profile.languageReadiness === 'BASIC_ONLY' && !['A1', 'A2'].includes(rule.required_language_level)) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'language_level_insufficient', 'Базового уровня недостаточно для подтверждённого экзамена.'));
   }
   const presenceField = citizenshipGoal ? 'allowed_absence_for_citizenship_days' : 'allowed_absence_for_pr_days';
   if (profile.physicalPresence === 'LESS_THAN_6_MONTHS' && rule[presenceField] == null) {
-    checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'absence_rule_missing', 'Точные допустимые отсутствия для долгосрочной цели не исследованы.'));
+    checks.push(countryCondition('absence_rule_missing', 'Точные допустимые отсутствия для долгосрочной цели не исследованы.'));
   }
   if (citizenshipGoal && ['REQUIRED', 'DESIRABLE'].includes(profile.keepRuCitizenship)) {
     if (rule.multiple_citizenship_allowed === 'NO' && profile.keepRuCitizenship === 'REQUIRED') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'renunciation_conflict', 'Обязательное сохранение гражданства РФ конфликтует с подтверждённым правилом.'));
-    else if (rule.multiple_citizenship_allowed === 'UNKNOWN') checks.push(outcome(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, 'multiple_citizenship_rule_unknown', 'Правило сохранения прежнего гражданства требует подтверждения.'));
+    else if (rule.multiple_citizenship_allowed === 'UNKNOWN') checks.push(countryCondition('multiple_citizenship_rule_unknown', 'Правило сохранения прежнего гражданства требует подтверждения.'));
     else if (profile.keepRuCitizenship === 'DESIRABLE' && rule.multiple_citizenship_allowed !== 'YES') checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'citizenship_preservation_note', 'Сохранение гражданства РФ нужно учитывать при выборе долгосрочной стратегии.'));
   }
   return checks;
@@ -346,11 +365,11 @@ function evaluateRoute(route, indexes, profile, context) {
   const goal = goalChecks(route, indexes, profile);
   const checks = [...application, ...income.checks, ...family, ...goal];
   const routeStatus = resolveStatusConflict(checks.map(({ status }) => status));
-  const messages = (status) => [...new Set(checks.filter((check) => check.status === status).map((check) => check.condition || check.message))];
-  const missing = messages(ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA);
-  const preliminary = messages(ROUTE_STATUSES.PRELIMINARY_SUITABLE);
-  const review = messages(ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED);
-  const conditions = messages(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS);
+  const messages = (predicate) => [...new Set(checks.filter(predicate).map((check) => check.condition || check.message))];
+  const missing = messages((check) => check.kind === CHECK_KINDS.COUNTRY_DATA);
+  const preliminary = messages((check) => check.kind === CHECK_KINDS.CLIENT_INPUT);
+  const review = messages((check) => check.kind === CHECK_KINDS.INDIVIDUAL_REVIEW);
+  const conditions = messages((check) => check.status === ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS && !unresolvedKinds.has(check.kind));
   const incomeTypeAction = {
     ES_DNV: 'Подтвердить удалённую работу по трудовому договору, контрактам с иностранными заказчиками или доход владельца иностранной компании.',
     ES_NLV: 'Подтвердить пассивный доход, не требующий работы: например, аренду, дивиденды или пенсию.',
@@ -393,7 +412,7 @@ function evaluateRoute(route, indexes, profile, context) {
     goalFit: fits(goal), applicationFit: fits(application), familyFit: fits(family), incomeTypeFit: income.incomeTypeFit, incomeFit: income.incomeFit,
     countryMissingCount: missing.length, clientMissingCount: preliminary.length, conditionsCount: conditions.length,
     scenarioAffinity: ROUTE_RULES[route.route_id]?.scenarios?.includes(profile.plannedBasis) ? 1 : 0,
-    checks, conditions, blockers: messages(ROUTE_STATUSES.UNSUITABLE), missing, countryMissing: missing, preliminary, clientMissing: preliminary, review, actions, initialPermitRequirements,
+    checks, conditions, blockers: messages((check) => check.status === ROUTE_STATUSES.UNSUITABLE), missing, countryMissing: missing, preliminary, clientMissing: preliminary, review, actions, initialPermitRequirements,
     incomeGuidance: income.incomeGuidance || null, applicationGuidance,
     incomeExampleSource: route.country_id === 'UY' ? indexes.sources.get('S_UY_INCOME_CASE') || null : null,
     followUpQuestions: [],
@@ -458,10 +477,8 @@ function evaluateLgbt(data, profile, indexes) {
 }
 
 function determineCountryGroup(bestRoute, practical, profile, routes = []) {
-  if (!bestRoute || (routes.length > 0 && routes.every((route) => route.routeStatus === ROUTE_STATUSES.UNSUITABLE))) return 'UNSUITABLE';
-  if ([ROUTE_STATUSES.INSUFFICIENT_COUNTRY_DATA, ROUTE_STATUSES.INDIVIDUAL_REVIEW_REQUIRED].includes(bestRoute.routeStatus)) return 'REQUIRES_REVIEW';
-  if (bestRoute.routeStatus === ROUTE_STATUSES.PRELIMINARY_SUITABLE) return 'PRELIMINARY';
-  return 'SUITABLE';
+  if (!bestRoute || (routes.length > 0 && routes.every((route) => route.routeStatus === ROUTE_STATUSES.UNSUITABLE))) return ROUTE_STATUSES.UNSUITABLE;
+  return bestRoute.routeStatus;
 }
 
 function collectSources(data, indexes, bestRoute, practical) {

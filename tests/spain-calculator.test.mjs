@@ -62,7 +62,7 @@ test('conflict resolution chooses the strictest status inside one route', () => 
 
 test('best-variant selection uses a separate preference order', () => {
   const best = selectBestVariant([
-    { routeStatus: 'INSUFFICIENT_COUNTRY_DATA', scenarioAffinity: 1 },
+    { routeStatus: 'UNSUITABLE', scenarioAffinity: 1 },
     { routeStatus: 'SUITABLE_WITH_CONDITIONS', scenarioAffinity: 0 },
   ]);
   assert.equal(best.routeStatus, 'SUITABLE_WITH_CONDITIONS');
@@ -87,9 +87,10 @@ test('currency conversion prevents comparing USD directly with an EUR threshold'
   assert.ok(result.bestRoute.blockers.some((message) => message.includes('требование маршрута')));
 });
 
-test('Russian bank statements return insufficient country data for DNV', () => {
+test('Russian bank statements keep DNV conditional and show the document review', () => {
   const result = calculate({ plannedBasis: 'REMOTE_EMPLOYEE', monthlyIncomeUsd: 4000, bankCountry: 'RU' });
-  assert.equal(result.bestRoute.routeStatus, 'INSUFFICIENT_COUNTRY_DATA');
+  assert.equal(result.bestRoute.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(result.bestRoute.review.some((item) => item.includes('выписок российского банка')));
 });
 
 test('Spanish primary income source is evaluated separately for DNV', () => {
@@ -120,10 +121,10 @@ test('every NLV blocker has a corresponding corrective action', () => {
   assert.ok(nlv.actions.some((action) => action.includes(`${Math.round(nlv.thresholdEur)} EUR`)));
 });
 
-test('Spanish highly-qualified route is preliminary until the offer and qualification are verified', () => {
+test('Spanish highly-qualified route is conditional until the offer and qualification are verified', () => {
   const result = calculate({ plannedBasis: 'SPANISH_JOB_OFFER', monthlyIncomeUsd: 5000 });
   assert.equal(result.bestRoute.routeId, 'ES_HIGHLY_QUALIFIED');
-  assert.equal(result.bestRoute.routeStatus, 'PRELIMINARY_SUITABLE');
+  assert.equal(result.bestRoute.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.ok(result.bestRoute.actions.some((action) => action.includes('квалифицированной работы')));
   assert.match(result.bestRoute.primarySource.url, /inclusion\.gob\.es/);
 });
@@ -150,7 +151,7 @@ test('student route compares available means with the published IPREM requiremen
   const enough = calculate({ plannedBasis: 'STUDY', monthlyIncomeUsd: 1000 }).routes.find((route) => route.routeId === 'ES_STUDENT');
   const low = calculate({ plannedBasis: 'STUDY', monthlyIncomeUsd: 500 }).routes.find((route) => route.routeId === 'ES_STUDENT');
   assert.equal(enough.thresholdEur, 600);
-  assert.equal(enough.routeStatus, 'PRELIMINARY_SUITABLE');
+  assert.equal(enough.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(low.routeStatus, 'UNSUITABLE');
   assert.ok(low.actions.some((action) => action.includes('600 EUR')));
 });
@@ -163,7 +164,8 @@ test('unknown multiple-citizenship rule does not invent a hard conflict', () => 
     keepRuCitizenship: 'REQUIRED',
   });
   assert.equal(result.bestRoute.routeId, 'ES_DNV');
-  assert.equal(result.bestRoute.routeStatus, 'INSUFFICIENT_COUNTRY_DATA');
+  assert.equal(result.bestRoute.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(result.bestRoute.missing.some((item) => item.includes('сохранения прежнего гражданства')));
 });
 
 test('a family budget below city costs does not change legal suitability', () => {
@@ -200,9 +202,10 @@ test('legacy wrapper re-exports public Russian labels', () => {
   assert.equal(COUNTRY_GROUP_LABELS_RU.SUITABLE, 'Подходит');
 });
 
-test('canonical conflict and selection orders remain independent', () => {
-  assert.equal(resolveStatusConflict(['INSUFFICIENT_COUNTRY_DATA', 'INDIVIDUAL_REVIEW_REQUIRED']), 'INDIVIDUAL_REVIEW_REQUIRED');
-  assert.equal(selectBestVariant([{ routeId: 'review', routeStatus: 'INDIVIDUAL_REVIEW_REQUIRED' }, { routeId: 'missing', routeStatus: 'INSUFFICIENT_COUNTRY_DATA' }]).routeId, 'missing');
+test('canonical conflict and selection use only the three-status contract', () => {
+  assert.equal(resolveStatusConflict(['SUITABLE', 'SUITABLE_WITH_CONDITIONS']), 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(selectBestVariant([{ routeId: 'conditional', routeStatus: 'SUITABLE_WITH_CONDITIONS' }, { routeId: 'no', routeStatus: 'UNSUITABLE' }]).routeId, 'conditional');
+  assert.throws(() => resolveStatusConflict(['PRELIMINARY_SUITABLE']), /Unknown route status/);
 });
 
 test('DNV social security is reported as an initial-permit requirement without making the result yellow', () => {
@@ -368,15 +371,16 @@ test('CURRENT_COUNTRY in a third country distinguishes residence statuses', () =
   const other = structuredClone(resident);
   other.residence.current_status = 'OTHER_LEGAL_STATUS';
   const otherNlv = calculateSpain(other, data, context).routes.find((route) => route.routeId === 'ES_NLV');
-  assert.equal(otherNlv.checks.some((check) => check.code === 'current_country_status_clarification' && check.status === 'PRELIMINARY_SUITABLE'), true);
+  assert.equal(otherNlv.checks.some((check) => check.code === 'current_country_status_clarification' && check.status === 'SUITABLE_WITH_CONDITIONS'), true);
 });
 
-test('unknown Russian nationality rule is missing country data', () => {
+test('unknown Russian nationality rule is a visible condition, not a fourth status', () => {
   const countryPackage = structuredClone(data);
   countryPackage.routes.find((route) => route.route_id === 'ES_NLV').russian_citizens_allowed = 'UNKNOWN';
   const nlv = calculateSpain(strictProfile(), countryPackage, context).routes.find((route) => route.routeId === 'ES_NLV');
-  assert.equal(nlv.checks.some((check) => check.code === 'russian_nationality_rule_unknown' && check.status === 'INSUFFICIENT_COUNTRY_DATA'), true);
-  assert.equal(nlv.routeStatus, 'INSUFFICIENT_COUNTRY_DATA');
+  assert.equal(nlv.checks.some((check) => check.code === 'russian_nationality_rule_unknown' && check.status === 'SUITABLE_WITH_CONDITIONS'), true);
+  assert.equal(nlv.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(nlv.missing.some((item) => item.includes('граждан РФ')));
 });
 
 test('ANY evaluates every real method and cannot bypass all restrictions', () => {

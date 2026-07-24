@@ -1,5 +1,5 @@
-import { selectBestRoute } from './select-best-route.js';
-import { COUNTRY_GROUP_LABELS_RU } from './status-contract.js';
+import { selectBestRoute } from './select-best-route.js?v=0.14.0';
+import { COUNTRY_GROUP_LABELS_RU } from './status-contract.js?v=0.14.0';
 
 const EUROZONE_COUNTRY_IDS = new Set([
   'AT', 'BE', 'BG', 'HR', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES',

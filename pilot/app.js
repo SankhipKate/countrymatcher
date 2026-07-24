@@ -188,7 +188,7 @@ function validateStep(step) {
 
 function statusClass(status) {
   if (status === 'SUITABLE') return 'positive';
-  if (status === 'SUITABLE_WITH_CONDITIONS' || status === 'PRELIMINARY_SUITABLE') return 'conditional';
+  if (status === 'SUITABLE_WITH_CONDITIONS') return 'conditional';
   if (status === 'UNSUITABLE') return 'negative';
   return 'review';
 }
@@ -196,13 +196,10 @@ function statusClass(status) {
 function statusIcon(status) {
   const icons = {
     SUITABLE: { symbol: '✓', className: 'positive' },
-    SUITABLE_WITH_CONDITIONS: { symbol: '!', className: 'conditional' },
-    PRELIMINARY_SUITABLE: { symbol: 'i', className: 'conditional information-symbol' },
-    UNSUITABLE: { symbol: '×', className: 'negative' },
-    INSUFFICIENT_COUNTRY_DATA: { symbol: '?', className: 'insufficient' },
-    INDIVIDUAL_REVIEW_REQUIRED: { symbol: 'i', className: 'information' },
+    SUITABLE_WITH_CONDITIONS: { symbol: 'i', className: 'conditional information-symbol' },
+    UNSUITABLE: { symbol: '!', className: 'negative' },
   };
-  return icons[status] || icons.INSUFFICIENT_COUNTRY_DATA;
+  return icons[status] || icons.SUITABLE_WITH_CONDITIONS;
 }
 
 function unique(items) { return [...new Set((items || []).filter(Boolean))]; }
@@ -301,18 +298,13 @@ function renderResult(calculation) {
   }
   const status = route.routeStatus;
   const isUnsuitable = status === 'UNSUITABLE';
-  const isPositive = ['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'PRELIMINARY_SUITABLE'].includes(status);
-  const isInsufficient = status === 'INSUFFICIENT_COUNTRY_DATA';
-  const isReview = status === 'INDIVIDUAL_REVIEW_REQUIRED';
+  const isPositive = ['SUITABLE', 'SUITABLE_WITH_CONDITIONS'].includes(status);
   const why = friendlyWhy(calculation);
   const icon = statusIcon(route.routeStatus);
   const resultTitles = {
     SUITABLE: 'Испания подходит по вашим условиям',
     SUITABLE_WITH_CONDITIONS: 'Испания подходит с условиями',
-    PRELIMINARY_SUITABLE: 'Испания предварительно подходит',
     UNSUITABLE: 'Испания не подходит по текущим условиям',
-    INSUFFICIENT_COUNTRY_DATA: 'Для точного результата пока недостаточно данных',
-    INDIVIDUAL_REVIEW_REQUIRED: 'Нужна проверка',
   };
   const resultTitle = resultTitles[status] || calculation.country.groupLabel;
   const resultSubtitle = isUnsuitable
@@ -324,15 +316,9 @@ function renderResult(calculation) {
   if (status === 'SUITABLE') {
     insightCards = insightCard('Почему подходит', why, 'good');
   } else if (status === 'SUITABLE_WITH_CONDITIONS') {
-    insightCards = `${insightCard('Почему подходит', why, 'good')}${insightCard('Что нужно выполнить', unique([...route.conditions, ...calculation.practicalMissing]), 'warning')}`;
-  } else if (status === 'PRELIMINARY_SUITABLE') {
-    insightCards = `${insightCard('Почему подходит', why, 'good')}${insightCard('Что ещё нужно подтвердить', unique([...route.preliminary, ...route.missing, ...calculation.practicalMissing]), 'warning')}`;
+    insightCards = `${insightCard('Почему подходит', why, 'good')}${insightCard('Что нужно выполнить', unique([...route.conditions, ...route.preliminary, ...route.missing, ...route.review, ...calculation.practicalMissing]), 'warning')}`;
   } else if (isUnsuitable) {
     insightCards = `${insightCard('Почему не подходит', route.blockers, 'danger')}${insightCard('Что должно измениться', changeRequirements(route), 'warning')}`;
-  } else if (isInsufficient) {
-    insightCards = `${insightCard('Что уже известно', knownFacts(route), 'known')}${insightCard('Что ещё нужно уточнить', unique([...route.missing, ...calculation.practicalMissing]), 'warning')}`;
-  } else if (isReview) {
-    insightCards = insightCard('Что требует индивидуальной проверки', unique([...route.review, ...calculation.practicalMissing]), 'information');
   }
   resultRoot.innerHTML = `
     <div class="result-head">

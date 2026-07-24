@@ -1,4 +1,4 @@
-import { CalculationContextError, ProfileContractError } from './calculate-country.js';
+import { CalculationContextError, ProfileContractError } from './calculate-country.js?v=0.14.0';
 
 const currencyCode = (value) => typeof value === 'string' && /^[A-Z]{3}$/.test(value);
 

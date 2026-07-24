@@ -1,11 +1,11 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.13.1';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.13.1';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.13.1';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.13.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=0.13.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.13.1';
-import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.13.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.13.1';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.14.0';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.14.0';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.14.0';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.14.0';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=0.14.0';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.14.0';
+import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.14.0';
+import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.14.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -296,7 +296,7 @@ function renderProfileSummary(p) {
   $('#profileSummary').innerHTML = rows.map(([label, val]) => `<div class="summary-row"><span>${html(label)}</span><b>${html(val)}</b></div>`).join('');
 }
 
-function statusClass(status) { return status === 'SUITABLE' ? 'positive' : status === 'UNSUITABLE' ? 'negative' : 'conditional'; }
+function statusClass(status) { return status === 'SUITABLE' ? 'positive' : status === 'SUITABLE_WITH_CONDITIONS' ? 'conditional' : 'negative'; }
 
 const LGBT_ROWS = {
   ES: [
@@ -433,7 +433,7 @@ function countryPresentation(calculation) {
 
 function renderCountryTab(calculation, active = false) {
   const { best, countryId, countryName, flag } = countryPresentation(calculation);
-  return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong><small>${html(best?.routeName || 'Маршрут не определён')}</small></span><span class="status-pill ${statusClass(best?.routeStatus)}">${html(STATUS_LABELS_RU[best?.routeStatus] || 'Требует проверки')}</span></button>`;
+  return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong><small>${html(best?.routeName || 'Маршрут не определён')}</small></span><span class="status-pill ${statusClass(best?.routeStatus)}">${html(STATUS_LABELS_RU[best?.routeStatus] || 'Подходит с условиями')}</span></button>`;
 }
 
 function renderCountryResult(calculation, changed = false, active = false) {
@@ -591,7 +591,7 @@ $('#editProfile').addEventListener('click', () => { $('#resultView').hidden = tr
 async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [spainResponse, uruguayResponse, argentinaResponse, schemaResponse] = await Promise.all([fetch('../data/spain-research-v2.2.json?v=0.13.1'), fetch('../data/uruguay-research-v2.2.json?v=0.13.1'), fetch('../data/argentina-research-v3.0.json?v=0.13.1'), fetch('../data/schemas/user-profile-v1.schema.json?v=0.13.1')]);
+    const [spainResponse, uruguayResponse, argentinaResponse, schemaResponse] = await Promise.all([fetch('../data/spain-research-v2.2.json?v=0.14.0'), fetch('../data/uruguay-research-v2.2.json?v=0.14.0'), fetch('../data/argentina-research-v3.0.json?v=0.14.0'), fetch('../data/schemas/user-profile-v1.schema.json?v=0.14.0')]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !schemaResponse.ok) throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${schemaResponse.status}`);
     [spainData, uruguayData, argentinaData, profileSchema] = await Promise.all([spainResponse.json(), uruguayResponse.json(), argentinaResponse.json(), schemaResponse.json()]);
     calculationContext = await loadCalculationContext();
