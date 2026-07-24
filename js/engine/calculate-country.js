@@ -1,6 +1,11 @@
 import { selectBestRoute } from './select-best-route.js';
 import { COUNTRY_GROUP_LABELS_RU } from './status-contract.js';
 
+const EUROZONE_COUNTRY_IDS = new Set([
+  'AT', 'BE', 'BG', 'HR', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES',
+]);
+
+
 export class CalculationContextError extends Error {
   constructor(message, details = {}) {
     super(message);
@@ -35,7 +40,8 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
   }
   const normalizedProfile = countryAdapter.normalizeProfile(profile, calculationContext);
   const indexes = countryAdapter.buildIndexes(countryPackage);
-  const routes = (countryPackage.routes || []).map((route) => {
+  const availableRoutes = countryAdapter.listRoutes?.(countryPackage, normalizedProfile, indexes) ?? countryPackage.routes ?? [];
+  const routes = availableRoutes.map((route) => {
     const citizenshipVariants = normalizedProfile.citizenships.map((applicationNationality) =>
       countryAdapter.evaluateRoute(route, indexes, {
         ...normalizedProfile,
@@ -54,15 +60,19 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
   const lgbtResult = countryAdapter.evaluateLgbt?.(countryPackage, normalizedProfile, indexes, calculationContext) || null;
   const group = countryAdapter.determineCountryGroup(bestRoute, practicalResult, normalizedProfile, routes);
 
+  const countryId = countryPackage.country?.country_id ?? countryPackage.country_id;
+  const resultCurrency = EUROZONE_COUNTRY_IDS.has(countryId) ? 'EUR' : 'USD';
+
   return {
     schemaVersion: countryPackage.schema_version,
     calculatedAt: new Date().toISOString(),
     profile: normalizedProfile,
     country: {
-      countryId: countryPackage.country?.country_id ?? countryPackage.country_id,
-      name: countryPackage.country?.name_ru ?? countryPackage.name,
-      researchStatus: countryPackage.country?.country_research_status,
-      confidence: countryPackage.country?.confidence,
+      countryId,
+      name: countryPackage.country?.name_ru ?? countryPackage.country_name_ru ?? countryPackage.name,
+      researchStatus: countryPackage.country?.country_research_status ?? countryPackage.completeness?.country_ready_status,
+      confidence: countryPackage.country?.confidence ?? null,
+      resultCurrency,
       group,
       groupLabel: COUNTRY_GROUP_LABELS_RU[group],
     },

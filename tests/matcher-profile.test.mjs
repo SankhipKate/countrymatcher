@@ -272,20 +272,28 @@ test('income controls align and share one control radius', async () => {
 });
 
 test('matcher cache keys include the current release for code and country data', async () => {
-  const [matcher, app] = await Promise.all([
+  const [matcher, app, packageJson] = await Promise.all([
     readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
-  assert.match(matcher, /styles\.css\?v=0\.12\.7/);
-  assert.match(matcher, /app\.js\?v=0\.12\.7/);
-  assert.match(app, /uruguay-research-v2\.2\.json\?v=0\.12\.7/);
-  assert.match(app, /spain-adapter\.js\?v=0\.12\.7/);
+  const version = packageJson.version.replaceAll('.', '\\.');
+  assert.match(matcher, new RegExp(`styles\\.css\\?v=${version}`));
+  assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
+  assert.match(app, new RegExp(`uruguay-research-v2\\.2\\.json\\?v=${version}`));
+  assert.match(app, new RegExp(`argentina-research-v3\\.0\\.json\\?v=${version}`));
+  assert.match(app, new RegExp(`spain-adapter\\.js\\?v=${version}`));
+  assert.match(app, new RegExp(`argentina-adapter\\.js\\?v=${version}`));
 });
 
 test('README describes the live matcher and maintenance rule', async () => {
-  const readme = await readFile(new URL('../README.md', import.meta.url), 'utf8');
+  const [readme, packageJson] = await Promise.all([
+    readFile(new URL('../README.md', import.meta.url), 'utf8'),
+    readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
+  ]);
   assert.match(readme, /immigration-country-matcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
-  assert.match(readme, /0\.12\.7/);
+  assert.ok(readme.includes(packageJson.version));
+  assert.match(readme, /Испании, Уругвая и Аргентины/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });
