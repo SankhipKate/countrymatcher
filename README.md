@@ -64,7 +64,7 @@
 - `data/argentina-research-v3.0.json` — исследовательский пакет Аргентины по шаблону 3.0;
 - `data/research-package-v2.2.schema.json` — legacy-схема пакетов Испании и Уругвая;
 - `data/research-package-v3.0.schema.json` — действующая схема новых исследований;
-- `docs/research/country-research-template-mvp-v3.md` — действующий шаблон исследования страны;
+- `docs/research/templates/country-research-template-mvp-v3.md` — действующий шаблон исследования страны;
 - `docs/research/argentina/` — отчёт, аудит полноты и рабочая таблица Аргентины;
 - `data/schemas/user-profile-v1.schema.json` — схема профиля пользователя;
 - `docs/architecture/` — архитектурные решения и карта анкеты;
