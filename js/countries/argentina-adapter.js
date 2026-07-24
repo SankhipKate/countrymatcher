@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.1';
-import { convertMoney } from '../engine/currency.js?v=0.13.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=0.13.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=0.14.0';
+import { convertMoney } from '../engine/currency.js?v=0.14.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=0.14.0';
 
 const PUBLIC_STATUSES = Object.freeze({
   SUITABLE: ROUTE_STATUSES.SUITABLE,
@@ -450,7 +450,7 @@ function evaluateLgbt(data, profile) {
 
 function determineCountryGroup(bestRoute, practical, profile, routes = []) {
   if (!bestRoute || routes.every((route) => route.routeStatus === PUBLIC_STATUSES.UNSUITABLE)) return 'UNSUITABLE';
-  return bestRoute.routeStatus === PUBLIC_STATUSES.SUITABLE ? 'SUITABLE' : 'PRELIMINARY';
+  return bestRoute.routeStatus;
 }
 
 function collectSources(data, indexes, bestRoute, practical) {

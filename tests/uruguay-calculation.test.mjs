@@ -100,12 +100,12 @@ test('Uruguay permanent residence is suitable above 650 USD and unsuitable at or
   assert.ok(boundaryRoute.blockers.some((item) => item.includes('больше 650 USD')));
 });
 
-test('Uruguay temporary residence is preliminary instead of individual review', () => {
+test('Uruguay temporary residence is conditional without a separate review status', () => {
   const route = calculateCountries(remoteProfile(), [uruguay], context, () => spainAdapter).results[0]
     .routes.find((item) => item.routeId === 'UY_TEMPORARY');
-  assert.equal(route.routeStatus, 'PRELIMINARY_SUITABLE');
+  assert.equal(route.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(route.review.length, 0);
-  assert.ok(route.preliminary.some((item) => item.includes('основание временного проживания')));
+  assert.ok(route.conditions.some((item) => item.includes('основание временного проживания')));
 });
 
 test('Uruguay family-link route has one clear blocker with a current partner and no false LGBT blocker', () => {

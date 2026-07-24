@@ -85,8 +85,11 @@ test('dog breed field uses a large searchable breed directory', () => {
   assert.equal(isKnownDogBreed('Другая известная порода'), false);
 });
 
-test('individual review status has a concise user-facing label', () => {
-  assert.equal(STATUS_LABELS_RU.INDIVIDUAL_REVIEW_REQUIRED, 'Нужна проверка');
+test('public status labels expose exactly the three agreed statuses', () => {
+  assert.deepEqual(Object.keys(STATUS_LABELS_RU).sort(), ['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'UNSUITABLE'].sort());
+  assert.equal(STATUS_LABELS_RU.SUITABLE, 'Подходит');
+  assert.equal(STATUS_LABELS_RU.SUITABLE_WITH_CONDITIONS, 'Подходит с условиями');
+  assert.equal(STATUS_LABELS_RU.UNSUITABLE, 'Не подходит');
 });
 
 test('freelance income does not invent a source country', () => {
@@ -153,15 +156,13 @@ test('all unsuitable routes are not presented as the best option', () => {
   assert.equal(intro.routeLabel, 'Наиболее близкий вариант при изменении условий');
 });
 
-test('result routes are ordered from suitable through preliminary to unsuitable', () => {
+test('result routes are ordered through the three-status contract', () => {
   const routes = [
     { routeId: 'no', routeStatus: 'UNSUITABLE' },
-    { routeId: 'pre', routeStatus: 'PRELIMINARY_SUITABLE' },
     { routeId: 'yes', routeStatus: 'SUITABLE' },
-    { routeId: 'review', routeStatus: 'INDIVIDUAL_REVIEW_REQUIRED' },
     { routeId: 'conditions', routeStatus: 'SUITABLE_WITH_CONDITIONS' },
   ];
-  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['yes', 'conditions', 'pre', 'review', 'no']);
+  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['yes', 'conditions', 'no']);
   assert.equal(routes[0].routeId, 'no');
 });
 

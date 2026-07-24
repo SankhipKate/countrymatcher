@@ -185,7 +185,7 @@ export function validateAgainstSchema(value, schema, rootSchema = schema, path =
 }
 
 export function collectEligibleFollowUps(calculation) {
-  const eligibleStatuses = new Set(['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'PRELIMINARY_SUITABLE']);
+  const eligibleStatuses = new Set(['SUITABLE', 'SUITABLE_WITH_CONDITIONS']);
   const entries = (calculation?.routes || []).filter((route) => eligibleStatuses.has(route.routeStatus))
     .flatMap((route) => (route.followUpQuestions || []).map((question) => [question.code, { ...question, routeName: route.routeName }]));
   return [...new Map(entries).values()];
@@ -222,10 +222,7 @@ export function describeResultIntro(routes, changed = false) {
 const ROUTE_DISPLAY_RANK = Object.freeze({
   SUITABLE: 0,
   SUITABLE_WITH_CONDITIONS: 1,
-  PRELIMINARY_SUITABLE: 2,
-  INDIVIDUAL_REVIEW_REQUIRED: 3,
-  INSUFFICIENT_COUNTRY_DATA: 4,
-  UNSUITABLE: 5,
+  UNSUITABLE: 2,
 });
 
 export function sortRoutesForDisplay(routes = []) {

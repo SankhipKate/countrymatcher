@@ -116,11 +116,8 @@
         "route_status": {
           "enum": [
             "SUITABLE",
-            "PRELIMINARY_SUITABLE",
             "SUITABLE_WITH_CONDITIONS",
-            "UNSUITABLE",
-            "INSUFFICIENT_COUNTRY_DATA",
-            "INDIVIDUAL_REVIEW_REQUIRED"
+            "UNSUITABLE"
           ]
         },
         "practical_evaluation": {
