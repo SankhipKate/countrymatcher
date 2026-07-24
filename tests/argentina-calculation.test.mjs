@@ -62,14 +62,15 @@ function calculate(candidate) {
   return calculateCountry(candidate, argentina, context, argentinaAdapter);
 }
 
-test('Argentina is calculated as a third country with seven relevant Russian-citizen routes', () => {
+test('Argentina is calculated as a third country with six relevant Russian-citizen routes', () => {
   const result = calculate(profile());
   assert.equal(result.country.countryId, 'AR');
   assert.equal(result.country.name, 'Аргентина');
   assert.equal(result.country.resultCurrency, 'USD');
-  assert.equal(result.routes.length, 7);
+  assert.equal(result.routes.length, 6);
   assert.equal(result.routes.some((route) => route.routeId === 'AR_MERCOSUR_SECOND_NATIONALITY'), false);
   assert.equal(result.routes.some((route) => route.routeId === 'AR_INVESTOR_HIDDEN'), false);
+  assert.equal(result.routes.some((route) => route.routeId === 'AR_FAMILY'), false);
   assert.deepEqual(new Set(result.routes.map((route) => route.routeStatus)), new Set(['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'UNSUITABLE']));
 });
 
@@ -100,7 +101,7 @@ test('pension is a separate universal income type and controls the pension route
 
 test('Argentina routes needing a future local basis stay conditional without adding questionnaire answers', () => {
   const result = calculate(profile());
-  for (const routeId of ['AR_WORKER', 'AR_SPECIALIST_TRANSFER', 'AR_STUDENT', 'AR_FAMILY']) {
+  for (const routeId of ['AR_WORKER', 'AR_SPECIALIST_TRANSFER', 'AR_STUDENT']) {
     const route = result.routes.find((item) => item.routeId === routeId);
     assert.equal(route.routeStatus, 'SUITABLE_WITH_CONDITIONS');
     assert.equal(route.basisMissing, true);
@@ -125,4 +126,10 @@ test('result uses the universal income label and country-group display currency'
   assert.ok(app.includes('<span>Подтверждаемый доход</span>'));
   assert.equal(app.includes('Подтверждаемый доход после пересчёта'), false);
   assert.ok(app.includes("const incomeCurrency = calculation.country.resultCurrency || 'USD'"));
+});
+
+
+test('Argentina has no active-law text in pending changes', () => {
+  assert.deepEqual(argentina.lgbt.pending_changes, []);
+  assert.equal('recent_change_ru' in argentina.lgbt, false);
 });

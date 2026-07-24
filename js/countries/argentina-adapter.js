@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.0';
-import { convertMoney } from '../engine/currency.js?v=0.13.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=0.13.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.1';
+import { convertMoney } from '../engine/currency.js?v=0.13.1';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=0.13.1';
 
 const PUBLIC_STATUSES = Object.freeze({
   SUITABLE: ROUTE_STATUSES.SUITABLE,
@@ -112,8 +112,21 @@ function buildIndexes(data) {
   };
 }
 
+const PUBLIC_ROUTE_IDS = new Set([
+  'AR_NOMAD',
+  'AR_RENTISTA',
+  'AR_PENSIONADO',
+  'AR_WORKER',
+  'AR_SPECIALIST_TRANSFER',
+  'AR_STUDENT',
+]);
+
 function listRoutes(data) {
-  return (data.routes || []).filter((route) => route.publishable === true && route.available_to_russian_citizen === true);
+  return (data.routes || []).filter((route) =>
+    PUBLIC_ROUTE_IDS.has(route.route_id)
+    && route.publishable === true
+    && route.available_to_russian_citizen === true
+  );
 }
 
 function matchingIncome(profile, acceptedTypes) {
@@ -254,18 +267,6 @@ function incomeEvaluation(route, profile, context) {
     };
   }
 
-  if (route.route_id === 'AR_FAMILY') {
-    return {
-      ...noThreshold(),
-      checks: [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'family_link_required', 'Маршрут доступен только при признанной семейной связи с гражданином или резидентом Аргентины.', {
-        condition: 'Подтвердить предусмотренную законом семейную связь.',
-        action: 'Подготовить документы о признанной семейной связи с гражданином либо временным или постоянным резидентом Аргентины.',
-      })],
-      incomeGuidance: route.income_rule_ru,
-      basisMissing: true,
-    };
-  }
-
   return noThreshold();
 }
 
@@ -290,14 +291,11 @@ function familyEvaluation(route, profile) {
 function goalEvaluation(route, profile) {
   if (route.route_id !== 'AR_NOMAD') return [outcome(PUBLIC_STATUSES.SUITABLE, 'long_term_path_available', 'Маршрут относится к временной резиденции с подтверждённым дальнейшим путём при соблюдении требований проживания.')];
   if (['PR_REQUIRED', 'CITIZENSHIP_REQUIRED'].includes(profile.goal)) {
-    return [outcome(PUBLIC_STATUSES.UNSUITABLE, 'direct_long_term_path_unavailable', 'Краткосрочный статус цифрового кочевника не даёт прямого пути к обязательному ПМЖ или гражданству.', {
-      action: 'Выбрать временную резиденцию другого типа либо заранее запланировать переход на неё.',
-    })];
+    return [outcome(PUBLIC_STATUSES.UNSUITABLE, 'direct_long_term_path_unavailable', 'Не соответствует выбранной долгосрочной цели: это краткосрочный статус без прямого пути к ПМЖ или гражданству.')];
   }
   if (profile.goal === 'CITIZENSHIP_DESIRED') {
-    return [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'long_term_transition_required', 'Для долгосрочного проживания и гражданства потребуется переход на временную резиденцию другого типа.', {
-      condition: 'Заранее выбрать последующий долгосрочный маршрут.',
-      action: 'До окончания краткосрочного статуса перейти на подходящую временную резиденцию.',
+    return [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'long_term_transition_required', 'Это краткосрочный статус. Сам по себе он не является основанием для долгосрочного проживания или гражданства.', {
+      condition: 'Учитывать, что для долгосрочной цели потребуется отдельное основание временной резиденции.',
     })];
   }
   return [outcome(PUBLIC_STATUSES.SUITABLE, 'temporary_goal_supported', 'Краткосрочный маршрут соответствует цели временного проживания.')];
@@ -412,6 +410,12 @@ function evaluatePractical(data, profile) {
     };
   });
   cities.sort((a, b) => a.costUsd - b.costUsd);
+  for (const city of cities) {
+    city.roles = (city.roles || [])
+      .map((role) => String(role).replace(/\s+из выбранных городов/gi, '').trim())
+      .filter((role) => !/самый недорог/i.test(role));
+  }
+  if (cities[0]) cities[0].roles = ['Самый недорогой', ...cities[0].roles];
   const petSelected = profile.petTypes?.some((type) => !['NONE', 'OTHER'].includes(type));
   return {
     cities,
@@ -440,7 +444,7 @@ function evaluateLgbt(data, profile) {
       tone: 'safe',
       text: rule.safety_explanation_ru,
     },
-    change: rule.recent_change_ru,
+    pendingChanges: Array.isArray(rule.pending_changes) ? rule.pending_changes : [],
   };
 }
 
