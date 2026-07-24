@@ -5,12 +5,13 @@ export const INCOME_TYPE_BY_SCENARIO = Object.freeze({
   SPANISH_JOB_OFFER: 'SALARY_REVIEW',
   REMOTE_EMPLOYMENT: 'EMPLOYEE', CONTRACTOR: 'CONTRACTOR', FREELANCE_OR_SELF_EMPLOYED: 'CONTRACTOR',
   SOLE_PROPRIETOR: 'BUSINESS_PLAN', COMPANY_OWNER: 'COMPANY_OWNER', PASSIVE_INCOME: 'PASSIVE',
+  PENSION: 'PASSIVE',
   OTHER_REGULAR_REMOTE_INCOME: 'OTHER',
 });
 
 export const ROUTE_RULES = Object.freeze({
   ES_DNV: { incomeTypes: ['EMPLOYEE', 'CONTRACTOR', 'COMPANY_OWNER'], scenarios: ['REMOTE_EMPLOYEE', 'REMOTE_CONTRACTOR', 'FOREIGN_COMPANY_OWNER'], socialSecurityReview: true },
-  ES_NLV: { incomeTypes: ['PASSIVE'], scenarios: ['PASSIVE_INCOME'] },
+  ES_NLV: { incomeTypes: ['PASSIVE'], scenarios: ['PASSIVE_INCOME', 'PENSION'] },
   ES_SELF_EMPLOYED: { scenarios: ['SELF_EMPLOYED_SPAIN'], separateBasis: 'Нужен план самостоятельной деятельности или бизнеса в Испании.', individualReview: true },
   ES_ENTREPRENEUR: { scenarios: ['INNOVATIVE_PROJECT'], separateBasis: 'Нужен инновационный предпринимательский проект, проходящий индивидуальную оценку.', individualReview: true },
   ES_HIGHLY_QUALIFIED: { scenarios: ['SPANISH_JOB_OFFER'], separateBasis: 'Найти предложение квалифицированной работы в Испании и подтвердить высшее образование либо требуемый профессиональный опыт.' },

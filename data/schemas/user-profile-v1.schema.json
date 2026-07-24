@@ -409,6 +409,7 @@
             "SOLE_PROPRIETOR",
             "COMPANY_OWNER",
             "PASSIVE_INCOME",
+            "PENSION",
             "OTHER_REGULAR_REMOTE_INCOME"
           ]
         },
