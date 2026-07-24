@@ -1,11 +1,11 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.13.0';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.13.0';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.13.0';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.13.0';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=0.13.0';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.13.0';
-import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.13.0';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.13.0';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.13.1';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.13.1';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.13.1';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.13.1';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=0.13.1';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.13.1';
+import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.13.1';
+import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.13.1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -320,7 +320,6 @@ const LGBT_SAFETY = {
 
 const LGBT_CHANGES = {
   ES: 'В Испании рассматривается законопроект об уголовной ответственности за конверсионные практики. Конгресс одобрил его и направил в Сенат, но закон пока не принят. На правила въезда, ВНЖ и семейной иммиграции этот проект не влияет.',
-  UY: 'В Монтевидео действует План разнообразия 2026–2030 с новыми мерами в здравоохранении, занятости, жилье и защите от дискриминации. Это городская программа, а не новый национальный закон.',
 };
 
 function renderLgbtResearch(calculation) {
@@ -328,8 +327,13 @@ function renderLgbtResearch(calculation) {
   const countryId = calculation.country.countryId;
   const rows = calculation.lgbt.rows || LGBT_ROWS[countryId] || [];
   const safety = calculation.lgbt.safety || LGBT_SAFETY[countryId];
-  const change = calculation.lgbt.change || LGBT_CHANGES[countryId];
-  return `<section class="lgbt-research"><div class="section-title-row"><div><h3>ЛГБТ: права, семья и иммиграция</h3><p>Кратко о том, что важно при переезде и жизни в стране.</p></div></div><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${safety ? `<div class="lgbt-row"><h4>Безопасность</h4><div><span class="lgbt-safety ${html(safety.tone)}">${html(safety.level)}</span><p>${html(safety.text)}</p></div></div>` : ''}${change ? `<div class="lgbt-row"><h4>Что меняется</h4><p>${html(change)}</p></div>` : ''}</div></section>`;
+  const pendingChanges = Array.isArray(calculation.lgbt.pendingChanges)
+    ? calculation.lgbt.pendingChanges
+    : LGBT_CHANGES[countryId] ? [{ summary_ru: LGBT_CHANGES[countryId] }] : [];
+  const changesBlock = pendingChanges.length
+    ? `<div class="lgbt-row"><h4>Что меняется</h4>${pendingChanges.map((change) => `<p>${html(change.summary_ru || change)}</p>`).join('')}</div>`
+    : '';
+  return `<section class="lgbt-research"><div class="section-title-row"><div><h3>ЛГБТ: права, семья и иммиграция</h3><p>Кратко о том, что важно при переезде и жизни в стране.</p></div></div><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${safety ? `<div class="lgbt-row"><h4>Безопасность</h4><div><span class="lgbt-safety ${html(safety.tone)}">${html(safety.level)}</span><p>${html(safety.text)}</p></div></div>` : ''}${changesBlock}</div></section>`;
 }
 
 function longTermConditions(route) {
@@ -382,10 +386,11 @@ function longTermConditions(route) {
       items.push('Гражданство РФ: отказ не требуется.');
     }
   } else if (countryId === 'AR') {
-    if (rule.pr_path_ru) items.push(`ПМЖ: ${rule.pr_path_ru}`);
-    if (rule.citizenship_path_ru) items.push(`Гражданство: ${rule.citizenship_path_ru}`);
-    if (rule.presence_rule_ru) items.push(`Присутствие: ${rule.presence_rule_ru}`);
-    if (rule.dual_citizenship_ru) items.push(`Гражданство РФ: ${rule.dual_citizenship_ru}`);
+    const cleanPrefix = (text, prefix) => String(text || '').replace(new RegExp(`^${prefix}:?\s*`, 'i'), '').trim();
+    if (rule.pr_path_ru) items.push(`ПМЖ: ${cleanPrefix(rule.pr_path_ru, 'ПМЖ')}`);
+    if (rule.citizenship_path_ru) items.push(`Гражданство: это отдельный путь; предварительно получать ПМЖ не требуется. ${cleanPrefix(rule.citizenship_path_ru, 'Гражданство')}`);
+    if (rule.presence_rule_ru) items.push(`Присутствие: ${cleanPrefix(rule.presence_rule_ru, 'Присутствие')}`);
+    if (rule.dual_citizenship_ru) items.push(`Гражданство РФ: ${cleanPrefix(rule.dual_citizenship_ru, 'Гражданство РФ')}`);
   } else {
     items.push('Путь к ПМЖ и гражданству нужно проверить для выбранного маршрута.');
   }
@@ -473,6 +478,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const needsInternationalSchool = Boolean(currentProfile?.family?.school_needed);
   const estimatedEducationCost = needsInternationalSchool && countryId !== 'AR' ? (countryId === 'ES' ? 900 : 700) : 0;
   const daycareNote = radio('kindergartenNeeded') === 'YES' ? 'Детский сад: цена зависит от города и возраста; пока показан отдельно как требующий проверки.' : '';
+  const cityCostSuffix = calculation.profile.adults === 1 && children === 0 ? '/мес' : '/мес на семью';
   const schoolSummary = calculation.schoolSummary ? `<p class="research-caveat">${html(calculation.schoolSummary)}</p>` : '';
   const citySection = comparisonCities.length
     ? `<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
@@ -486,19 +492,19 @@ function renderCountryResult(calculation, changed = false, active = false) {
             : knownSchoolCost ? `<span>Международная школа: ориентир <b>+${currency(knownSchoolCost)}/мес</b></span>` : '';
         const budgetLine = delta == null ? '' : delta >= 0
           ? `<span class="budget-ok">В бюджет укладывается, запас ${currency(delta)}</span>`
-          : `<span class="budget-short">Не хватает примерно ${currency(Math.abs(delta))}</span>`;
+          : '<span class="budget-short">Выше бюджета</span>';
         const coldLine = city.coldRange ? `<span>Холодный период: <b>${html(city.coldRange)}</b></span>`
           : city.cold ? `<span>Самый холодный месяц (${html(city.cold[0])}): <b>${city.cold[1]}…${city.cold[2]} °C</b></span>` : '';
         const hotLine = city.hotRange ? `<span>Жаркий период: <b>${html(city.hotRange)}</b></span>`
           : city.hot ? `<span>Самый жаркий месяц (${html(city.hot[0])}): <b>${city.hot[1]}…${city.hot[2]} °C</b></span>` : '';
         const climateLine = city.climate ? `<span>Климат: <b>${html(city.climate)}</b></span>` : '';
-        return `<article class="city-card"><div class="city-role-list">${city.roles.map((role) => `<span>${html(role)}</span>`).join('')}</div><small>${html(citySizeLabels[city.size] || citySizeLabels.ANY)}</small><h4>${html(city.name)}</h4><strong>${currency(living)}/мес на семью</strong>${schoolLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
+        return `<article class="city-card"><div class="city-role-list">${city.roles.map((role) => `<span>${html(role)}</span>`).join('')}</div><small>${html(citySizeLabels[city.size] || citySizeLabels.ANY)}</small><h4>${html(city.name)}</h4><strong>${currency(living)}${cityCostSuffix}</strong>${schoolLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
       }).join('')}</div>${schoolSummary}${daycareNote ? `<p class="research-caveat">${html(daycareNote)}</p>` : ''}<p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>${otherPetWarning}${petInfo}
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
-    <section><div class="section-title-row"><div><h3>Города, климат и семейный бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
+    <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
     ${renderLgbtResearch(calculation)}
     <p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Стоимость жизни — ориентировочная практическая оценка. Расчёт: ${html(calculation.calculatedAt?.slice(0, 10))}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат предварительный и не является юридическим обещанием.</p></div></article>`;
 }
@@ -585,7 +591,7 @@ $('#editProfile').addEventListener('click', () => { $('#resultView').hidden = tr
 async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [spainResponse, uruguayResponse, argentinaResponse, schemaResponse] = await Promise.all([fetch('../data/spain-research-v2.2.json?v=0.13.0'), fetch('../data/uruguay-research-v2.2.json?v=0.13.0'), fetch('../data/argentina-research-v3.0.json?v=0.13.0'), fetch('../data/schemas/user-profile-v1.schema.json?v=0.13.0')]);
+    const [spainResponse, uruguayResponse, argentinaResponse, schemaResponse] = await Promise.all([fetch('../data/spain-research-v2.2.json?v=0.13.1'), fetch('../data/uruguay-research-v2.2.json?v=0.13.1'), fetch('../data/argentina-research-v3.0.json?v=0.13.1'), fetch('../data/schemas/user-profile-v1.schema.json?v=0.13.1')]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !schemaResponse.ok) throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${schemaResponse.status}`);
     [spainData, uruguayData, argentinaData, profileSchema] = await Promise.all([spainResponse.json(), uruguayResponse.json(), argentinaResponse.json(), schemaResponse.json()]);
     calculationContext = await loadCalculationContext();

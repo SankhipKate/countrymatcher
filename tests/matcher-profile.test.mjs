@@ -297,3 +297,13 @@ test('README describes the live matcher and maintenance rule', async () => {
   assert.match(readme, /Испании, Уругвая и Аргентины/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });
+
+
+test('Argentina result copy follows the agreed presentation rules', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /Города, климат и бюджет/);
+  assert.match(app, /Выше бюджета/);
+  assert.equal(app.includes('Не хватает примерно'), false);
+  assert.match(app, /cityCostSuffix/);
+  assert.match(app, /предварительно получать ПМЖ не требуется/);
+});

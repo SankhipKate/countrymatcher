@@ -40,7 +40,11 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
   }
   const normalizedProfile = countryAdapter.normalizeProfile(profile, calculationContext);
   const indexes = countryAdapter.buildIndexes(countryPackage);
-  const availableRoutes = countryAdapter.listRoutes?.(countryPackage, normalizedProfile, indexes) ?? countryPackage.routes ?? [];
+  const packageRoutes = Array.isArray(countryPackage.routes) ? countryPackage.routes : [];
+  const availableRoutes = typeof countryAdapter.listRoutes === 'function'
+    ? countryAdapter.listRoutes(countryPackage, normalizedProfile, indexes)
+    : packageRoutes;
+  if (!Array.isArray(availableRoutes)) throw new TypeError('countryAdapter.listRoutes must return an array');
   const routes = availableRoutes.map((route) => {
     const citizenshipVariants = normalizedProfile.citizenships.map((applicationNationality) =>
       countryAdapter.evaluateRoute(route, indexes, {
@@ -61,6 +65,7 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
   const group = countryAdapter.determineCountryGroup(bestRoute, practicalResult, normalizedProfile, routes);
 
   const countryId = countryPackage.country?.country_id ?? countryPackage.country_id;
+  const countryName = countryPackage.country?.name_ru ?? countryPackage.country_name_ru ?? countryPackage.name ?? countryId;
   const resultCurrency = EUROZONE_COUNTRY_IDS.has(countryId) ? 'EUR' : 'USD';
 
   return {
@@ -69,7 +74,7 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
     profile: normalizedProfile,
     country: {
       countryId,
-      name: countryPackage.country?.name_ru ?? countryPackage.country_name_ru ?? countryPackage.name,
+      name: countryName,
       researchStatus: countryPackage.country?.country_research_status ?? countryPackage.completeness?.country_ready_status,
       confidence: countryPackage.country?.confidence ?? null,
       resultCurrency,

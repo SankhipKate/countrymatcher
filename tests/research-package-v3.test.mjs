@@ -36,12 +36,14 @@ test('Research Package 3.0 exposes exactly three public route statuses', () => {
   ]);
 });
 
-test('Argentina has eight publishable routes and one hidden investor route', () => {
-  assert.equal(argentina.routes.length, 9);
-  assert.equal(argentina.routes.filter(({ publishable }) => publishable).length, 8);
+test('Argentina has six publishable routes and one hidden investor route', () => {
+  assert.equal(argentina.routes.length, 7);
+  assert.equal(argentina.routes.filter(({ publishable }) => publishable).length, 6);
   const hidden = argentina.routes.filter(({ publishable }) => !publishable);
   assert.deepEqual(hidden.map(({ route_id }) => route_id), ['AR_INVESTOR_HIDDEN']);
-  assert.equal(argentina.completeness.public_routes_ready, 8);
+  assert.equal(argentina.routes.some(({ route_id }) => route_id === 'AR_FAMILY'), false);
+  assert.equal(argentina.routes.some(({ route_id }) => route_id === 'AR_MERCOSUR_SECOND_NATIONALITY'), false);
+  assert.equal(argentina.completeness.public_routes_ready, 6);
   assert.equal(argentina.completeness.hidden_routes, 1);
   assert.equal(argentina.completeness.overall_percent, 92);
 });
@@ -64,4 +66,11 @@ test('Argentina package keeps unknown thresholds explicit instead of inventing v
   assert.equal(nomad.income_threshold_amount, null);
   assert.equal(nomad.income_threshold_currency, null);
   assert.equal(investor.publishable, false);
+});
+
+
+test('pending changes contain only future changes and can be empty', () => {
+  assert.equal('recent_change_ru' in argentina.lgbt, false);
+  assert.deepEqual(argentina.lgbt.pending_changes, []);
+  assert.equal(validate(argentina), true, ajv.errorsText(validate.errors, { separator: '\n' }));
 });

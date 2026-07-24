@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.0';
-import { convertMoney } from '../engine/currency.js?v=0.13.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=0.13.0';
-import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=0.13.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=0.13.1';
+import { convertMoney } from '../engine/currency.js?v=0.13.1';
+import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=0.13.1';
+import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=0.13.1';
 
 const outcome = (status, code, message, options = {}) => ({ status, code, message, condition: options.condition ?? null, field: options.field ?? null });
 const EU_EEA_SWISS = new Set(['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DE', 'DK', 'EE', 'FI', 'FR', 'GR', 'HU', 'IE', 'IS', 'IT', 'LI', 'LT', 'LU', 'LV', 'MT', 'NL', 'NO', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'CH']);
@@ -202,7 +202,7 @@ function incomeEvaluation(route, indexes, profile, context) {
     const thresholdUsd = Number(rule.fixedIncomeThresholdUsd);
     const checks = [...basisChecks];
     if (profile.monthlyIncomeUsd == null) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_missing', 'Нужно указать подтверждаемый доход.', { field: 'income.primary.amount' }));
-    else if (profile.monthlyIncomeUsd <= thresholdUsd) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_fixed_usd_threshold', `Подтверждаемый доход должен быть больше ${thresholdUsd} USD в месяц. Сейчас после пересчёта — около ${Math.round(profile.monthlyIncomeUsd)} USD.`));
+    else if (profile.monthlyIncomeUsd <= thresholdUsd) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_fixed_usd_threshold', `Подтверждаемый доход должен быть больше ${thresholdUsd} USD в месяц. Сейчас подтверждается около ${Math.round(profile.monthlyIncomeUsd)} USD.`));
     else checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_above_fixed_usd_threshold', `Подтверждаемый доход превышает ${thresholdUsd} USD в месяц.`));
     return {
       ...base,
@@ -232,7 +232,7 @@ function incomeEvaluation(route, indexes, profile, context) {
   const thresholdEur = familyThreshold(incomeRule, profile);
   const checks = [...basisChecks];
   if (profile.monthlyIncomeUsd == null) checks.push(outcome(ROUTE_STATUSES.PRELIMINARY_SUITABLE, 'income_missing', 'Подтверждаемый доход не указан.', { field: 'income.primary.amount' }));
-  else if (incomeEur < thresholdEur) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_threshold', `Доход после пересчёта составляет около ${Math.round(incomeEur)} EUR, требование маршрута — ${Math.round(thresholdEur)} EUR в месяц.`));
+  else if (incomeEur < thresholdEur) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'income_below_threshold', `Подтверждаемый доход составляет около ${Math.round(incomeEur)} EUR, требование маршрута — ${Math.round(thresholdEur)} EUR в месяц.`));
   else if (incomeEur < thresholdEur * 1.1) checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_meets_threshold_close', 'Доход соответствует официальному порогу, запас составляет менее 10%.'));
   else checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'income_meets_threshold', 'Доход превышает семейный порог.'));
   if (rule.socialSecurityReview) {
