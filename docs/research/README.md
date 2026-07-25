@@ -26,6 +26,6 @@
 Рабочие исследования находятся внутри проекта:
 
 - `../../research-backlog/brazil-v2.2/`
-- `../../research-backlog/paraguay-v2.2/`
+- `../../research-backlog/paraguay-v3.0/`
 
 Наличие страны в `research-backlog` не означает, что она уже подключена к публичному калькулятору.
