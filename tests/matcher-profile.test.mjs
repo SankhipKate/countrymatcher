@@ -283,8 +283,10 @@ test('matcher cache keys include the current release for code and country data',
   assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
   assert.match(app, new RegExp(`uruguay-research-v2\\.2\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`argentina-research-v3\\.0\\.json\\?v=${version}`));
+  assert.match(app, new RegExp(`paraguay-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`spain-adapter\\.js\\?v=${version}`));
   assert.match(app, new RegExp(`argentina-adapter\\.js\\?v=${version}`));
+  assert.match(app, new RegExp(`paraguay-adapter\\.js\\?v=${version}`));
 });
 
 test('README describes the live matcher and maintenance rule', async () => {
@@ -295,7 +297,7 @@ test('README describes the live matcher and maintenance rule', async () => {
   assert.match(readme, /immigration-country-matcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
-  assert.match(readme, /Испании, Уругвая и Аргентины/);
+  assert.match(readme, /Испании, Уругвая, Аргентины и Парагвая/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });
 

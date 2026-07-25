@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { calculateCountries } from '../js/engine/calculate-countries.js';
 import { argentinaAdapter } from '../js/countries/argentina-adapter.js';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js';
 import { spainAdapter } from '../js/countries/spain-adapter.js';
 import {
   COUNTRY_GROUP_LABELS_RU,
@@ -11,15 +12,16 @@ import {
   resolveStatusConflict,
 } from '../js/engine/status-contract.js';
 
-const [spain, uruguay, argentina] = await Promise.all([
+const [spain, uruguay, argentina, paraguay] = await Promise.all([
   readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8').then(JSON.parse),
   readFile(new URL('../data/uruguay-research-v2.2.json', import.meta.url), 'utf8').then(JSON.parse),
   readFile(new URL('../data/argentina-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
+  readFile(new URL('../data/paraguay-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
 ]);
 
 const context = {
   calculation_date: '2026-07-24T12:00:00Z',
-  engine_version: '0.14.0',
+  engine_version: '0.15.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, ARS: 1000, RUB: 80, UYU: 40 },
@@ -74,15 +76,19 @@ test('engine exports exactly the three agreed route and country statuses', () =>
   assert.equal(resolveStatusConflict([]), 'SUITABLE_WITH_CONDITIONS');
 });
 
-test('Spain, Uruguay, and Argentina return only the three agreed statuses', () => {
+test('Spain, Uruguay, Argentina, and Paraguay return only the three agreed statuses', () => {
   const result = calculateCountries(
     profile(),
-    [spain, uruguay, argentina],
+    [spain, uruguay, argentina, paraguay],
     context,
-    (countryPackage) => (countryPackage.country_id === 'AR' ? argentinaAdapter : spainAdapter),
+    (countryPackage) => {
+      if (countryPackage.country_id === 'AR') return argentinaAdapter;
+      if (countryPackage.country_id === 'PY') return paraguayAdapter;
+      return spainAdapter;
+    },
   );
   assert.deepEqual(result.errors, []);
-  assert.deepEqual(result.results.map(({ country }) => country.countryId), ['ES', 'UY', 'AR']);
+  assert.deepEqual(result.results.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY']);
   for (const country of result.results) {
     assert.ok(allowed.has(country.country.group), `${country.country.countryId}: invalid country group ${country.country.group}`);
     assert.equal(country.country.groupLabel, COUNTRY_GROUP_LABELS_RU[country.country.group]);
@@ -99,6 +105,7 @@ test('runtime and legacy research schema contain no retired status names', async
     '../js/engine/status-contract.js',
     '../js/countries/spain-adapter.js',
     '../js/countries/argentina-adapter.js',
+    '../js/countries/paraguay-adapter.js',
     '../matcher/profile.js',
     '../matcher/app.js',
     '../pilot/app.js',
