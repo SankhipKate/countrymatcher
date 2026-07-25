@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Универсальная анкета Immigration Matcher для граждан РФ"><meta name="theme-color" content="#071e3d">
   <title>Анкета — Immigration Matcher</title>
-  <link rel="stylesheet" href="../pilot/styles.css?v=0.14.0"><link rel="stylesheet" href="./styles.css?v=0.15.0">
+  <link rel="stylesheet" href="../pilot/styles.css?v=0.14.0"><link rel="stylesheet" href="./styles.css?v=0.15.1">
 </head>
 <body>
   <header class="site-header"><div class="nav-shell"><a class="brand" href="./" aria-label="Immigration Matcher"><span class="brand-mark" aria-hidden="true"><span></span></span><span>Immigration <em>Matcher</em></span></a><div class="secure-note"><span aria-hidden="true">◇</span> Данные остаются в браузере</div></div></header>
@@ -19,7 +19,7 @@
 
         <section class="wizard-step is-active" data-step="1">
           <div class="step-heading"><span class="step-number">1</span><div><h2>Где вы сейчас</h2><p>Это нужно для проверки допустимого места подачи.</p></div></div>
-          <div class="info-box"><b>Что именно проверяет расчёт?</b><p>Движок применяет правила маршрута: можно ли податься из России, из страны проживания или после въезда. Он не проверяет в реальном времени конкретные консульства и наличие записи.</p></div>
+          <div class="info-box"><b>Что именно проверяет расчёт?</b><p>Движок применяет правила маршрута: можно ли податься из России, из страны проживания или после въезда. Если подача внутри страны разрешена, текущее местонахождение не мешает маршруту: в результате будет указано, что нужно приехать и подать лично. Движок не проверяет в реальном времени конкретные консульства и наличие записи.</p></div>
           <fieldset class="choice-group"><legend>Вы сейчас находитесь в России?</legend><div class="segmented"><label><input type="radio" name="inRussia" value="YES"><span>Да</span></label><label><input type="radio" name="inRussia" value="NO"><span>Нет</span></label></div></fieldset>
           <div id="outsideRussiaBlock" class="conditional-card" hidden>
             <div class="field-grid two-col"><label class="field"><span>В какой стране вы сейчас?</span><input id="currentCountry" list="countryOptions" placeholder="Название на русском или английском" autocomplete="off"></label><label class="field"><span>Ваш легальный статус</span><select id="currentStatus"><option value="" disabled selected hidden>Выберите</option><option value="CITIZENSHIP">Гражданство</option><option value="PERMANENT_RESIDENCE">ПМЖ</option><option value="TEMPORARY_RESIDENCE">ВНЖ</option><option value="WORK_OR_FAMILY_VISA">Рабочая или семейная виза</option><option value="STUDENT_STATUS">Студенческий статус</option><option value="TOURIST_OR_VISA_FREE">Туристическая виза или безвизовый въезд</option><option value="OTHER_LEGAL_STATUS">Другой законный статус</option><option value="NO_LEGAL_STATUS">Нет законного статуса</option></select></label></div>
@@ -69,8 +69,8 @@
       <aside class="sidebar"><section class="surface profile-card"><div class="card-title"><h2>Ваш профиль</h2><span class="round-icon">○</span></div><div id="profileSummary" class="summary-list"><p class="empty-profile-message">Профиль пока не заполнен</p></div></section><section class="benefit-card"><h2>Как работает расчёт</h2><ul><li><span>1</span><div><b>Проверяем каждый вариант</b><small>Ни один маршрут не получает приоритет заранее.</small></div></li><li><span>2</span><div><b>Отделяем право от удобства</b><small>Юридические требования и семейный бюджет оцениваются отдельно.</small></div></li><li><span>3</span><div><b>Показываем, что можно изменить</b><small>В результате объясняем причину и нужное условие.</small></div></li></ul></section></aside>
     </section>
     <section id="resultView" class="result-layout result-layout-single" hidden><div id="result" class="surface result-main"></div></section>
-    <footer class="version-footer" aria-label="Версия приложения">Immigration Matcher · версия 0.15.0</footer>
+    <footer class="version-footer" aria-label="Версия приложения">Immigration Matcher · версия 0.15.1</footer>
   </main>
-  <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./app.js?v=0.15.0"></script>
+  <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./app.js?v=0.15.1"></script>
 </body>
 </html>
