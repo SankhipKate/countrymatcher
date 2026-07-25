@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "country_id": "PY",
+  "research_package": "paraguay-research-v3.0.json",
+  "note_ru": "Исследовательские сценарии для будущей реализации адаптера. Это не исполняемый user-profile-v1 до добавления Парагвая в движок.",
+  "profiles": [
+    {
+      "profile_id": "PY_TEST_TEMP_SUITABLE_IN_COUNTRY",
+      "description_ru": "Гражданин РФ уже в Парагвае и готов лично подать стандартные документы.",
+      "inputs": {
+        "citizenship": "RU",
+        "current_country": "PY",
+        "ready_for_in_country_filing": true
+      },
+      "expected": {
+        "PY_TEMPORARY": "SUITABLE",
+        "PY_PERMANENT_AFTER_TEMP": "UNSUITABLE",
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Для временной резиденции выполнено место подачи; постоянная требует предыдущий временный статус."
+    },
+    {
+      "profile_id": "PY_TEST_TEMP_CONDITIONAL_ABROAD",
+      "description_ru": "Гражданин РФ находится за пределами Парагвая, но готов въехать и подать лично.",
+      "inputs": {
+        "citizenship": "RU",
+        "current_country": "PH",
+        "ready_for_in_country_filing": true
+      },
+      "expected": {
+        "PY_TEMPORARY": "SUITABLE_WITH_CONDITIONS",
+        "PY_PERMANENT_AFTER_TEMP": "UNSUITABLE",
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Сначала требуется содержательное действие — въезд в Парагвай для очной подачи."
+    },
+    {
+      "profile_id": "PY_TEST_TEMP_UNSUITABLE_NO_TRAVEL",
+      "description_ru": "Гражданин РФ не находится в Парагвае и не готов подаваться внутри страны.",
+      "inputs": {
+        "citizenship": "RU",
+        "current_country": "RU",
+        "ready_for_in_country_filing": false
+      },
+      "expected": {
+        "PY_TEMPORARY": "UNSUITABLE",
+        "PY_PERMANENT_AFTER_TEMP": "UNSUITABLE",
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Обычные маршруты требуют личной подачи в Парагвае."
+    },
+    {
+      "profile_id": "PY_TEST_PERM_SUITABLE_REMOTE_WORKER",
+      "description_ru": "Есть действующая временная резиденция, наступило окно смены категории и готово подтверждение удалённой работы.",
+      "inputs": {
+        "citizenship": "RU",
+        "paraguay_residence": "TEMPORARY",
+        "filing_window_open": true,
+        "solvency_category": "REMOTE_WORKER",
+        "income_evidence_ready": true
+      },
+      "expected": {
+        "PY_TEMPORARY": "SUITABLE",
+        "PY_PERMANENT_AFTER_TEMP": "SUITABLE",
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Выполнены предварительный статус, окно подачи и документальная категория."
+    },
+    {
+      "profile_id": "PY_TEST_PERM_CONDITIONAL_EVIDENCE",
+      "description_ru": "Есть временная резиденция и окно подачи, но справка о работе и выплатах ещё не подготовлена.",
+      "inputs": {
+        "citizenship": "RU",
+        "paraguay_residence": "TEMPORARY",
+        "filing_window_open": true,
+        "solvency_category": "REMOTE_WORKER",
+        "income_evidence_ready": false
+      },
+      "expected": {
+        "PY_TEMPORARY": "SUITABLE",
+        "PY_PERMANENT_AFTER_TEMP": "SUITABLE_WITH_CONDITIONS",
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Основание существует, но требуется содержательное подтверждение дохода."
+    },
+    {
+      "profile_id": "PY_TEST_SAME_SEX_COUPLE",
+      "description_ru": "Однополая пара с иностранным зарегистрированным союзом переезжает вместе.",
+      "inputs": {
+        "citizenship": "RU",
+        "partner_included": true,
+        "relationship": "REGISTERED_PARTNERSHIP",
+        "same_sex": true
+      },
+      "expected": {
+        "family_unit_recognized": false,
+        "partner_needs_independent_route": true
+      },
+      "reason_ru": "Иностранный однополый союз не подтверждён как семейное миграционное основание."
+    },
+    {
+      "profile_id": "PY_TEST_CHILD_NNA",
+      "description_ru": "Родитель подаётся вместе с несовершеннолетним ребёнком.",
+      "inputs": {
+        "citizenship": "RU",
+        "children_ages": [
+          13
+        ],
+        "parent_filing_same_time": true
+      },
+      "expected": {
+        "child_category": "NNA",
+        "child_solvency_required": false
+      },
+      "reason_ru": "Дети 0–17 лет имеют автономную категорию и освобождены от собственного подтверждения состоятельности."
+    },
+    {
+      "profile_id": "PY_TEST_INVESTOR_HIDDEN",
+      "description_ru": "Заявитель указывает инвестиционную возможность выше порога.",
+      "inputs": {
+        "citizenship": "RU",
+        "investment_usd": 200000,
+        "investment_sector": "REAL_ESTATE"
+      },
+      "expected": {
+        "PY_INVESTOR_PASS": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Маршрут не должен рассчитываться до появления соответствующих полей анкеты и полной семейной логики."
+    }
+  ]
+}
