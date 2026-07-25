@@ -159,7 +159,13 @@ function applicationChecks(route, indexes, profile) {
   } else {
     const routeMethods = new Set(route.application_methods || []);
     const selected = profile.applicationMethods.includes('ANY')
-      ? ['CURRENT_COUNTRY', 'RUSSIA', 'IN_COUNTRY_AFTER_ENTRY'] : profile.applicationMethods;
+      ? ['CURRENT_COUNTRY', 'RUSSIA', 'IN_COUNTRY_AFTER_ENTRY']
+      : [...profile.applicationMethods];
+    if (routeMethods.has('IN_COUNTRY')
+      && route.in_country_application_allowed === 'YES'
+      && !selected.includes('IN_COUNTRY_AFTER_ENTRY')) {
+      selected.push('IN_COUNTRY_AFTER_ENTRY');
+    }
     const targetCountry = indexes.data?.country?.country_id ?? indexes.data?.country_id;
     const confirmedResidentStatuses = new Set(['CITIZENSHIP', 'PERMANENT_RESIDENCE', 'TEMPORARY_RESIDENCE', 'WORK_OR_FAMILY_VISA', 'STUDENT_STATUS']);
     const evaluateMethod = (method) => {

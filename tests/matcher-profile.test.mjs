@@ -105,6 +105,12 @@ test('user can select current-country and in-country application methods togethe
   assert.equal(validateAgainstSchema(profile, profileSchema).length, 0);
 });
 
+
+test('public matcher keeps filing after entry available for an applicant currently in Russia', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /inRussia \? \['RUSSIA', 'IN_COUNTRY_AFTER_ENTRY'\]/);
+});
+
 test('income and budget retain their own currencies', () => {
   const profile = buildUserProfile(answers({ primaryTotalAmount: '300000', primaryAmount: '300000', primaryCurrency: 'RUB', monthlyBudget: '2200', budgetCurrency: 'EUR' }));
   assert.deepEqual(profile.income.primary.monthly_provable, { amount: 300000, currency: 'RUB' });

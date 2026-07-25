@@ -94,25 +94,8 @@ function listRoutes(data) {
     && route.available_to_russian_citizen === true);
 }
 
-function acceptsInCountryFiling(profile) {
-  const methods = new Set(profile.applicationMethods || []);
-  return methods.has('ANY')
-    || methods.has('IN_COUNTRY_AFTER_ENTRY')
-    || (profile.currentCountry === 'PY' && methods.has('CURRENT_COUNTRY'));
-}
-
 function applicationEvaluation(route, profile) {
-  const inCountryAccepted = acceptsInCountryFiling(profile);
-
   if (route.route_id === 'PY_TEMPORARY') {
-    if (!inCountryAccepted) {
-      return [outcome(
-        ROUTE_STATUSES.UNSUITABLE,
-        'paraguay_in_country_filing_required',
-        'Временная резиденция оформляется только при личной подаче внутри Парагвая.',
-        { action: 'Выбрать подачу внутри страны после въезда и лично обратиться в миграционную службу Парагвая.' },
-      )];
-    }
     if (profile.currentCountry === 'PY' && profile.currentStatus === 'TEMPORARY_RESIDENCE') {
       return [outcome(
         ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
@@ -129,24 +112,13 @@ function applicationEvaluation(route, profile) {
       )];
     }
     return [outcome(
-      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
+      ROUTE_STATUSES.SUITABLE,
       'paraguay_entry_required',
-      'Для подачи нужно сначала въехать в Парагвай и лично обратиться в миграционную службу.',
-      {
-        condition: 'Въехать в Парагвай и подать заявление лично внутри страны.',
-        action: 'Подготовить документы для въезда и личной подачи в Парагвае.',
-      },
+      'Маршрут доступен: для подачи нужно въехать в Парагвай и лично обратиться в миграционную службу.',
+      { action: 'Подготовить документы для въезда и личной подачи в Парагвае.' },
     )];
   }
 
-  if (!inCountryAccepted) {
-    return [outcome(
-      ROUTE_STATUSES.UNSUITABLE,
-      'paraguay_permanent_in_country_filing_required',
-      'Переход на постоянную резиденцию требует личной подачи внутри Парагвая.',
-      { action: 'Выбрать подачу внутри Парагвая.' },
-    )];
-  }
   if (profile.currentCountry !== 'PY' || profile.currentStatus !== 'TEMPORARY_RESIDENCE') {
     return [outcome(
       ROUTE_STATUSES.UNSUITABLE,

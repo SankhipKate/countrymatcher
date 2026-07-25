@@ -21,7 +21,7 @@ const [spain, uruguay, argentina, paraguay] = await Promise.all([
 
 const context = {
   calculation_date: '2026-07-24T12:00:00Z',
-  engine_version: '0.15.0',
+  engine_version: '0.15.1',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, ARS: 1000, RUB: 80, UYU: 40 },
@@ -98,6 +98,29 @@ test('Spain, Uruguay, Argentina, and Paraguay return only the three agreed statu
       assert.equal(route.statusLabel, STATUS_LABELS_RU[route.routeStatus]);
     }
   }
+});
+
+test('current location does not block routes that allow filing after entry', () => {
+  const input = profile();
+  input.application_preferences.methods = ['RUSSIA'];
+  const result = calculateCountries(
+    input,
+    [spain, uruguay, argentina, paraguay],
+    context,
+    (countryPackage) => {
+      if (countryPackage.country_id === 'AR') return argentinaAdapter;
+      if (countryPackage.country_id === 'PY') return paraguayAdapter;
+      return spainAdapter;
+    },
+  );
+  assert.deepEqual(result.errors, []);
+  const byCountry = Object.fromEntries(result.results.map((country) => [country.country.countryId, country]));
+  assert.equal(byCountry.ES.routes.find((route) => route.routeId === 'ES_DNV').applicationFit, 'MEETS');
+  assert.equal(byCountry.UY.routes.find((route) => route.routeId === 'UY_PERMANENT').applicationFit, 'MEETS');
+  assert.equal(byCountry.AR.routes.find((route) => route.routeId === 'AR_NOMAD').applicationFit, 'MEETS');
+  const paraguayTemporary = byCountry.PY.routes.find((route) => route.routeId === 'PY_TEMPORARY');
+  assert.equal(paraguayTemporary.applicationFit, 'MEETS');
+  assert.equal(paraguayTemporary.routeStatus, 'SUITABLE');
 });
 
 test('runtime and legacy research schema contain no retired status names', async () => {
