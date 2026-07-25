@@ -82,9 +82,9 @@ test('route result keeps income in USD for country-specific presentation', () =>
 
 test('currency conversion prevents comparing USD directly with an EUR threshold', () => {
   const result = calculate({ plannedBasis: 'REMOTE_EMPLOYEE', monthlyIncomeUsd: 2500 });
-  assert.equal(result.bestRoute.routeId, 'ES_DNV');
-  assert.equal(result.bestRoute.routeStatus, 'UNSUITABLE');
-  assert.ok(result.bestRoute.blockers.some((message) => message.includes('требование маршрута')));
+  const dnv = result.routes.find((route) => route.routeId === 'ES_DNV');
+  assert.equal(dnv.routeStatus, 'UNSUITABLE');
+  assert.ok(dnv.blockers.some((message) => message.includes('требование маршрута')));
 });
 
 test('Russian bank statements keep DNV conditional and show the document review', () => {
@@ -108,8 +108,8 @@ test('passive-income profile selects NLV when its threshold is met', () => {
 
 test('NLV fails when passive resources are below the threshold', () => {
   const result = calculate({ plannedBasis: 'PASSIVE_INCOME', monthlyIncomeUsd: 1800 });
-  assert.equal(result.bestRoute.routeId, 'ES_NLV');
-  assert.equal(result.bestRoute.routeStatus, 'UNSUITABLE');
+  const nlv = result.routes.find((route) => route.routeId === 'ES_NLV');
+  assert.equal(nlv.routeStatus, 'UNSUITABLE');
 });
 
 test('every NLV blocker has a corresponding corrective action', () => {
