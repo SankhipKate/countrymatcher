@@ -45,6 +45,13 @@ test('scenario affinity cannot beat a better legal status', () => {
   assert.equal(selectBestRoute([route('A', 'UNSUITABLE', { scenarioAffinity: 1 }), route('B', 'SUITABLE')]).routeId, 'B');
 });
 
+test('missing route basis cannot beat a better legal status', () => {
+  assert.equal(selectBestRoute([
+    route('A', 'UNSUITABLE'),
+    route('B', 'SUITABLE_WITH_CONDITIONS', { basisMissing: true }),
+  ]).routeId, 'B');
+});
+
 test('goal fit decides between otherwise equal statuses', () => {
   assert.equal(selectBestRoute([route('A', 'SUITABLE', { goalFit: 'DOES_NOT_MEET', scenarioAffinity: 1 }), route('B')]).routeId, 'B');
 });
