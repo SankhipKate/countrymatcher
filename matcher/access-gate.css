@@ -1,0 +1,123 @@
+.access-locked body > :not(#accessGate) {
+  display: none !important;
+}
+
+.access-gate {
+  min-height: 100vh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at top right, rgba(74, 145, 255, .22), transparent 34%),
+    linear-gradient(145deg, #06172f, #0b2b53);
+  color: #10213a;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.access-card {
+  width: min(100%, 470px);
+  padding: 40px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .3);
+}
+
+.access-brand {
+  color: #10213a;
+  font-size: 18px;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.access-brand em {
+  color: #2874d0;
+  font-style: normal;
+}
+
+.access-label {
+  display: block;
+  margin-top: 34px;
+  color: #2874d0;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.access-card h1 {
+  margin: 10px 0 12px;
+  font-size: clamp(30px, 7vw, 42px);
+  line-height: 1.05;
+}
+
+.access-card > p {
+  color: #56657a;
+  line-height: 1.55;
+}
+
+.access-card form {
+  margin-top: 28px;
+}
+
+.access-card label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.access-card input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px 16px;
+  border: 1px solid #bcc7d6;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.access-card input:focus {
+  border-color: #2874d0;
+  outline: 3px solid rgba(40, 116, 208, .14);
+}
+
+.access-card button {
+  width: 100%;
+  margin-top: 14px;
+  padding: 16px;
+  border: 0;
+  border-radius: 12px;
+  background: #2874d0;
+  color: white;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.access-error {
+  margin: 10px 0 0;
+  color: #b42318;
+  font-size: 14px;
+}
+
+.access-help {
+  margin: 24px 0 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.access-help a {
+  color: #2874d0;
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .access-gate {
+    padding: 16px;
+  }
+
+  .access-card {
+    padding: 30px 22px;
+    border-radius: 20px;
+  }
+}

@@ -4,9 +4,26 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Универсальная анкета Immigration Matcher для граждан РФ"><meta name="theme-color" content="#071e3d">
   <title>Анкета — Immigration Matcher</title>
+  <script>document.documentElement.classList.add("access-locked")</script>
+  <link rel="stylesheet" href="./access-gate.css?v=1.0.0">
   <link rel="stylesheet" href="../pilot/styles.css?v=0.14.0"><link rel="stylesheet" href="./styles.css?v=0.15.1">
 </head>
 <body>
+  <section id="accessGate" class="access-gate" aria-labelledby="accessTitle">
+    <div class="access-card">
+      <a class="access-brand" href="../landing/">Immigration <em>Matcher</em></a>
+      <span class="access-label">Персональный подбор стран</span>
+      <h1 id="accessTitle">Введите код доступа</h1>
+      <p>Код вы получите после оплаты. Доступ сохранится на этом устройстве на 30 дней.</p>
+      <form id="accessForm">
+        <label for="accessCode">Код доступа</label>
+        <input id="accessCode" type="text" autocomplete="one-time-code" spellcheck="false" required>
+        <p id="accessError" class="access-error" role="alert" hidden>Код не подошёл. Проверьте символы и попробуйте ещё раз.</p>
+        <button type="submit">Открыть Country Matcher →</button>
+      </form>
+      <p class="access-help">Нужен доступ? <a href="https://t.me/sankhipkate">Напишите @sankhipkate в Telegram</a></p>
+    </div>
+  </section>
   <header class="site-header"><div class="nav-shell"><a class="brand" href="./" aria-label="Immigration Matcher"><span class="brand-mark" aria-hidden="true"><span></span></span><span>Immigration <em>Matcher</em></span></a><div class="secure-note"><span aria-hidden="true">◇</span> Данные остаются в браузере</div></div></header>
   <section class="hero"><div class="hero-map" aria-hidden="true"></div><div class="hero-inner"><div class="hero-content-row"><div class="hero-copy"><h1 id="heroTitle">Подберём вариант иммиграции</h1><p id="heroSubtitle">Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.</p></div><button id="editProfile" class="secondary-button result-edit-button" type="button" hidden>Изменить ответы</button></div></div></section>
   <main class="page-shell">
@@ -71,6 +88,7 @@
     <section id="resultView" class="result-layout result-layout-single" hidden><div id="result" class="surface result-main"></div></section>
     <footer class="version-footer" aria-label="Версия приложения">Immigration Matcher · версия 0.15.1</footer>
   </main>
+  <script src="./access-gate.js?v=1.0.0"></script>
   <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./app.js?v=0.15.1"></script>
 </body>
 </html>
