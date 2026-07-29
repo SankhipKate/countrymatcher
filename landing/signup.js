@@ -37,3 +37,19 @@ form?.addEventListener("submit", async (event) => {
     button.textContent = "Получать обновления →";
   }
 });
+
+const paymentModal = document.querySelector("#payment-modal");
+const paymentModalTriggers = document.querySelectorAll(
+  ".payment-modal-trigger",
+);
+const paymentModalClose = paymentModal?.querySelector(".payment-modal-close");
+
+paymentModalTriggers.forEach((trigger) => {
+  trigger.addEventListener("click", () => paymentModal?.showModal());
+});
+
+paymentModalClose?.addEventListener("click", () => paymentModal.close());
+
+paymentModal?.addEventListener("click", (event) => {
+  if (event.target === paymentModal) paymentModal.close();
+});
