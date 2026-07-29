@@ -1,12 +1,12 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.15.1';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.15.1';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.15.1';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.15.1';
-import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=0.15.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=0.15.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.15.1';
-import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.15.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.15.1';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=1.15.1';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=1.15.1';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=1.15.1';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=1.15.1';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=1.15.1';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=1.15.1';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=1.15.1';
+import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=1.15.1';
+import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=1.15.1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -605,11 +605,11 @@ async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
     const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, schemaResponse] = await Promise.all([
-      fetch('../data/spain-research-v2.2.json?v=0.15.1'),
-      fetch('../data/uruguay-research-v2.2.json?v=0.15.1'),
-      fetch('../data/argentina-research-v3.0.json?v=0.15.1'),
-      fetch('../data/paraguay-research-v3.0.json?v=0.15.1'),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=0.15.1'),
+      fetch('../data/spain-research-v2.2.json?v=1.15.1'),
+      fetch('../data/uruguay-research-v2.2.json?v=1.15.1'),
+      fetch('../data/argentina-research-v3.0.json?v=1.15.1'),
+      fetch('../data/paraguay-research-v3.0.json?v=1.15.1'),
+      fetch('../data/schemas/user-profile-v1.schema.json?v=1.15.1'),
     ]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !schemaResponse.ok) {
       throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${schemaResponse.status}`);
