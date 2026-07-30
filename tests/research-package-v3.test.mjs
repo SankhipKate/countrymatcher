@@ -8,6 +8,7 @@ const dataDir = new URL('../data/', import.meta.url);
 const schema = JSON.parse(await readFile(new URL('research-package-v3.0.schema.json', dataDir), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('argentina-research-v3.0.json', dataDir), 'utf8'));
 const paraguay = JSON.parse(await readFile(new URL('paraguay-research-v3.0.json', dataDir), 'utf8'));
+const portugal = JSON.parse(await readFile(new URL('portugal-research-v3.0.json', dataDir), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true, strict: true, allowUnionTypes: true });
 addFormats(ajv);
 const validate = ajv.compile(schema);
@@ -109,4 +110,42 @@ test('Paraguay keeps unknown residence-income thresholds explicit', () => {
   assert.equal(temporary.income_threshold_amount, null);
   assert.equal(permanent.income_threshold_amount, null);
   assert.equal(permanent.income_threshold_type, 'DOCUMENTARY_CATEGORY_NO_UNIVERSAL_AMOUNT');
+});
+
+test('Portugal satisfies the strict Research Package 3.0 schema', () => {
+  assert.equal(validate(portugal), true, ajv.errorsText(validate.errors, { separator: '\n' }));
+});
+
+test('Portugal exposes four publishable routes and keeps combined D3 hidden', () => {
+  assert.deepEqual(portugal.routes.filter(({ publishable }) => publishable).map(({ route_id }) => route_id), [
+    'PT_D8_REMOTE',
+    'PT_D7_OWN_INCOME',
+    'PT_D2_INDEPENDENT',
+    'PT_D1_EMPLOYMENT',
+  ]);
+  assert.deepEqual(portugal.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id), [
+    'PT_D3_HIGHLY_QUALIFIED',
+  ]);
+  assert.equal(portugal.completeness.public_routes_ready, 4);
+  assert.equal(portugal.completeness.hidden_routes, 1);
+});
+
+test('all referenced source ids exist in the Portugal package', () => {
+  const existing = new Set(portugal.sources.map(({ source_id }) => source_id));
+  const referenced = collectSourceIds({
+    routes: portugal.routes,
+    cities: portugal.cities,
+    schools: portugal.schools,
+    pets: portugal.pets,
+    lgbt: portugal.lgbt,
+  });
+  assert.deepEqual([...new Set(referenced)].filter((sourceId) => !existing.has(sourceId)), []);
+});
+
+test('runtime and backlog Portugal packages are byte-for-byte identical', async () => {
+  const [runtime, backlog] = await Promise.all([
+    readFile(new URL('../data/portugal-research-v3.0.json', import.meta.url)),
+    readFile(new URL('../research-backlog/portugal-v3.0/portugal-research-v3.0.json', import.meta.url)),
+  ]);
+  assert.equal(runtime.equals(backlog), true);
 });

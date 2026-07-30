@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { formatCurrency } from '../matcher/format.js';
 import { calculateSpain, STATUS_LABELS_RU } from '../js/spain-calculator.js';
 import { countryOptions, parseCountryCode, searchCountries } from '../matcher/countries.js';
 import { DOG_BREEDS, isKnownDogBreed, searchDogBreeds } from '../matcher/dog-breeds.js';
@@ -11,11 +12,16 @@ const spainData = JSON.parse(await readFile(new URL('../data/spain-research-v2.2
 const context = { calculation_date: '2026-07-19T12:00:00Z', engine_version: '2.1.0', fx: { base_currency: 'USD', rates: { EUR: 0.87, RUB: 80 }, source: 'test', as_of: '2026-07-19T00:00:00Z', max_age_hours: 96 } };
 
 test('visible matcher version matches package version', async () => {
-  const [matcherHtml, packageJson] = await Promise.all([
+  const [matcherHtml, packageJson, fxContext] = await Promise.all([
     readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
+    readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
+  assert.equal(packageJson.version, '5.0.0');
+  assert.match(matcherHtml, /<span class="product-name">COUNTRY MATCHER<\/span><span class="product-version">5\.0\.0<\/span>/);
+  assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
+  assert.match(fxContext, /engine_version: '5\.0\.0'/);
 });
 
 const answers = (overrides = {}) => ({
@@ -172,6 +178,59 @@ test('result routes are ordered through the three-status contract', () => {
   assert.equal(routes[0].routeId, 'no');
 });
 
+test('countries are stably ordered by the status of their best route', () => {
+  const countries = [
+    { country: { countryId: 'ES', group: 'SUITABLE' }, bestRoute: { routeStatus: 'UNSUITABLE' } },
+    { country: { countryId: 'UY', group: 'UNSUITABLE' }, bestRoute: { routeStatus: 'SUITABLE' } },
+    { country: { countryId: 'AR', group: 'SUITABLE_WITH_CONDITIONS' }, bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS' } },
+    { country: { countryId: 'PY', group: 'SUITABLE' }, bestRoute: { routeStatus: 'SUITABLE' } },
+    { country: { countryId: 'PT', group: 'SUITABLE_WITH_CONDITIONS' }, bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS' } },
+  ];
+  assert.deepEqual(
+    sortCountriesForDisplay(countries).map(({ country }) => country.countryId),
+    ['UY', 'PY', 'AR', 'PT', 'ES'],
+  );
+  assert.deepEqual(countries.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY', 'PT']);
+});
+
+test('route actions are deduplicated and omit actions already present in mandatory requirements', () => {
+  const route = {
+    actions: ['Получить договор с работодателем.', 'Собрать справку о несудимости.'],
+    conditions: ['Получить договор с работодателем', 'Подготовить договор с работодателем.'],
+    clientMissing: ['Собрать справку о несудимости.', 'Подтвердить доход выписками.'],
+    initialPermitRequirements: ['Договор или обещание трудового договора с работодателем.', 'Собрать справку о несудимости.'],
+  };
+  assert.deepEqual(uniqueRouteActions(route), [
+    'Подтвердить доход выписками.',
+  ]);
+});
+
+test('currency formatter preserves positive sub-100 amounts and removes large-value decimals', () => {
+  const small = formatCurrency(0.87, 'EUR');
+  assert.match(small, /0,87/);
+  assert.equal(small.includes('0 €'), false);
+  assert.match(formatCurrency(0.001, 'EUR'), /0,01/);
+  assert.equal(formatCurrency(3680.42, 'EUR').includes(',42'), false);
+});
+
+test('city size is the first approved category and uses the complete city label', () => {
+  assert.deepEqual(cityCategories('SMALL', ['Самый недорогой', 'Самый прохладный']), [
+    'Небольшой город',
+    'Самый недорогой',
+    'Самый прохладный',
+  ]);
+  assert.deepEqual(cityCategories('MEDIUM', ['Самый жаркий']), [
+    'Средний город',
+    'Самый жаркий',
+  ]);
+  assert.deepEqual(cityCategories('LARGE', ['Столица', 'Самый дорогой']), [
+    'Крупный город',
+    'Столица',
+    'Самый дорогой',
+  ]);
+  assert.deepEqual(cityCategories('ANY', ['Неутверждённая категория']), []);
+});
+
 test('missing child age is reported as a profile validation error', () => {
   const result = validateUserProfile(buildUserProfile(answers({ childAges: [''] })));
   assert.equal(result.valid, false);
@@ -242,9 +301,38 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.equal(app.includes('Ваш бюджет не указан'), false);
   assert.match(app, /budgetDerivedFromIncome/);
   assert.match(app, /data-country-tab/);
+  assert.match(app, /cityCategories\(city\.populationCategory, city\.roles\)/);
+  assert.equal(app.includes('Самый дорогой по индексу Expatistan'), false);
   assert.equal(app.includes('Сравнение стран'), false);
   assert.equal(app.includes('Страна расчёта'), false);
   assert.match(styles, /\.country-tab \.status-pill\{grid-column:2/);
+});
+
+test('result UI keeps one corrective-action section and maps country tabs to matching panels', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.equal(app.includes('Что потребуется для этого маршрута'), false);
+  assert.match(app, /Что сделать, чтобы маршрут подходил/);
+  assert.match(app, /data-country-tab="\$\{html\(countryId\)\}"/);
+  assert.match(app, /data-country-panel="\$\{html\(countryId\)\}"/);
+  assert.match(app, /panel\.dataset\.countryPanel !== countryId/);
+  assert.match(app, /const countries = sortCountriesForDisplay\(calculation\.results \|\| \[\]\)/);
+});
+
+test('city cards grow with content, wrap long text, and constrain mobile overflow', async () => {
+  const [app, styles] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
+  ]);
+  assert.match(app, /city-role-list[^`]*city\.categories\.map/);
+  assert.equal(app.includes('citySizeLabels'), false);
+  assert.equal(app.includes('<small>${html(city'), false);
+  assert.match(styles, /html,body\{max-width:100%;overflow-x:clip\}/);
+  assert.match(styles, /\.city-budget-grid\{[^}]*align-items:start;max-width:100%/);
+  assert.match(styles, /\.city-budget-grid \.city-card\{height:auto;min-height:0;min-width:0;overflow-wrap:anywhere/);
+  assert.match(styles, /\.city-role-list\{display:flex;flex-wrap:wrap/);
+  assert.match(styles, /@media\(max-width:760px\)[\s\S]*\.city-budget-grid\{grid-template-columns:1fr\}/);
+  assert.match(styles, /@media\(max-width:600px\)\{\.secure-note\{display:none\}\}/);
+  assert.equal(/\.city-budget-grid \.city-card\{[^}]*(?:^|;)height:\s*\d/.test(styles), false);
 });
 
 
@@ -290,9 +378,11 @@ test('matcher cache keys include the current release for code and country data',
   assert.match(app, new RegExp(`uruguay-research-v2\\.2\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`argentina-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`paraguay-research-v3\\.0\\.json\\?v=${version}`));
+  assert.match(app, new RegExp(`portugal-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`spain-adapter\\.js\\?v=${version}`));
   assert.match(app, new RegExp(`argentina-adapter\\.js\\?v=${version}`));
   assert.match(app, new RegExp(`paraguay-adapter\\.js\\?v=${version}`));
+  assert.match(app, new RegExp(`portugal-adapter\\.js\\?v=${version}`));
 });
 
 test('README describes the live matcher and maintenance rule', async () => {
@@ -303,7 +393,7 @@ test('README describes the live matcher and maintenance rule', async () => {
   assert.match(readme, /immigration-country-matcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
-  assert.match(readme, /Испании, Уругвая, Аргентины и Парагвая/);
+  assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая и Португалии/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });
 
@@ -315,4 +405,12 @@ test('Argentina result copy follows the agreed presentation rules', async () => 
   assert.equal(app.includes('Не хватает примерно'), false);
   assert.match(app, /cityCostSuffix/);
   assert.match(app, /предварительно получать ПМЖ не требуется/);
+});
+
+test('country KPI uses applicant provable income instead of the selected route income', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /const incomeAmount = calculation\.applicantProvableIncome\?\.amount/);
+  assert.equal(app.includes("incomeCurrency === 'EUR' ? best?.incomeEur : best?.incomeUsd"), false);
+  assert.equal(app.includes('Не применяется к этому маршруту'), false);
+  assert.equal(app.includes('Не рассчитан'), false);
 });

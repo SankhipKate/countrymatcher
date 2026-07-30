@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "country_id": "PT",
+  "research_package": "portugal-research-v3.0.json",
+  "note_ru": "Исследовательские сценарии для четырёх публичных маршрутов; D3 остаётся NOT_PUBLISHED.",
+  "profiles": [
+    {
+      "profile_id": "PT_D8_SUITABLE",
+      "description_ru": "Зарубежная удалённая работа, доход €4 200 в среднем за 3 месяца.",
+      "inputs": {
+        "citizenship": "RU",
+        "remote_foreign_work": true,
+        "average_income_eur_3m": 4200,
+        "income_history_months": 3
+      },
+      "expected": {
+        "PT_D8_REMOTE": "SUITABLE",
+        "PT_D3_HIGHLY_QUALIFIED": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Основание D8 существует, доход выше €3 680 и есть требуемая история."
+    },
+    {
+      "profile_id": "PT_D8_CONDITIONAL_RAISE_INCOME",
+      "description_ru": "Доход €3 200, пользователь готов увеличить его до порога.",
+      "inputs": {
+        "citizenship": "RU",
+        "remote_foreign_work": true,
+        "average_income_eur_3m": 3200,
+        "ready_to_raise_income": true
+      },
+      "expected": {
+        "PT_D8_REMOTE": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Требуется содержательное увеличение дохода до €3 680 и новая трёхмесячная история."
+    },
+    {
+      "profile_id": "PT_D8_UNSUITABLE",
+      "description_ru": "Доход ниже порога, увеличение не планируется.",
+      "inputs": {
+        "citizenship": "RU",
+        "remote_foreign_work": true,
+        "average_income_eur_3m": 2500,
+        "ready_to_raise_income": false
+      },
+      "expected": {
+        "PT_D8_REMOTE": "UNSUITABLE"
+      },
+      "reason_ru": "Подтверждённый доход не достигает обязательной формулы."
+    },
+    {
+      "profile_id": "PT_D7_SUITABLE_SINGLE",
+      "description_ru": "Один заявитель с пассивным доходом €1 200 в месяц и запасом на 12 месяцев.",
+      "inputs": {
+        "citizenship": "RU",
+        "income_type": "PASSIVE",
+        "monthly_qualifying_income_eur": 1200,
+        "months_secured": 12
+      },
+      "expected": {
+        "PT_D7_OWN_INCOME": "SUITABLE"
+      },
+      "reason_ru": "Квалифицируемый доход выше €920 и обеспечен на требуемый период."
+    },
+    {
+      "profile_id": "PT_D7_CONDITIONAL_FAMILY",
+      "description_ru": "Пара с доходом €1 200 при формуле €1 380, готовая увеличить доход.",
+      "inputs": {
+        "citizenship": "RU",
+        "income_type": "PENSION",
+        "monthly_qualifying_income_eur": 1200,
+        "adults": 2,
+        "ready_to_raise_income": true
+      },
+      "expected": {
+        "PT_D7_OWN_INCOME": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Для двух взрослых требуется €920 + €460 = €1 380."
+    },
+    {
+      "profile_id": "PT_D7_UNSUITABLE_ACTIVE_ONLY",
+      "description_ru": "Единственный источник — активная удалённая зарплата.",
+      "inputs": {
+        "citizenship": "RU",
+        "income_type": "REMOTE_SALARY",
+        "passive_income_eur": 0
+      },
+      "expected": {
+        "PT_D7_OWN_INCOME": "UNSUITABLE"
+      },
+      "reason_ru": "Активная удалённая работа относится прежде всего к D8."
+    },
+    {
+      "profile_id": "PT_D2_SUITABLE_SERVICE_CONTRACT",
+      "description_ru": "Есть договор на самостоятельные услуги и средства к существованию.",
+      "inputs": {
+        "citizenship": "RU",
+        "self_employment": true,
+        "service_contract": true,
+        "subsistence_ready": true
+      },
+      "expected": {
+        "PT_D2_INDEPENDENT": "SUITABLE"
+      },
+      "reason_ru": "Договор и средства уже подтверждают основание."
+    },
+    {
+      "profile_id": "PT_D2_CONDITIONAL_PROJECT",
+      "description_ru": "Есть намерение открыть бизнес, проект ещё готовится.",
+      "inputs": {
+        "citizenship": "RU",
+        "entrepreneurship": true,
+        "business_project_ready": false,
+        "ready_to_prepare_project": true
+      },
+      "expected": {
+        "PT_D2_INDEPENDENT": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Нужно содержательное действие — подготовить жизнеспособный проект."
+    },
+    {
+      "profile_id": "PT_D2_UNSUITABLE_NO_BASIS",
+      "description_ru": "Самостоятельная деятельность и бизнес не рассматриваются.",
+      "inputs": {
+        "citizenship": "RU",
+        "self_employment": false,
+        "entrepreneurship": false
+      },
+      "expected": {
+        "PT_D2_INDEPENDENT": "UNSUITABLE"
+      },
+      "reason_ru": "Отсутствует основание маршрута."
+    },
+    {
+      "profile_id": "PT_D1_SUITABLE_CONTRACT",
+      "description_ru": "Есть обещание трудового договора в Португалии.",
+      "inputs": {
+        "citizenship": "RU",
+        "local_job_offer": true
+      },
+      "expected": {
+        "PT_D1_EMPLOYMENT": "SUITABLE"
+      },
+      "reason_ru": "Договорное основание уже существует."
+    },
+    {
+      "profile_id": "PT_D1_CONDITIONAL_SEARCH",
+      "description_ru": "Пользователь готов искать местную работу.",
+      "inputs": {
+        "citizenship": "RU",
+        "local_job_offer": false,
+        "willing_local_job": true
+      },
+      "expected": {
+        "PT_D1_EMPLOYMENT": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Требуется получить договор или обещание договора."
+    },
+    {
+      "profile_id": "PT_D1_UNSUITABLE",
+      "description_ru": "Местная работа не рассматривается.",
+      "inputs": {
+        "citizenship": "RU",
+        "local_job_offer": false,
+        "willing_local_job": false
+      },
+      "expected": {
+        "PT_D1_EMPLOYMENT": "UNSUITABLE"
+      },
+      "reason_ru": "Пользователь не имеет и не планирует получить обязательное основание."
+    },
+    {
+      "profile_id": "PT_D3_HIDDEN",
+      "description_ru": "Высококвалифицированный контракт существует, но объединённая карточка скрыта.",
+      "inputs": {
+        "citizenship": "RU",
+        "highly_qualified_contract": true
+      },
+      "expected": {
+        "PT_D3_HIGHLY_QUALIFIED": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Маршрут будет опубликован после разделения правовых веток."
+    },
+    {
+      "profile_id": "PT_FAMILY_WAITING_RULE",
+      "description_ru": "Пара без ребёнка, совместная жизнь 18 месяцев до въезда.",
+      "inputs": {
+        "partner_included": true,
+        "cohabitation_months_before_entry": 18,
+        "dependent_minor_child": false
+      },
+      "expected": {
+        "family_wait_months": 15,
+        "partner_work_after_residence_permit": true
+      },
+      "reason_ru": "Применяется сокращённый 15-месячный срок; после выдачи ВНЖ партнёр вправе работать."
+    },
+    {
+      "profile_id": "PT_FAMILY_MINOR_EXCEPTION",
+      "description_ru": "Семья с зависимым несовершеннолетним ребёнком.",
+      "inputs": {
+        "partner_included": true,
+        "dependent_minor_child": true,
+        "partner_is_coparent": true
+      },
+      "expected": {
+        "family_wait_months": 0
+      },
+      "reason_ru": "Для ребёнка и второго родителя действует исключение из общего срока ожидания."
+    }
+  ]
+}
