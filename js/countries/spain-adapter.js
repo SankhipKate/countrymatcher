@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=0.14.0';
-import { convertMoney } from '../engine/currency.js?v=0.14.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=0.14.0';
-import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=0.14.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=5.0.0';
+import { convertMoney } from '../engine/currency.js?v=5.0.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=5.0.0';
+import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=5.0.0';
 
 const CHECK_KINDS = Object.freeze({
   CLIENT_INPUT: 'CLIENT_INPUT',

@@ -41,7 +41,7 @@ export async function loadCalculationContext({ fetchImpl = globalThis.fetch, now
     }
     return {
       calculation_date: now.toISOString(),
-      engine_version: '2.2.0',
+      engine_version: '5.0.0',
       fx: { base_currency: 'USD', rates, source: 'Frankfurter', as_of: asOf, max_age_hours: maxAgeHours },
     };
   } catch (error) {

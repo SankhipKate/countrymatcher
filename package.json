@@ -1,6 +1,6 @@
 {
   "name": "immigration-country-matcher",
-  "version": "0.15.1",
+  "version": "5.0.0",
   "private": true,
   "type": "module",
   "scripts": {

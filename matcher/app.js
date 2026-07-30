@@ -1,12 +1,14 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=0.15.1';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=0.15.1';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=0.15.1';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=0.15.1';
-import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=0.15.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=0.15.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=0.15.1';
-import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=0.15.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortRoutesForDisplay, validateAgainstSchema, validateUserProfile } from './profile.js?v=0.15.1';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=5.0.0';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=5.0.0';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=5.0.0';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=5.0.0';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=5.0.0';
+import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=5.0.0';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=5.0.0';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=5.0.0';
+import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=5.0.0';
+import { formatCurrency } from './format.js?v=5.0.0';
+import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=5.0.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -19,6 +21,7 @@ let spainData;
 let uruguayData;
 let argentinaData;
 let paraguayData;
+let portugalData;
 let calculationContext;
 let currentProfile;
 let profileSchema;
@@ -28,10 +31,10 @@ const checked = (id) => Boolean($(`#${id}`)?.checked);
 const radio = (name) => $(`input[name="${name}"]:checked`)?.value || '';
 const checkboxValues = (name) => $$(`input[name="${name}"]:checked`).map((input) => input.value);
 const html = (text) => String(text ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
-const currency = (amount, code = 'USD') => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: code, maximumFractionDigits: 0 }).format(Number(amount || 0));
+const currency = formatCurrency;
 const CITY_COMPARISONS = {
   ES: [
-    { name: 'Мадрид', size: 'LARGE', roles: ['Столица', 'Самый дорогой по индексу Expatistan'], cost: 2109, cold: ['январь', 2.7, 9.8], hot: ['июль', 19, 32.1] },
+    { name: 'Мадрид', size: 'LARGE', roles: ['Столица', 'Самый дорогой'], cost: 2109, cold: ['январь', 2.7, 9.8], hot: ['июль', 19, 32.1] },
     { name: 'Кордова', size: 'MEDIUM', roles: ['Самый жаркий'], cost: 1310, cold: ['январь', 3.6, 14.9], hot: ['июль', 19, 36.9] },
     { name: 'Бургос', size: 'SMALL', roles: ['Самый прохладный'], cost: 1242, cold: ['январь', -0.8, 7], hot: ['июль', 11.5, 27.6] },
     { name: 'Пуэртольяно', size: 'SMALL', roles: ['Самый недорогой'], cost: 896 },
@@ -60,7 +63,6 @@ $('#countryOptions').innerHTML = countryOptions().map(({ label }) => `<option va
 
 const PASSIVE_INCOME_HELP = 'Доход от сдачи недвижимости в аренду, дивиденды, проценты по вкладам и облигациям, купонный доход, роялти и другие регулярные выплаты от имущества или капитала. Не включает зарплату, фриланс и оплату личной работы.';
 const PENSION_HELP = 'Регулярная государственная или частная пенсия либо аналогичная постоянная выплата за ранее оказанные услуги.';
-
 function syncIncomeTypeHelp(prefix) {
   const help = $(`#${prefix}IncomeTypeHelp`);
   if (!help) return;
@@ -342,7 +344,7 @@ function longTermConditions(route) {
   if (!route.longTerm) return '';
   const rule = route.longTerm;
   const items = [];
-  const countryId = route.routeId.startsWith('UY_') ? 'UY' : route.routeId.startsWith('ES_') ? 'ES' : route.routeId.startsWith('AR_') ? 'AR' : route.routeId.startsWith('PY_') ? 'PY' : null;
+  const countryId = route.routeId.startsWith('UY_') ? 'UY' : route.routeId.startsWith('ES_') ? 'ES' : route.routeId.startsWith('AR_') ? 'AR' : route.routeId.startsWith('PY_') ? 'PY' : route.routeId.startsWith('PT_') ? 'PT' : null;
 
   if (countryId === 'ES') {
     if (rule.path_to_pr === 'YES' && Number.isFinite(Number(rule.years_to_pr))) {
@@ -393,7 +395,7 @@ function longTermConditions(route) {
     if (rule.citizenship_path_ru) items.push(`Гражданство: это отдельный путь; предварительно получать ПМЖ не требуется. ${cleanPrefix(rule.citizenship_path_ru, 'Гражданство')}`);
     if (rule.presence_rule_ru) items.push(`Присутствие: ${cleanPrefix(rule.presence_rule_ru, 'Присутствие')}`);
     if (rule.dual_citizenship_ru) items.push(`Гражданство РФ: ${cleanPrefix(rule.dual_citizenship_ru, 'Гражданство РФ')}`);
-   } else if (countryId === 'PY') {
+  } else if (countryId === 'PY' || countryId === 'PT') {
     const cleanPrefix = (text, prefix) => String(text || '').replace(new RegExp(`^${prefix}:?\\s*`, 'i'), '').trim();
     if (rule.pr_path_ru) items.push(`ПМЖ: ${cleanPrefix(rule.pr_path_ru, 'ПМЖ')}`);
     if (rule.citizenship_path_ru) items.push(`Гражданство: ${cleanPrefix(rule.citizenship_path_ru, 'Гражданство')}`);
@@ -415,15 +417,16 @@ function routeCard(route, countryName, main = false) {
   const reasonsBlock = reasons.length ? `<div class="route-reasons"><h4>${reasons.length > 1 ? 'Почему не подходит — несколько независимых причин' : 'Почему не подходит'}</h4><ul>${reasons.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
   const countryMissing = route.countryMissing || route.missing || [];
   const missingBlock = !unsuitable && countryMissing.length ? `<div class="route-open-items"><h4>Что ещё не подтверждено для этого варианта</h4><ul>${countryMissing.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
-  const clientMissing = (route.clientMissing || route.preliminary || []).filter((item) => !route.actions?.includes(item));
-  const clientMissingBlock = !unsuitable && clientMissing.length ? `<div class="route-client-items"><h4>Что потребуется для этого маршрута</h4><ul>${clientMissing.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
-  const actionsBlock = route.actions?.length ? `<div class="route-actions"><h4>Что сделать, чтобы маршрут подходил</h4><ol>${route.actions.map((item) => `<li>${html(item)}</li>`).join('')}</ol></div>` : '';
+  const reviewBlock = route.review?.length ? `<div class="route-open-items"><h4>Индивидуальные проверки</h4><ul>${route.review.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
+  const actions = uniqueRouteActions(route);
+  const actionsBlock = actions.length ? `<div class="route-actions"><h4>Что сделать, чтобы маршрут подходил</h4><ol>${actions.map((item) => `<li>${html(item)}</li>`).join('')}</ol></div>` : '';
   const permitRequirementsBlock = route.initialPermitRequirements?.length ? `<div class="route-requirements"><h4>Обязательные документы и действия для первоначального ВНЖ</h4><ul>${route.initialPermitRequirements.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
   const sourceBlock = route.primarySource?.url ? `<p class="route-source"><a href="${html(route.primarySource.url)}" target="_blank" rel="noopener">Официальные требования: ${html(route.primarySource.title || route.primarySource.title_ru || route.routeName)}</a></p>` : '';
   const applicationBlock = route.applicationGuidance ? `<div class="route-requirements"><h4>Где и как подаваться</h4><p>${html(route.applicationGuidance)}</p></div>` : '';
   const exampleSourceBlock = route.incomeGuidance && route.incomeExampleSource?.url ? `<p class="route-source"><a href="${html(route.incomeExampleSource.url)}" target="_blank" rel="noopener">Неофициальный личный опыт о принятой сумме</a></p>` : '';
+  const workBlock = route.work?.rule_ru ? `<div class="route-requirements"><h4>Право на работу после выдачи ВНЖ</h4><p>Разрешены: ${html(route.work.rule_ru)}.</p></div>` : '';
   const finance = incomeTypeBlocked || route.incomeTypeFit === 'NOT_APPLICABLE' ? '' : `<p class="financial-rule">${html(requirement)}</p>`;
-  return `<article class="route-result ${main ? 'best' : ''}"><div><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3></div>${finance}${applicationBlock}${reasonsBlock}${actionsBlock}${permitRequirementsBlock}${missingBlock}${clientMissingBlock}${sourceBlock}${exampleSourceBlock}${longTermConditions(route)}</article>`;
+  return `<article class="route-result ${main ? 'best' : ''}"><div><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3></div>${finance}${applicationBlock}${workBlock}${reasonsBlock}${actionsBlock}${permitRequirementsBlock}${missingBlock}${reviewBlock}${sourceBlock}${exampleSourceBlock}${longTermConditions(route)}</article>`;
 }
 
 function countryPresentation(calculation) {
@@ -435,7 +438,7 @@ function countryPresentation(calculation) {
     best,
     countryId,
     countryName: calculation.country.name,
-    flag: countryId === 'ES' ? '🇪🇸' : countryId === 'UY' ? '🇺🇾' : countryId === 'AR' ? '🇦🇷' : countryId === 'PY' ? '🇵🇾' : '🌍',
+    flag: countryId === 'ES' ? '🇪🇸' : countryId === 'UY' ? '🇺🇾' : countryId === 'AR' ? '🇦🇷' : countryId === 'PY' ? '🇵🇾' : countryId === 'PT' ? '🇵🇹' : '🌍',
   };
 }
 
@@ -450,7 +453,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const family = `${calculation.profile.adults} ${calculation.profile.adults === 1 ? 'взрослый' : 'взрослых'}${children ? `, ${children} ${children === 1 ? 'ребёнок' : 'детей'}` : ''}`;
   const { routeLabel } = describeResultIntro(calculation.routes, changed);
   const incomeCurrency = calculation.country.resultCurrency || 'USD';
-  const incomeAmount = incomeCurrency === 'EUR' ? best?.incomeEur : best?.incomeUsd;
+  const incomeAmount = calculation.applicantProvableIncome?.amount;
   const thresholdAmount = incomeCurrency === 'EUR' ? best?.thresholdEur : best?.thresholdUsd;
   const thresholdLabel = best?.incomeTypeFit === 'DOES_NOT_MEET' ? 'Финансовый порог' : 'Необходимый доход';
   const thresholdValue = best?.incomeTypeFit === 'DOES_NOT_MEET'
@@ -458,17 +461,14 @@ function renderCountryResult(calculation, changed = false, active = false) {
     : thresholdAmount != null
       ? currency(thresholdAmount, incomeCurrency)
       : 'Единый числовой порог не установлен';
-  const incomeValue = best?.incomeTypeFit === 'NOT_APPLICABLE' && incomeAmount == null
-    ? 'Не применяется к этому маршруту'
-    : incomeAmount == null ? 'Не рассчитан' : currency(incomeAmount, incomeCurrency);
+  const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
   const otherPetWarning = currentProfile?.pets?.types?.includes('OTHER') ? '<div class="route-open-items practical-warning"><h4>Нужна отдельная проверка животного</h4><p>У вас указано другое животное. Правила его ввоза зависят от конкретного вида и страны происхождения. Перед переездом потребуется отдельная проверка правил для этой страны.</p></div>' : '';
   const petInfo = calculation.petSummary ? `<div class="route-requirements practical-warning"><h4>Домашние животные</h4><p>${html(calculation.petSummary)}</p></div>` : '';
-  const citySizeLabels = { LARGE: 'Крупный город', MEDIUM: 'Средний город', SMALL: 'Небольшой город', ANY: 'Город' };
-  const comparisonCities = ['AR', 'PY'].includes(countryId)
+  const comparisonCities = ['AR', 'PY', 'PT'].includes(countryId)
     ? (calculation.cities || []).map((city) => ({
         name: city.cityName,
         size: city.populationCategory,
-        roles: city.roles || [],
+        categories: cityCategories(city.populationCategory, city.roles),
         cost: city.costUsd,
         costIsFamilySpecific: Boolean(city.costIsFamilySpecific),
         coldRange: city.coldRange,
@@ -477,7 +477,10 @@ function renderCountryResult(calculation, changed = false, active = false) {
         internationalSchoolStatus: city.internationalSchoolStatus,
         internationalSchoolCost: city.internationalSchoolCost,
       }))
-    : CITY_COMPARISONS[countryId] || [];
+    : (CITY_COMPARISONS[countryId] || []).map((city) => ({
+        ...city,
+        categories: cityCategories(city.size, city.roles),
+      }));
   const familyFactor = 1 + Math.max(0, calculation.profile.adults - 1) * 0.6 + children * 0.4;
   const budgetUsd = calculation.profile.monthlyBudgetUsd;
   const budgetSourceNote = calculation.profile.budgetDerivedFromIncome && budgetUsd != null
@@ -506,7 +509,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
         const hotLine = city.hotRange ? `<span>Жаркий период: <b>${html(city.hotRange)}</b></span>`
           : city.hot ? `<span>Самый жаркий месяц (${html(city.hot[0])}): <b>${city.hot[1]}…${city.hot[2]} °C</b></span>` : '';
         const climateLine = city.climate ? `<span>Климат: <b>${html(city.climate)}</b></span>` : '';
-        return `<article class="city-card"><div class="city-role-list">${city.roles.map((role) => `<span>${html(role)}</span>`).join('')}</div><small>${html(citySizeLabels[city.size] || citySizeLabels.ANY)}</small><h4>${html(city.name)}</h4><strong>${currency(living)}${cityCostSuffix}</strong>${schoolLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
+        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4><strong>${currency(living)}${cityCostSuffix}</strong>${schoolLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
       }).join('')}</div>${schoolSummary}${daycareNote ? `<p class="research-caveat">${html(daycareNote)}</p>` : ''}<p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
@@ -522,13 +525,14 @@ function calculateAllCountries() {
     const countryId = countryPackage.country?.country_id ?? countryPackage.country_id;
     if (countryId === 'AR') return argentinaAdapter;
     if (countryId === 'PY') return paraguayAdapter;
+    if (countryId === 'PT') return portugalAdapter;
     return spainAdapter;
   };
-  return calculateCountries(currentProfile, [spainData, uruguayData, argentinaData, paraguayData], calculationContext, adapterFor);
+  return calculateCountries(currentProfile, [spainData, uruguayData, argentinaData, paraguayData, portugalData], calculationContext, adapterFor);
 }
 
 function renderResult(calculation, changed = false) {
-  const countries = calculation.results || [];
+  const countries = sortCountriesForDisplay(calculation.results || []);
   $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>`;
   const activateCountry = (countryId) => {
     $$('[data-country-tab]', $('#result')).forEach((tab) => {
@@ -588,7 +592,7 @@ form.addEventListener('change', (event) => { if (event.target?.name === 'hasChil
 form.addEventListener('input', () => renderProfileSummary(profile()));
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (!validateStep(currentStep) || !spainData || !uruguayData || !argentinaData || !paraguayData || !calculationContext) return;
+  if (!validateStep(currentStep) || !spainData || !uruguayData || !argentinaData || !paraguayData || !portugalData || !calculationContext) return;
   currentProfile = profile();
   const validation = validateUserProfile(currentProfile);
   if (!validation.valid) { $('#formError').hidden = false; $('#formError').textContent = validation.errors[0].message; return; }
@@ -604,21 +608,23 @@ $('#editProfile').addEventListener('click', () => { $('#resultView').hidden = tr
 async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, schemaResponse] = await Promise.all([
-      fetch('../data/spain-research-v2.2.json?v=0.15.1'),
-      fetch('../data/uruguay-research-v2.2.json?v=0.15.1'),
-      fetch('../data/argentina-research-v3.0.json?v=0.15.1'),
-      fetch('../data/paraguay-research-v3.0.json?v=0.15.1'),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=0.15.1'),
+    const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, portugalResponse, schemaResponse] = await Promise.all([
+      fetch('../data/spain-research-v2.2.json?v=5.0.0'),
+      fetch('../data/uruguay-research-v2.2.json?v=5.0.0'),
+      fetch('../data/argentina-research-v3.0.json?v=5.0.0'),
+      fetch('../data/paraguay-research-v3.0.json?v=5.0.0'),
+      fetch('../data/portugal-research-v3.0.json?v=5.0.0'),
+      fetch('../data/schemas/user-profile-v1.schema.json?v=5.0.0'),
     ]);
-    if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !schemaResponse.ok) {
-      throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${schemaResponse.status}`);
+    if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !portugalResponse.ok || !schemaResponse.ok) {
+      throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${portugalResponse.status}/${schemaResponse.status}`);
     }
-    [spainData, uruguayData, argentinaData, paraguayData, profileSchema] = await Promise.all([
+    [spainData, uruguayData, argentinaData, paraguayData, portugalData, profileSchema] = await Promise.all([
       spainResponse.json(),
       uruguayResponse.json(),
       argentinaResponse.json(),
       paraguayResponse.json(),
+      portugalResponse.json(),
       schemaResponse.json(),
     ]);
     calculationContext = await loadCalculationContext();

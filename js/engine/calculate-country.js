@@ -1,5 +1,6 @@
-import { selectBestRoute } from './select-best-route.js?v=0.14.0';
-import { COUNTRY_GROUP_LABELS_RU } from './status-contract.js?v=0.14.0';
+import { selectBestRoute } from './select-best-route.js?v=5.0.0';
+import { COUNTRY_GROUP_LABELS_RU } from './status-contract.js?v=5.0.0';
+import { convertMoney } from './currency.js?v=5.0.0';
 
 const EUROZONE_COUNTRY_IDS = new Set([
   'AT', 'BE', 'BG', 'HR', 'CY', 'EE', 'FI', 'FR', 'DE', 'GR', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PT', 'SK', 'SI', 'ES',
@@ -27,6 +28,28 @@ export class ProfileContractError extends Error {
 const requireMethod = (adapter, name) => {
   if (typeof adapter?.[name] !== 'function') throw new TypeError(`countryAdapter.${name} must be a function`);
 };
+
+export function calculateApplicantProvableIncome(profile, resultCurrency, calculationContext) {
+  const additionalSources = Array.isArray(profile?.income?.additional_sources)
+    ? profile.income.additional_sources
+    : [];
+  const applicantSources = [profile?.income?.primary, ...additionalSources].filter(Boolean);
+  const conversions = applicantSources
+    .map((source, index) => convertMoney(
+      source?.monthly_provable ?? null,
+      resultCurrency,
+      calculationContext,
+      index === 0 ? 'income.primary.monthly_provable' : `income.additional_sources[${index - 1}].monthly_provable`,
+    ))
+    .filter(Boolean);
+  return {
+    amount: conversions.length
+      ? conversions.reduce((sum, conversion) => sum + conversion.convertedAmount, 0)
+      : null,
+    currency: resultCurrency,
+    conversions,
+  };
+}
 
 export function calculateCountry(profile, countryPackage, calculationContext, countryAdapter) {
   if (!profile || typeof profile !== 'object') throw new TypeError('profile is required');
@@ -67,6 +90,7 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
   const countryId = countryPackage.country?.country_id ?? countryPackage.country_id;
   const countryName = countryPackage.country?.name_ru ?? countryPackage.country_name_ru ?? countryPackage.name ?? countryId;
   const resultCurrency = EUROZONE_COUNTRY_IDS.has(countryId) ? 'EUR' : 'USD';
+  const applicantProvableIncome = calculateApplicantProvableIncome(profile, resultCurrency, calculationContext);
 
   return {
     schemaVersion: countryPackage.schema_version,
@@ -81,6 +105,7 @@ export function calculateCountry(profile, countryPackage, calculationContext, co
       group,
       groupLabel: COUNTRY_GROUP_LABELS_RU[group],
     },
+    applicantProvableIncome,
     bestRoute,
     routes,
     ...practicalResult,

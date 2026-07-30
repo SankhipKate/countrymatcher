@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { calculateCountry } from '../js/engine/calculate-country.js';
 import { argentinaAdapter } from '../js/countries/argentina-adapter.js';
+import { sortRoutesForDisplay } from '../matcher/profile.js';
 
 const argentina = JSON.parse(await readFile(new URL('../data/argentina-research-v3.0.json', import.meta.url), 'utf8'));
 const schema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
@@ -107,6 +108,29 @@ test('Argentina routes needing a future local basis stay conditional without add
     assert.equal(route.basisMissing, true);
     assert.deepEqual(route.followUpQuestions, []);
   }
+});
+
+test('Argentina keeps 1 USD in the country KPI when the displayed best route does not use current income', () => {
+  const candidate = profile('REMOTE_EMPLOYMENT', 1, 'US');
+  candidate.family = {
+    adults_count: 2,
+    partner_included: true,
+    relationship_type: 'MARRIAGE',
+    children: [],
+    school_needed: false,
+  };
+  const result = calculate(candidate);
+  const displayedBestRoute = sortRoutesForDisplay(result.routes)[0];
+  const nomad = result.routes.find((route) => route.routeId === 'AR_NOMAD');
+  assert.equal(displayedBestRoute.routeId, 'AR_WORKER');
+  assert.equal(displayedBestRoute.incomeTypeFit, 'NOT_APPLICABLE');
+  assert.equal(displayedBestRoute.incomeFit, 'NOT_APPLICABLE');
+  assert.equal(displayedBestRoute.thresholdUsd, null);
+  assert.match(displayedBestRoute.incomeGuidance, /местный договор/);
+  assert.equal(result.applicantProvableIncome.amount, 1);
+  assert.equal(result.applicantProvableIncome.currency, 'USD');
+  assert.equal(nomad.incomeTypeFit, 'MEETS');
+  assert.equal(nomad.incomeUsd, 1);
 });
 
 test('matcher adds pension and universal passive-income help but no Argentina-specific questions', async () => {

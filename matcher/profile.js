@@ -228,3 +228,84 @@ const ROUTE_DISPLAY_RANK = Object.freeze({
 export function sortRoutesForDisplay(routes = []) {
   return [...routes].sort((a, b) => (ROUTE_DISPLAY_RANK[a.routeStatus] ?? 99) - (ROUTE_DISPLAY_RANK[b.routeStatus] ?? 99));
 }
+
+export function sortCountriesForDisplay(countries = []) {
+  return countries
+    .map((country, originalIndex) => ({ country, originalIndex }))
+    .sort((left, right) => {
+      const leftStatus = left.country?.bestRoute?.routeStatus ?? left.country?.country?.group;
+      const rightStatus = right.country?.bestRoute?.routeStatus ?? right.country?.country?.group;
+      const leftRank = ROUTE_DISPLAY_RANK[leftStatus] ?? 99;
+      const rightRank = ROUTE_DISPLAY_RANK[rightStatus] ?? 99;
+      return leftRank - rightRank || left.originalIndex - right.originalIndex;
+    })
+    .map(({ country }) => country);
+}
+
+const CITY_SIZE_LABELS = new Map([
+  ['SMALL', 'Небольшой город'],
+  ['MEDIUM', 'Средний город'],
+  ['LARGE', 'Крупный город'],
+]);
+
+const CITY_ROLE_LABELS = new Map([
+  ['столица', 'Столица'],
+  ['самый недорогой', 'Самый недорогой'],
+  ['самый дорогой', 'Самый дорогой'],
+  ['самый прохладный', 'Самый прохладный'],
+  ['самый холодный', 'Самый прохладный'],
+  ['самый жаркий', 'Самый жаркий'],
+]);
+
+export function cityCategories(size, roles = []) {
+  const categories = [
+    CITY_SIZE_LABELS.get(size),
+    ...roles.map((role) => CITY_ROLE_LABELS.get(String(role).trim().toLocaleLowerCase('ru'))),
+  ].filter(Boolean);
+  return [...new Set(categories)];
+}
+
+const normalizedRouteText = (text) => String(text || '')
+  .toLocaleLowerCase('ru')
+  .replace(/[ё]/g, 'е')
+  .replace(/[^\p{L}\p{N}]+/gu, ' ')
+  .trim();
+
+const routeTextTokens = (text) => new Set(normalizedRouteText(text)
+  .split(' ')
+  .filter((word) => word.length > 3)
+  .map((word) => word.length > 6 ? word.slice(0, 6) : word));
+
+const similarRouteText = (left, right) => {
+  const a = normalizedRouteText(left);
+  const b = normalizedRouteText(right);
+  if (!a || !b) return false;
+  if (a === b || a.includes(b) || b.includes(a)) return true;
+  const aWords = routeTextTokens(a);
+  const bWords = routeTextTokens(b);
+  const shared = [...aWords].filter((word) => bWords.has(word)).length;
+  return shared >= 2 && shared / Math.max(Math.min(aWords.size, bWords.size), 1) >= 0.6;
+};
+
+export function uniqueRouteActions(route = {}) {
+  const requirements = route.initialPermitRequirements || [];
+  const actionBackedConditions = new Set((route.checks || [])
+    .filter((check) => check?.action && check?.condition)
+    .map((check) => normalizedRouteText(check.condition)));
+  const unpairedConditions = (route.conditions || [])
+    .filter((condition) => !actionBackedConditions.has(normalizedRouteText(condition)));
+  const unpairedMissing = (route.clientMissing || route.preliminary || [])
+    .filter((condition) => !actionBackedConditions.has(normalizedRouteText(condition)));
+  const candidates = [
+    ...(route.actions || []),
+    ...unpairedConditions,
+    ...unpairedMissing,
+  ];
+  return candidates.reduce((items, candidate) => {
+    if (!candidate) return items;
+    if (requirements.some((requirement) => similarRouteText(candidate, requirement))) return items;
+    if (items.some((item) => similarRouteText(item, candidate))) return items;
+    items.push(candidate);
+    return items;
+  }, []);
+}
