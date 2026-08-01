@@ -1,4 +1,4 @@
-export const FX_ENDPOINT = 'https://api.frankfurter.dev/v2/rates?base=USD&quotes=EUR,ARS,MXN';
+export const FX_ENDPOINT = 'https://api.frankfurter.dev/v2/rates?base=USD&quotes=EUR,ARS,MXN,BRL';
 
 export class CalculationContextLoadError extends Error {
   constructor(message, details = {}) {
@@ -13,7 +13,7 @@ function parseRates(payload) {
   const rows = Array.isArray(payload) ? payload : payload?.rates
     ? Object.entries(payload.rates).map(([quote, rate]) => ({ quote, rate, date: payload.date ?? payload.as_of }))
     : [payload];
-  const required = ['EUR', 'ARS', 'MXN'];
+  const required = ['EUR', 'ARS', 'MXN', 'BRL'];
   const rates = {};
   const dates = [];
   for (const quote of required) {
@@ -41,7 +41,7 @@ export async function loadCalculationContext({ fetchImpl = globalThis.fetch, now
     }
     return {
       calculation_date: now.toISOString(),
-      engine_version: '6.0.0',
+      engine_version: '7.0.0',
       fx: { base_currency: 'USD', rates, source: 'Frankfurter', as_of: asOf, max_age_hours: maxAgeHours },
     };
   } catch (error) {

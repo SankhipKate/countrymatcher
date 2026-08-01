@@ -18,10 +18,10 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '6.0.0');
-  assert.match(matcherHtml, /<span class="product-name">COUNTRY MATCHER<\/span><span class="product-version">6\.0\.0<\/span>/);
+  assert.equal(packageJson.version, '7.0.0');
+  assert.match(matcherHtml, /<span class="product-name">COUNTRY MATCHER<\/span><span class="product-version">7\.0\.0<\/span>/);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '6\.0\.0'/);
+  assert.match(fxContext, /engine_version: '7\.0\.0'/);
 });
 
 const answers = (overrides = {}) => ({
@@ -393,7 +393,7 @@ test('README describes the live matcher and maintenance rule', async () => {
   assert.match(readme, /immigration-country-matcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
-  assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая, Португалии и Мексики/);
+  assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая, Португалии, Мексики и Бразилии/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });
 
