@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.0';
-import { convertMoney } from '../engine/currency.js?v=7.0.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
+import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
 
 const PUBLIC_STATUSES = Object.freeze({
   SUITABLE: ROUTE_STATUSES.SUITABLE,

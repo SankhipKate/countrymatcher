@@ -43,8 +43,8 @@
       "income_threshold_type": "MONTHLY_OR_SAVINGS_ALTERNATIVE",
       "family_rule_ru": "Супруг или партнёр без дискриминации, дети и пасынки, родители и другие предусмотренные законом родственники могут использовать воссоединение семьи. Однополый брак и união estável признаются. Срок семейной резиденции следует сроку основного заявителя.",
       "partner_work_rights_ru": "Получатель семейной резиденции вправе заниматься любой деятельностью в Бразилии, включая оплачиваемую, на равных условиях с гражданами Бразилии.",
-      "pr_path_ru": "RN 45 даёт временную резиденцию и не устанавливает автоматический переход на неопределённый срок. Для долгосрочного статуса требуется другое подтверждённое основание.",
-      "citizenship_path_ru": "Обычная натурализация: 4 года проживания на неопределённый срок, отсчитываемые от регистрации такого статуса; требуются португальский язык и отсутствие препятствующей судимости. Срок сокращается до 1 года при бразильском ребёнке либо сохраняющемся браке/партнёрстве с гражданином Бразилии и до 2 лет при признанном значимом вкладе или профессиональной, научной либо художественной способности.",
+      "pr_path_ru": "RN 45 даёт временную резиденцию на 1 год с возможностью одного продления на такой же срок. RN 45 не устанавливает автоматический переход на резиденцию на неопределённый срок и не подтверждает, что после двух лет цифровой кочевник может получить ПМЖ по этому же основанию. Для долгосрочного статуса потребуется отдельное законное основание; пока оно не указано и не подтверждено, маршрут не выполняет обязательную цель ПМЖ или гражданства.",
+      "citizenship_path_ru": "Обычная натурализация в исследованной общей процедуре требует 4 лет проживания на резиденции на неопределённый срок, знания португальского и отсутствия препятствующей судимости. Временная резиденция RN 45 сама по себе не подтверждает переход на такой статус, поэтому для профиля с обязательным гражданством этот маршрут считается неподходящим без отдельного подтверждённого основания.",
       "presence_rule_ru": "При отсутствии в Бразилии более 2 лет без принятой причины может начаться процедура утраты резиденции; заявитель вправе представить объяснение и защиту.",
       "dual_citizenship_ru": "После Emenda Constitucional nº 131/2023 простое приобретение другой национальности само по себе не прекращает гражданство Бразилии. Для гражданина РФ отдельно сохраняются российские обязанности по уведомлению о втором гражданстве.",
       "status_logic_ru": "SUITABLE: есть подтверждаемая зарубежная удалённая работа/услуги и выполнена одна финансовая альтернатива. SUITABLE_WITH_CONDITIONS: основание есть, но нужно подтвердить плательщика, документы или недостающую сумму. UNSUITABLE: есть только бразильский работодатель либо нет реального зарубежного удалённого основания.",
@@ -55,7 +55,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -95,7 +105,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -134,7 +154,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -173,7 +203,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -213,7 +253,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -253,7 +303,17 @@
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": false,
+        "residence_counts_for_pr": null,
+        "alternative_basis_required": true,
+        "residence_counts_for_citizenship": null,
+        "chain_confirmed_for_required_citizenship": false,
+        "explanation_ru": "Первоначальный ВНЖ подтверждён, но этот маршрут сам по себе не содержит подтверждённой полной цепочки до резиденции на неопределённый срок и гражданства. Для обязательной цели гражданства требуется отдельное подтверждённое основание."
+      }
     },
     {
       "publishable": true,
@@ -295,7 +355,17 @@
         "BR_SRC_RESIDENCE_LOSS",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": false,
+        "direct_pr_conversion": true,
+        "residence_counts_for_pr": true,
+        "alternative_basis_required": false,
+        "residence_counts_for_citizenship": true,
+        "chain_confirmed_for_required_citizenship": true,
+        "explanation_ru": "Исследовательский пакет подтверждает переход на резиденцию на неопределённый срок и дальнейшую обычную натурализацию при соблюдении условий."
+      }
     },
     {
       "publishable": true,
@@ -333,7 +403,17 @@
         "BR_SRC_FAMILY_PORTARIA",
         "BR_SRC_NATURALIZATION_TERM",
         "BR_SRC_DUAL_CITIZENSHIP"
-      ]
+      ],
+      "long_term_path": {
+        "initial_residence_available": true,
+        "renewal_confirmed": true,
+        "direct_pr_conversion": true,
+        "residence_counts_for_pr": true,
+        "alternative_basis_required": false,
+        "residence_counts_for_citizenship": true,
+        "chain_confirmed_for_required_citizenship": true,
+        "explanation_ru": "Исследовательский пакет подтверждает переход на резиденцию на неопределённый срок и дальнейшую обычную натурализацию при соблюдении условий."
+      }
     }
   ],
   "cities": [
@@ -522,12 +602,14 @@
     "foreign_documents_recognized": true,
     "foreign_document_rule_ru": "Иностранные акты гражданского состояния используются после применимых процедур апостиля или консульской легализации и перевода на португальский; орган вправе запросить дополнительные доказательства.",
     "country_safety_category_ru": "средне",
-    "safety_explanation_ru": "Правовая база для однополого брака и семьи сильная. Бытовая безопасность неоднородна и зависит от города, района, времени суток и конкретной ситуации.",
-    "international_protection_ru": "Убежище и международная защита являются отдельными индивидуальными процедурами и не смешиваются с экономическими маршрутами COUNTRY MATCHER.",
+    "safety_explanation_ru": "Правовая база однополого брака, união estável (юридически признаваемый устойчивый союз), семьи и антидискриминационной защиты сильная, но бытовой риск нельзя описывать только как «неоднородный». По Atlas da Violência 2026 в Бразилии в 2024 году зарегистрировано 42 590 убийств, или 20,1 на 100 000 жителей; показатель относится ко всему населению, а не только к ЛГБТ, и источник отмечает возможный недоучёт. Практический вывод делается по конкретному городу, району, официальной преступности, сообщениям о насилии против ЛГБТ и доступности полиции и помощи. Крупные города обычно дают больше ЛГБТ-инфраструктуры, но не автоматически меньший общий риск.",
+    "international_protection_ru": "Гражданин РФ, уже находящийся в Бразилии, может бесплатно подать заявление о предоставлении убежища через Sisconare, а затем лично обратиться в Polícia Federal для оформления Protocolo de Refúgio. Рассматривается обоснованный индивидуальный страх преследования по признаку расы, религии, национальности, политического мнения или принадлежности к социальной группе; преследование по сексуальной ориентации или гендерной идентичности может оцениваться в рамках социальной группы и конкретных обстоятельств. ЛГБТ-принадлежность сама по себе не гарантирует положительное решение. Нужны факты угроз, насилия, преследования, невозможности эффективной государственной защиты и доступные доказательства. Без персональных обстоятельств шанс не рассчитывается.",
     "source_ids": [
       "BR_SRC_CNJ_175",
       "BR_SRC_FAMILY_PORTARIA",
-      "BR_SRC_FAMILY_DECREE"
+      "BR_SRC_FAMILY_DECREE",
+      "BR_SRC_REFUGE_SISCONARE_2026",
+      "BR_SRC_VIOLENCE_ATLAS_2026"
     ],
     "pending_changes": []
   },
@@ -1009,6 +1091,36 @@
       "supports_ru": "Сопоставимые значения расходов одного человека, семьи и аренды; цены быстро меняются.",
       "checked_at": "2026-08-01",
       "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "BR_SRC_REFUGE_SISCONARE_2026",
+      "source_type": "OFFICIAL_GOVERNMENT",
+      "authority": "Ministério da Justiça e Segurança Pública do Brasil",
+      "title_ru": "Подача заявления о предоставлении убежища через Sisconare",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/refugio/servicos/pedir-refugio",
+      "supports_ru": "Регистрация в Sisconare, подача заявления и обязательное посещение Polícia Federal для получения протокола заявителя.",
+      "checked_at": "2026-08-01",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_VIOLENCE_ATLAS_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RESEARCH",
+      "authority": "Ipea / Fórum Brasileiro de Segurança Pública / Ministério do Planejamento",
+      "title_ru": "Atlas da Violência 2026",
+      "url": "https://www.gov.br/planejamento/pt-br/assuntos/noticias/2026/maio/atlas-da-violencia-brasil-registrou-42-590-homicidios-em-2024-menor-resultado-da-serie-historica-mas-subnotificacao-preocupa",
+      "supports_ru": "В 2024 году в Бразилии зарегистрировано 42 590 убийств, или 20,1 на 100 000 жителей; показатель снизился на 7,4% к 2023 году, при этом источник отмечает проблему недоучёта.",
+      "checked_at": "2026-08-01",
+      "confidence": "HIGH"
     }
-  ]
+  ],
+  "research_quality": {
+    "standard_version": "3.1",
+    "currency_usd_display": true,
+    "entry_researched": false,
+    "terms_translated": true,
+    "percentages_explained": true,
+    "city_size_coverage": true,
+    "safety_specific": true,
+    "protection_specific": true
+  }
 }

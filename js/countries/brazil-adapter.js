@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.0';
-import { convertMoney } from '../engine/currency.js?v=7.0.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
+import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
 
 const PUBLIC_ROUTE_IDS = new Set([
   'BR_DIGITAL_NOMAD',
@@ -122,7 +122,7 @@ function normalizeProfile(profile = {}, context) {
     physicalPresence: profile.goal?.physical_presence ?? null,
     keepRuCitizenship: profile.goal?.keep_russian_citizenship ?? null,
     languageExamReadiness: profile.goal?.language_exam_readiness ?? null,
-    monthlyBudgetUsd: budgetConversion?.convertedAmount ?? totalMonthlyIncomeUsd,
+    monthlyBudgetUsd: budgetConversion?.convertedAmount ?? (budget?.currency === 'USD' && Number.isFinite(Number(budget?.amount)) ? Number(budget.amount) : null) ?? totalMonthlyIncomeUsd,
     budgetMoney: budget ?? null,
     budgetConversion,
     budgetDerivedFromIncome: budget == null && totalMonthlyIncomeUsd != null,
@@ -744,18 +744,23 @@ function goalEvaluation(route, profile) {
   const citizenshipRelevant = citizenshipRequired || profile.goal === 'CITIZENSHIP_DESIRED';
   const checks = [];
 
-  if ((prRequired || citizenshipRequired) && !DIRECT_OR_DEFINED_LONG_TERM_ROUTE_IDS.has(route.route_id)) {
+  const longTermConfirmed = route.long_term_path?.chain_confirmed_for_required_citizenship === true
+    || DIRECT_OR_DEFINED_LONG_TERM_ROUTE_IDS.has(route.route_id);
+  if ((prRequired || citizenshipRequired) && !longTermConfirmed) {
     checks.push(outcome(
-      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'brazil_long_term_basis_change_required',
-      'Первоначальный статус доступен, но для резиденции на неопределённый срок потребуется подтвердить продление или перейти на другое долгосрочное основание.',
-      {
-        condition: 'Заранее спланировать переход на основание с резиденцией на неопределённый срок.',
-        action: 'Перед переездом проверить последовательность продления или смены основания для выбранного маршрута.',
-      },
+      ROUTE_STATUSES.UNSUITABLE,
+      'brazil_required_long_term_chain_not_confirmed',
+      'Первоначальный ВНЖ доступен, но для этого маршрута не подтверждена непрерывная цепочка до резиденции на неопределённый срок и гражданства. Поэтому он не выполняет обязательную долгосрочную цель.',
+      { action: 'Выбрать маршрут с подтверждённым переходом на долгосрочный статус либо указать отдельное уже существующее основание.' },
+    ));
+  } else if (citizenshipRelevant && !longTermConfirmed) {
+    checks.push(outcome(
+      ROUTE_STATUSES.SUITABLE,
+      'brazil_citizenship_path_warning',
+      'Первоначальный ВНЖ доступен, но этот маршрут сам по себе не подтверждает путь к гражданству; это предупреждение, а не условие первоначального ВНЖ.',
     ));
   } else {
-    checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'brazil_long_term_path_recorded', 'Долгосрочный путь маршрута описан в исследовательском пакете.'));
+    checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'brazil_long_term_path_recorded', 'Для выбранной обязательной цели подтверждён долгосрочный путь маршрута.'));
   }
 
   if (citizenshipRelevant && profile.languageExamReadiness === 'NO') {
@@ -925,6 +930,7 @@ function evaluatePractical(data, profile) {
     requestedCitySize: profile.citySize,
     petSummary: petSelected ? data.pets?.result_text_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
+    entryForRussianCitizen: data.entry_for_russian_citizen || null,
   };
 }
 
