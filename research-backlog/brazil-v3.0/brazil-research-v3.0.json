@@ -1,0 +1,661 @@
+{
+  "schema_version": "3.0",
+  "research_template": "MVP Research Template 3.0",
+  "country_id": "BR",
+  "country_name_ru": "Бразилия",
+  "country_name_en": "Brazil",
+  "research_date": "2026-07-31",
+  "next_review_date": "2026-10-31",
+  "status_policy": {
+    "statuses": [
+      "SUITABLE",
+      "SUITABLE_WITH_CONDITIONS",
+      "UNSUITABLE"
+    ],
+    "principle_ru": "Статус отражает только проверяемые условия маршрута и не гарантирует решение консульства, Ministério da Justiça или Polícia Federal."
+  },
+  "country_summary_ru": "Для текущей универсальной анкеты подготовлены два потенциально публикуемых маршрута: цифровой кочевник и пенсионер. Рабочий, студенческий, семейный и инвесторский маршруты сохранены скрытыми до появления соответствующих вопросов и отдельной логики. Runtime-подключение пока заблокировано незавершённым исследованием городов и отсутствием адаптера.",
+  "routes": [
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": true,
+      "income_threshold_amount": 1500,
+      "income_threshold_currency": "USD",
+      "income_formula": "1 500 USD в месяц либо 18 000 USD доступных средств",
+      "income_documentation_required": true,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": true,
+      "business_allowed": true,
+      "open_questions": [
+        "Практика принятия выписок из российских банков зависит от консульского округа.",
+        "Точный порядок перехода с временного статуса цифрового кочевника на проживание на неопределённый срок требует отдельного исследования."
+      ],
+      "route_id": "BR_DIGITAL_NOMAD",
+      "name_ru": "Резиденция цифрового кочевника",
+      "official_term_ru": "VITEM XIV / autorização de residência para nômade digital",
+      "route_type": "DIGITAL_NOMAD",
+      "basis_ru": "Удалённая профессиональная деятельность с использованием информационных технологий для зарубежного работодателя или зарубежных заказчиков, без трудовой связи с работодателем в Бразилии.",
+      "application_inside_ru": "Иностранец, уже находящийся в Бразилии законно, может запросить разрешение на проживание по Resolução CNIG MJSP nº 45 через действующую процедуру иммиграционного органа.",
+      "application_abroad_ru": "Временная виза VITEM XIV запрашивается в бразильском консульстве, компетентном по месту законного проживания заявителя.",
+      "first_permit_months": 12,
+      "renewal_months": 12,
+      "income_rule_ru": "Нужно подтвердить зарубежную удалённую работу и доход не менее 1 500 USD в месяц либо наличие не менее 18 000 USD на банковском счёте. Консульство вправе запросить дополнительные документы.",
+      "income_threshold_type": "MONTHLY_OR_SAVINGS_ALTERNATIVE",
+      "family_rule_ru": "Супруг, партнёр и другие соответствующие члены семьи могут использовать семейное воссоединение при документальном подтверждении связи. Срок семейного статуса зависит от статуса основного заявителя.",
+      "partner_work_rights_ru": "Право партнёра на работу определяется выданным семейным разрешением на проживание и требует проверки по его CRNM.",
+      "pr_path_ru": "Сам цифровой кочевник является временным маршрутом. Автоматический переход на проживание на неопределённый срок не подтверждён; потребуется другое основание либо отдельная процедура изменения срока.",
+      "citizenship_path_ru": "Обычная натурализация требует проживания на неопределённый срок не менее четырёх лет, способности общаться на португальском и отсутствия непогашенной уголовной судимости.",
+      "presence_rule_ru": "Для продления сохраняются основание цифрового кочевника, зарубежная работа и подтверждение средств. Детальные допустимые периоды отсутствия требуют отдельной проверки перед публикацией runtime-логики.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "SUITABLE: заявитель уже имеет подтверждаемую зарубежную удалённую работу и доход не ниже 1 500 USD в месяц. SUITABLE_WITH_CONDITIONS: подходящая работа есть, но нужно подтвердить источник, сумму или накопления. UNSUITABLE: работа выполняется для бразильского работодателя либо подходящего зарубежного основания нет.",
+      "source_ids": [
+        "BR_SRC_NOMAD_RULE",
+        "BR_SRC_NOMAD_CONSULATE",
+        "BR_SRC_RESIDENCE_GENERAL",
+        "BR_SRC_NATURALIZATION"
+      ]
+    },
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": true,
+      "income_threshold_amount": 2000,
+      "income_threshold_currency": "USD",
+      "income_formula": "Пенсия и при необходимости другие регулярные доходы: минимум 2 000 USD в месяц",
+      "income_documentation_required": true,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [
+        "Нужно подтвердить единый действующий порядок изменения срока резиденции пенсионера на неопределённый.",
+        "Практика подтверждения регулярного перевода из российских банков требует проверки по консульскому округу."
+      ],
+      "route_id": "BR_RETIREMENT",
+      "name_ru": "Резиденция пенсионера",
+      "official_term_ru": "VITEM XIV / autorização de residência para aposentado ou pensionista",
+      "route_type": "RETIREMENT",
+      "basis_ru": "Государственная или частная пенсия либо выплата по случаю потери кормильца с регулярным переводом средств в Бразилию.",
+      "application_inside_ru": "Заявитель, законно находящийся в Бразилии, может запросить разрешение на проживание при представлении документов по Resolução Normativa nº 40.",
+      "application_abroad_ru": "Временная виза запрашивается в бразильском консульстве по месту законного проживания.",
+      "first_permit_months": 24,
+      "renewal_months": null,
+      "income_rule_ru": "Нужно подтвердить ежемесячный перевод в Бразилию не менее 2 000 USD. При недостаточной пенсии разрешено дополнить сумму другими регулярными источниками дохода.",
+      "income_threshold_type": "FIXED_MONTHLY_WITH_REGULAR_INCOME_TOP_UP",
+      "family_rule_ru": "Семья оформляется по правилам воссоединения. Нужны документы о браке, партнёрстве, родстве и, когда применимо, экономической зависимости.",
+      "partner_work_rights_ru": "Право партнёра на работу зависит от семейного разрешения на проживание и проверяется после выдачи CRNM.",
+      "pr_path_ru": "Первоначальная резиденция выдаётся на срок до двух лет. Порядок продления или изменения срока на неопределённый должен быть подтверждён для конкретного заявления.",
+      "citizenship_path_ru": "Обычная натурализация требует не менее четырёх лет проживания на неопределённый срок, португальского языка и соблюдения требований по судимости.",
+      "presence_rule_ru": "Для сохранения и продления статуса требуется продолжать подтверждать пенсию, регулярный перевод средств и фактическое основание проживания.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "SUITABLE: подтверждаемая пенсия и допустимые дополнительные регулярные доходы достигают 2 000 USD в месяц. SUITABLE_WITH_CONDITIONS: доход достигает порога, но нужно организовать регулярный перевод или дополнить пенсию другим подтверждаемым доходом. UNSUITABLE: подходящей пенсионной выплаты нет либо общая подтверждаемая сумма ниже порога.",
+      "source_ids": [
+        "BR_SRC_RETIREMENT_RULE",
+        "BR_SRC_RETIREMENT_GUIDE",
+        "BR_SRC_RESIDENCE_GENERAL",
+        "BR_SRC_NATURALIZATION"
+      ]
+    },
+    {
+      "publishable": false,
+      "available_to_russian_citizen": true,
+      "renewal_available": false,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": true,
+      "local_work_allowed": true,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [
+        "Нужны отдельные карточки для основных рабочих категорий."
+      ],
+      "route_id": "BR_EMPLOYMENT_HIDDEN",
+      "name_ru": "Рабочая резиденция",
+      "official_term_ru": "Autorização de residência para fins laborais",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "basis_ru": "Работа в Бразилии по применимой профессиональной категории.",
+      "application_inside_ru": "Порядок зависит от конкретной нормативной категории и работодателя.",
+      "application_abroad_ru": "Работодатель или заявитель использует процедуру соответствующей рабочей категории.",
+      "first_permit_months": 24,
+      "renewal_months": null,
+      "income_rule_ru": "Универсальный порог отсутствует; требования зависят от профессии и категории.",
+      "income_threshold_type": "CATEGORY_SPECIFIC_NO_UNIVERSAL_AMOUNT",
+      "family_rule_ru": "Семейное воссоединение зависит от срока и типа рабочего разрешения.",
+      "partner_work_rights_ru": "Требуется проверка семейного разрешения.",
+      "pr_path_ru": "Переход на неопределённый срок зависит от рабочей категории и продлений.",
+      "citizenship_path_ru": "После проживания на неопределённый срок применяется общий срок натурализации.",
+      "presence_rule_ru": "Нужно сохранять основание рабочей резиденции.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "Маршрут скрыт до разделения профессиональных категорий и требований работодателя.",
+      "source_ids": [
+        "BR_SRC_WORK"
+      ]
+    },
+    {
+      "publishable": false,
+      "available_to_russian_citizen": true,
+      "renewal_available": true,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": true,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [
+        "Нужна отдельная ветка анкеты об учебном заведении и продолжительности программы."
+      ],
+      "route_id": "BR_STUDENT_HIDDEN",
+      "name_ru": "Студенческая резиденция",
+      "official_term_ru": "VITEM IV / autorização de residência para estudo",
+      "route_type": "STUDY",
+      "basis_ru": "Зачисление в признанное учебное учреждение.",
+      "application_inside_ru": "Требуются документы об обучении и законном нахождении.",
+      "application_abroad_ru": "Виза оформляется через бразильское консульство.",
+      "first_permit_months": 12,
+      "renewal_months": 12,
+      "income_rule_ru": "Нужно подтвердить обучение и средства; единый универсальный минимум не установлен.",
+      "income_threshold_type": "DOCUMENTARY_NO_UNIVERSAL_AMOUNT",
+      "family_rule_ru": "Семейные возможности зависят от конкретной студенческой резиденции.",
+      "partner_work_rights_ru": "Требуется отдельная проверка.",
+      "pr_path_ru": "Для проживания на неопределённый срок обычно требуется смена основания.",
+      "citizenship_path_ru": "Студенческий период нельзя автоматически считать сроком проживания на неопределённый срок.",
+      "presence_rule_ru": "Нужно сохранять зачисление и выполнение учебной программы.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "Маршрут скрыт, поскольку универсальная анкета не собирает сведения о зачислении и учебной программе.",
+      "source_ids": [
+        "BR_SRC_STUDENT"
+      ]
+    },
+    {
+      "publishable": false,
+      "available_to_russian_citizen": true,
+      "renewal_available": false,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": true,
+      "local_work_allowed": true,
+      "remote_foreign_work_allowed": true,
+      "business_allowed": true,
+      "open_questions": [
+        "Нужен универсальный вопрос о семейной связи с гражданином или резидентом страны назначения."
+      ],
+      "route_id": "BR_FAMILY_HIDDEN",
+      "name_ru": "Семейное воссоединение",
+      "official_term_ru": "VITEM XI / autorização de residência por reunião familiar",
+      "route_type": "FAMILY_REUNIFICATION",
+      "basis_ru": "Супруг, партнёр или другой предусмотренный законом родственник гражданина либо резидента Бразилии.",
+      "application_inside_ru": "Заявление возможно непосредственно в Бразилии через Polícia Federal.",
+      "application_abroad_ru": "Виза VITEM XI оформляется через бразильское консульство.",
+      "first_permit_months": 0,
+      "renewal_months": null,
+      "income_rule_ru": "Фиксированный универсальный порог для всех семейных случаев не установлен.",
+      "income_threshold_type": "SPONSOR_AND_RELATIONSHIP_SPECIFIC",
+      "family_rule_ru": "Признаются супруги и партнёры, включая однополые браки и устойчивые союзы.",
+      "partner_work_rights_ru": "Права следуют из выданного семейного разрешения.",
+      "pr_path_ru": "Срок семейной резиденции зависит от статуса приглашающего лица.",
+      "citizenship_path_ru": "Срок натурализации может сокращаться при бразильском супруге, партнёре или ребёнке.",
+      "presence_rule_ru": "Нужно сохранять реальность семейной связи и совместной жизни, когда это требуется.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "Маршрут скрыт, поскольку анкета не спрашивает о гражданине или резиденте Бразилии как спонсоре.",
+      "source_ids": [
+        "BR_SRC_FAMILY",
+        "BR_SRC_FAMILY_UNION",
+        "BR_SRC_CNJ_175"
+      ]
+    },
+    {
+      "publishable": false,
+      "available_to_russian_citizen": true,
+      "renewal_available": false,
+      "income_threshold_amount": 500000,
+      "income_threshold_currency": "BRL",
+      "income_formula": "500 000 BRL; возможный специальный порог требует отдельной проверки критериев",
+      "income_documentation_required": true,
+      "local_work_allowed": true,
+      "remote_foreign_work_allowed": true,
+      "business_allowed": true,
+      "open_questions": [
+        "Нужно подтвердить полный набор критериев сниженного инновационного порога."
+      ],
+      "route_id": "BR_INVESTOR_HIDDEN",
+      "name_ru": "Инвесторская резиденция",
+      "official_term_ru": "Autorização de residência por investimento produtivo",
+      "route_type": "INVESTMENT",
+      "basis_ru": "Производительная инвестиция в бразильскую компанию или инновационный проект.",
+      "application_inside_ru": "Используется специализированная процедура MigranteWeb.",
+      "application_abroad_ru": "Предварительное разрешение оформляется по инвестиционной процедуре.",
+      "first_permit_months": 0,
+      "renewal_months": null,
+      "income_rule_ru": "Базовый ориентир составляет 500 000 BRL; пониженный инновационный порог требует дополнительных критериев.",
+      "income_threshold_type": "INVESTMENT_CATEGORY_SPECIFIC",
+      "family_rule_ru": "Семья использует правила воссоединения.",
+      "partner_work_rights_ru": "Зависит от семейной резиденции.",
+      "pr_path_ru": "Инвесторский статус может оформляться на неопределённый срок при выполнении требований.",
+      "citizenship_path_ru": "Применяются общие правила натурализации после проживания на неопределённый срок.",
+      "presence_rule_ru": "Нужно сохранять инвестицию, рабочие места и другие обязательства проекта.",
+      "dual_citizenship_ru": "Отказ от гражданства РФ как общее условие натурализации не установлен. Перед подачей требуется проверить действующие правила Бразилии и выполнить российские обязанности по уведомлению о втором гражданстве.",
+      "status_logic_ru": "Маршрут скрыт: инвестиции отсутствуют в текущей анкете, а критерии сниженного порога требуют дополнительной проверки.",
+      "source_ids": [
+        "BR_SRC_INVESTMENT"
+      ]
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "BR_SAO_PAULO",
+      "name_ru": "Сан-Паулу",
+      "roles_ru": [
+        "Самый дорогой"
+      ],
+      "size": "крупный",
+      "population_reference": "Крупнейшая городская агломерация страны; точное сопоставимое значение населения будет добавлено перед публикацией.",
+      "budget_single_usd": 1750,
+      "budget_couple_usd": 2800,
+      "budget_family_1_child_usd": 3800,
+      "rent_1br_center_usd": 750,
+      "cost_scope_ru": "Практический ориентир из вторичного агрегатора; международная школа не включена.",
+      "climate_category_ru": "влажный субтропический климат",
+      "cold_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "hot_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "lgbt_safety_ru": "средне; выбор района имеет значение",
+      "public_school_available": true,
+      "public_school_language": "португальский",
+      "international_school_status_ru": "доступны отдельные международные школы",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "BR_SRC_SP_COST",
+        "BR_SRC_EDU"
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "city_id": "BR_CURITIBA",
+      "name_ru": "Куритиба",
+      "roles_ru": [
+        "Самый недорогой"
+      ],
+      "size": "крупный",
+      "population_reference": "Крупный региональный центр; единый официальный показатель будет добавлен перед публикацией.",
+      "budget_single_usd": 875,
+      "budget_couple_usd": 1450,
+      "budget_family_1_child_usd": 2000,
+      "rent_1br_center_usd": 430,
+      "cost_scope_ru": "Практический ориентир из вторичного агрегатора; международная школа не включена.",
+      "climate_category_ru": "субтропический высокогорный климат",
+      "cold_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "hot_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "lgbt_safety_ru": "средне; выбор района имеет значение",
+      "public_school_available": true,
+      "public_school_language": "португальский",
+      "international_school_status_ru": "наличие и стоимость зависят от школы и класса",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "BR_SRC_CURITIBA_COST",
+        "BR_SRC_EDU"
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "city_id": "BR_FLORIANOPOLIS",
+      "name_ru": "Флорианополис",
+      "roles_ru": [
+        "Самый прохладный"
+      ],
+      "size": "средний",
+      "population_reference": "Столица штата Санта-Катарина; официальный показатель населения будет добавлен перед публикацией.",
+      "budget_single_usd": 1035,
+      "budget_couple_usd": 1750,
+      "budget_family_1_child_usd": 2400,
+      "rent_1br_center_usd": 560,
+      "cost_scope_ru": "Практический ориентир из вторичного агрегатора; международная школа не включена.",
+      "climate_category_ru": "влажный субтропический морской климат",
+      "cold_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "hot_period_temperature_range_c": "требует проверки официальной климатической нормы",
+      "lgbt_safety_ru": "средне; выбор района имеет значение",
+      "public_school_available": true,
+      "public_school_language": "португальский",
+      "international_school_status_ru": "наличие и стоимость зависят от школы и класса",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "BR_SRC_FLORIPA_COST",
+        "BR_SRC_EDU"
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "schools": {
+    "public_school_ru": "Государственные школы существуют во всех крупных городах; обучение ведётся преимущественно на португальском языке. Конкретная запись зависит от адреса проживания и местной системы.",
+    "public_school_cost": 0,
+    "international_school_ru": "Международные школы доступны в крупных агломерациях, но сопоставимый диапазон цен по городам и классам пока не собран.",
+    "budget_rule_ru": "Государственная школа учитывается как 0 за обучение. Питание, форма, транспорт, материалы и международная школа в городские бюджеты не включены.",
+    "source_ids": [
+      "BR_SRC_EDU"
+    ]
+  },
+  "pets": {
+    "dogs_import_allowed": true,
+    "cats_import_allowed": true,
+    "national_breed_ban_found": false,
+    "breed_rule_ru": "Общенациональный запрет ввоза конкретных пород в исследованных федеральных правилах не найден; местные правила содержания проверяются отдельно.",
+    "routine_quarantine_required": false,
+    "quarantine_days": 0,
+    "prior_import_permit_required_for_accompanied_pet": false,
+    "result_text_ru": "Для ввоза собаки или кошки нужен Certificado Veterinário Internacional (CVI) либо официальный ветеринарный паспорт страны происхождения, соответствующий действующим санитарным требованиям Бразилии.",
+    "source_ids": [
+      "BR_SRC_PETS"
+    ]
+  },
+  "lgbt": {
+    "same_sex_marriage_recognized": true,
+    "same_sex_marriage_rule_ru": "Resolução CNJ nº 175 запрещает органам регистрации отказывать однополым парам в заключении гражданского брака или преобразовании устойчивого союза в брак.",
+    "registered_partnership_recognized": true,
+    "registered_partnership_translation_ru": "união estável — устойчивый союз",
+    "registered_partnership_rule_ru": "Устойчивый союз однополой пары признаётся семейной единицей на тех же основных условиях, что и союз разнополой пары.",
+    "family_route_available": true,
+    "foreign_documents_recognized": true,
+    "foreign_document_rule_ru": "Иностранные свидетельства используются после требуемой легализации или апостиля и перевода; конкретный документ оценивает консульство или Polícia Federal.",
+    "country_safety_category_ru": "средне",
+    "safety_explanation_ru": "Однополые браки и семейные права признаны. Практическая бытовая безопасность заметно зависит от города, района и конкретной ситуации.",
+    "international_protection_ru": "Процедура международной защиты существует отдельно от обычных экономических маршрутов и требует индивидуального рассмотрения.",
+    "source_ids": [
+      "BR_SRC_CNJ_175",
+      "BR_SRC_FAMILY_UNION",
+      "BR_SRC_FAMILY"
+    ],
+    "pending_changes": []
+  },
+  "glossary": [
+    {
+      "term": "CRNM",
+      "translation_ru": "карта национального миграционного регистра",
+      "explanation_ru": "Документ зарегистрированного иностранного резидента Бразилии."
+    },
+    {
+      "term": "CNIg",
+      "translation_ru": "Национальный совет по иммиграции",
+      "explanation_ru": "Орган, принимающий нормативные решения по отдельным трудовым и миграционным маршрутам."
+    },
+    {
+      "term": "VITEM XIV",
+      "translation_ru": "временная виза категории XIV",
+      "explanation_ru": "Категория, используемая в том числе для цифровых кочевников и пенсионеров."
+    },
+    {
+      "term": "união estável",
+      "translation_ru": "устойчивый союз",
+      "explanation_ru": "Признаваемая семейная связь, включая однополые пары."
+    }
+  ],
+  "excluded_from_research": [
+    "Подробная налоговая модель",
+    "Банковские продукты и платёжные сервисы",
+    "Правила конкретных авиакомпаний",
+    "Отдельные профессиональные рабочие категории",
+    "Сельская инвестиционная резиденция",
+    "Гуманитарные и международно-защитные маршруты"
+  ],
+  "open_items": [
+    {
+      "item_id": "BR_OQ_CITY_COVERAGE",
+      "priority": "HIGH",
+      "blocks_ru": "Публичное подключение Бразилии",
+      "missing_ru": "Небольшой город, столица, самый жаркий город, официальные показатели населения и конкретные климатические нормы.",
+      "handling_ru": "Бразилия остаётся только в research-backlog и не загружается публичным matcher."
+    },
+    {
+      "item_id": "BR_OQ_RUNTIME",
+      "priority": "HIGH",
+      "blocks_ru": "Публичный расчёт маршрутов",
+      "missing_ru": "Бразильский адаптер, тесты расчёта и подключение к calculateCountries.",
+      "handling_ru": "Runtime-файлы будут добавлены отдельным следующим этапом."
+    },
+    {
+      "item_id": "BR_OQ_RUSSIAN_DOCUMENTS",
+      "priority": "MEDIUM",
+      "blocks_ru": "Безусловное обещание принятия конкретной российской выписки",
+      "missing_ru": "Практика консульского округа по российским банкам и переводимости средств.",
+      "handling_ru": "В результате будет показана необходимость сверить локальный консульский чек-лист."
+    },
+    {
+      "item_id": "BR_OQ_HIDDEN_ROUTES",
+      "priority": "MEDIUM",
+      "blocks_ru": "Публикацию четырёх скрытых маршрутов",
+      "missing_ru": "Специализированные вопросы и отдельная логика для работы, учёбы, семьи и инвестиций.",
+      "handling_ru": "Маршруты сохраняются с publishable: false."
+    }
+  ],
+  "completeness": {
+    "overall_percent": 76,
+    "public_routes_ready": 2,
+    "hidden_routes": 4,
+    "country_ready_status": "DRAFT_RUNTIME_BLOCKED",
+    "country_ready_status_ru": "Юридическое ядро двух маршрутов собрано; публикация заблокирована городским исследованием и отсутствием runtime-адаптера.",
+    "blocks": [
+      {
+        "block": "Маршруты",
+        "percent": 82,
+        "missing_ru": "Детализация четырёх скрытых маршрутов"
+      },
+      {
+        "block": "Доход",
+        "percent": 90,
+        "missing_ru": "Практика российских банков по консульским округам"
+      },
+      {
+        "block": "Семья",
+        "percent": 80,
+        "missing_ru": "Runtime-логика семейного спонсора"
+      },
+      {
+        "block": "ПМЖ и гражданство",
+        "percent": 75,
+        "missing_ru": "Маршрут перехода временных статусов на неопределённый срок"
+      },
+      {
+        "block": "Города и бюджет",
+        "percent": 45,
+        "missing_ru": "Небольшой город, столица, климатические нормы и официальное население"
+      },
+      {
+        "block": "Школы",
+        "percent": 55,
+        "missing_ru": "Цены международных школ"
+      },
+      {
+        "block": "Животные",
+        "percent": 85,
+        "missing_ru": "Локальные правила содержания пород"
+      },
+      {
+        "block": "ЛГБТ",
+        "percent": 90,
+        "missing_ru": "Плановая региональная проверка бытовой безопасности"
+      }
+    ],
+    "publication_blockers": [
+      "Нет исследованного небольшого города и полного набора городских ролей.",
+      "Нет официальных климатических норм по выбранным городам.",
+      "Нет brazil-adapter.js и автоматических тестов расчёта."
+    ],
+    "non_blocking_gaps": [
+      "Городские бюджеты пока основаны на вторичных агрегаторах.",
+      "Не собраны сопоставимые цены международных школ.",
+      "Консульская практика по российским финансовым документам может различаться."
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "BR_SRC_NOMAD_RULE",
+      "source_type": "OFFICIAL_REGULATION",
+      "authority": "Ministério da Justiça e Segurança Pública / CNIg",
+      "title_ru": "Resolução CNIG MJSP nº 45/2021 — цифровой кочевник",
+      "url": "https://portaldeimigracao.mj.gov.br/pt/nav-guiada/rn-45",
+      "supports_ru": "Зарубежную удалённую работу, отсутствие бразильского работодателя и первоначальный срок до одного года.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_NOMAD_CONSULATE",
+      "source_type": "CONSULAR_GUIDANCE",
+      "authority": "Ministério das Relações Exteriores",
+      "title_ru": "VITEM XIV — Digital Nomad",
+      "url": "https://www.gov.br/mre/pt-br/consulado-nova-york/servicos-consulares/visto-visa-2/VITEM/nomad_XIV",
+      "supports_ru": "Порог 1 500 USD в месяц или 18 000 USD на счёте и перечень подтверждений.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_RETIREMENT_RULE",
+      "source_type": "OFFICIAL_REGULATION",
+      "authority": "Ministério da Justiça e Segurança Pública / CNIg",
+      "title_ru": "Resolução Normativa nº 40/2019 — пенсионеры",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/aposentado-e-ou-beneficio-de-pensao-por-morte",
+      "supports_ru": "Порог 2 000 USD в месяц, возможность дополнения другими регулярными доходами и срок до двух лет.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_RETIREMENT_GUIDE",
+      "source_type": "OFFICIAL_GUIDANCE",
+      "authority": "Portal de Imigração",
+      "title_ru": "Разрешение на проживание для пенсионеров и получателей пенсии",
+      "url": "https://portaldeimigracao.mj.gov.br/pt/dados/2-sem-categoria/401593-autorizacao-de-residencia-para-aposentados-e-pensionistas",
+      "supports_ru": "Регулярный перевод 2 000 USD и практическую процедуру.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_RESIDENCE_GENERAL",
+      "source_type": "GOVERNMENT_SERVICE",
+      "authority": "Governo Federal",
+      "title_ru": "Общее разрешение на проживание и CRNM",
+      "url": "https://www.gov.br/pt-br/servicos/obter-autorizacao-de-residencia-e-carteira-de-registro-migratorio",
+      "supports_ru": "Общую процедуру разрешения на проживание и регистрацию иностранца.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_NATURALIZATION",
+      "source_type": "GOVERNMENT_GUIDANCE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Обычная натурализация",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/naturalizacao/o-que-e-naturalizacao/naturalizacao-ordinaria",
+      "supports_ru": "Проживание на неопределённый срок, общий срок четыре года, португальский язык и требования по судимости.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_WORK",
+      "source_type": "GOVERNMENT_SERVICE",
+      "authority": "Governo Federal",
+      "title_ru": "Разрешение на проживание для трудовых целей",
+      "url": "https://www.gov.br/pt-br/servicos/obter-autorizacao-de-residencia-para-fins-laborais-a-imigrantes",
+      "supports_ru": "Наличие категорий рабочей резиденции.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_STUDENT",
+      "source_type": "FEDERAL_POLICE_GUIDANCE",
+      "authority": "Polícia Federal",
+      "title_ru": "Разрешение на проживание для обучения",
+      "url": "https://www.gov.br/pf/pt-br/assuntos/imigracao/autorizacao-residencia/autorizacao-de-residencia-para-fins-de-estudo",
+      "supports_ru": "Студенческое основание и процедуру проживания.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_FAMILY",
+      "source_type": "FEDERAL_POLICE_GUIDANCE",
+      "authority": "Polícia Federal",
+      "title_ru": "Разрешение на проживание по семейному воссоединению",
+      "url": "https://www.gov.br/pf/pt-br/assuntos/imigracao/duvidas-frequentes/autorizacao-de-residencia-e-registro-nacional-migratorio-rnm/o-que-e-chamante-e",
+      "supports_ru": "Семейного спонсора и состав семейной связи.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_FAMILY_UNION",
+      "source_type": "CONSULAR_GUIDANCE",
+      "authority": "Ministério das Relações Exteriores",
+      "title_ru": "VITEM XI по устойчивому союзу",
+      "url": "https://www.gov.br/mre/pt-br/consulado-cantao/EN/visas/types/vitem/vitem11b",
+      "supports_ru": "Признание однополого устойчивого союза как семейной связи.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_CNJ_175",
+      "source_type": "JUDICIAL_REGULATION",
+      "authority": "Conselho Nacional de Justiça",
+      "title_ru": "Resolução CNJ nº 175/2013",
+      "url": "https://atos.cnj.jus.br/atos/detalhar/atos-normativos?documento=1754",
+      "supports_ru": "Гражданский брак и преобразование устойчивого союза в брак для однополых пар.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_INVESTMENT",
+      "source_type": "OFFICIAL_REGULATION",
+      "authority": "Portal de Imigração",
+      "title_ru": "Резиденция по производительной инвестиции",
+      "url": "https://portaldeimigracao.mj.gov.br/pt/nav-guiada/rn-13",
+      "supports_ru": "Инвесторское основание и базовый инвестиционный ориентир.",
+      "checked_at": "2026-07-31",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "BR_SRC_PETS",
+      "source_type": "VETERINARY_AUTHORITY",
+      "authority": "Ministério da Agricultura e Pecuária",
+      "title_ru": "Въезд в Бразилию с собаками и кошками",
+      "url": "https://www.gov.br/agricultura/pt-br/assuntos/vigilancia-agropecuaria/animais-estimacao/entrar-no-brasil",
+      "supports_ru": "CVI или официальный паспорт и отсутствие предварительного разрешения для собак и кошек.",
+      "checked_at": "2026-07-31",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "BR_SRC_EDU",
+      "source_type": "GOVERNMENT_PORTAL",
+      "authority": "Ministério da Educação",
+      "title_ru": "Официальный портал образования",
+      "url": "https://www.gov.br/mec/pt-br",
+      "supports_ru": "Общую государственную систему образования на португальском языке.",
+      "checked_at": "2026-07-31",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "BR_SRC_SP_COST",
+      "source_type": "SECONDARY_PRACTICAL",
+      "authority": "Expatistan",
+      "title_ru": "Стоимость жизни в Сан-Паулу",
+      "url": "https://www.expatistan.com/cost-of-living/sao-paulo",
+      "supports_ru": "Практический ориентир стоимости жизни.",
+      "checked_at": "2026-07-31",
+      "confidence": "LOW"
+    },
+    {
+      "source_id": "BR_SRC_CURITIBA_COST",
+      "source_type": "SECONDARY_PRACTICAL",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни в Куритибе",
+      "url": "https://livingcost.org/cost/brazil/curitiba",
+      "supports_ru": "Практический ориентир стоимости жизни.",
+      "checked_at": "2026-07-31",
+      "confidence": "LOW"
+    },
+    {
+      "source_id": "BR_SRC_FLORIPA_COST",
+      "source_type": "SECONDARY_PRACTICAL",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни во Флорианополисе",
+      "url": "https://livingcost.org/cost/brazil/florianopolis",
+      "supports_ru": "Практический ориентир стоимости жизни.",
+      "checked_at": "2026-07-31",
+      "confidence": "LOW"
+    }
+  ]
+}
