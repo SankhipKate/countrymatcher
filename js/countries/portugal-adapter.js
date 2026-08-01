@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=5.0.0';
-import { convertMoney } from '../engine/currency.js?v=5.0.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=5.0.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=6.0.0';
+import { convertMoney } from '../engine/currency.js?v=6.0.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=6.0.0';
 
 const REMOTE_INCOME_TYPES = new Set([
   'REMOTE_EMPLOYMENT',

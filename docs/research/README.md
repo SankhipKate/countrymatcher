@@ -33,10 +33,17 @@
 - Адаптер калькулятора: `../../js/countries/portugal-adapter.js`
 - Статус: подключены D8, D7, D2 и D1; `PT_D3_HIGHLY_QUALIFIED` скрыт по `publishable: false`
 
+### Мексика
+
+- Машиночитаемые данные: `../../data/mexico-research-v3.0.json`
+- Отчёты и рабочие материалы: `./mexico/`
+- Адаптер калькулятора: `../../js/countries/mexico-adapter.js`
+- Статус: подключены `MX_TEMP_ECONOMIC_SOLVENCY` и `MX_TEMP_LOCAL_JOB_OFFER`; шесть дополнительных маршрутов скрыты по `publishable: false`
+
 ## Ещё не подключённые страны
 
 Рабочие исследования находятся внутри проекта:
 
-- `../../research-backlog/brazil-v2.2/`
+- `../../research-backlog/brazil-v3.0/`
 
 Наличие страны в `research-backlog` не означает, что она уже подключена к публичному калькулятору.

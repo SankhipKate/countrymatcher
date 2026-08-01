@@ -29,13 +29,15 @@ test('strict profile without citizenships returns typed error', () => {
   assert.throws(() => calculateCountry({}, pkg, context, variantAdapter), { code: 'PROFILE_INCOMPLETE' });
 });
 
-test('valid mocked Frankfurter response creates a USD context with EUR and ARS', async () => {
+test('valid mocked Frankfurter response creates a USD context with EUR, ARS, and MXN', async () => {
   const result = await loadCalculationContext({ now: new Date('2026-07-19T12:00:00Z'), fetchImpl: async () => ({ ok: true, json: async () => [
     { date: '2026-07-19', base: 'USD', quote: 'EUR', rate: 0.87 },
     { date: '2026-07-19', base: 'USD', quote: 'ARS', rate: 1250 },
+    { date: '2026-07-19', base: 'USD', quote: 'MXN', rate: 18.75 },
   ] }) });
   assert.equal(result.fx.rates.EUR, 0.87);
   assert.equal(result.fx.rates.ARS, 1250);
+  assert.equal(result.fx.rates.MXN, 18.75);
   assert.equal(result.fx.source, 'Frankfurter');
 });
 
@@ -44,7 +46,7 @@ test('network failure is typed as incomplete calculation context', async () => {
 });
 
 test('stale mocked rate is rejected', async () => {
-  await assert.rejects(loadCalculationContext({ now: new Date('2026-07-19T12:00:00Z'), fetchImpl: async () => ({ ok: true, json: async () => [{ date: '2026-07-01', quote: 'EUR', rate: 0.87 }, { date: '2026-07-01', quote: 'ARS', rate: 1250 }] }) }), { code: 'CALCULATION_CONTEXT_INCOMPLETE' });
+  await assert.rejects(loadCalculationContext({ now: new Date('2026-07-19T12:00:00Z'), fetchImpl: async () => ({ ok: true, json: async () => [{ date: '2026-07-01', quote: 'EUR', rate: 0.87 }, { date: '2026-07-01', quote: 'ARS', rate: 1250 }, { date: '2026-07-01', quote: 'MXN', rate: 18.75 }] }) }), { code: 'CALCULATION_CONTEXT_INCOMPLETE' });
 });
 
 test('runtime and current pilot contain no removed constructs or user FX field', async () => {

@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "country_id": "MX",
+  "research_package": "mexico-research-v3.0.json",
+  "note_ru": "Тестовые сценарии для двух публичных маршрутов и ключевых скрытых семейных/студенческих веток.",
+  "profiles": [
+    {
+      "profile_id": "MX_SOLVENCY_INCOME_SUITABLE",
+      "description_ru": "Иностранная удалённая зарплата 90 000 MXN в месяц, подтверждённая 6 месяцев.",
+      "inputs": {
+        "citizenship": "RU",
+        "foreign_salary_paid_abroad": true,
+        "monthly_net_income_mxn": 90000,
+        "income_history_months": 6
+      },
+      "expected": {
+        "MX_TEMP_ECONOMIC_SOLVENCY": "SUITABLE"
+      },
+      "reason_ru": "Доход выше порога 79 770,80 MXN и есть требуемая история."
+    },
+    {
+      "profile_id": "MX_SOLVENCY_SAVINGS_SUITABLE",
+      "description_ru": "Средний остаток 1 500 000 MXN за 12 месяцев.",
+      "inputs": {
+        "citizenship": "RU",
+        "average_savings_mxn_12m": 1500000
+      },
+      "expected": {
+        "MX_TEMP_ECONOMIC_SOLVENCY": "SUITABLE"
+      },
+      "reason_ru": "Средний остаток выше порога 1 344 372,60 MXN."
+    },
+    {
+      "profile_id": "MX_SOLVENCY_CONDITIONAL_RAISE",
+      "description_ru": "Доход 70 000 MXN, пользователь готов увеличить доход и сформировать новую историю.",
+      "inputs": {
+        "citizenship": "RU",
+        "monthly_net_income_mxn": 70000,
+        "ready_to_raise_income": true
+      },
+      "expected": {
+        "MX_TEMP_ECONOMIC_SOLVENCY": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Необходимо содержательно увеличить доход до порога и подтвердить его 6 месяцев."
+    },
+    {
+      "profile_id": "MX_SOLVENCY_UNSUITABLE",
+      "description_ru": "Доход и накопления ниже порога, изменения не планируются.",
+      "inputs": {
+        "citizenship": "RU",
+        "monthly_net_income_mxn": 50000,
+        "average_savings_mxn_12m": 500000,
+        "ready_to_raise_income": false
+      },
+      "expected": {
+        "MX_TEMP_ECONOMIC_SOLVENCY": "UNSUITABLE"
+      },
+      "reason_ru": "Ни один обязательный финансовый вариант не выполнен."
+    },
+    {
+      "profile_id": "MX_SOLVENCY_RUSSIAN_BANK_CONDITION",
+      "description_ru": "Порог выполнен на российском счёте, но формат документов консульством ещё не подтверждён.",
+      "inputs": {
+        "citizenship": "RU",
+        "average_savings_mxn_12m": 1500000,
+        "bank_country": "RU",
+        "consulate_document_format_confirmed": false
+      },
+      "expected": {
+        "MX_TEMP_ECONOMIC_SOLVENCY": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Российский счёт не исключает маршрут; необходимо подтвердить формат, заверение и доступность средств."
+    },
+    {
+      "profile_id": "MX_JOB_OFFER_SUITABLE",
+      "description_ru": "Есть авторизованная мексиканская оферта и NUT/разрешение INM.",
+      "inputs": {
+        "citizenship": "RU",
+        "mexican_job_offer": true,
+        "inm_authorization": true
+      },
+      "expected": {
+        "MX_TEMP_LOCAL_JOB_OFFER": "SUITABLE"
+      },
+      "reason_ru": "Обязательное основание и предварительная авторизация уже существуют."
+    },
+    {
+      "profile_id": "MX_JOB_OFFER_CONDITIONAL",
+      "description_ru": "Пользователь готов получить местную оферту, но её пока нет.",
+      "inputs": {
+        "citizenship": "RU",
+        "mexican_job_offer": false,
+        "willing_local_job": true
+      },
+      "expected": {
+        "MX_TEMP_LOCAL_JOB_OFFER": "SUITABLE_WITH_CONDITIONS"
+      },
+      "reason_ru": "Требуется получить оферту и предварительную авторизацию INM."
+    },
+    {
+      "profile_id": "MX_JOB_OFFER_UNSUITABLE",
+      "description_ru": "Местная работа не рассматривается и оферты нет.",
+      "inputs": {
+        "citizenship": "RU",
+        "mexican_job_offer": false,
+        "willing_local_job": false
+      },
+      "expected": {
+        "MX_TEMP_LOCAL_JOB_OFFER": "UNSUITABLE"
+      },
+      "reason_ru": "Отсутствует и не планируется обязательное основание маршрута."
+    },
+    {
+      "profile_id": "MX_FAMILY_TEMP_SPOUSE_HIDDEN",
+      "description_ru": "Супруг временного резидента в Мексике.",
+      "inputs": {
+        "sponsor_status": "TEMPORARY_RESIDENT",
+        "relationship": "MARRIAGE"
+      },
+      "expected": {
+        "MX_FAMILY_TEMP_SPONSOR": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Правовая ветка исследована, но текущая анкета не собирает статус спонсора."
+    },
+    {
+      "profile_id": "MX_FAMILY_PARTNER_COMMON_CHILD",
+      "description_ru": "Незарегистрированная пара с общим ребёнком и спонсором — постоянным резидентом.",
+      "inputs": {
+        "sponsor_status": "PERMANENT_RESIDENT",
+        "relationship": "UNREGISTERED_PARTNER",
+        "common_child": true
+      },
+      "expected": {
+        "MX_FAMILY_MEXICAN_OR_PERMANENT_PARTNER": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Общий ребёнок снимает минимальный срок совместной жизни, но ветка скрыта до расширения анкеты."
+    },
+    {
+      "profile_id": "MX_FAMILY_DIRECT_PARENT",
+      "description_ru": "Родитель гражданина Мексики.",
+      "inputs": {
+        "sponsor_status": "MEXICAN_CITIZEN",
+        "relationship": "PARENT"
+      },
+      "expected": {
+        "MX_FAMILY_DIRECT_PERMANENT": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Категория прямого ПМЖ подтверждена, но не подключена к текущей анкете."
+    },
+    {
+      "profile_id": "MX_STUDENT_HIDDEN",
+      "description_ru": "Есть зачисление на программу свыше 180 дней и подтверждённое финансирование.",
+      "inputs": {
+        "acceptance_letter": true,
+        "program_days": 365,
+        "student_funding_sufficient": true
+      },
+      "expected": {
+        "MX_TEMP_STUDENT": "NOT_PUBLISHED"
+      },
+      "reason_ru": "Маршрут исследован, но студенческий блок отсутствует в текущем MVP."
+    },
+    {
+      "profile_id": "MX_DUAL_CITIZENSHIP_PRESERVED",
+      "description_ru": "Для пользователя обязательно сохранить гражданство РФ после натурализации.",
+      "inputs": {
+        "must_keep_ru_citizenship": true,
+        "mexican_naturalization": true
+      },
+      "expected": {
+        "ru_citizenship_preserved_by_default": true,
+        "notification_required": true,
+        "notification_days": 60
+      },
+      "reason_ru": "Приобретение иностранного гражданства не прекращает гражданство РФ; действует обязанность уведомления."
+    },
+    {
+      "profile_id": "MX_CDMX_SCHOOL_SEPARATE_BUDGET",
+      "description_ru": "Семья выбирает Eton School в Мехико.",
+      "inputs": {
+        "city": "MX_CDMX",
+        "international_school_required": true,
+        "school_level": "MIDDLE"
+      },
+      "expected": {
+        "city_budget_excludes_school": true,
+        "school_annual_published_core_mxn": 345130
+      },
+      "reason_ru": "Международная школа считается отдельно от бытового бюджета."
+    },
+    {
+      "profile_id": "MX_CITY_SAFETY_CONTEXT_ONLY",
+      "description_ru": "Безопасность обязательна, город выбран без района.",
+      "inputs": {
+        "safety_required": true,
+        "city": "MX_CDMX",
+        "district": null
+      },
+      "expected": {
+        "hard_filter_applied": false,
+        "additional_location_needed": true
+      },
+      "reason_ru": "ENSU — контекст восприятия, а Мехико оценивается по районам; без района жёсткий вывод невозможен."
+    }
+  ]
+}

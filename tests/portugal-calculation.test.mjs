@@ -11,7 +11,7 @@ const portugal = JSON.parse(await readFile(new URL('../data/portugal-research-v3
 const spain = JSON.parse(await readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-07-30T12:00:00Z',
-  engine_version: '5.0.0',
+  engine_version: '6.0.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80 },
@@ -230,10 +230,10 @@ test('public matcher loads Portugal without adding Portugal-specific questionnai
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /portugal-adapter\.js\?v=5\.0\.0/);
-  assert.match(app, /portugal-research-v3\.0\.json\?v=5\.0\.0/);
+  assert.match(app, /portugal-adapter\.js\?v=6\.0\.0/);
+  assert.match(app, /portugal-research-v3\.0\.json\?v=6\.0\.0/);
   assert.match(app, /countryId === 'PT' \? '🇵🇹'/);
-  assert.match(app, /\['AR', 'PY', 'PT'\]\.includes\(countryId\)/);
+  assert.match(app, /\['AR', 'PY', 'PT', 'MX'\]\.includes\(countryId\)/);
   assert.equal(/<[^>]+(?:id|name)="[^"]*(?:portugal|pt_d8|pt_d7|pt_d2|pt_d1)[^"]*"/i.test(html), false);
 });
 
@@ -352,7 +352,7 @@ test('Portugal cities expose the expected size-first matcher categories', async 
 
 test('Portugal matcher source has no fallback long-term text for PT or duplicate requirements heading', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /countryId === 'PY' \|\| countryId === 'PT'/);
+  assert.match(app, /\['PY', 'PT', 'MX'\]\.includes\(countryId\)/);
   assert.equal(app.includes('Что потребуется для этого маршрута'), false);
   assert.equal(app.includes('либо рассматривать D8'), false);
 });
