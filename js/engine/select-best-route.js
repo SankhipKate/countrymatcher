@@ -1,4 +1,4 @@
-import { SELECTION_PREFERENCE_RANK } from './status-contract.js?v=5.0.0';
+import { SELECTION_PREFERENCE_RANK } from './status-contract.js?v=6.0.0';
 
 const FIT_RANK = Object.freeze({ MEETS: 2, UNKNOWN: 1, NOT_APPLICABLE: 1, DOES_NOT_MEET: 0 });
 const fit = (value) => FIT_RANK[value] ?? FIT_RANK.UNKNOWN;

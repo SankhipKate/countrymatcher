@@ -7,7 +7,7 @@ import { paraguayAdapter } from '../js/countries/paraguay-adapter.js';
 const paraguay = JSON.parse(await readFile(new URL('../data/paraguay-research-v3.0.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-07-25T12:00:00Z',
-  engine_version: '5.0.0',
+  engine_version: '6.0.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80 },
@@ -138,9 +138,9 @@ test('Paraguay practical result uses researched family budgets and does not inve
 
 test('public matcher loads Paraguay data, adapter, flag, and dynamic city cards', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /paraguay-research-v3\.0\.json\?v=5\.0\.0/);
-  assert.match(app, /paraguay-adapter\.js\?v=5\.0\.0/);
+  assert.match(app, /paraguay-research-v3\.0\.json\?v=6\.0\.0/);
+  assert.match(app, /paraguay-adapter\.js\?v=6\.0\.0/);
   assert.match(app, /countryId === 'PY' \? '🇵🇾'/);
-  assert.match(app, /\['AR', 'PY', 'PT'\]\.includes\(countryId\)/);
+  assert.match(app, /\['AR', 'PY', 'PT', 'MX'\]\.includes\(countryId\)/);
   assert.match(app, /countryId === 'UY' \? 700 : 0/);
 });
