@@ -1,6 +1,6 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.0';
-import { convertMoney } from '../engine/currency.js?v=7.0.0';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.0';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
+import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
 
 const PUBLIC_ROUTE_IDS = new Set([
   'MX_TEMP_ECONOMIC_SOLVENCY',
@@ -306,7 +306,7 @@ function economicEvaluation(route, profile, context) {
     incomeTypeFit: income.eligible.length || profile.savingsUsd != null ? 'MEETS' : income.local.length ? 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
     incomeFit: incomeMeets || savingsMeets ? fit(checks) : checks[0]?.status === ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS ? 'UNKNOWN' : 'DOES_NOT_MEET',
     basisMissing: !(income.eligible.length || profile.savingsUsd != null),
-    incomeGuidance: `${route.income_rule_ru} Альтернатива по накоплениям в текущем расчётном контексте — около ${Math.ceil(savingsThreshold.convertedAmount)} USD среднего остатка.`,
+    incomeGuidance: `${route.income_rule_ru} В текущем расчётном контексте доходный порог — около ${Math.ceil(threshold.amount)} USD в месяц за 6 месяцев; альтернатива по накоплениям — около ${Math.ceil(savingsThreshold.convertedAmount)} USD среднего остатка за 12 месяцев.`,
   };
 }
 
@@ -583,6 +583,7 @@ function evaluatePractical(data, profile) {
     requestedCitySize: profile.citySize,
     petSummary: petSelected ? data.pets?.result_text_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
+    entryForRussianCitizen: data.entry_for_russian_citizen || null,
   };
 }
 

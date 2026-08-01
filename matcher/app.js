@@ -1,16 +1,16 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.0.0';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.0.0';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.0.0';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.0.0';
-import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.0.0';
-import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.0.0';
-import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.0.0';
-import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.0.0';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.0.0';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.0.0';
-import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=7.0.0';
-import { formatCurrency } from './format.js?v=7.0.0';
-import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.0.0';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.0.1';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.0.1';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.0.1';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.0.1';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.0.1';
+import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.0.1';
+import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.0.1';
+import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.0.1';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=7.0.1';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.0.1';
+import { isKnownDogBreed, normalizeDogBreed, searchDogBreeds } from './dog-breeds.js?v=7.0.1';
+import { formatCurrency } from './format.js?v=7.0.1';
+import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.0.1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -466,7 +466,9 @@ function renderCountryResult(calculation, changed = false, active = false) {
       ? currency(thresholdAmount, incomeCurrency)
       : 'Единый числовой порог не установлен';
   const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
-  const otherPetWarning = currentProfile?.pets?.types?.includes('OTHER') ? '<div class="route-open-items practical-warning"><h4>Нужна отдельная проверка животного</h4><p>У вас указано другое животное. Правила его ввоза зависят от конкретного вида и страны происхождения. Перед переездом потребуется отдельная проверка правил для этой страны.</p></div>' : '';
+  const entry = calculation.entryForRussianCitizen;
+  const entryBlock = entry ? `<div class="route-requirements practical-warning"><h4>Как гражданину РФ законно въехать</h4><p>${html(entry.summary_ru)}</p><p><b>Самолётом:</b> ${html(entry.air_entry_ru)}</p><p><b>По суше или морю:</b> ${html(entry.land_sea_entry_ru)}</p><p><b>Стоимость и срок:</b> ${html(entry.fee_local_ru)}; ${html(entry.processing_time_ru)}.</p><p><b>Переход к ВНЖ:</b> ${html(entry.in_country_residence_application_ru)}</p></div>` : '';
+    const otherPetWarning = currentProfile?.pets?.types?.includes('OTHER') ? '<div class="route-open-items practical-warning"><h4>Нужна отдельная проверка животного</h4><p>У вас указано другое животное. Правила его ввоза зависят от конкретного вида и страны происхождения. Перед переездом потребуется отдельная проверка правил для этой страны.</p></div>' : '';
   const petInfo = calculation.petSummary ? `<div class="route-requirements practical-warning"><h4>Домашние животные</h4><p>${html(calculation.petSummary)}</p></div>` : '';
   const comparisonCities = ['AR', 'PY', 'PT', 'MX', 'BR'].includes(countryId)
     ? (calculation.cities || []).map((city) => ({
@@ -498,14 +500,17 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const citySection = comparisonCities.length
     ? `<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
         const living = city.costIsFamilySpecific ? Math.round(city.cost) : Math.round(city.cost * familyFactor);
-        const knownSchoolCost = Number(city.internationalSchoolCost || estimatedEducationCost || 0);
+        const numericSchoolCost = Number(city.internationalSchoolCost);
+        const knownSchoolCost = needsInternationalSchool
+          ? Number.isFinite(numericSchoolCost) ? numericSchoolCost : Number(estimatedEducationCost || 0)
+          : 0;
         const total = living + knownSchoolCost;
-        const delta = budgetUsd == null ? null : budgetUsd - total;
+        const delta = budgetUsd == null || !Number.isFinite(total) ? null : budgetUsd - total;
         const schoolLine = !needsInternationalSchool ? ''
           : city.internationalSchoolStatus
             ? `<span>Международная школа: <b>${html(city.internationalSchoolStatus)}</b></span>`
             : knownSchoolCost ? `<span>Международная школа: ориентир <b>+${currency(knownSchoolCost)}/мес</b></span>` : '';
-        const budgetLine = delta == null ? '' : delta >= 0
+        const budgetLine = delta == null ? '' : Number.isFinite(delta) && delta >= 0
           ? `<span class="budget-ok">В бюджет укладывается, запас ${currency(delta)}</span>`
           : '<span class="budget-short">Выше бюджета</span>';
         const coldLine = city.coldRange ? `<span>Холодный период: <b>${html(city.coldRange)}</b></span>`
@@ -517,7 +522,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
       }).join('')}</div>${schoolSummary}${daycareNote ? `<p class="research-caveat">${html(daycareNote)}</p>` : ''}<p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
-    <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>${otherPetWarning}${petInfo}
+    <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>${entryBlock}${otherPetWarning}${petInfo}
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
     ${renderLgbtResearch(calculation)}
@@ -615,14 +620,14 @@ async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
     const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, portugalResponse, mexicoResponse, brazilResponse, schemaResponse] = await Promise.all([
-      fetch('../data/spain-research-v2.2.json?v=7.0.0'),
-      fetch('../data/uruguay-research-v2.2.json?v=7.0.0'),
-      fetch('../data/argentina-research-v3.0.json?v=7.0.0'),
-      fetch('../data/paraguay-research-v3.0.json?v=7.0.0'),
-      fetch('../data/portugal-research-v3.0.json?v=7.0.0'),
-      fetch('../data/mexico-research-v3.0.json?v=7.0.0'),
-      fetch('../data/brazil-research-v3.0.json?v=7.0.0'),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=7.0.0'),
+      fetch('../data/spain-research-v2.2.json?v=7.0.1'),
+      fetch('../data/uruguay-research-v2.2.json?v=7.0.1'),
+      fetch('../data/argentina-research-v3.0.json?v=7.0.1'),
+      fetch('../data/paraguay-research-v3.0.json?v=7.0.1'),
+      fetch('../data/portugal-research-v3.0.json?v=7.0.1'),
+      fetch('../data/mexico-research-v3.0.json?v=7.0.1'),
+      fetch('../data/brazil-research-v3.0.json?v=7.0.1'),
+      fetch('../data/schemas/user-profile-v1.schema.json?v=7.0.1'),
     ]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !portugalResponse.ok || !mexicoResponse.ok || !brazilResponse.ok || !schemaResponse.ok) {
       throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${portugalResponse.status}/${mexicoResponse.status}/${brazilResponse.status}/${schemaResponse.status}`);
