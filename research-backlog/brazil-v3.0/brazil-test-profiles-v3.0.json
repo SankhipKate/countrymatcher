@@ -1,0 +1,26 @@
+[
+  {
+    "profile_id": "BR_TEST_NOMAD_ABOVE_THRESHOLD",
+    "description_ru": "Удалённый работник зарубежной компании с подтверждаемым доходом 1 600 USD.",
+    "expected_route": "BR_DIGITAL_NOMAD",
+    "expected_status": "SUITABLE"
+  },
+  {
+    "profile_id": "BR_TEST_NOMAD_BELOW_THRESHOLD",
+    "description_ru": "Удалённый работник с подтверждаемым доходом 1 000 USD и без подтверждённых накоплений.",
+    "expected_route": "BR_DIGITAL_NOMAD",
+    "expected_status": "UNSUITABLE"
+  },
+  {
+    "profile_id": "BR_TEST_PENSION_ABOVE_THRESHOLD",
+    "description_ru": "Пенсионер с подтверждаемой пенсией 2 100 USD.",
+    "expected_route": "BR_RETIREMENT",
+    "expected_status": "SUITABLE"
+  },
+  {
+    "profile_id": "BR_TEST_ACTIVE_INCOME_NOT_PENSION",
+    "description_ru": "Заявитель получает зарплату 3 000 USD, но не имеет пенсии.",
+    "expected_route": "BR_RETIREMENT",
+    "expected_status": "UNSUITABLE"
+  }
+]
