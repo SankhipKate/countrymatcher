@@ -17,5 +17,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: countrymatcher/package-lock.json
       - run: npm ci
+        working-directory: countrymatcher
       - run: npm test
+        working-directory: countrymatcher
