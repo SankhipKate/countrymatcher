@@ -47,8 +47,6 @@ function profile(overrides = {}) {
     },
     goal: {
       long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT',
-      physical_presence: 'DEPENDS_ON_COUNTRY',
-      language_exam_readiness: 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: 'NOT_IMPORTANT',
     },
     preferences: { monthly_budget: { amount: 2500, currency: 'USD' }, city_size: 'ANY', climate: ['ANY'] },
@@ -95,6 +93,7 @@ test('Brazil calculation exposes all eight researched routes', () => {
     'BR_PRODUCTIVE_INVESTOR',
     'BR_REAL_ESTATE_INVESTOR',
   ]);
+  assert.ok(result.routes.every(({ followUpQuestions }) => followUpQuestions.length === 0));
 });
 
 test('digital nomad is suitable for documented foreign remote income above 1,500 USD', () => {
@@ -106,27 +105,43 @@ test('digital nomad is suitable for documented foreign remote income above 1,500
   assert.equal(result.bestRoute.routeId, 'BR_DIGITAL_NOMAD');
 });
 
-test('digital nomad accepts the 18,000 USD savings alternative', () => {
+test('savings supplied outside the questionnaire remain an unverified nomad condition', () => {
   const input = profile({
     income: { primary: incomeSource({ amount: 800 }), savings: { amount: 20000, currency: 'USD' } },
   });
   const nomad = route(calculate(input), 'BR_DIGITAL_NOMAD');
-  assert.equal(nomad.routeStatus, 'SUITABLE');
-  assert.ok(nomad.checks.some(({ code }) => code === 'brazil_nomad_savings_met'));
+  assert.equal(nomad.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(nomad.conditions.some((message) => message.includes('18 000 USD') || message.includes('18 000 USD')));
+});
+
+test('one-dollar income uses the unasked savings alternative and a future income plan does not improve it', () => {
+  for (const routeSpecificAnswers of [
+    {},
+    { BR_DIGITAL_NOMAD: { ready_to_raise_income: true } },
+  ]) {
+    const input = profile({
+      income: { primary: incomeSource({ amount: 1 }) },
+      route_specific_answers: routeSpecificAnswers,
+    });
+    const nomad = route(calculate(input), 'BR_DIGITAL_NOMAD');
+    assert.equal(nomad.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+    assert.ok(nomad.conditions.some((message) => message.includes('18 000 USD') || message.includes('18 000 USD')));
+  }
 });
 
 test('digital nomad does not treat a Brazilian employer as a foreign remote basis', () => {
   const input = profile({ income: { primary: incomeSource({ sourceCountry: 'BR', amount: 2500 }) } });
   const nomad = route(calculate(input), 'BR_DIGITAL_NOMAD');
-  assert.equal(nomad.routeStatus, 'UNSUITABLE');
+  assert.equal(nomad.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(nomad.incomeTypeFit, 'DOES_NOT_MEET');
+  assert.ok(nomad.conditions.some((message) => message.includes('18 000 USD') || message.includes('18 000 USD')));
 });
 
-test('Russian bank documents keep an otherwise qualifying nomad route conditional', () => {
+test('legacy bank-country data does not lower an otherwise qualifying nomad route', () => {
   const input = profile({ income: { primary: incomeSource({ bankCountry: 'RU', amount: 2000 }) } });
   const nomad = route(calculate(input), 'BR_DIGITAL_NOMAD');
-  assert.equal(nomad.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.ok(nomad.actions.some((action) => /консульств/i.test(action)));
+  assert.equal(nomad.routeStatus, 'SUITABLE');
+  assert.equal(nomad.actions.some((action) => /консульств/i.test(action)), false);
 });
 
 test('retirement route requires a pension basis and accepts regular top-up income', () => {
@@ -142,31 +157,34 @@ test('retirement route requires a pension basis and accepts regular top-up incom
   assert.equal(retirement.incomeUsd, 2100);
 });
 
-test('local employment becomes suitable with a confirmed Brazilian offer', () => {
+test('local employment remains conditional because the questionnaire does not verify an offer', () => {
   const input = profile({ route_specific_answers: { BR_LOCAL_EMPLOYMENT: { local_job_offer_confirmed: true } } });
   const local = route(calculate(input), 'BR_LOCAL_EMPLOYMENT');
-  assert.equal(local.routeStatus, 'SUITABLE');
-  assert.equal(local.basisMissing, false);
+  assert.equal(local.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(local.basisMissing, true);
+  assert.ok(local.conditions.some((condition) => condition.includes('работодателя')));
 });
 
-test('Brazil graduate work requires a qualifying Brazilian degree and in-country filing', () => {
+test('Brazil graduate work remains conditional because the questionnaire does not verify the degree', () => {
   const input = profile({
     residence: { current_country: 'BR', current_status: 'STUDENT_STATUS' },
     route_specific_answers: { BR_BRAZIL_GRADUATE_WORK: { brazil_degree_completed: true } },
   });
   const graduate = route(calculate(input), 'BR_BRAZIL_GRADUATE_WORK');
-  assert.equal(graduate.routeStatus, 'SUITABLE');
+  assert.equal(graduate.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(graduate.conditions.some((condition) => condition.includes('Окончить')));
 });
 
-test('study route is suitable with admission and confirmed financial means', () => {
+test('study route remains conditional because admission and means are not questionnaire facts', () => {
   const input = profile({
     route_specific_answers: { BR_STUDY: { admission_confirmed: true, study_funds_confirmed: true } },
   });
   const study = route(calculate(input), 'BR_STUDY');
-  assert.equal(study.routeStatus, 'SUITABLE');
+  assert.equal(study.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(study.conditions.some((condition) => condition.includes('Поступить')));
 });
 
-test('same-sex family link can use the family-reunification route', () => {
+test('same-sex family link remains available as a conditional family route', () => {
   const input = profile({
     family: { adults_count: 2, partner_included: true, relationship_type: 'MARRIAGE' },
     lgbt: { enabled: true, consent_for_personalization: true, family_recognition_relevant: true, safety_relevant: true },
@@ -174,23 +192,27 @@ test('same-sex family link can use the family-reunification route', () => {
   });
   const result = calculate(input);
   const family = route(result, 'BR_FAMILY_REUNIFICATION');
-  assert.equal(family.routeStatus, 'SUITABLE');
+  assert.equal(family.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(family.conditions.some((condition) => condition.includes('семейную связь')));
   assert.equal(result.lgbt.enabled, true);
   assert.match(result.lgbt.rows[0][1], /однопол/i);
 });
 
-test('productive investment uses 500,000 BRL as the automatic standard threshold', () => {
+test('productive investment keeps official BRL capital as an unasked condition with dynamic USD context', () => {
   const input = profile({
     route_specific_answers: {
       BR_PRODUCTIVE_INVESTOR: { investment_capital_brl: 500000, investment_project_ready: true },
     },
   });
   const investor = route(calculate(input), 'BR_PRODUCTIVE_INVESTOR');
-  assert.equal(investor.routeStatus, 'SUITABLE');
+  assert.equal(investor.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.ok(Math.abs(investor.thresholdUsd - 500000 / 5.5) < 0.001);
+  assert.equal(investor.incomeRequirementConversion.originalCurrency, 'BRL');
+  assert.equal(investor.incomeRequirementConversion.originalAmount, 500000);
+  assert.ok(investor.conditions.some((condition) => condition.includes('500 000 BRL')));
 });
 
-test('productive investment keeps the 150,000 BRL innovation alternative conditional', () => {
+test('productive investment ignores injected capital and preserves both researched alternatives', () => {
   const input = profile({
     route_specific_answers: {
       BR_PRODUCTIVE_INVESTOR: { investment_capital_brl: 200000, innovation_project: true },
@@ -198,10 +220,11 @@ test('productive investment keeps the 150,000 BRL innovation alternative conditi
   });
   const investor = route(calculate(input), 'BR_PRODUCTIVE_INVESTOR');
   assert.equal(investor.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.ok(investor.checks.some(({ code }) => code === 'brazil_productive_innovation_review'));
+  assert.ok(investor.conditions.some((condition) => condition.includes('150 000 BRL')));
+  assert.equal(investor.incomeUsd, null);
 });
 
-test('real-estate investment uses the reduced 700,000 BRL threshold in the Northeast', () => {
+test('real-estate investment ignores injected region and preserves both official BRL thresholds', () => {
   const input = profile({
     route_specific_answers: {
       BR_REAL_ESTATE_INVESTOR: {
@@ -212,8 +235,20 @@ test('real-estate investment uses the reduced 700,000 BRL threshold in the North
     },
   });
   const investor = route(calculate(input), 'BR_REAL_ESTATE_INVESTOR');
-  assert.equal(investor.routeStatus, 'SUITABLE');
-  assert.ok(Math.abs(investor.thresholdUsd - 700000 / 5.5) < 0.001);
+  assert.equal(investor.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(Math.abs(investor.thresholdUsd - 1000000 / 5.5) < 0.001);
+  assert.equal(investor.incomeRequirementConversion.originalAmount, 1000000);
+  assert.ok(investor.conditions.some((condition) => condition.includes('700 000 BRL')));
+});
+
+test('a citizenship goal does not lower an otherwise available initial Brazil permit', () => {
+  const input = profile({
+    income: { primary: incomeSource({ amount: 1700 }) },
+    goal: { long_term: 'CITIZENSHIP_REQUIRED' },
+  });
+  const nomad = route(calculate(input), 'BR_DIGITAL_NOMAD');
+  assert.equal(nomad.routeStatus, 'SUITABLE');
+  assert.equal(nomad.blockers.length, 0);
 });
 
 test('Brazil practical result includes five family-specific cities and a small city', () => {
@@ -253,7 +288,7 @@ test('public matcher loads Brazil data, adapter, flag, cities and version 7.0.1'
   assert.match(app, /brazilAdapter/);
   assert.match(app, /brazil-research-v3\.0\.json\?v=7\.0\.1/);
   assert.match(app, /countryId === 'BR' \? '🇧🇷'/);
-  assert.match(app, /\['AR', 'PY', 'PT', 'MX', 'BR'\]\.includes\(countryId\)/);
+  assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);
   assert.match(fx, /\['EUR', 'ARS', 'MXN', 'BRL'\]/);
   assert.equal(packageJson.version, '7.0.1');

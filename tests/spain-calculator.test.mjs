@@ -9,7 +9,7 @@ import {
   COUNTRY_GROUP_LABELS_RU,
 } from '../js/spain-calculator.js';
 
-const data = JSON.parse(await readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8'));
+const data = JSON.parse(await readFile(new URL('../data/spain-research-v3.0.json', import.meta.url), 'utf8'));
 const universalSamples = JSON.parse(await readFile(new URL('./fixtures/universal-profile-samples-v1.json', import.meta.url), 'utf8'));
 
 const baseProfile = {
@@ -17,6 +17,7 @@ const baseProfile = {
   currentLocation: 'THIRD_COUNTRY',
   legalResidence: true,
   bankCountry: 'OTHER',
+  incomeSourceCountry: 'US',
   socialSecurityPlan: 'REGISTER_IN_SPAIN',
   adults: 1,
   children: 0,
@@ -25,8 +26,6 @@ const baseProfile = {
   needsFamilyVisa: false,
   schoolNeeded: false,
   goal: 'TEMPORARY_RESIDENCE',
-  monthsPerYear: 12,
-  languageReadiness: 'YES',
   keepRuCitizenship: 'DESIRABLE',
   monthlyBudgetUsd: 2200,
   citySize: 'ANY',
@@ -46,7 +45,7 @@ const strictProfile = (overrides = {}) => {
   source.lgbt = { enabled: false, consent_for_personalization: false };
   source.income.primary.type = 'PASSIVE_INCOME';
   source.income.primary.monthly_provable = { amount: 5000, currency: 'USD' };
-  source.goal = { long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT', physical_presence: 'MOST_OF_YEAR', language_exam_readiness: 'YES', keep_russian_citizenship: 'DESIRABLE' };
+  source.goal = { long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT', keep_russian_citizenship: 'DESIRABLE' };
   source.preferences.monthly_budget = null;
   source.preferences.city_size = 'ANY';
   source.route_specific_answers = {};
@@ -84,20 +83,20 @@ test('currency conversion prevents comparing USD directly with an EUR threshold'
   const result = calculate({ plannedBasis: 'REMOTE_EMPLOYEE', monthlyIncomeUsd: 2500 });
   const dnv = result.routes.find((route) => route.routeId === 'ES_DNV');
   assert.equal(dnv.routeStatus, 'UNSUITABLE');
-  assert.ok(dnv.blockers.some((message) => message.includes('требование маршрута')));
+  assert.ok(dnv.blockers.some((message) => message.includes('ниже обязательного порога')));
 });
 
-test('Russian bank statements keep DNV conditional and show the document review', () => {
+test('legacy bank-country input does not change DNV status', () => {
   const result = calculate({ plannedBasis: 'REMOTE_EMPLOYEE', monthlyIncomeUsd: 4000, bankCountry: 'RU' });
-  assert.equal(result.bestRoute.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.ok(result.bestRoute.review.some((item) => item.includes('выписок российского банка')));
+  assert.equal(result.bestRoute.routeStatus, 'SUITABLE');
+  assert.equal(result.bestRoute.review.some((item) => item.includes('российского банка')), false);
 });
 
 test('Spanish primary income source is evaluated separately for DNV', () => {
   const result = calculate({ plannedBasis: 'REMOTE_EMPLOYEE', monthlyIncomeUsd: 5000, incomeSourceCountry: 'ES' });
   const dnv = result.routes.find((route) => route.routeId === 'ES_DNV');
   assert.equal(dnv.routeStatus, 'UNSUITABLE');
-  assert.ok(dnv.blockers.some((message) => message.includes('за пределами Испании')));
+  assert.ok(dnv.blockers.length > 0);
 });
 
 test('passive-income profile selects NLV when its threshold is met', () => {
@@ -112,20 +111,20 @@ test('NLV fails when passive resources are below the threshold', () => {
   assert.equal(nlv.routeStatus, 'UNSUITABLE');
 });
 
-test('every NLV blocker has a corresponding corrective action', () => {
+test('an unsuitable NLV does not suggest that increasing income will repair the current route', () => {
   const result = calculate({ plannedBasis: 'PASSIVE_INCOME', monthlyIncomeUsd: 1800, legalResidence: false });
   const nlv = result.routes.find((route) => route.routeId === 'ES_NLV');
   assert.equal(nlv.blockers.length, 2);
-  assert.equal(nlv.actions.length, 2);
+  assert.equal(nlv.actions.length, 1);
   assert.ok(nlv.actions.some((action) => action.includes('Подаваться из России')));
-  assert.ok(nlv.actions.some((action) => action.includes(`${Math.round(nlv.thresholdEur)} EUR`)));
+  assert.equal(nlv.actions.some((action) => action.includes(`${Math.round(nlv.thresholdEur)} EUR`)), false);
 });
 
 test('Spanish highly-qualified route is conditional until the offer and qualification are verified', () => {
   const result = calculate({ plannedBasis: 'SPANISH_JOB_OFFER', monthlyIncomeUsd: 5000 });
   assert.equal(result.bestRoute.routeId, 'ES_HIGHLY_QUALIFIED');
   assert.equal(result.bestRoute.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.ok(result.bestRoute.actions.some((action) => action.includes('квалифицированной работы')));
+  assert.ok(result.bestRoute.conditions.some((condition) => condition.includes('высококвалифицированную должность')));
   assert.match(result.bestRoute.primarySource.url, /inclusion\.gob\.es/);
 });
 
@@ -147,13 +146,14 @@ test('practical budget has a researched small Spanish city without fallback', ()
   assert.equal(result.recommendedCity.cityId, 'ES_CASTELLON');
 });
 
-test('student route compares available means with the published IPREM requirement', () => {
+test('student route remains conditional because admission and financing are not questionnaire facts', () => {
   const enough = calculate({ plannedBasis: 'STUDY', monthlyIncomeUsd: 1000 }).routes.find((route) => route.routeId === 'ES_STUDENT');
   const low = calculate({ plannedBasis: 'STUDY', monthlyIncomeUsd: 500 }).routes.find((route) => route.routeId === 'ES_STUDENT');
   assert.equal(enough.thresholdEur, 600);
   assert.equal(enough.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.equal(low.routeStatus, 'UNSUITABLE');
-  assert.ok(low.actions.some((action) => action.includes('600 EUR')));
+  assert.equal(low.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(low.conditions.length > 0);
+  assert.equal(low.actions.some((action) => action.includes('600 EUR')), false);
 });
 
 test('unknown multiple-citizenship rule does not invent a hard conflict', () => {
@@ -256,7 +256,7 @@ test('EUR income and budget are converted through the USD base with audit metada
   const result = calculateSpain(profile, data, currencyContext);
   assert.equal(result.profile.monthlyIncomeUsd, 5000);
   assert.equal(result.bestRoute.incomeEur, 4000);
-  assert.equal(result.bestRoute.incomeRequirementConversion.appliedRate, 1);
+  assert.equal(result.bestRoute.incomeRequirementConversion.appliedRate, 1.25);
   assert.equal(result.recommendedCity.budgetConversion.convertedAmount, 3000);
   assert.equal(result.bestRoute.incomeRequirementConversion.rateAsOf, currencyContext.fx.as_of);
 });

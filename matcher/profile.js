@@ -10,14 +10,33 @@ export function resolveProvableAmount(totalAmount, evidenceLevel, partialAmount)
   return null;
 }
 
-const incomeSource = (prefix, owner, answers) => ({
+const incomeSource = (prefix, owner, answers) => answers[`${prefix}Type`] === 'NO_REGULAR_INCOME' ? ({
+  owner,
+  type: 'NO_REGULAR_INCOME',
+  source_geography: 'NO_PERMANENT_PAYER',
+  source_country: null,
+  bank_country: null,
+  monthly_total: { amount: 0, currency: 'USD' },
+  monthly_provable: { amount: 0, currency: 'USD' },
+  evidence_level: 'NONE',
+  history_months: null,
+  stability: null,
+  continues_after_move: null,
+  contract_remaining_months: null,
+  business_age_months: null,
+}) : ({
   owner,
   type: answers[`${prefix}Type`],
-  source_country: answers[`${prefix}Type`] === 'FREELANCE_OR_SELF_EMPLOYED'
-    ? null : parseCountryCode(answers[`${prefix}SourceCountry`]),
-  bank_country: parseCountryCode(answers[`${prefix}BankCountry`]),
+  source_geography: answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER'),
+  source_country: (answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER')) === 'ONE_COUNTRY'
+    ? parseCountryCode(answers[`${prefix}SourceCountry`]) : null,
+  bank_country: null,
   monthly_total: money(answers[`${prefix}TotalAmount`] ?? answers[`${prefix}Amount`], answers[`${prefix}Currency`]),
-  monthly_provable: money(answers[`${prefix}Amount`], answers[`${prefix}Currency`]),
+  monthly_provable: money(resolveProvableAmount(
+    answers[`${prefix}TotalAmount`] ?? answers[`${prefix}Amount`],
+    answers[`${prefix}Evidence`],
+    answers[`${prefix}Amount`],
+  ), answers[`${prefix}Currency`]),
   evidence_level: answers[`${prefix}Evidence`],
   history_months: null,
   stability: null,
@@ -49,6 +68,7 @@ export function buildUserProfile(answers) {
     application_preferences: { methods: answers.applicationMethods?.length ? answers.applicationMethods : answers.applicationMethod ? [answers.applicationMethod] : [] },
     family: {
       adults_count: partnerIncluded ? 2 : 1,
+      adult_ages: [answers.applicantAge, ...(partnerIncluded ? [answers.partnerAge] : [])].map((age) => age === '' || age == null ? null : Number(age)),
       partner_included: partnerIncluded,
       relationship_type: partnerIncluded ? answers.relationshipType : null,
       children,
@@ -69,9 +89,6 @@ export function buildUserProfile(answers) {
     },
     goal: {
       long_term: answers.longTermGoal,
-      physical_presence: answers.physicalPresence,
-      language_exam_readiness: ['PR_REQUIRED', 'CITIZENSHIP_DESIRED', 'CITIZENSHIP_MAIN_GOAL', 'CITIZENSHIP_REQUIRED'].includes(answers.longTermGoal)
-        ? answers.languageExamReadiness : 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: answers.keepRuCitizenship,
     },
     preferences: {
@@ -102,21 +119,22 @@ export function validateUserProfile(profile) {
   if (!profile?.residence?.current_status) add('currentStatus', 'Укажите ваш текущий статус.');
   if (!profile?.application_preferences?.methods?.[0]) add('applicationMethods', 'Выберите хотя бы один способ подачи.');
   if (![1, 2].includes(profile?.family?.adults_count)) add('partnerIncluded', 'Укажите, переезжает ли партнёр.');
+  if ((profile?.family?.adult_ages || []).some((age) => age !== null && (!Number.isInteger(age) || age < 18 || age > 120))) add('adultAges', 'Возраст взрослого должен быть от 18 до 120 лет или оставлен пустым.');
   if (profile?.family?.partner_included && !profile.family.relationship_type) add('relationshipType', 'Укажите, как оформлены отношения.');
   if ((profile?.family?.children || []).some((child) => !Number.isInteger(child.age_years) || child.age_years < 0 || child.age_years > 25)) add('childAges', 'Укажите возраст каждого ребёнка от 0 до 25 лет.');
   const sources = [profile?.income?.primary, ...(profile?.income?.additional_sources || []), ...(profile?.income?.partner?.sources || [])];
   for (const source of sources) {
     if (!source?.type) add('primaryType', 'Укажите тип дохода.');
-    if (source?.source_country !== null && !code(source?.source_country)) add('primarySourceCountry', 'Укажите двухбуквенный код страны источника дохода.');
-    if (source?.source_country === null && source?.type !== 'FREELANCE_OR_SELF_EMPLOYED') add('primarySourceCountry', 'Укажите страну источника дохода.');
-    if (!code(source?.bank_country)) add('primaryBankCountry', 'Укажите двухбуквенный код страны банка.');
-    if (!positiveMoney(source?.monthly_total) || source.monthly_total.amount <= 0) add('primaryTotalAmount', 'Укажите положительную сумму регулярного дохода.');
-    if (!positiveMoney(source?.monthly_provable) || source.monthly_provable.amount < 0 || source.monthly_provable.amount > source.monthly_total.amount) add('primaryAmount', 'Подтверждаемая сумма должна быть от 0 до общего дохода.');
+    if (!['ONE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_PERMANENT_PAYER'].includes(source?.source_geography)) add('primarySourceScope', 'Укажите географию источников дохода.');
+    if (source?.source_geography === 'ONE_COUNTRY' && !code(source?.source_country)) add('primarySourceCountry', 'Укажите страну источника дохода.');
+    const noIncome = source?.type === 'NO_REGULAR_INCOME';
+    const totalValid = noIncome || (Boolean(positiveMoney(source?.monthly_total)) && source.monthly_total.amount > 0);
+    const provableValid = Boolean(positiveMoney(source?.monthly_provable));
+    if (!totalValid) add('primaryTotalAmount', 'Укажите положительную сумму регулярного дохода.');
+    if (!provableValid || source.monthly_provable.amount < 0 || (!noIncome && totalValid && source.monthly_provable.amount > source.monthly_total.amount)) add('primaryAmount', 'Подтверждаемая сумма должна быть от 0 до общего дохода.');
     if (!source?.evidence_level) add('primaryEvidence', 'Укажите полноту подтверждения дохода.');
   }
   if (!profile?.goal?.long_term) add('longTermGoal', 'Выберите долгосрочную цель.');
-  if (!profile?.goal?.physical_presence) add('physicalPresence', 'Укажите, сколько времени готовы жить в стране.');
-  if (!profile?.goal?.language_exam_readiness) add('languageExamReadiness', 'Укажите готовность к языковому экзамену.');
   if (!profile?.goal?.keep_russian_citizenship) add('keepRuCitizenship', 'Укажите важность сохранения гражданства РФ.');
   if (profile?.preferences?.monthly_budget !== null && (!positiveMoney(profile?.preferences?.monthly_budget) || profile.preferences.monthly_budget.amount <= 0)) add('monthlyBudget', 'Укажите положительный семейный бюджет или выберите «Пока не знаю».');
   if (!profile?.pets?.types?.length) add('petTypes', 'Укажите домашних животных.');
@@ -192,6 +210,13 @@ export function collectEligibleFollowUps(calculation) {
 }
 
 export function describeIncomeRequirement(route, formatCurrency) {
+  const conversion = route?.incomeRequirementConversion;
+  if (conversion?.originalCurrency && conversion?.targetCurrency
+    && conversion.originalCurrency !== conversion.targetCurrency) {
+    const official = `${formatCurrency(conversion.originalAmount, conversion.originalCurrency)} (${conversion.originalCurrency})`;
+    const equivalent = `${formatCurrency(conversion.convertedAmount, conversion.targetCurrency)} (${conversion.targetCurrency})`;
+    return `Официальная сумма: ${official}; примерно ${equivalent}.${route?.incomeGuidance ? ` ${route.incomeGuidance}` : ''}`;
+  }
   if (route?.incomeGuidance) return route.incomeGuidance;
   if (route?.incomeTypeFit === 'DOES_NOT_MEET') {
     const acceptedByRoute = {
@@ -215,7 +240,7 @@ export function describeResultIntro(routes, changed = false) {
   const allUnsuitable = routes?.length > 0 && routes.every((route) => route.routeStatus === 'UNSUITABLE');
   return {
     heading: changed ? 'Результат обновлён после уточнения' : allUnsuitable ? 'Сейчас подходящих вариантов не найдено' : 'Результат по стране',
-    routeLabel: allUnsuitable ? 'Наиболее близкий вариант при изменении условий' : 'Наиболее подходящий вариант по вашим ответам',
+    routeLabel: allUnsuitable ? 'Первый из проверенных неподходящих маршрутов' : 'Наиболее подходящий вариант по вашим ответам',
   };
 }
 
@@ -226,10 +251,38 @@ const ROUTE_DISPLAY_RANK = Object.freeze({
 });
 
 export function sortRoutesForDisplay(routes = []) {
-  return [...routes].sort((a, b) => (ROUTE_DISPLAY_RANK[a.routeStatus] ?? 99) - (ROUTE_DISPLAY_RANK[b.routeStatus] ?? 99));
+  const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  return routes
+    .map((route, originalIndex) => ({ route, originalIndex }))
+    .sort((left, right) => {
+      const a = left.route;
+      const b = right.route;
+      const statusDifference = (ROUTE_DISPLAY_RANK[a.routeStatus] ?? 99) - (ROUTE_DISPLAY_RANK[b.routeStatus] ?? 99);
+      if (statusDifference) return statusDifference;
+      const familyDifference = (familyRank[a.familyFit] ?? 1) - (familyRank[b.familyFit] ?? 1);
+      if (familyDifference) return familyDifference;
+      const goalDifference = (goalRank[a.goalFit] ?? 1) - (goalRank[b.goalFit] ?? 1);
+      if (goalDifference) return goalDifference;
+      if (a.routeStatus === 'UNSUITABLE') {
+        const blockerDifference = (a.blockers?.length || 0) - (b.blockers?.length || 0);
+        if (blockerDifference) return blockerDifference;
+      }
+      const conditionsDifference = (a.conditions?.length || 0) - (b.conditions?.length || 0);
+      return conditionsDifference || left.originalIndex - right.originalIndex;
+    })
+    .map(({ route }) => route);
 }
 
 export function sortCountriesForDisplay(countries = []) {
+  const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  const medianCost = (country) => {
+    const values = (country?.cities || []).map((city) => Number(city.costUsd)).filter(Number.isFinite).sort((a, b) => a - b);
+    if (!values.length) return null;
+    const middle = Math.floor(values.length / 2);
+    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
+  };
   return countries
     .map((country, originalIndex) => ({ country, originalIndex }))
     .sort((left, right) => {
@@ -237,7 +290,17 @@ export function sortCountriesForDisplay(countries = []) {
       const rightStatus = right.country?.bestRoute?.routeStatus ?? right.country?.country?.group;
       const leftRank = ROUTE_DISPLAY_RANK[leftStatus] ?? 99;
       const rightRank = ROUTE_DISPLAY_RANK[rightStatus] ?? 99;
-      return leftRank - rightRank || left.originalIndex - right.originalIndex;
+      if (leftRank !== rightRank) return leftRank - rightRank;
+      const leftBest = left.country?.bestRoute;
+      const rightBest = right.country?.bestRoute;
+      const familyDifference = (familyRank[leftBest?.familyFit] ?? 1) - (familyRank[rightBest?.familyFit] ?? 1);
+      if (familyDifference) return familyDifference;
+      const goalDifference = (goalRank[leftBest?.goalFit] ?? 1) - (goalRank[rightBest?.goalFit] ?? 1);
+      if (goalDifference) return goalDifference;
+      const leftCost = medianCost(left.country);
+      const rightCost = medianCost(right.country);
+      if (leftCost != null && rightCost != null && leftCost !== rightCost) return leftCost - rightCost;
+      return left.originalIndex - right.originalIndex;
     })
     .map(({ country }) => country);
 }
@@ -245,7 +308,7 @@ export function sortCountriesForDisplay(countries = []) {
 const CITY_SIZE_LABELS = new Map([
   ['SMALL', 'Небольшой город'],
   ['MEDIUM', 'Средний город'],
-  ['LARGE', 'Крупный город'],
+  ['LARGE', 'Большой город'],
 ]);
 
 const CITY_ROLE_LABELS = new Map([
@@ -263,6 +326,43 @@ export function cityCategories(size, roles = []) {
     ...roles.map((role) => CITY_ROLE_LABELS.get(String(role).trim().toLocaleLowerCase('ru'))),
   ].filter(Boolean);
   return [...new Set(categories)];
+}
+
+const temperatureNumbers = (value) => String(value ?? '')
+  .replaceAll(',', '.')
+  .match(/[−-]?\d+(?:\.\d+)?/g)
+  ?.map((item) => Number(item.replace('−', '-')))
+  .filter(Number.isFinite) || [];
+
+export function formatTemperatureRange(value) {
+  const numbers = temperatureNumbers(value);
+  if (numbers.length >= 2) return `примерно ${numbers[0].toLocaleString('ru-RU')}–${numbers[1].toLocaleString('ru-RU')} °C`;
+  if (numbers.length === 1) return `около ${numbers[0].toLocaleString('ru-RU')} °C`;
+  return value ? String(value) : '';
+}
+
+export function enrichCityCategories(cities = []) {
+  if (!cities.length) return [];
+  const researchedCategories = new Set(cities.flatMap((city) =>
+    cityCategories(city.size ?? city.populationCategory, city.roles)));
+  const cost = (city) => Number(city.cost ?? city.costUsd);
+  const cold = (city) => temperatureNumbers(city.coldRange)[0] ?? Number(city.avgTempColdestMonthC);
+  const hot = (city) => temperatureNumbers(city.hotRange).at(-1) ?? Number(city.avgTempHottestMonthC);
+  const finite = (selector) => cities.filter((city) => Number.isFinite(selector(city)));
+  const mostExpensive = finite(cost).sort((a, b) => cost(b) - cost(a))[0];
+  const cheapest = finite(cost).sort((a, b) => cost(a) - cost(b))[0];
+  const coolest = finite(cold).sort((a, b) => cold(a) - cold(b))[0];
+  const hottest = finite(hot).sort((a, b) => hot(b) - hot(a))[0];
+  return cities.map((city) => ({
+    ...city,
+    categories: [...new Set([
+      ...cityCategories(city.size ?? city.populationCategory, city.roles),
+      !researchedCategories.has('Самый дорогой') && city === mostExpensive ? 'Самый дорогой' : null,
+      !researchedCategories.has('Самый недорогой') && city === cheapest ? 'Самый недорогой' : null,
+      !researchedCategories.has('Самый прохладный') && city === coolest ? 'Самый прохладный' : null,
+      !researchedCategories.has('Самый жаркий') && city === hottest ? 'Самый жаркий' : null,
+    ].filter(Boolean))],
+  }));
 }
 
 const normalizedRouteText = (text) => String(text || '')

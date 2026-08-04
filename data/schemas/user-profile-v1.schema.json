@@ -91,6 +91,17 @@
           "maximum": 2,
           "description": "В MVP: основной заявитель и при необходимости один супруг/партнёр."
         },
+        "adult_ages": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "type": ["integer", "null"],
+            "minimum": 18,
+            "maximum": 120
+          },
+          "description": "Необязательный возраст заявителя и партнёра для молодёжных и пенсионных маршрутов."
+        },
         "partner_included": { "type": "boolean" },
         "relationship_type": {
           "type": ["string", "null"],
@@ -232,8 +243,6 @@
       "additionalProperties": false,
       "required": [
         "long_term",
-        "physical_presence",
-        "language_exam_readiness",
         "keep_russian_citizenship"
       ],
       "properties": {
@@ -246,18 +255,6 @@
             "CITIZENSHIP_REQUIRED",
             "UNDECIDED"
           ]
-        },
-        "physical_presence": {
-          "enum": [
-            "MOST_OF_YEAR",
-            "AT_LEAST_8_MONTHS",
-            "AT_LEAST_6_MONTHS",
-            "LESS_THAN_6_MONTHS",
-            "DEPENDS_ON_COUNTRY"
-          ]
-        },
-        "language_exam_readiness": {
-          "enum": ["YES", "BASIC_ONLY", "NO", "DEPENDS_ON_LANGUAGE"]
         },
         "keep_russian_citizenship": {
           "enum": ["REQUIRED", "DESIRABLE", "NOT_IMPORTANT", "WILLING_TO_RENOUNCE"]
@@ -394,6 +391,7 @@
       "required": [
         "owner",
         "type",
+        "source_geography",
         "source_country",
         "bank_country",
         "monthly_provable",
@@ -403,6 +401,7 @@
         "owner": { "enum": ["APPLICANT", "PARTNER"] },
         "type": {
           "enum": [
+            "NO_REGULAR_INCOME",
             "REMOTE_EMPLOYMENT",
             "CONTRACTOR",
             "FREELANCE_OR_SELF_EMPLOYED",
@@ -417,7 +416,8 @@
           "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }],
           "description": "Страна источника может быть null для фриланса или самозанятости без единого иностранного заказчика."
         },
-        "bank_country": { "$ref": "#/$defs/countryCode" },
+        "source_geography": { "enum": ["ONE_COUNTRY", "MULTIPLE_COUNTRIES", "NO_PERMANENT_PAYER"] },
+        "bank_country": { "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }] },
         "monthly_total": { "$ref": "#/$defs/money" },
         "monthly_provable": { "$ref": "#/$defs/money" },
         "evidence_level": { "enum": ["FULL", "PARTIAL", "NONE"] },

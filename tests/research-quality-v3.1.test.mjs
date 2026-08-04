@@ -21,12 +21,12 @@ test('Mexico user text translates legal terms and explains safety percentages', 
   assert.match(data.lgbt.safety_explanation_ru, /не доля жертв/i);
 });
 
-test('Brazil digital nomad does not satisfy mandatory citizenship without a confirmed chain', async () => {
+test('Brazil digital nomad separates the initial permit from its unconfirmed citizenship chain', async () => {
   const data = await load('../data/brazil-research-v3.0.json');
   const route = data.routes.find(({ route_id }) => route_id === 'BR_DIGITAL_NOMAD');
   assert.equal(route.long_term_path.chain_confirmed_for_required_citizenship, false);
   assert.match(route.pr_path_ru, /не устанавливает автоматический переход/i);
-  assert.match(route.citizenship_path_ru, /обязательным гражданством.*неподходящим/i);
+  assert.match(route.citizenship_path_ru, /отдельн.*основан/i);
 });
 
 test('Brazil family budgets below 5000 USD mathematically fit', async () => {
@@ -40,7 +40,7 @@ test('Brazil family budgets below 5000 USD mathematically fit', async () => {
 test('generic future verification is absent from Brazil conditions', async () => {
   const adapter = await readFile(new URL('../js/countries/brazil-adapter.js', import.meta.url), 'utf8');
   assert.equal(adapter.includes('Перед переездом проверить последовательность продления или смены основания'), false);
-  assert.match(adapter, /required_long_term_chain_not_confirmed/);
+  assert.equal(adapter.includes('required_long_term_chain_not_confirmed'), false);
 });
 
 test('city budget code ignores nonnumeric school descriptions', async () => {

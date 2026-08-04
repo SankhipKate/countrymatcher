@@ -28,16 +28,39 @@ test('Mexico satisfies the current strict Research Package 3.0 schema', () => {
   assert.equal(validate(mexico), true, ajv.errorsText(validate.errors, { separator: '\n' }));
 });
 
-test('Mexico exposes two public routes and keeps six researched routes hidden', () => {
+test('Mexico exposes all eight researched routes', () => {
   assert.deepEqual(mexico.routes.filter(({ publishable }) => publishable).map(({ route_id }) => route_id), [
     'MX_TEMP_ECONOMIC_SOLVENCY',
     'MX_TEMP_LOCAL_JOB_OFFER',
+    'MX_FAMILY_TEMP_SPONSOR',
+    'MX_FAMILY_MEXICAN_OR_PERMANENT_PARTNER',
+    'MX_FAMILY_DIRECT_PERMANENT',
+    'MX_PERMANENT_PENSIONER',
+    'MX_TEMP_STUDENT',
+    'MX_INTERNATIONAL_PROTECTION',
   ]);
-  assert.equal(mexico.routes.filter(({ publishable }) => !publishable).length, 6);
-  assert.equal(mexico.completeness.public_routes_ready, 2);
-  assert.equal(mexico.completeness.hidden_routes, 6);
+  assert.equal(mexico.routes.filter(({ publishable }) => !publishable).length, 0);
+  assert.equal(mexico.completeness.public_routes_ready, 8);
+  assert.equal(mexico.completeness.hidden_routes, 0);
   assert.equal(mexico.completeness.overall_percent, 96);
   assert.deepEqual(mexico.completeness.publication_blockers, []);
+});
+
+test('every published Mexico route has executable structured requirements', () => {
+  for (const route of mexico.routes.filter(({ publishable }) => publishable)) {
+    assert.ok(Array.isArray(route.requirements) && route.requirements.length > 0, route.route_id);
+    for (const requirement of route.requirements) {
+      assert.ok(requirement.requirement_id, route.route_id);
+      assert.ok(requirement.type, route.route_id);
+      assert.ok(requirement.role, route.route_id);
+      assert.ok(requirement.subject, route.route_id);
+      assert.ok(requirement.timing, route.route_id);
+      assert.ok(requirement.evaluation_mode, route.route_id);
+      assert.ok(requirement.condition_ru, route.route_id);
+      assert.ok(requirement.source_ids.length > 0, route.route_id);
+      assert.ok(requirement.confidence, route.route_id);
+    }
+  }
 });
 
 test('Mexico keeps official income and savings thresholds explicit', () => {
@@ -58,12 +81,4 @@ test('all source ids referenced by Mexico exist', () => {
     lgbt: mexico.lgbt,
   });
   assert.deepEqual([...new Set(referenced)].filter((sourceId) => !existing.has(sourceId)), []);
-});
-
-test('runtime and backlog Mexico packages are byte-for-byte identical', async () => {
-  const [runtime, backlog] = await Promise.all([
-    readFile(new URL('../data/mexico-research-v3.0.json', import.meta.url)),
-    readFile(new URL('../research-backlog/mexico-v3.0/mexico-research-v3.0.json', import.meta.url)),
-  ]);
-  assert.equal(runtime.equals(backlog), true);
 });

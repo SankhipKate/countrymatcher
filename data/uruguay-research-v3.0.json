@@ -1,0 +1,1357 @@
+{
+  "schema_version": "3.0",
+  "research_template": "MVP Research Template 3.0",
+  "country_id": "UY",
+  "country_name_ru": "Уругвай",
+  "country_name_en": "Uruguay",
+  "research_date": "2026-07-20",
+  "next_review_date": "2026-10-19",
+  "status_policy": {
+    "statuses": [
+      "SUITABLE",
+      "SUITABLE_WITH_CONDITIONS",
+      "UNSUITABLE"
+    ],
+    "principle_ru": "Оценивается текущее подтверждаемое положение; непроверяемые основания выводятся как условия."
+  },
+  "country_summary_ru": "Юридические основания подтверждены официальными источниками. Фиксированного универсального порога средств не опубликовано; городские расходы предварительные.",
+  "routes": [
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": false,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": false,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [],
+      "route_id": "UY_PERMANENT",
+      "name_ru": "Постоянная резиденция",
+      "official_term_ru": "Residencia Legal Permanente",
+      "route_type": "PERMANENT_RESIDENCE",
+      "basis_ru": "Прямая постоянная резиденция: временная резиденция перед ней не обязательна.",
+      "application_inside_ru": "Подача внутри страны предусмотрена.",
+      "application_abroad_ru": "Подача из России не предусмотрена либо маршрут требует въезда.",
+      "first_permit_months": 0,
+      "renewal_months": null,
+      "income_rule_ru": "Универсальный числовой порог не установлен.",
+      "income_threshold_type": "NO_UNIVERSAL_AMOUNT",
+      "family_rule_ru": "Незарегистрированный союз допускается после судебного признания unión concubinaria. Правило одинаково для пар любого пола.",
+      "partner_work_rights_ru": "Права партнёра проверяются по его статусу.",
+      "pr_path_ru": "Прямой путь к постоянной резиденции.",
+      "citizenship_path_ru": "Семейный срок 3 года применяется, когда семья фактически живёт с заявителем в Уругвае.",
+      "presence_rule_ru": "Требования присутствия указаны в подробной таблице маршрута.",
+      "dual_citizenship_ru": "Правило требует индивидуальной проверки.",
+      "status_logic_ru": "Статус формируется только из requirements.",
+      "requirements": [
+        {
+          "requirement_id": "UY_PERMANENT_CURRENT_INCOME",
+          "type": "FINANCIAL",
+          "role": "BLOCKER",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "condition_ru": "Подтвердить регулярные средства к существованию.",
+          "profile_path": "income",
+          "source_ids": [
+            "S_UY_PERMANENT"
+          ],
+          "confidence": "HIGH",
+          "met_ru": "Текущий подтверждаемый регулярный доход достигает применяемого расчётного порога.",
+          "unmet_ru": "Текущий подтверждаемый доход должен быть больше 650 USD в месяц.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 650,
+                "currency": "USD",
+                "period": "MONTHLY",
+                "comparison": "GREATER_THAN",
+                "history_months": null,
+                "allowed_income_types": [],
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "S_UY_PERMANENT"
+                ],
+                "confidence": "MEDIUM"
+              }
+            ]
+          }
+        }
+      ],
+      "source_ids": [
+        "S_UY_PERMANENT",
+        "S_UY_CITIZENSHIP",
+        "S_UY_CONCUBINATO",
+        "S_UY_RESIDENCE"
+      ]
+    },
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": true,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": false,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [],
+      "route_id": "UY_TEMPORARY",
+      "name_ru": "Временная резиденция",
+      "official_term_ru": "Residencia Legal Temporaria",
+      "route_type": "TEMPORARY_RESIDENCE",
+      "basis_ru": "Отдельная срочная резиденция по работе, учёбе или иному временному основанию; это не обязательная ступень перед постоянной резиденцией.",
+      "application_inside_ru": "Подача внутри страны предусмотрена.",
+      "application_abroad_ru": "Подача из России не предусмотрена либо маршрут требует въезда.",
+      "first_permit_months": 24,
+      "renewal_months": null,
+      "income_rule_ru": "Универсальный числовой порог не установлен.",
+      "income_threshold_type": "NO_UNIVERSAL_AMOUNT",
+      "family_rule_ru": "Незарегистрированный союз допускается после судебного признания unión concubinaria. Правило одинаково для пар любого пола.",
+      "partner_work_rights_ru": "Права партнёра проверяются по его статусу.",
+      "pr_path_ru": "Путь к ПМЖ зависит от продления или смены основания.",
+      "citizenship_path_ru": "Нужно подтвердить, засчитывается ли весь период временной резиденции как обычное проживание.",
+      "presence_rule_ru": "Требования присутствия указаны в подробной таблице маршрута.",
+      "dual_citizenship_ru": "Правило требует индивидуальной проверки.",
+      "status_logic_ru": "Статус формируется только из requirements.",
+      "requirements": [
+        {
+          "requirement_id": "UY_TEMPORARY_DOCUMENTARY_BASIS",
+          "type": "OTHER_BASIS",
+          "role": "CONDITION",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "condition_ru": "Подтвердить предусмотренное законом основание временного проживания и лично подать документы в Уругвае.",
+          "profile_path": null,
+          "source_ids": [
+            "S_UY_TEMPORARY"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "source_ids": [
+        "S_UY_TEMPORARY",
+        "S_UY_CITIZENSHIP",
+        "S_UY_CONCUBINATO"
+      ]
+    },
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": true,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": "Структурированная формула находится в requirements.",
+      "income_documentation_required": true,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [],
+      "route_id": "UY_DIGITAL_NOMAD",
+      "name_ru": "Разрешение цифрового кочевника",
+      "official_term_ru": "Hoja de Identidad Provisoria — Nómades Digitales",
+      "route_type": "DIGITAL_NOMAD",
+      "basis_ru": "Для удалённой работы на иностранную компанию или на себя после законного въезда в Уругвай.",
+      "application_inside_ru": "Подача внутри страны предусмотрена.",
+      "application_abroad_ru": "Подача из России не предусмотрена либо маршрут требует въезда.",
+      "first_permit_months": 6,
+      "renewal_months": 6,
+      "income_rule_ru": "Официальный фиксированный минимальный доход не установлен. Требуется декларация о наличии достаточных средств и подтверждение зарубежной удалённой деятельности.",
+      "income_threshold_type": "STRUCTURED_REQUIREMENT",
+      "family_rule_ru": "Семейные права проверяются по подробной таблице.",
+      "partner_work_rights_ru": "Права партнёра проверяются по его статусу.",
+      "pr_path_ru": "Путь к ПМЖ зависит от продления или смены основания.",
+      "citizenship_path_ru": "Нужно подтвердить, засчитывается ли весь период разрешения цифрового кочевника как обычное проживание.",
+      "presence_rule_ru": "Требования присутствия указаны в подробной таблице маршрута.",
+      "dual_citizenship_ru": "Правило требует индивидуальной проверки.",
+      "status_logic_ru": "Статус формируется только из requirements.",
+      "requirements": [
+        {
+          "requirement_id": "UY_DIGITAL_NOMAD_FINANCIAL_BASIS",
+          "type": "FINANCIAL",
+          "role": "BLOCKER",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "condition_ru": "Подтвердить зарубежную удалённую деятельность и подать декларацию о наличии достаточных средств.",
+          "profile_path": "income",
+          "source_ids": [
+            "S_UY_NOMAD"
+          ],
+          "confidence": "HIGH",
+          "met_ru": "Текущее подтверждаемое основание соответствует маршруту.",
+          "unmet_ru": "Текущий профиль не подтверждает требуемое основание.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": null,
+                "currency": null,
+                "period": "NOT_APPLICABLE",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "COMPANY_OWNER"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "S_UY_NOMAD"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "source_ids": [
+        "S_UY_NOMAD",
+        "S_UY_CITIZENSHIP"
+      ]
+    },
+    {
+      "publishable": true,
+      "available_to_russian_citizen": true,
+      "renewal_available": false,
+      "income_threshold_amount": null,
+      "income_threshold_currency": null,
+      "income_formula": null,
+      "income_documentation_required": false,
+      "local_work_allowed": false,
+      "remote_foreign_work_allowed": false,
+      "business_allowed": false,
+      "open_questions": [],
+      "route_id": "UY_FAMILY_LINK",
+      "name_ru": "Постоянная резиденция по браку или семейной связи с гражданином Уругвая",
+      "official_term_ru": "Residencia Legal Permanente por vínculo uruguayo",
+      "route_type": "SPOUSE_OR_PARTNER",
+      "basis_ru": "Будущий семейный маршрут для человека без текущего партнёра: становится доступен после брака или другой предусмотренной законом семейной связи с гражданином Уругвая.",
+      "application_inside_ru": "Подача внутри страны предусмотрена.",
+      "application_abroad_ru": "Подача из России предусмотрена.",
+      "first_permit_months": 0,
+      "renewal_months": null,
+      "income_rule_ru": "Универсальный числовой порог не установлен.",
+      "income_threshold_type": "NO_UNIVERSAL_AMOUNT",
+      "family_rule_ru": "Однополый и разнополый брак признаются одинаково. Для незарегистрированного союза требуется предусмотренное законом подтверждение. В матчер маршрут добавлен как будущая возможность: основанием должна быть семейная связь именно с гражданином Уругвая.",
+      "partner_work_rights_ru": "Права партнёра проверяются по его статусу.",
+      "pr_path_ru": "Прямой путь к постоянной резиденции.",
+      "citizenship_path_ru": "Брак или семейная связь дают основание для резиденции, но не предоставляют гражданство автоматически.",
+      "presence_rule_ru": "Требования присутствия указаны в подробной таблице маршрута.",
+      "dual_citizenship_ru": "Правило требует индивидуальной проверки.",
+      "status_logic_ru": "Статус формируется только из requirements.",
+      "requirements": [
+        {
+          "requirement_id": "UY_FAMILY_LINK_BASIS",
+          "type": "FAMILY_BASIS",
+          "role": "CONDITION",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "condition_ru": "Иметь или оформить признаваемую семейную связь с гражданином Уругвая.",
+          "profile_path": null,
+          "source_ids": [
+            "S_UY_FAMILY_LINK"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "source_ids": [
+        "S_UY_FAMILY_LINK",
+        "S_UY_CITIZENSHIP"
+      ]
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "UY_MONTEVIDEO",
+      "name_ru": "Монтевидео",
+      "roles_ru": [
+        "большой город"
+      ],
+      "size": "крупный",
+      "population_reference": "1302950",
+      "budget_single_usd": 1539,
+      "budget_couple_usd": 2446,
+      "budget_family_1_child_usd": 3069,
+      "rent_1br_center_usd": 693,
+      "cost_scope_ru": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+      "climate_category_ru": "TEMPERATE",
+      "cold_period_temperature_range_c": "примерно 12.5 °C",
+      "hot_period_temperature_range_c": "примерно 24.9 °C",
+      "lgbt_safety_ru": "Практическая среда требует отдельной городской оценки.",
+      "public_school_available": true,
+      "public_school_language": "испанский",
+      "international_school_status_ru": "подтверждено наличие",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "S_UY_MVD_COST",
+        "S_UY_CLIMATE_2025"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "UY_SALTO",
+      "name_ru": "Сальто",
+      "roles_ru": [
+        "средний город"
+      ],
+      "size": "средний",
+      "population_reference": "114000",
+      "budget_single_usd": 1027,
+      "budget_couple_usd": 1683,
+      "budget_family_1_child_usd": 2134,
+      "rent_1br_center_usd": 462,
+      "cost_scope_ru": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+      "climate_category_ru": "WARM",
+      "cold_period_temperature_range_c": "примерно 13.5 °C",
+      "hot_period_temperature_range_c": "примерно 27.7 °C",
+      "lgbt_safety_ru": "Практическая среда требует отдельной городской оценки.",
+      "public_school_available": true,
+      "public_school_language": "испанский",
+      "international_school_status_ru": "подтверждено наличие",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "S_UY_SALTO_COST",
+        "S_UY_CLIMATE_2025"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "UY_MALDONADO",
+      "name_ru": "Мальдонадо",
+      "roles_ru": [
+        "небольшой город"
+      ],
+      "size": "небольшой",
+      "population_reference": "86800",
+      "budget_single_usd": 1059,
+      "budget_couple_usd": 1743,
+      "budget_family_1_child_usd": 2213,
+      "rent_1br_center_usd": 477,
+      "cost_scope_ru": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+      "climate_category_ru": "TEMPERATE",
+      "cold_period_temperature_range_c": "примерно 12.8 °C",
+      "hot_period_temperature_range_c": "примерно 23.6 °C",
+      "lgbt_safety_ru": "Практическая среда требует отдельной городской оценки.",
+      "public_school_available": true,
+      "public_school_language": "испанский",
+      "international_school_status_ru": "подтверждено наличие",
+      "international_school_cost_ru": null,
+      "source_ids": [
+        "S_UY_MALDONADO_COST",
+        "S_UY_CLIMATE_2025"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_ru": "Государственное школьное образование доступно по действующим правилам.",
+    "public_school_cost": 0,
+    "international_school_ru": "Международные школы перечислены в подробной таблице.",
+    "budget_rule_ru": "Стоимость школы не включается в базовый городской бюджет.",
+    "source_ids": [
+      "S_UY_PUBLIC_SCHOOL",
+      "S_UY_MVD_COST",
+      "S_UY_SALTO_COST",
+      "S_UY_MALDONADO_COST"
+    ]
+  },
+  "pets": {
+    "dogs_import_allowed": true,
+    "cats_import_allowed": true,
+    "national_breed_ban_found": false,
+    "breed_rule_ru": "Подтверждённых национальных породных запретов в текущем исследовании нет.",
+    "routine_quarantine_required": false,
+    "quarantine_days": 0,
+    "prior_import_permit_required_for_accompanied_pet": false,
+    "result_text_ru": "Показываются только подтверждённые породные и региональные ограничения.",
+    "source_ids": [
+      "S_UY_RESIDENCE"
+    ]
+  },
+  "lgbt": {
+    "same_sex_marriage_recognized": true,
+    "same_sex_marriage_rule_ru": "Правовое признание описано в подробной таблице.",
+    "registered_partnership_recognized": true,
+    "registered_partnership_translation_ru": "зарегистрированное партнёрство",
+    "registered_partnership_rule_ru": "Правила признания описаны в подробной таблице.",
+    "family_route_available": true,
+    "foreign_documents_recognized": true,
+    "foreign_document_rule_ru": "Иностранные документы требуют предусмотренного оформления.",
+    "country_safety_category_ru": "средне",
+    "safety_explanation_ru": "Практическая среда неоднородна и оценивается отдельно от общей преступности.",
+    "international_protection_ru": "Международная защита требует индивидуального основания.",
+    "source_ids": [
+      "S_UY_EQUAL_MARRIAGE",
+      "S_UY_CONCUBINATO",
+      "S_UY_ADOPTION",
+      "S_UY_ANTI_DISCRIMINATION",
+      "S_UY_TRANS_LAW",
+      "S_UY_HATE_CRIME",
+      "S_UY_MENTAL_HEALTH",
+      "S_UY_DIVERSITY_PLAN_2026"
+    ],
+    "pending_changes": []
+  },
+  "glossary": [],
+  "excluded_from_research": [],
+  "open_items": [],
+  "completeness": {
+    "public_routes_ready": 4,
+    "hidden_routes": 0,
+    "overall_percent": 90,
+    "country_ready_status": "READY_WITH_OPEN_ITEMS",
+    "country_ready_status_ru": "Маршруты опубликованы; подробные таблицы сохранены для поэтапной нормализации практических разделов.",
+    "blocks": [
+      {
+        "block": "Миграция структуры",
+        "percent": 90,
+        "missing_ru": "Практические подробные таблицы ещё читаются адаптером из detail_tables."
+      }
+    ],
+    "publication_blockers": [],
+    "non_blocking_gaps": [
+      "Перенести чтение практических таблиц из detail_tables в нормализованные поля."
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "S_UY_RESIDENCE",
+      "source_type": "OFFICIAL",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Tipos de residencias en Uruguay",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/publicaciones/types-of-residencies-in-uruguay",
+      "supports_ru": "COUNTRY: residence_types",
+      "checked_at": "2026-07-19",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_PERMANENT",
+      "source_type": "OFFICIAL",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Residencia Legal - Permanente",
+      "url": "https://www.gub.uy/tramites/residencia-legal-permanente",
+      "supports_ru": "ROUTE: requirements",
+      "checked_at": "2026-07-19",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_TEMPORARY",
+      "source_type": "OFFICIAL",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Residencia Legal - Temporaria",
+      "url": "https://www.gub.uy/tramites/residencia-legal-temporaria",
+      "supports_ru": "ROUTE: requirements",
+      "checked_at": "2026-07-19",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_NOMAD",
+      "source_type": "OFFICIAL",
+      "authority": "AGESIC",
+      "title_ru": "Permiso especial de residencia legal para nómades digitales",
+      "url": "https://www.gub.uy/agencia-gobierno-electronico-sociedad-informacion-conocimiento/comunicacion/noticias/permiso-especial-residencia-legal",
+      "supports_ru": "ROUTE: requirements",
+      "checked_at": "2026-07-19",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_CITIZENSHIP",
+      "source_type": "OFFICIAL",
+      "authority": "Corte Electoral / IMPO",
+      "title_ru": "Carta de ciudadanía; Ley 8.196, artículo 1",
+      "url": "https://www.gub.uy/tramites/carta-ciudadania",
+      "supports_ru": "COUNTRY: citizenship_by_residence",
+      "checked_at": "2026-07-20",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_MIGRATION_LAW",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 18.250 — Migración",
+      "url": "https://www.impo.com.uy/bases/leyes/18250-2008/33",
+      "supports_ru": "COUNTRY: family_migration_rights",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_FAMILY_LINK",
+      "source_type": "OFFICIAL",
+      "authority": "Ministerio del Interior - Dirección Nacional de Migración",
+      "title_ru": "Residencia Legal - Permanente por vínculo uruguayo",
+      "url": "https://www.gub.uy/tramites/residencia-legal-permanente-vinculo-uruguayo",
+      "supports_ru": "ROUTE: requirements",
+      "checked_at": "2026-07-23",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_CONCUBINATO",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 18.246 y Decreto Nº 394/009 — unión concubinaria",
+      "url": "https://www.impo.com.uy/bases/leyes/18246-2007",
+      "supports_ru": "COUNTRY: unregistered_partner_recognition",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_MINIMUM_WAGE",
+      "source_type": "OFFICIAL",
+      "authority": "Ministerio de Trabajo y Seguridad Social",
+      "title_ru": "Salario Mínimo Nacional 2026",
+      "url": "https://www.gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias/salario-minimo-nacional-24572-desde-1o-enero-2026",
+      "supports_ru": "COUNTRY: minimum_wage_reference",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_INCOME_CASE",
+      "source_type": "SECONDARY",
+      "authority": "Expat.com community",
+      "title_ru": "Obtaining residence in Uruguay — public applicant discussion",
+      "url": "https://www.expat.com/en/forum/south-america/uruguay/61971-obtaining-residence-in-uruguay.html",
+      "supports_ru": "COUNTRY: anecdotal_income_example",
+      "checked_at": "2026-07-21",
+      "confidence": "LOW"
+    },
+    {
+      "source_id": "S_UY_EQUAL_MARRIAGE",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 19.075 — Matrimonio igualitario",
+      "url": "https://www.impo.com.uy/bases/leyes-originales/19075-2013/1",
+      "supports_ru": "LGBT_RULE: same_sex_marriage",
+      "checked_at": "2026-07-19",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_ADOPTION",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 18.590 — modificaciones al régimen de adopciones",
+      "url": "https://www.impo.com.uy/bases/leyes-originales/18590-2009/1",
+      "supports_ru": "LGBT_RULE: adoption",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_ANTI_DISCRIMINATION",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 17.817 — lucha contra toda forma de discriminación",
+      "url": "https://www.impo.com.uy/bases/leyes/17817-2004/2",
+      "supports_ru": "LGBT_RULE: anti_discrimination",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_TRANS_LAW",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 19.684 — Ley Integral para Personas Trans",
+      "url": "https://www.impo.com.uy/bases/leyes-originales/19684-2018",
+      "supports_ru": "LGBT_RULE: gender_identity",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_HATE_CRIME",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Código Penal, artículo 149-ter",
+      "url": "https://www.impo.com.uy/bases/codigo-penal/9155-1933/149_TER",
+      "supports_ru": "LGBT_RULE: hate_crime",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_MENTAL_HEALTH",
+      "source_type": "OFFICIAL",
+      "authority": "IMPO",
+      "title_ru": "Ley Nº 19.529 — Salud Mental, artículo 4",
+      "url": "https://www.impo.com.uy/bases/leyes-originales/19529-2017/4",
+      "supports_ru": "LGBT_RULE: conversion_practices",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_DIVERSITY_PLAN_2026",
+      "source_type": "OFFICIAL",
+      "authority": "Defensoría de Vecinas y Vecinos de Montevideo",
+      "title_ru": "Plan por la Diversidad Afectiva, Sexual y de Género 2026–2030",
+      "url": "https://www.gub.uy/defensoria-de-vecinas-y-vecinos-de-montevideo/noticias/se-presento-el-plan-por-la-diversidad",
+      "supports_ru": "LGBT_RULE: practical_safety",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_CLIMATE_2025",
+      "source_type": "OFFICIAL",
+      "authority": "Instituto Nacional de Estadística",
+      "title_ru": "Anuario Estadístico Nacional 2025 — temperaturas medias mensuales por estación",
+      "url": "https://www.gub.uy/instituto-nacional-estadistica/book/4150/download",
+      "supports_ru": "COUNTRY: city_monthly_temperature",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "S_UY_MVD_COST",
+      "source_type": "SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Cost of Living in Montevideo — June 2026",
+      "url": "https://livingcost.org/cost/uruguay/montevideo",
+      "supports_ru": "CITY: cost_of_living",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_SALTO_COST",
+      "source_type": "SECONDARY",
+      "authority": "Livingcost / Numbeo cross-check",
+      "title_ru": "Cost of Living in Salto — June 2026",
+      "url": "https://livingcost.org/cost/uruguay/salto",
+      "supports_ru": "CITY: cost_of_living",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_MALDONADO_COST",
+      "source_type": "SECONDARY",
+      "authority": "Livingcost / Numbeo cross-check",
+      "title_ru": "Cost of Living in Maldonado — June 2026",
+      "url": "https://livingcost.org/cost/uruguay/maldonado",
+      "supports_ru": "CITY: cost_of_living",
+      "checked_at": "2026-07-21",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "S_UY_PUBLIC_SCHOOL",
+      "source_type": "OFFICIAL",
+      "authority": "ANEP",
+      "title_ru": "Guía para inscripción de personas migrantes al sistema educativo público",
+      "url": "https://www.anep.edu.uy/guia-para-inscripcion-de-personas-migrantes-al-sistema-educativo-publico",
+      "supports_ru": "COUNTRY: public_school_access",
+      "checked_at": "2026-07-21",
+      "confidence": "HIGH"
+    }
+  ],
+  "detail_tables": {
+    "routes": [
+      {
+        "country_id": "UY",
+        "route_id": "UY_PERMANENT",
+        "official_name": "Residencia Legal Permanente",
+        "name_ru": "Постоянная резиденция",
+        "route_type": "PERMANENT_RESIDENCE",
+        "description": "Прямая постоянная резиденция: временная резиденция перед ней не обязательна.",
+        "active_status": "ACTIVE",
+        "allowed_nationalities": [
+          "THIRD_COUNTRY"
+        ],
+        "russian_citizens_allowed": "YES",
+        "application_methods": [
+          "IN_COUNTRY"
+        ],
+        "application_from_russia": "NO",
+        "in_country_application_allowed": "YES",
+        "requires_legal_residence_in_application_country": "NO",
+        "initial_residence_available": "YES",
+        "renewal_available": null,
+        "main_refusal_reasons": "Неполные или неапостилированные документы; отсутствие подтверждения средств; несоответствие требованиям въезда.",
+        "route_research_status": "VERIFIED",
+        "confidence": "HIGH",
+        "primary_source_id": "S_UY_PERMANENT"
+      },
+      {
+        "country_id": "UY",
+        "route_id": "UY_TEMPORARY",
+        "official_name": "Residencia Legal Temporaria",
+        "name_ru": "Временная резиденция",
+        "route_type": "TEMPORARY_RESIDENCE",
+        "description": "Отдельная срочная резиденция по работе, учёбе или иному временному основанию; это не обязательная ступень перед постоянной резиденцией.",
+        "active_status": "ACTIVE",
+        "allowed_nationalities": [
+          "THIRD_COUNTRY"
+        ],
+        "russian_citizens_allowed": "YES",
+        "application_methods": [
+          "IN_COUNTRY"
+        ],
+        "application_from_russia": "NO",
+        "in_country_application_allowed": "YES",
+        "requires_legal_residence_in_application_country": "NO",
+        "initial_residence_available": "YES",
+        "first_permit_months": 24,
+        "renewal_available": "YES",
+        "main_refusal_reasons": "Отсутствие подтверждённой деятельности или цели проживания; неполные документы.",
+        "route_research_status": "VERIFIED",
+        "confidence": "HIGH",
+        "primary_source_id": "S_UY_TEMPORARY"
+      },
+      {
+        "country_id": "UY",
+        "route_id": "UY_DIGITAL_NOMAD",
+        "official_name": "Hoja de Identidad Provisoria — Nómades Digitales",
+        "name_ru": "Разрешение цифрового кочевника",
+        "route_type": "DIGITAL_NOMAD",
+        "description": "Для удалённой работы на иностранную компанию или на себя после законного въезда в Уругвай.",
+        "active_status": "ACTIVE",
+        "allowed_nationalities": [
+          "THIRD_COUNTRY"
+        ],
+        "russian_citizens_allowed": "YES",
+        "application_methods": [
+          "IN_COUNTRY"
+        ],
+        "application_from_russia": "NO",
+        "in_country_application_allowed": "YES",
+        "requires_legal_residence_in_application_country": "NO",
+        "initial_residence_available": "YES",
+        "first_permit_months": 6,
+        "renewal_available": "YES",
+        "renewal_period_months": 6,
+        "main_refusal_reasons": "Незаконный въезд; неподходящий характер работы; отсутствие декларации о средствах.",
+        "route_research_status": "VERIFIED",
+        "confidence": "HIGH",
+        "primary_source_id": "S_UY_NOMAD"
+      },
+      {
+        "country_id": "UY",
+        "route_id": "UY_FAMILY_LINK",
+        "official_name": "Residencia Legal Permanente por vínculo uruguayo",
+        "name_ru": "Постоянная резиденция по браку или семейной связи с гражданином Уругвая",
+        "route_type": "SPOUSE_OR_PARTNER",
+        "description": "Будущий семейный маршрут для человека без текущего партнёра: становится доступен после брака или другой предусмотренной законом семейной связи с гражданином Уругвая.",
+        "active_status": "ACTIVE",
+        "allowed_nationalities": [
+          "THIRD_COUNTRY"
+        ],
+        "russian_citizens_allowed": "YES",
+        "application_methods": [
+          "CURRENT_COUNTRY",
+          "IN_COUNTRY"
+        ],
+        "application_from_russia": "YES",
+        "in_country_application_allowed": "YES",
+        "requires_legal_residence_in_application_country": "NO",
+        "initial_residence_available": "YES",
+        "renewal_available": null,
+        "main_refusal_reasons": "Отсутствие подтверждённой семейной связи с гражданином Уругвая; неполные документы; недостоверность сведений.",
+        "route_research_status": "VERIFIED",
+        "confidence": "HIGH",
+        "primary_source_id": "S_UY_FAMILY_LINK"
+      }
+    ],
+    "route_income": [
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "accepted_income_type": "EMPLOYEE",
+        "minimum_income_main_applicant": 0,
+        "partner_increment_value": 0,
+        "child_increment_value": 0,
+        "income_must_be_documented": "YES",
+        "source_id": "S_UY_NOMAD",
+        "confidence": "HIGH"
+      },
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "accepted_income_type": "CONTRACTOR",
+        "minimum_income_main_applicant": 0,
+        "partner_increment_value": 0,
+        "child_increment_value": 0,
+        "income_must_be_documented": "YES",
+        "source_id": "S_UY_NOMAD",
+        "confidence": "HIGH"
+      },
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "accepted_income_type": "COMPANY_OWNER",
+        "minimum_income_main_applicant": 0,
+        "partner_increment_value": 0,
+        "child_increment_value": 0,
+        "income_must_be_documented": "YES",
+        "source_id": "S_UY_NOMAD",
+        "confidence": "HIGH"
+      }
+    ],
+    "route_family": [
+      {
+        "route_id": "UY_PERMANENT",
+        "partner_allowed": "YES",
+        "children_allowed": "YES",
+        "accepted_relationship_types": [
+          "MARRIAGE",
+          "REGISTERED_PARTNERSHIP",
+          "UNREGISTERED_PARTNER"
+        ],
+        "unregistered_partner_allowed": "YES",
+        "same_sex_partner_allowed": "YES",
+        "same_sex_unregistered_partner_allowed": "YES",
+        "dependent_child_age_limit": 18,
+        "source_id": "S_UY_CONCUBINATO",
+        "confidence": "HIGH",
+        "notes": "Незарегистрированный союз допускается после судебного признания unión concubinaria. Правило одинаково для пар любого пола."
+      },
+      {
+        "route_id": "UY_TEMPORARY",
+        "partner_allowed": "YES",
+        "children_allowed": "YES",
+        "accepted_relationship_types": [
+          "MARRIAGE",
+          "REGISTERED_PARTNERSHIP",
+          "UNREGISTERED_PARTNER"
+        ],
+        "unregistered_partner_allowed": "YES",
+        "same_sex_partner_allowed": "YES",
+        "same_sex_unregistered_partner_allowed": "YES",
+        "dependent_child_age_limit": 18,
+        "source_id": "S_UY_CONCUBINATO",
+        "confidence": "HIGH",
+        "notes": "Незарегистрированный союз допускается после судебного признания unión concubinaria. Правило одинаково для пар любого пола."
+      },
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "partner_allowed": "NO",
+        "children_allowed": "NO",
+        "accepted_relationship_types": [],
+        "unregistered_partner_allowed": "NO",
+        "same_sex_partner_allowed": "NO",
+        "same_sex_unregistered_partner_allowed": "NO",
+        "dependent_child_age_limit": null,
+        "source_id": "S_UY_NOMAD",
+        "confidence": "HIGH"
+      },
+      {
+        "route_id": "UY_FAMILY_LINK",
+        "partner_allowed": "YES",
+        "children_allowed": "YES",
+        "accepted_relationship_types": [
+          "MARRIAGE",
+          "REGISTERED_PARTNERSHIP",
+          "UNREGISTERED_PARTNER"
+        ],
+        "unregistered_partner_allowed": "YES",
+        "same_sex_partner_allowed": "YES",
+        "same_sex_unregistered_partner_allowed": "YES",
+        "dependent_child_age_limit": 18,
+        "source_id": "S_UY_FAMILY_LINK",
+        "confidence": "HIGH",
+        "notes": "Однополый и разнополый брак признаются одинаково. Для незарегистрированного союза требуется предусмотренное законом подтверждение. В матчер маршрут добавлен как будущая возможность: основанием должна быть семейная связь именно с гражданином Уругвая."
+      }
+    ],
+    "route_status": [
+      {
+        "route_id": "UY_PERMANENT",
+        "path_to_pr": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counted_for_pr": "YES",
+        "path_to_citizenship": "YES",
+        "citizenship_by_residence_available": "YES",
+        "nominal_years_to_citizenship": null,
+        "language_exam_required": "YES",
+        "required_language": "es",
+        "required_language_level": "FUNCTIONAL",
+        "multiple_citizenship_allowed": "YES",
+        "allowed_absence_for_citizenship_days": null,
+        "source_id": "S_UY_CITIZENSHIP",
+        "confidence": "HIGH",
+        "notes": "Семейный срок 3 года применяется, когда семья фактически живёт с заявителем в Уругвае."
+      },
+      {
+        "route_id": "UY_TEMPORARY",
+        "path_to_pr": "CONDITIONAL",
+        "years_to_pr": null,
+        "residence_counted_for_pr": "UNKNOWN",
+        "path_to_citizenship": "YES",
+        "citizenship_by_residence_available": "YES",
+        "nominal_years_to_citizenship": null,
+        "language_exam_required": "YES",
+        "required_language": "es",
+        "required_language_level": "FUNCTIONAL",
+        "multiple_citizenship_allowed": "YES",
+        "allowed_absence_for_citizenship_days": null,
+        "source_id": "S_UY_CITIZENSHIP",
+        "confidence": "HIGH",
+        "notes": "Нужно подтвердить, засчитывается ли весь период временной резиденции как обычное проживание."
+      },
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "path_to_pr": "CONDITIONAL",
+        "years_to_pr": null,
+        "residence_counted_for_pr": "UNKNOWN",
+        "path_to_citizenship": "YES",
+        "citizenship_by_residence_available": "YES",
+        "nominal_years_to_citizenship": null,
+        "language_exam_required": "YES",
+        "required_language": "es",
+        "required_language_level": "FUNCTIONAL",
+        "multiple_citizenship_allowed": "YES",
+        "allowed_absence_for_citizenship_days": null,
+        "source_id": "S_UY_CITIZENSHIP",
+        "confidence": "HIGH",
+        "notes": "Нужно подтвердить, засчитывается ли весь период разрешения цифрового кочевника как обычное проживание."
+      },
+      {
+        "route_id": "UY_FAMILY_LINK",
+        "path_to_pr": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counted_for_pr": "YES",
+        "path_to_citizenship": "YES",
+        "citizenship_by_residence_available": "YES",
+        "nominal_years_to_citizenship": null,
+        "language_exam_required": "YES",
+        "required_language": "es",
+        "required_language_level": "FUNCTIONAL",
+        "multiple_citizenship_allowed": "YES",
+        "allowed_absence_for_citizenship_days": null,
+        "source_id": "S_UY_CITIZENSHIP",
+        "confidence": "HIGH",
+        "notes": "Брак или семейная связь дают основание для резиденции, но не предоставляют гражданство автоматически."
+      }
+    ],
+    "route_work": [
+      {
+        "route_id": "UY_PERMANENT",
+        "remote_work_allowed": "YES",
+        "local_work_rights": "Резиденция позволяет жить, учиться и работать.",
+        "business_activity_allowed": "YES",
+        "dependent_work_rights": "Каждый член семьи оформляет собственный статус.",
+        "source_id": "S_UY_RESIDENCE",
+        "confidence": "HIGH"
+      },
+      {
+        "route_id": "UY_TEMPORARY",
+        "remote_work_allowed": "UNKNOWN",
+        "local_work_rights": "В рамках подтверждённой деятельности.",
+        "business_activity_allowed": "UNKNOWN",
+        "dependent_work_rights": "Каждый член семьи оформляет собственный статус.",
+        "source_id": "S_UY_TEMPORARY",
+        "confidence": "MEDIUM"
+      },
+      {
+        "route_id": "UY_DIGITAL_NOMAD",
+        "remote_work_allowed": "YES",
+        "local_work_rights": "Только удалённая работа на иностранную компанию или на себя.",
+        "business_activity_allowed": "YES",
+        "dependent_work_rights": "Семья не включается автоматически.",
+        "source_id": "S_UY_NOMAD",
+        "confidence": "HIGH"
+      },
+      {
+        "route_id": "UY_FAMILY_LINK",
+        "remote_work_allowed": "YES",
+        "local_work_rights": "Постоянная резиденция позволяет жить, учиться и работать.",
+        "business_activity_allowed": "YES",
+        "dependent_work_rights": "Права других членов семьи оформляются по их собственным основаниям.",
+        "source_id": "S_UY_FAMILY_LINK",
+        "confidence": "HIGH"
+      }
+    ],
+    "cities": [
+      {
+        "city_id": "UY_MONTEVIDEO",
+        "country_id": "UY",
+        "name_ru": "Монтевидео",
+        "name_en": "Montevideo",
+        "population_category": "LARGE",
+        "population": 1302950,
+        "estimated_monthly_cost_single_usd": 1539,
+        "estimated_monthly_cost_couple_usd": 2446,
+        "estimated_monthly_cost_family_1_child_usd": 3069,
+        "additional_adult_cost_usd": 907,
+        "additional_child_cost_usd": 623,
+        "school_cost_not_included": "YES",
+        "climate_category": "TEMPERATE",
+        "avg_temp_coldest_month_c": 12.5,
+        "avg_temp_hottest_month_c": 24.9,
+        "climate_source_id": "S_UY_CLIMATE_2025",
+        "international_school_available": "YES",
+        "pet_friendly_housing": "UNKNOWN",
+        "airport_name": "Aeropuerto Internacional de Carrasco",
+        "city_research_status": "SECONDARY_REVIEW",
+        "confidence": "MEDIUM",
+        "last_verified_at": "2026-07-21",
+        "next_review_at": "2026-10-21",
+        "primary_source_id": "S_UY_MVD_COST",
+        "monthly_cost_formula": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+        "housing_cost_assumption": "Долгосрочная аренда обычного жилья; школа и детский сад не включены.",
+        "notes": "Ориентировочный бюджет умеренного образа жизни; школа рассчитывается отдельно."
+      },
+      {
+        "city_id": "UY_SALTO",
+        "country_id": "UY",
+        "name_ru": "Сальто",
+        "name_en": "Salto",
+        "population_category": "MEDIUM",
+        "population": 114000,
+        "estimated_monthly_cost_single_usd": 1027,
+        "estimated_monthly_cost_couple_usd": 1683,
+        "estimated_monthly_cost_family_1_child_usd": 2134,
+        "additional_adult_cost_usd": 656,
+        "additional_child_cost_usd": 451,
+        "rent_1br_center_usd": 392,
+        "rent_2br_family_usd": 720,
+        "utilities_usd": 173,
+        "school_cost_not_included": "YES",
+        "climate_category": "WARM",
+        "avg_temp_coldest_month_c": 13.5,
+        "avg_temp_hottest_month_c": 27.7,
+        "climate_source_id": "S_UY_CLIMATE_2025",
+        "international_school_available": "YES",
+        "pet_friendly_housing": "UNKNOWN",
+        "international_airport_access": "LIMITED",
+        "airport_name": "Aeropuerto Internacional de Nueva Hespérides",
+        "city_research_status": "SECONDARY_REVIEW",
+        "confidence": "MEDIUM",
+        "last_verified_at": "2026-07-21",
+        "next_review_at": "2026-10-21",
+        "primary_source_id": "S_UY_SALTO_COST",
+        "monthly_cost_formula": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+        "housing_cost_assumption": "Долгосрочная аренда обычного жилья; школа и детский сад не включены.",
+        "notes": "Numbeo подтверждает порядок аренды: около 11 333 UYU (≈285 USD) за 1BR вне центра и 19 000 UYU (≈479 USD) за 3BR вне центра."
+      },
+      {
+        "city_id": "UY_MALDONADO",
+        "country_id": "UY",
+        "name_ru": "Мальдонадо",
+        "name_en": "Maldonado",
+        "population_category": "SMALL",
+        "population": 86800,
+        "estimated_monthly_cost_single_usd": 1059,
+        "estimated_monthly_cost_couple_usd": 1743,
+        "estimated_monthly_cost_family_1_child_usd": 2213,
+        "additional_adult_cost_usd": 684,
+        "additional_child_cost_usd": 470,
+        "rent_1br_center_usd": 377,
+        "rent_2br_family_usd": 685,
+        "utilities_usd": 136,
+        "school_cost_not_included": "YES",
+        "climate_category": "TEMPERATE",
+        "avg_temp_coldest_month_c": 12.8,
+        "avg_temp_hottest_month_c": 23.6,
+        "climate_source_id": "S_UY_CLIMATE_2025",
+        "international_school_available": "YES",
+        "pet_friendly_housing": "UNKNOWN",
+        "international_airport_access": "YES",
+        "airport_name": "Aeropuerto Internacional de Punta del Este",
+        "city_research_status": "SECONDARY_REVIEW",
+        "confidence": "MEDIUM",
+        "last_verified_at": "2026-07-21",
+        "next_review_at": "2026-10-21",
+        "primary_source_id": "S_UY_MALDONADO_COST",
+        "monthly_cost_formula": "Livingcost: total with rent for one person and family of 4; промежуточные составы рассчитаны весами 1.0 основной взрослый + 0.8 дополнительный взрослый + 0.55 ребёнок.",
+        "housing_cost_assumption": "Долгосрочная аренда обычного жилья, без сезонного жилья Пунта-дель-Эсте; школа и детский сад не включены.",
+        "notes": "Numbeo даёт контрольный ориентир аренды: 11 750 UYU (≈296 USD) за 1BR вне центра и 25 000 UYU (≈630 USD) за 3BR вне центра."
+      }
+    ],
+    "schools": [
+      {
+        "school_id": "UY_MVD_PUBLIC",
+        "city_id": "UY_MONTEVIDEO",
+        "name": "Государственные школы Монтевидео",
+        "school_type": "PUBLIC",
+        "languages": [
+          "es"
+        ],
+        "age_range": "начальное и среднее образование",
+        "annual_tuition_local": 0,
+        "currency": "UYU",
+        "admission_notes": "Для детей мигрантов действует процедура регистрации в государственной системе ANEP.",
+        "source_id": "S_UY_PUBLIC_SCHOOL",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Обучение бесплатное; питание, форма и материалы могут создавать дополнительные расходы."
+      },
+      {
+        "school_id": "UY_MVD_INTERNATIONAL",
+        "city_id": "UY_MONTEVIDEO",
+        "name": "Международная школа — городской ориентир",
+        "school_type": "INTERNATIONAL",
+        "languages": [
+          "en",
+          "es"
+        ],
+        "age_range": "primary",
+        "annual_tuition_local": 10657,
+        "currency": "USD",
+        "admission_notes": "Ориентир рынка, не тариф конкретной школы; перед выбором нужны проверка мест и полный fee schedule.",
+        "source_id": "S_UY_MVD_COST",
+        "last_verified_at": "2026-07-21",
+        "confidence": "LOW",
+        "notes": "Не включено в практический семейный бюджет."
+      },
+      {
+        "school_id": "UY_SALTO_PUBLIC",
+        "city_id": "UY_SALTO",
+        "name": "Государственные школы Сальто",
+        "school_type": "PUBLIC",
+        "languages": [
+          "es"
+        ],
+        "age_range": "начальное и среднее образование",
+        "annual_tuition_local": 0,
+        "currency": "UYU",
+        "admission_notes": "Для детей мигрантов действует процедура регистрации в государственной системе ANEP.",
+        "source_id": "S_UY_PUBLIC_SCHOOL",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Обучение бесплатное; доступность конкретного центра зависит от адреса и мест."
+      },
+      {
+        "school_id": "UY_SALTO_INTERNATIONAL",
+        "city_id": "UY_SALTO",
+        "name": "Международная школа — городской ориентир",
+        "school_type": "INTERNATIONAL",
+        "languages": [
+          "en",
+          "es"
+        ],
+        "age_range": "primary",
+        "annual_tuition_local": 6518,
+        "currency": "USD",
+        "admission_notes": "Ориентир рынка, не тариф конкретной школы; фактический выбор в Сальто ограничен.",
+        "source_id": "S_UY_SALTO_COST",
+        "last_verified_at": "2026-07-21",
+        "confidence": "LOW",
+        "notes": "Не включено в практический семейный бюджет."
+      },
+      {
+        "school_id": "UY_MALDONADO_PUBLIC",
+        "city_id": "UY_MALDONADO",
+        "name": "Государственные школы Мальдонадо",
+        "school_type": "PUBLIC",
+        "languages": [
+          "es"
+        ],
+        "age_range": "начальное и среднее образование",
+        "annual_tuition_local": 0,
+        "currency": "UYU",
+        "admission_notes": "Для детей мигрантов действует процедура регистрации в государственной системе ANEP.",
+        "source_id": "S_UY_PUBLIC_SCHOOL",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Обучение бесплатное; доступность конкретного центра зависит от адреса и мест."
+      },
+      {
+        "school_id": "UY_MALDONADO_INTERNATIONAL",
+        "city_id": "UY_MALDONADO",
+        "name": "Международная школа — городской ориентир",
+        "school_type": "INTERNATIONAL",
+        "languages": [
+          "en",
+          "es"
+        ],
+        "age_range": "primary",
+        "annual_tuition_local": 6498,
+        "currency": "USD",
+        "admission_notes": "Ориентир рынка, не тариф конкретной школы; нужно учитывать сезонный рынок департамента Мальдонадо.",
+        "source_id": "S_UY_MALDONADO_COST",
+        "last_verified_at": "2026-07-21",
+        "confidence": "LOW",
+        "notes": "Не включено в практический семейный бюджет."
+      }
+    ],
+    "pet_rules": [],
+    "lgbt_rules": [
+      {
+        "lgbt_rule_id": "UY_EQUAL_MARRIAGE",
+        "country_id": "UY",
+        "topic": "SAME_SEX_MARRIAGE",
+        "legal_status": "RECOGNIZED",
+        "practical_status": "EQUAL_CIVIL_MARRIAGE",
+        "family_route_impact": "MEETS",
+        "safety_level": "HIGH_LEGAL_PROTECTION",
+        "source_id": "S_UY_EQUAL_MARRIAGE",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Однополый гражданский брак имеет те же правовые последствия. Для миграционного дела всё равно нужны легализованные документы и подтверждение применимого семейного основания."
+      },
+      {
+        "lgbt_rule_id": "UY_UNREGISTERED_PARTNER",
+        "country_id": "UY",
+        "topic": "UNREGISTERED_PARTNER",
+        "legal_status": "RECOGNIZED_AFTER_JUDICIAL_RECOGNITION",
+        "practical_status": "DOCUMENT_HEAVY_AND_FIVE_YEAR_RULE",
+        "family_route_impact": "MEETS_WITH_EVIDENCE",
+        "safety_level": "HIGH_LEGAL_PROTECTION",
+        "source_id": "S_UY_CONCUBINATO",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Союз двух людей любого пола может быть признан unión concubinaria после не менее пяти лет непрерывного совместного проживания и судебного признания; одних незарегистрированных отношений недостаточно."
+      },
+      {
+        "lgbt_rule_id": "UY_PARENTHOOD",
+        "country_id": "UY",
+        "topic": "PARENTHOOD_AND_CHILDREN",
+        "legal_status": "ADOPTION_NOT_RESTRICTED_BY_SEX_OF_COUPLE",
+        "practical_status": "FOREIGN_PARENTAGE_DOCUMENTS_REQUIRE_REVIEW",
+        "family_route_impact": "MEETS_OR_INDIVIDUAL_REVIEW",
+        "safety_level": "HIGH_LEGAL_PROTECTION",
+        "source_id": "S_UY_ADOPTION",
+        "last_verified_at": "2026-07-21",
+        "confidence": "MEDIUM",
+        "notes": "Закон об усыновлении не ограничивает усыновителей разнополыми парами. Иностранные акты о рождении, усыновлении или суррогатном родительстве требуют отдельной проверки признания."
+      },
+      {
+        "lgbt_rule_id": "UY_ANTI_DISCRIMINATION",
+        "country_id": "UY",
+        "topic": "ANTI_DISCRIMINATION",
+        "legal_status": "NATIONAL_PROTECTION",
+        "practical_status": "ENFORCEMENT_AND_ACCESS_GAPS_REMAIN",
+        "family_route_impact": "NOT_APPLICABLE",
+        "safety_level": "STRONG_LEGAL_FRAMEWORK",
+        "source_id": "S_UY_ANTI_DISCRIMINATION",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Закон 17.817 включает сексуальную ориентацию и гендерную идентичность в определение дискриминации. Государственный план 2026–2030 при этом фиксирует сохраняющиеся неравенства в здоровье, образовании, занятости, жилье и публичных пространствах."
+      },
+      {
+        "lgbt_rule_id": "UY_GENDER_IDENTITY",
+        "country_id": "UY",
+        "topic": "GENDER_IDENTITY",
+        "legal_status": "LEGAL_RECOGNITION_AND_TRANS_PROTECTIONS",
+        "practical_status": "IMPLEMENTATION_GAPS_REMAIN",
+        "family_route_impact": "NOT_APPLICABLE",
+        "safety_level": "STRONG_LEGAL_FRAMEWORK",
+        "source_id": "S_UY_TRANS_LAW",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Закон 19.684 закрепляет право на гендерную идентичность, защиту от дискриминации и меры в образовании, работе, жилье и здравоохранении. Наличие закона не гарантирует одинаковый доступ к услугам по всей стране."
+      },
+      {
+        "lgbt_rule_id": "UY_HATE_CRIME",
+        "country_id": "UY",
+        "topic": "HATE_CRIME",
+        "legal_status": "CRIMINALIZED",
+        "practical_status": "NO_COMPLETE_PUBLIC_LGBT_BREAKDOWN_FOUND",
+        "family_route_impact": "NOT_APPLICABLE",
+        "safety_level": "RISK_EXISTS_BUT_NOT_QUANTIFIED",
+        "source_id": "S_UY_HATE_CRIME",
+        "last_verified_at": "2026-07-21",
+        "confidence": "HIGH",
+        "notes": "Статья 149-ter Уголовного кодекса наказывает физическое или моральное насилие из ненависти по признаку сексуальной ориентации или гендерной идентичности. Сопоставимой свежей общенациональной статистики именно по ЛГБТ-мотиву в открытых данных не найдено; отсутствие числа нельзя трактовать как отсутствие преступлений."
+      },
+      {
+        "lgbt_rule_id": "UY_CONVERSION",
+        "country_id": "UY",
+        "topic": "CONVERSION_PRACTICES",
+        "legal_status": "NO_EXPLICIT_NATIONWIDE_BAN_CONFIRMED",
+        "practical_status": "MENTAL_HEALTH_DIAGNOSIS_BASED_ONLY_ON_ORIENTATION_OR_IDENTITY_PROHIBITED",
+        "family_route_impact": "NOT_APPLICABLE",
+        "safety_level": "PARTIAL_LEGAL_PROTECTION",
+        "source_id": "S_UY_MENTAL_HEALTH",
+        "last_verified_at": "2026-07-21",
+        "confidence": "MEDIUM",
+        "notes": "Закон о психическом здоровье запрещает ставить диагноз только на основании ориентации или гендерной идентичности. Отдельный прямой общенациональный запрет всех конверсионных практик в проверенных первичных источниках не подтверждён."
+      },
+      {
+        "lgbt_rule_id": "UY_PRACTICAL_SAFETY",
+        "country_id": "UY",
+        "topic": "PRACTICAL_SAFETY",
+        "legal_status": "STRONG_NATIONAL_FRAMEWORK",
+        "practical_status": "DISCRIMINATION_AND_SERVICE_GAPS_DOCUMENTED",
+        "family_route_impact": "NOT_APPLICABLE",
+        "safety_level": "GENERALLY_PROGRESSIVE_BUT_NOT_RISK_FREE",
+        "source_id": "S_UY_DIVERSITY_PLAN_2026",
+        "last_verified_at": "2026-07-21",
+        "confidence": "MEDIUM",
+        "notes": "Официальный план Монтевидео 2026–2030 называет устойчивые проблемы: насилие и дискриминацию, исключение из занятости, бездомность, трудности доступа к здравоохранению и дискриминацию в образовании. Сопоставимых данных для честного рейтинга Монтевидео, Сальто и Мальдонадо нет."
+      }
+    ],
+    "facts": [
+      {
+        "fact_id": "F_UY_DIRECT_PERMANENT",
+        "entity_scope": "ROUTE",
+        "entity_id": "UY_PERMANENT",
+        "field_id": "direct_permanent_residence",
+        "value_text": null,
+        "value_number": null,
+        "value_boolean": true,
+        "value_date": null,
+        "source_id": "S_UY_PERMANENT",
+        "checked_at": "2026-07-19",
+        "confidence": "HIGH",
+        "research_status": "VERIFIED"
+      },
+      {
+        "fact_id": "F_UY_NOMAD_NO_FIXED_THRESHOLD",
+        "entity_scope": "ROUTE",
+        "entity_id": "UY_DIGITAL_NOMAD",
+        "field_id": "fixed_minimum_income_published",
+        "value_text": null,
+        "value_number": null,
+        "value_boolean": false,
+        "value_date": null,
+        "source_id": "S_UY_NOMAD",
+        "checked_at": "2026-07-19",
+        "confidence": "HIGH",
+        "research_status": "VERIFIED"
+      },
+      {
+        "fact_id": "F_UY_EQUAL_MARRIAGE",
+        "entity_scope": "LGBT_RULE",
+        "entity_id": "UY_EQUAL_MARRIAGE",
+        "field_id": "same_sex_marriage_recognized",
+        "value_text": null,
+        "value_number": null,
+        "value_boolean": true,
+        "value_date": null,
+        "source_id": "S_UY_EQUAL_MARRIAGE",
+        "checked_at": "2026-07-19",
+        "confidence": "HIGH",
+        "research_status": "VERIFIED"
+      }
+    ],
+    "fact_sources": [
+      {
+        "fact_source_id": "FS_UY_DIRECT_PERMANENT",
+        "fact_id": "F_UY_DIRECT_PERMANENT",
+        "source_id": "S_UY_PERMANENT",
+        "source_role": "PRIMARY",
+        "supports_fact": "YES"
+      },
+      {
+        "fact_source_id": "FS_UY_NOMAD_THRESHOLD",
+        "fact_id": "F_UY_NOMAD_NO_FIXED_THRESHOLD",
+        "source_id": "S_UY_NOMAD",
+        "source_role": "PRIMARY",
+        "supports_fact": "YES"
+      },
+      {
+        "fact_source_id": "FS_UY_EQUAL_MARRIAGE",
+        "fact_id": "F_UY_EQUAL_MARRIAGE",
+        "source_id": "S_UY_EQUAL_MARRIAGE",
+        "source_role": "PRIMARY",
+        "supports_fact": "YES"
+      }
+    ],
+    "unverified": [
+      {
+        "issue_id": "UY_CITY_COST_REVIEW",
+        "entity_scope": "COUNTRY",
+        "entity_id": "UY",
+        "field_id": "estimated_monthly_costs",
+        "missing_reason": "Городские бюджеты основаны на вторичных crowdsourced-источниках и требуют квартальной перепроверки.",
+        "why_required": "Нужно для практической оценки бюджета, но не влияет на юридический статус маршрута.",
+        "blocks_result_scope": "PRACTICAL_EVALUATION",
+        "priority": "MEDIUM",
+        "status": "OPEN",
+        "created_at": "2026-07-19"
+      }
+    ],
+    "calculation_contract": null
+  }
+}

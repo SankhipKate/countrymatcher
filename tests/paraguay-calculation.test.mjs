@@ -42,8 +42,6 @@ function profile(overrides = {}) {
     },
     goal: {
       long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT',
-      physical_presence: 'DEPENDS_ON_COUNTRY',
-      language_exam_readiness: 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: 'NOT_IMPORTANT',
     },
     preferences: { monthly_budget: { amount: 1800, currency: 'USD' }, city_size: 'ANY', climate: ['ANY'] },
@@ -95,8 +93,6 @@ test('current Paraguayan temporary resident is directed to the permanent-residen
     application_preferences: { methods: ['CURRENT_COUNTRY'] },
     goal: {
       long_term: 'PR_REQUIRED',
-      physical_presence: 'DEPENDS_ON_COUNTRY',
-      language_exam_readiness: 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: 'DESIRABLE',
     },
   });
@@ -105,8 +101,8 @@ test('current Paraguayan temporary resident is directed to the permanent-residen
   assert.equal(result.bestRoute.routeId, 'PY_PERMANENT_AFTER_TEMP');
   assert.equal(permanent.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(permanent.thresholdUsd, null);
-  assert.ok(permanent.conditions.some((item) => item.includes('последние три месяца')));
-  assert.ok(permanent.conditions.some((item) => item.includes('категорию состоятельности')));
+  assert.ok(permanent.initialPermitRequirements.some((item) => item.includes('последние три месяца')));
+  assert.ok(permanent.conditions.some((item) => item.includes('экономической состоятельности')));
 });
 
 test('same-sex partner is shown as needing an independent Paraguayan route', () => {
@@ -133,7 +129,7 @@ test('Paraguay practical result uses researched family budgets and does not inve
   assert.equal(result.cities[0].costUsd, 1550);
   assert.equal(result.cities.every(({ internationalSchoolCost }) => internationalSchoolCost == null), true);
   assert.match(result.schoolSummary, /актуальные цены/i);
-  assert.match(result.petSummary, /до пяти домашних собак или кошек/i);
+  assert.match(result.petSummary, /национальный запрет пород/i);
 });
 
 test('public matcher loads Paraguay data, adapter, flag, and dynamic city cards', async () => {
@@ -141,6 +137,6 @@ test('public matcher loads Paraguay data, adapter, flag, and dynamic city cards'
   assert.match(app, /paraguay-research-v3\.0\.json\?v=7\.0\.1/);
   assert.match(app, /paraguay-adapter\.js\?v=7\.0\.1/);
   assert.match(app, /countryId === 'PY' \? '🇵🇾'/);
-  assert.match(app, /\['AR', 'PY', 'PT', 'MX', 'BR'\]\.includes\(countryId\)/);
+  assert.match(app, /enrichCityCategories/);
   assert.match(app, /countryId === 'UY' \? 700 : 0/);
 });

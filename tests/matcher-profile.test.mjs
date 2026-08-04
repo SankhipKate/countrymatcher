@@ -1,14 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
 import { formatCurrency } from '../matcher/format.js';
 import { calculateSpain, STATUS_LABELS_RU } from '../js/spain-calculator.js';
 import { countryOptions, parseCountryCode, searchCountries } from '../matcher/countries.js';
 import { DOG_BREEDS, isKnownDogBreed, searchDogBreeds } from '../matcher/dog-breeds.js';
 
 const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
-const spainData = JSON.parse(await readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8'));
+const spainData = JSON.parse(await readFile(new URL('../data/spain-research-v3.0.json', import.meta.url), 'utf8'));
 const context = { calculation_date: '2026-07-19T12:00:00Z', engine_version: '2.1.0', fx: { base_currency: 'USD', rates: { EUR: 0.87, RUB: 80 }, source: 'test', as_of: '2026-07-19T00:00:00Z', max_age_hours: 96 } };
 
 test('visible matcher version matches package version', async () => {
@@ -29,7 +29,7 @@ const answers = (overrides = {}) => ({
   hasPartner: false, partnerIncluded: false, relationshipType: '', lgbtEnabled: false, childAges: [], schoolNeeded: false,
   primaryType: 'REMOTE_EMPLOYMENT', primarySourceCountry: 'US', primaryBankCountry: 'GE', primaryTotalAmount: '4000', primaryAmount: '4000', primaryCurrency: 'USD', primaryEvidence: 'FULL',
   hasAdditionalIncome: false, partnerHasIncome: false,
-  longTermGoal: 'TEMPORARY_RESIDENCE_SUFFICIENT', physicalPresence: 'MOST_OF_YEAR', languageExamReadiness: '', keepRuCitizenship: 'REQUIRED',
+  longTermGoal: 'TEMPORARY_RESIDENCE_SUFFICIENT', keepRuCitizenship: 'REQUIRED',
   budgetUnknown: false, monthlyBudget: '2500', budgetCurrency: 'USD', citySize: 'ANY', climate: 'ANY', petTypes: ['NONE'],
   specialCircumstances: ['NONE'], medicalEnabled: false, routeSpecificAnswers: {},
   ...overrides,
@@ -112,15 +112,55 @@ test('user can select current-country and in-country application methods togethe
 });
 
 
-test('public matcher keeps filing after entry available for an applicant currently in Russia', async () => {
+test('public matcher evaluates all researched filing methods without asking willingness to return', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /inRussia \? \['RUSSIA', 'IN_COUNTRY_AFTER_ENTRY'\]/);
+  const html = await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8');
+  assert.match(app, /const applicationMethods = \['ANY'\]/);
+  assert.equal(html.includes('Готовы вернуться в Россию'), false);
 });
 
 test('income and budget retain their own currencies', () => {
   const profile = buildUserProfile(answers({ primaryTotalAmount: '300000', primaryAmount: '300000', primaryCurrency: 'RUB', monthlyBudget: '2200', budgetCurrency: 'EUR' }));
   assert.deepEqual(profile.income.primary.monthly_provable, { amount: 300000, currency: 'RUB' });
   assert.deepEqual(profile.preferences.monthly_budget, { amount: 2200, currency: 'EUR' });
+});
+
+test('profile builder derives provable income from evidence level', () => {
+  const profile = buildUserProfile(answers({ primaryTotalAmount: '1000', primaryAmount: '777', primaryEvidence: 'NONE' }));
+  assert.deepEqual(profile.income.primary.monthly_provable, { amount: 0, currency: 'USD' });
+});
+
+test('profile supports no current regular income without inventing a positive amount', () => {
+  const profile = buildUserProfile(answers({ primaryType: 'NO_REGULAR_INCOME', primarySourceCountry: '', primaryBankCountry: '', primaryTotalAmount: '', primaryAmount: '', primaryEvidence: '' }));
+  assert.equal(profile.income.primary.type, 'NO_REGULAR_INCOME');
+  assert.deepEqual(profile.income.primary.monthly_provable, { amount: 0, currency: 'USD' });
+  assert.equal(validateUserProfile(profile).valid, true);
+});
+
+test('adult ages are optional and retained when provided', () => {
+  const withoutAges = buildUserProfile(answers({ applicantAge: '', partnerAge: '' }));
+  assert.deepEqual(withoutAges.family.adult_ages, [null]);
+  const withPartner = buildUserProfile(answers({ partnerIncluded: true, relationshipType: 'MARRIAGE', applicantAge: '39', partnerAge: '41' }));
+  assert.deepEqual(withPartner.family.adult_ages, [39, 41]);
+  assert.equal(validateUserProfile(withPartner).valid, true);
+});
+
+test('income geography supports one country, several countries, or no permanent payer without a bank-country answer', () => {
+  const one = buildUserProfile(answers({ primarySourceScope: 'ONE_COUNTRY', primarySourceCountry: 'US', primaryBankCountry: '' }));
+  assert.equal(one.income.primary.source_country, 'US');
+  assert.equal(one.income.primary.bank_country, null);
+  const several = buildUserProfile(answers({ primarySourceScope: 'MULTIPLE_COUNTRIES', primarySourceCountry: '', primaryBankCountry: '' }));
+  assert.equal(several.income.primary.source_country, null);
+  assert.equal(several.income.primary.source_geography, 'MULTIPLE_COUNTRIES');
+  assert.equal(validateUserProfile(several).valid, true);
+});
+
+test('profile validation reports a missing total instead of crashing', () => {
+  const profile = buildUserProfile(answers());
+  profile.income.primary.monthly_total = null;
+  assert.doesNotThrow(() => validateUserProfile(profile));
+  assert.equal(validateUserProfile(profile).valid, false);
+  assert.ok(validateUserProfile(profile).errors.some(({ field }) => field === 'primaryTotalAmount'));
 });
 
 test('removed city and climate questions use neutral profile defaults', () => {
@@ -134,9 +174,20 @@ test('unknown budget is null and does not become zero', () => {
   assert.equal(buildUserProfile(answers({ budgetUnknown: true, monthlyBudget: '' })).preferences.monthly_budget, null);
 });
 
-test('language answer is only used for PR or citizenship goals', () => {
-  assert.equal(buildUserProfile(answers({ languageExamReadiness: 'NO' })).goal.language_exam_readiness, 'DEPENDS_ON_LANGUAGE');
-  assert.equal(buildUserProfile(answers({ longTermGoal: 'CITIZENSHIP_REQUIRED', languageExamReadiness: 'NO' })).goal.language_exam_readiness, 'NO');
+test('profile does not invent language-readiness or physical-presence answers', () => {
+  const profile = buildUserProfile(answers({ longTermGoal: 'CITIZENSHIP_REQUIRED' }));
+  const { goal } = profile;
+  assert.equal('language_exam_readiness' in goal, false);
+  assert.equal('physical_presence' in goal, false);
+  assert.deepEqual(validateAgainstSchema(profile, profileSchema), []);
+  assert.ok(validateAgainstSchema({
+    ...profile,
+    goal: { ...goal, language_exam_readiness: 'NO' },
+  }, profileSchema).some((error) => error.path === '$.goal.language_exam_readiness'));
+  assert.ok(validateAgainstSchema({
+    ...profile,
+    goal: { ...goal, physical_presence: 'LESS_THAN_6_MONTHS' },
+  }, profileSchema).some((error) => error.path === '$.goal.physical_presence'));
 });
 
 test('optional medical module can be absent', () => {
@@ -162,10 +213,27 @@ test('income-type mismatch explicitly says that the amount is not the problem', 
   assert.equal(message.includes('порог'), false);
 });
 
+test('local-currency threshold is displayed beside its dynamic USD equivalent', () => {
+  const text = describeIncomeRequirement({
+    incomeGuidance: 'Стандартный инвестиционный порог.',
+    incomeRequirementConversion: {
+      originalAmount: 500000,
+      originalCurrency: 'BRL',
+      targetCurrency: 'USD',
+      convertedAmount: 90909.09,
+      rateAsOf: '2026-08-01T00:00:00Z',
+      rateSource: 'test-provider',
+    },
+  }, formatCurrency);
+  assert.match(text, /500[\s\u00a0]000.*\(BRL\)/i);
+  assert.doesNotMatch(text, /2026-08-01|test-provider/);
+  assert.match(text, /90[\s\u00a0]909.*\(USD\)/i);
+});
+
 test('all unsuitable routes are not presented as the best option', () => {
   const intro = describeResultIntro([{ routeStatus: 'UNSUITABLE' }, { routeStatus: 'UNSUITABLE' }]);
   assert.equal(intro.heading, 'Сейчас подходящих вариантов не найдено');
-  assert.equal(intro.routeLabel, 'Наиболее близкий вариант при изменении условий');
+  assert.equal(intro.routeLabel, 'Первый из проверенных неподходящих маршрутов');
 });
 
 test('result routes are ordered through the three-status contract', () => {
@@ -176,6 +244,15 @@ test('result routes are ordered through the three-status contract', () => {
   ];
   assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['yes', 'conditions', 'no']);
   assert.equal(routes[0].routeId, 'no');
+});
+
+test('routes of the same status prefer simultaneous family fit and fewer conditions', () => {
+  const routes = [
+    { routeId: 'separate', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'UNKNOWN', goalFit: 'MEETS', conditions: ['A'] },
+    { routeId: 'family-many', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', goalFit: 'MEETS', conditions: ['A', 'B'] },
+    { routeId: 'family-few', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', goalFit: 'MEETS', conditions: ['A'] },
+  ];
+  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['family-few', 'family-many', 'separate']);
 });
 
 test('countries are stably ordered by the status of their best route', () => {
@@ -191,6 +268,15 @@ test('countries are stably ordered by the status of their best route', () => {
     ['UY', 'PY', 'AR', 'PT', 'ES'],
   );
   assert.deepEqual(countries.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY', 'PT']);
+});
+
+test('countries with equal legal and family fit use comparable median city cost', () => {
+  const country = (countryId, costs) => ({
+    country: { countryId, group: 'SUITABLE' },
+    bestRoute: { routeStatus: 'SUITABLE', familyFit: 'MEETS', goalFit: 'MEETS' },
+    cities: costs.map((costUsd) => ({ costUsd })),
+  });
+  assert.deepEqual(sortCountriesForDisplay([country('EXPENSIVE', [3000, 4000, 5000]), country('CHEAPER', [1000, 1500, 2000])]).map(({ country }) => country.countryId), ['CHEAPER', 'EXPENSIVE']);
 });
 
 test('route actions are deduplicated and omit actions already present in mandatory requirements', () => {
@@ -224,11 +310,37 @@ test('city size is the first approved category and uses the complete city label'
     'Самый жаркий',
   ]);
   assert.deepEqual(cityCategories('LARGE', ['Столица', 'Самый дорогой']), [
-    'Крупный город',
+    'Большой город',
     'Столица',
     'Самый дорогой',
   ]);
   assert.deepEqual(cityCategories('ANY', ['Неутверждённая категория']), []);
+});
+
+test('city comparison derives expensive, cool and hot categories from displayed data', () => {
+  const cities = enrichCityCategories([
+    { name: 'A', size: 'LARGE', cost: 2000, coldRange: 'примерно 8–16 °C', hotRange: 'примерно 20–30 °C' },
+    { name: 'B', size: 'MEDIUM', cost: 1500, coldRange: 'примерно 12–20 °C', hotRange: 'примерно 24–36 °C' },
+    { name: 'C', size: 'SMALL', cost: 1000, coldRange: 'примерно −1–5 °C', hotRange: 'примерно 5–15 °C' },
+  ]);
+  assert.ok(cities.find(({ name }) => name === 'A').categories.includes('Самый дорогой'));
+  assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый недорогой'));
+  assert.ok(cities.find(({ name }) => name === 'B').categories.includes('Самый жаркий'));
+  assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый прохладный'));
+});
+
+test('researched city roles are authoritative and are not duplicated by numeric derivation', () => {
+  const cities = enrichCityCategories([
+    { name: 'A', size: 'SMALL', roles: ['Самый прохладный'], cost: 1000, coldRange: '0–9', hotRange: '14–30' },
+    { name: 'B', size: 'MEDIUM', roles: ['Самый жаркий'], cost: 1200, coldRange: '8–16', hotRange: '20–29' },
+  ]);
+  assert.equal(cities.find(({ name }) => name === 'A').categories.includes('Самый жаркий'), false);
+  assert.equal(cities.find(({ name }) => name === 'B').categories.includes('Самый жаркий'), true);
+});
+
+test('climate formatter removes internal methodology from the short range', () => {
+  assert.equal(formatTemperatureRange('примерно 7–25 °C для средних минимумов и максимумов июля'), 'примерно 7–25 °C');
+  assert.equal(formatTemperatureRange('8,6–15,1'), 'примерно 8,6–15,1 °C');
 });
 
 test('missing child age is reported as a profile validation error', () => {
@@ -265,18 +377,21 @@ test('root and legacy pilot redirect to the public matcher and are not linked fr
 });
 
 test('result UI shows city comparisons and a human-readable row-based LGBT section', async () => {
-  const [app, styles] = await Promise.all([
+  const [app, profileSource, styles] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/profile.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /Самый жаркий/);
-  assert.match(app, /Самый прохладный/);
-  assert.match(app, /Самый дорогой/);
-  assert.match(app, /Самый недорогой/);
-  assert.match(app, /ЛГБТ: права, семья и иммиграция/);
+  assert.match(profileSource, /Самый жаркий/);
+  assert.match(profileSource, /Самый прохладный/);
+  assert.match(profileSource, /Самый дорогой/);
+  assert.match(profileSource, /Самый недорогой/);
+  assert.match(app, /ЛГБТ: права, семья и практическая среда/);
   assert.match(app, /Брак и переезд с супругом/);
-  assert.match(app, /Международная защита/);
-  assert.match(app, /Достаточно безопасно/);
+  assert.match(app, /Правовое положение/);
+  assert.match(app, /Практическая среда/);
+  assert.match(app, /Недостаточно надёжных данных/);
+  assert.equal(app.includes('Достаточно безопасно'), false);
   assert.match(app, /Что меняется/);
   assert.equal(app.includes('Дети и родительство'), false);
   assert.equal(app.includes('Права транс-людей'), false);
@@ -301,7 +416,7 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.equal(app.includes('Ваш бюджет не указан'), false);
   assert.match(app, /budgetDerivedFromIncome/);
   assert.match(app, /data-country-tab/);
-  assert.match(app, /cityCategories\(city\.populationCategory, city\.roles\)/);
+  assert.match(app, /enrichCityCategories/);
   assert.equal(app.includes('Самый дорогой по индексу Expatistan'), false);
   assert.equal(app.includes('Сравнение стран'), false);
   assert.equal(app.includes('Страна расчёта'), false);
@@ -311,11 +426,39 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
 test('result UI keeps one corrective-action section and maps country tabs to matching panels', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.equal(app.includes('Что потребуется для этого маршрута'), false);
-  assert.match(app, /Что сделать, чтобы маршрут подходил/);
+  assert.match(app, /Что нужно выполнить, чтобы маршрут подходил/);
   assert.match(app, /data-country-tab="\$\{html\(countryId\)\}"/);
   assert.match(app, /data-country-panel="\$\{html\(countryId\)\}"/);
   assert.match(app, /panel\.dataset\.countryPanel !== countryId/);
   assert.match(app, /const countries = sortCountriesForDisplay\(calculation\.results \|\| \[\]\)/);
+  assert.equal((app.match(/Курс валют:/g) || []).length, 1);
+  assert.match(app, /\$\{calculationNote\}/);
+});
+
+test('every questionnaire answer enforced by step validation is visibly marked required', async () => {
+  const [matcher, app] = await Promise.all([
+    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+  ]);
+  for (const label of [
+    'Переезжаете с детьми? *',
+    'Переезжают домашние животные? *',
+    'Какой результат вам нужен? *',
+    'Комфортный семейный бюджет в месяц *',
+    'Сохранить гражданство РФ? *',
+  ]) assert.ok(matcher.includes(label), label);
+  for (const label of [
+    'Возраст ребёнка ${index + 1} *',
+    'Ваш регулярный доход в месяц *',
+    'Какую часть дохода можете подтвердить документами? *',
+    'Какую сумму сможете подтвердить? *',
+  ]) assert.ok(app.includes(label), label);
+});
+
+test('result UI reserves corrective actions for conditional routes', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.equal(app.includes('Что должно измениться для повторной оценки'), false);
+  assert.match(app, /route\.routeStatus === 'SUITABLE_WITH_CONDITIONS'/);
 });
 
 test('city cards grow with content, wrap long text, and constrain mobile overflow', async () => {
@@ -375,7 +518,7 @@ test('matcher cache keys include the current release for code and country data',
   const version = packageJson.version.replaceAll('.', '\\.');
   assert.match(matcher, new RegExp(`styles\\.css\\?v=${version}`));
   assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
-  assert.match(app, new RegExp(`uruguay-research-v2\\.2\\.json\\?v=${version}`));
+  assert.match(app, new RegExp(`uruguay-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`argentina-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`paraguay-research-v3\\.0\\.json\\?v=${version}`));
   assert.match(app, new RegExp(`portugal-research-v3\\.0\\.json\\?v=${version}`));

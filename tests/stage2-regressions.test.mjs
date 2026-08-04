@@ -47,18 +47,22 @@ test('network failure is typed as incomplete calculation context', async () => {
   await assert.rejects(loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); } }), { code: 'CALCULATION_CONTEXT_INCOMPLETE' });
 });
 
-test('stale mocked rate is rejected', async () => {
-  await assert.rejects(loadCalculationContext({ now: new Date('2026-07-19T12:00:00Z'), fetchImpl: async () => ({ ok: true, json: async () => [{ date: '2026-07-01', quote: 'EUR', rate: 0.87 }, { date: '2026-07-01', quote: 'ARS', rate: 1250 }, { date: '2026-07-01', quote: 'MXN', rate: 18.75 }, { date: '2026-07-01', quote: 'BRL', rate: 5.5 }] }) }), { code: 'CALCULATION_CONTEXT_INCOMPLETE' });
+test('stale online rate falls back to the last saved complete context', async () => {
+  const rows = ['EUR', 'ARS', 'MXN', 'BRL'].map((quote, index) => ({ date: '2026-07-18', quote, rate: index + 1 }));
+  const storage = { getItem: () => JSON.stringify({ source: 'Frankfurter', rows }), setItem() {} };
+  const result = await loadCalculationContext({ storage, now: new Date('2026-07-19T12:00:00Z'), fetchImpl: async () => ({ ok: true, json: async () => rows.map((row) => ({ ...row, date: '2026-07-01' })) }) });
+  assert.equal(result.fx.is_saved_fallback, true);
+  assert.equal(result.fx.as_of, '2026-07-18');
 });
 
-test('runtime and current pilot contain no removed constructs or user FX field', async () => {
-  const files = ['../js/spain-calculator.js', '../js/countries/spain-adapter.js', '../js/engine/calculate-country.js', '../js/engine/select-best-route.js', '../pilot/app.js', '../pilot/index.html'];
+test('runtime contains no removed constructs or user FX field', async () => {
+  const files = ['../js/spain-calculator.js', '../js/countries/spain-adapter.js', '../js/engine/calculate-country.js', '../js/engine/select-best-route.js', '../matcher/app.js'];
   const source = (await Promise.all(files.map((file) => readFile(new URL(file, import.meta.url), 'utf8')))).join('\n');
   for (const token of ['BASIS' + '_ROUTE', 'basis' + '_mismatch', 'selection' + 'Score', 'eur' + 'UsdRate']) assert.equal(source.includes(token), false);
 });
 
-test('main pilot contains no social-security route-specific question', async () => {
-  const source = `${await readFile(new URL('../pilot/index.html', import.meta.url), 'utf8')}\n${await readFile(new URL('../pilot/app.js', import.meta.url), 'utf8')}`;
+test('public matcher contains no social-security route-specific question', async () => {
+  const source = `${await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8')}\n${await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8')}`;
   assert.equal(source.includes('social' + 'SecurityPlan'), false);
   assert.equal(source.includes('Как планируете подтвердить социальное страхование'), false);
 });
@@ -100,16 +104,16 @@ test('matcher selects avoid the obsolete not-selected option and align income bl
   assert.match(styles, /\.income-block \.field>span:first-child[^{]*\{[^}]*min-height:48px/);
 });
 
-test('dog breed is a searchable input without a separate other-breed field', async () => {
+test('pet question is only yes or no and does not ask species or breed', async () => {
   const [html, app] = await Promise.all([
     readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(html, /id="dogBreed" type="text"/);
-  assert.equal(html.includes('Другая известная порода'), false);
-  assert.equal(html.includes('dogBreedName'), false);
-  assert.match(app, /enhanceDogBreedSearch/);
-  assert.match(app, /searchDogBreeds/);
+  assert.match(html, /Переезжают домашние животные\?/);
+  assert.equal(html.includes('id="dogBreed"'), false);
+  assert.equal(html.includes('name="petType"'), false);
+  assert.equal(app.includes('enhanceDogBreedSearch'), false);
+  assert.equal(app.includes('searchDogBreeds'), false);
 });
 
 test('selects match input shape and country tabs reset the detail position', async () => {
@@ -125,8 +129,8 @@ test('selects match input shape and country tabs reset the detail position', asy
 test('long-term route text is structured once without duplicated research notes', async () => {
   const [app, spain, uruguay] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
-    readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8'),
-    readFile(new URL('../data/uruguay-research-v2.2.json', import.meta.url), 'utf8'),
+    readFile(new URL('../data/spain-research-v3.0.json', import.meta.url), 'utf8'),
+    readFile(new URL('../data/uruguay-research-v3.0.json', import.meta.url), 'utf8'),
   ]);
   assert.equal(app.includes('items.push(rule.notes)'), false);
   assert.equal(app.includes('Срок до гражданства:'), false);

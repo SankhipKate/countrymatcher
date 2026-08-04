@@ -1,6 +1,7 @@
 import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
 import { convertMoney } from '../engine/currency.js?v=7.0.1';
 import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
 
 const PUBLIC_STATUSES = Object.freeze({
   SUITABLE: ROUTE_STATUSES.SUITABLE,
@@ -97,7 +98,7 @@ function validateContext(profile, countryPackage, context) {
   const asOf = Date.parse(context?.fx?.as_of);
   const calculationDate = Date.parse(context?.calculation_date);
   const maxAge = Number(context?.fx?.max_age_hours);
-  const stale = Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
+  const stale = context?.fx?.is_saved_fallback ? false : Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
     ? calculationDate - asOf > maxAge * 3600000
     : true;
   if (!(arsRate > 0) || stale) {
@@ -129,152 +130,13 @@ function listRoutes(data) {
   );
 }
 
-function matchingIncome(profile, acceptedTypes) {
-  const sources = profile.applicantSources.filter((source) => acceptedTypes.has(source.type));
-  return {
-    sources,
-    amountUsd: sources.reduce((sum, source) => sum + Number(source.provableUsd || 0), 0),
-    original: sources.length === 1 ? sources[0].monthly_provable : null,
-    conversion: sources.length === 1 ? sources[0].conversion : null,
-  };
-}
-
-function thresholdUsd(route, context) {
-  if (route.income_threshold_amount == null || !route.income_threshold_currency) return { amount: null, conversion: null };
-  const conversion = convertMoney(
-    { amount: Number(route.income_threshold_amount), currency: route.income_threshold_currency },
-    'USD',
-    context,
-    `routes.${route.route_id}.income_threshold_amount`,
-  );
-  return { amount: conversion.convertedAmount, conversion };
-}
-
-function incomeEvaluation(route, profile, context) {
-  const threshold = thresholdUsd(route, context);
-  const noThreshold = () => ({ thresholdUsd: null, thresholdConversion: null, amountUsd: null, incomeTypeFit: 'NOT_APPLICABLE', incomeFit: 'NOT_APPLICABLE', checks: [] });
-
-  if (route.route_id === 'AR_NOMAD') {
-    const income = matchingIncome(profile, REMOTE_INCOME_TYPES);
-    const checks = [];
-    if (income.sources.length === 0) {
-      checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'income_type_incompatible', 'Для этого маршрута нужна удалённая работа или самостоятельные услуги для зарубежного работодателя, заказчика или компании.', {
-        action: 'Подтвердить удалённую работу или самостоятельные услуги для источника за пределами Аргентины.',
-      }));
-    } else {
-      const localSource = income.sources.some((source) => source.source_country === 'AR');
-      const sourceNotSpecified = income.sources.some((source) => source.source_country == null);
-      const documentsMissing = income.amountUsd <= 0;
-      if (localSource) checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'foreign_source_required', 'Доход цифрового кочевника должен поступать от источника за пределами Аргентины.', {
-        action: 'Подтвердить зарубежного работодателя, заказчиков или иностранную компанию.',
-      }));
-      else if (sourceNotSpecified) checks.push(outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'foreign_source_confirmation_required', 'Для части дохода не указана единая страна источника; потребуется подтвердить, что клиенты или заказчики находятся за пределами Аргентины.', {
-        condition: 'Подтвердить зарубежных клиентов или заказчиков.',
-        action: 'Подготовить договоры, заказы, счета или квитанции с зарубежными клиентами.',
-      }));
-      if (documentsMissing) checks.push(outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'income_documents_required', 'Числового минимума нет, но нужно документально подтвердить деятельность и реальные поступления.', {
-        condition: 'Подготовить документы о деятельности и поступлениях.',
-        action: 'Подготовить договор, письмо работодателя, заказы, счета или квитанции и банковские поступления.',
-      }));
-      if (checks.length === 0) checks.push(outcome(PUBLIC_STATUSES.SUITABLE, 'nomad_income_confirmed', 'Тип дохода и зарубежный источник соответствуют маршруту; фиксированного числового минимума нет.'));
-    }
-    return {
-      thresholdUsd: null,
-      thresholdConversion: null,
-      amountUsd: income.amountUsd,
-      incomeOriginal: income.original,
-      incomeConversion: income.conversion,
-      incomeTypeFit: income.sources.length ? 'MEETS' : 'DOES_NOT_MEET',
-      incomeFit: income.sources.length ? fit(checks) : 'NOT_APPLICABLE',
-      checks,
-      incomeGuidance: route.income_rule_ru,
-    };
-  }
-
-  const thresholdRoute = route.route_id === 'AR_RENTISTA' || route.route_id === 'AR_PENSIONADO';
-  if (thresholdRoute) {
-    const accepted = new Set([route.route_id === 'AR_RENTISTA' ? 'PASSIVE_INCOME' : 'PENSION']);
-    const income = matchingIncome(profile, accepted);
-    const checks = [];
-    if (income.sources.length === 0) {
-      const label = route.route_id === 'AR_RENTISTA' ? 'подтверждаемый пассивный доход' : 'подтверждаемая регулярная пенсия';
-      checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'income_type_incompatible', `Для этого маршрута нужен ${label}.`, {
-        action: route.route_id === 'AR_RENTISTA'
-          ? 'Указать пассивный доход от имущества или капитала отдельным источником дохода.'
-          : 'Указать пенсию отдельным источником дохода.',
-      }));
-    } else {
-      if (income.sources.some((source) => source.source_country === 'AR')) {
-        checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'foreign_source_required', 'Для этого основания требуется иностранный источник выплаты.', {
-          action: 'Подтвердить источник выплаты за пределами Аргентины.',
-        }));
-      }
-      if (income.amountUsd < threshold.amount) {
-        checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'income_below_threshold', `Подтверждаемый доход составляет около ${Math.round(income.amountUsd)} USD в месяц, а текущий порог — около ${Math.round(threshold.amount)} USD.`, {
-          action: `Увеличить подтверждаемый доход минимум до ${Math.ceil(threshold.amount)} USD в месяц.`,
-        }));
-      } else {
-        checks.push(outcome(PUBLIC_STATUSES.SUITABLE, 'income_meets_threshold', 'Подтверждаемый доход достигает действующего финансового порога.'));
-      }
-    }
-    const formula = route.income_formula ? ` Официальная формула: ${route.income_formula}; в исследовании зафиксировано ${Number(route.income_threshold_amount).toLocaleString('ru-RU')} ${route.income_threshold_currency}.` : '';
-    return {
-      thresholdUsd: threshold.amount,
-      thresholdConversion: threshold.conversion,
-      amountUsd: income.amountUsd,
-      incomeOriginal: income.original,
-      incomeConversion: income.conversion,
-      incomeTypeFit: income.sources.length ? 'MEETS' : 'DOES_NOT_MEET',
-      incomeFit: income.sources.length ? (income.amountUsd >= threshold.amount ? 'MEETS' : 'DOES_NOT_MEET') : 'NOT_APPLICABLE',
-      checks,
-      incomeGuidance: `Минимальный подтверждаемый доход: около ${Math.ceil(threshold.amount)} USD в месяц.${formula}`,
-    };
-  }
-
-  if (route.route_id === 'AR_WORKER') {
-    return {
-      ...noThreshold(),
-      checks: [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'local_contract_required', 'Маршрут станет доступен после получения трудового договора с зарегистрированным аргентинским работодателем.', {
-        condition: 'Получить подходящий местный трудовой договор.',
-        action: 'Получить трудовой договор с работодателем в Аргентине, зарегистрированным как приглашающая организация.',
-      })],
-      incomeGuidance: route.income_rule_ru,
-      basisMissing: true,
-    };
-  }
-
-  if (route.route_id === 'AR_SPECIALIST_TRANSFER') {
-    return {
-      ...noThreshold(),
-      checks: [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'specialist_contract_required', 'Нужен квалифицированный контракт, научная или техническая работа либо подтверждённый внутрикорпоративный перевод.', {
-        condition: 'Получить подходящий контракт или оформить внутрикорпоративный перевод.',
-        action: 'Получить контракт на квалифицированную, научную, техническую или консультационную работу либо оформить перевод внутри компании.',
-      })],
-      incomeGuidance: route.income_rule_ru,
-      basisMissing: true,
-    };
-  }
-
-  if (route.route_id === 'AR_STUDENT') {
-    return {
-      ...noThreshold(),
-      checks: [outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'study_enrollment_required', 'Студенческий маршрут станет доступен после зачисления на официальную программу обучения.', {
-        condition: 'Поступить на подходящую программу обучения.',
-        action: 'Получить подтверждение зачисления в учреждение, зарегистрированное в миграционной службе.',
-      })],
-      incomeGuidance: route.income_rule_ru,
-      basisMissing: true,
-    };
-  }
-
-  return noThreshold();
-}
-
 function familyEvaluation(route, profile) {
   const checks = [];
   if (route.route_id === 'AR_NOMAD' && (profile.partnerIncluded || profile.children.length > 0)) {
-    checks.push(outcome(PUBLIC_STATUSES.UNSUITABLE, 'nomad_family_not_included', 'Семья не включается в разрешение цифрового кочевника автоматически; каждому члену семьи нужно отдельное законное основание.', {
-      action: 'Выбрать для семьи отдельные законные основания либо другой основной маршрут, допускающий воссоединение.',
+    checks.push(outcome(PUBLIC_STATUSES.SUITABLE_WITH_CONDITIONS, 'nomad_separate_family_routes_required', 'Семья не включается в разрешение цифрового кочевника автоматически.', {
+      condition: profile.children.length > 0
+        ? 'Подтвердить отдельный допустимый маршрут ребёнка и второго взрослого либо выбрать семейно-совместимый маршрут.'
+        : 'Если второй взрослый отвечает требованиям цифрового кочевника, подать два отдельных заявления; иначе подтвердить для него другой законный маршрут.',
     }));
     return checks;
   }
@@ -301,8 +163,30 @@ function goalEvaluation(route, profile) {
   return [outcome(PUBLIC_STATUSES.SUITABLE, 'temporary_goal_supported', 'Краткосрочный маршрут соответствует цели временного проживания.')];
 }
 
+function structuredRequirementEvaluation(route, profile, context) {
+  const evaluation = evaluateRouteRequirements(route, profile, context, { countryId: 'AR' });
+  const financial = evaluation.financial[0] || null;
+  const primary = financial?.primary || null;
+  const financialCheck = financial?.check || null;
+  return {
+    checks: evaluation.checks,
+    thresholdUsd: primary?.thresholdUsd ?? null,
+    thresholdConversion: primary?.thresholdConversion ?? null,
+    amountUsd: primary?.amountUsd ?? null,
+    incomeOriginal: primary?.sources?.length === 1 ? primary.sources[0].monthly_provable : null,
+    incomeConversion: primary?.sources?.length === 1 ? primary.sources[0].conversion : null,
+    incomeTypeFit: financial ? primary?.sources?.length ? 'MEETS' : 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
+    incomeFit: financialCheck
+      ? financialCheck.status === ROUTE_STATUSES.SUITABLE ? 'MEETS'
+        : financialCheck.status === ROUTE_STATUSES.UNSUITABLE ? 'DOES_NOT_MEET' : 'UNKNOWN'
+      : 'NOT_APPLICABLE',
+    basisMissing: route.requirements.some(({ evaluation_mode }) => evaluation_mode === 'UNASKED_CONDITION'),
+    incomeGuidance: route.income_rule_ru || null,
+  };
+}
+
 function evaluateRoute(route, indexes, profile, context) {
-  const income = incomeEvaluation(route, profile, context);
+  const income = structuredRequirementEvaluation(route, profile, context);
   const family = familyEvaluation(route, profile);
   const goal = goalEvaluation(route, profile);
   const application = [outcome(PUBLIC_STATUSES.SUITABLE, 'application_path_researched', 'Для маршрута подтверждён порядок подачи внутри Аргентины и/или из-за рубежа.')];
@@ -422,7 +306,7 @@ function evaluatePractical(data, profile) {
     recommendedCity: cities[0] || null,
     usedCitySizeFallback: false,
     requestedCitySize: profile.citySize,
-    petSummary: petSelected ? data.pets?.result_text_ru || null : null,
+    petSummary: petSelected ? data.pets?.breed_rule_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
   };
 }

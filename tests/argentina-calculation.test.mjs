@@ -48,8 +48,6 @@ function profile(type = 'REMOTE_EMPLOYMENT', amount = 2500, sourceCountry = 'US'
     },
     goal: {
       long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT',
-      physical_presence: 'DEPENDS_ON_COUNTRY',
-      language_exam_readiness: 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: 'NOT_IMPORTANT',
     },
     preferences: { monthly_budget: { amount: 1800, currency: 'USD' }, city_size: 'ANY', climate: ['ANY'] },
@@ -123,10 +121,12 @@ test('Argentina keeps 1 USD in the country KPI when the displayed best route doe
   const displayedBestRoute = sortRoutesForDisplay(result.routes)[0];
   const nomad = result.routes.find((route) => route.routeId === 'AR_NOMAD');
   assert.equal(displayedBestRoute.routeId, 'AR_WORKER');
+  assert.equal(nomad.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(nomad.conditions.some((condition) => condition.includes('два отдельных заявления')));
   assert.equal(displayedBestRoute.incomeTypeFit, 'NOT_APPLICABLE');
   assert.equal(displayedBestRoute.incomeFit, 'NOT_APPLICABLE');
   assert.equal(displayedBestRoute.thresholdUsd, null);
-  assert.match(displayedBestRoute.incomeGuidance, /местный договор/);
+  assert.match(displayedBestRoute.incomeGuidance, /местный договор/i);
   assert.equal(result.applicantProvableIncome.amount, 1);
   assert.equal(result.applicantProvableIncome.currency, 'USD');
   assert.equal(nomad.incomeTypeFit, 'MEETS');

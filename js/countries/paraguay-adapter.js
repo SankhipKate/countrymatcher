@@ -1,5 +1,6 @@
 import { convertMoney } from '../engine/currency.js?v=7.0.1';
 import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
 
 const PUBLIC_ROUTE_IDS = new Set(['PY_TEMPORARY', 'PY_PERMANENT_AFTER_TEMP']);
 const CITIZENSHIP_GOALS = new Set(['CITIZENSHIP_DESIRED', 'CITIZENSHIP_MAIN_GOAL', 'CITIZENSHIP_REQUIRED']);
@@ -128,61 +129,10 @@ function applicationEvaluation(route, profile) {
     )];
   }
   return [outcome(
-    ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
+    ROUTE_STATUSES.SUITABLE,
     'paraguay_permanent_filing_window_check',
-    'Основание для перехода есть, но нужно проверить срок действия временной карты и допустимое окно подачи.',
-    {
-      condition: 'Подать в последние три месяца действия временной карты либо в течение одного месяца после окончания со штрафом.',
-      action: 'Проверить дату окончания временной карты и подготовить подачу в допустимое окно.',
-    },
+    'Текущий статус соответствует основанию перехода; срок подачи указан среди обязательных этапов оформления.',
   )];
-}
-
-function incomeEvaluation(route, profile) {
-  if (route.route_id === 'PY_TEMPORARY') {
-    return {
-      checks: [outcome(
-        ROUTE_STATUSES.SUITABLE,
-        'no_numeric_income_threshold',
-        'Для первой временной резиденции официальный универсальный числовой порог дохода не установлен.',
-      )],
-      amountUsd: null,
-      thresholdUsd: null,
-      incomeTypeFit: 'NOT_APPLICABLE',
-      incomeFit: 'NOT_APPLICABLE',
-      incomeGuidance: route.income_rule_ru,
-    };
-  }
-
-  const hasProvableIncome = Number(profile.applicantProvableIncomeUsd || 0) > 0;
-  const check = hasProvableIncome
-    ? outcome(
-      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'solvency_category_documents_required',
-      'Единого числового порога нет; потребуется подтвердить подходящую официальную категорию состоятельности и комплект документов.',
-      {
-        condition: 'Подтвердить категорию состоятельности документами по действующим правилам миграционной службы.',
-        action: 'Подготовить документы о работе, самостоятельной деятельности, удалённом доходе, пенсии, имуществе, участии в компании или другой применимой категории.',
-      },
-    )
-    : outcome(
-      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'solvency_documents_missing',
-      'Для постоянной резиденции нужно документально подтвердить реальный доход или другую официальную категорию состоятельности.',
-      {
-        condition: 'Подготовить подтверждение дохода или другой допустимой категории состоятельности.',
-        action: 'Выбрать применимую категорию состоятельности и собрать подтверждающие документы.',
-      },
-    );
-
-  return {
-    checks: [check],
-    amountUsd: profile.applicantProvableIncomeUsd,
-    thresholdUsd: null,
-    incomeTypeFit: 'MEETS',
-    incomeFit: 'UNKNOWN',
-    incomeGuidance: route.income_rule_ru,
-  };
 }
 
 function familyEvaluation(route, profile) {
@@ -273,9 +223,27 @@ function initialPermitRequirements(route, profile) {
   ];
 }
 
-function evaluateRoute(route, indexes, profile) {
+function structuredRequirementEvaluation(route, profile, context) {
+  const evaluation = evaluateRouteRequirements(route, profile, context, { countryId: 'PY' });
+  const financial = evaluation.financial[0] || null;
+  const primary = financial?.primary || null;
+  const financialCheck = financial?.check || null;
+  return {
+    checks: evaluation.checks,
+    amountUsd: primary?.amountUsd ?? null,
+    thresholdUsd: primary?.thresholdUsd ?? null,
+    incomeTypeFit: financial ? primary?.sources?.length ? 'MEETS' : 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
+    incomeFit: financialCheck
+      ? financialCheck.status === ROUTE_STATUSES.SUITABLE ? 'MEETS'
+        : financialCheck.status === ROUTE_STATUSES.UNSUITABLE ? 'DOES_NOT_MEET' : 'UNKNOWN'
+      : 'NOT_APPLICABLE',
+    incomeGuidance: route.income_rule_ru || null,
+  };
+}
+
+function evaluateRoute(route, indexes, profile, context) {
   const application = applicationEvaluation(route, profile);
-  const income = incomeEvaluation(route, profile);
+  const income = structuredRequirementEvaluation(route, profile, context);
   const family = familyEvaluation(route, profile);
   const goal = goalEvaluation(route, profile);
   const checks = [...application, ...income.checks, ...family, ...goal];
@@ -398,7 +366,7 @@ function evaluatePractical(data, profile) {
     recommendedCity: cities[0] || null,
     usedCitySizeFallback: false,
     requestedCitySize: profile.citySize,
-    petSummary: petSelected ? data.pets?.result_text_ru || null : null,
+    petSummary: petSelected ? data.pets?.breed_rule_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
   };
 }

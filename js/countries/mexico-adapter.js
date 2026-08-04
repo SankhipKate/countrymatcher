@@ -1,10 +1,17 @@
 import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
 import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
 import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
 
 const PUBLIC_ROUTE_IDS = new Set([
   'MX_TEMP_ECONOMIC_SOLVENCY',
   'MX_TEMP_LOCAL_JOB_OFFER',
+  'MX_INTERNATIONAL_PROTECTION',
+  'MX_FAMILY_TEMP_SPONSOR',
+  'MX_FAMILY_MEXICAN_OR_PERMANENT_PARTNER',
+  'MX_FAMILY_DIRECT_PERMANENT',
+  'MX_PERMANENT_PENSIONER',
+  'MX_TEMP_STUDENT',
 ]);
 
 const ECONOMIC_INCOME_TYPES = new Set([
@@ -15,15 +22,6 @@ const ECONOMIC_INCOME_TYPES = new Set([
   'COMPANY_OWNER',
   'PASSIVE_INCOME',
   'PENSION',
-  'OTHER_REGULAR_REMOTE_INCOME',
-]);
-
-const ACTIVE_WORK_TYPES = new Set([
-  'REMOTE_EMPLOYMENT',
-  'CONTRACTOR',
-  'FREELANCE_OR_SELF_EMPLOYED',
-  'SOLE_PROPRIETOR',
-  'COMPANY_OWNER',
   'OTHER_REGULAR_REMOTE_INCOME',
 ]);
 
@@ -46,14 +44,6 @@ const fit = (checks) => checks.some(({ status }) => status === ROUTE_STATUSES.UN
   : checks.some(({ status }) => status === ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS)
     ? 'UNKNOWN'
     : 'MEETS';
-
-function affirmative(value) {
-  return value === true || ['YES', 'READY', 'WILL_DO', 'WILL_SEEK'].includes(value);
-}
-
-function explicitlyNegative(value) {
-  return value === false || ['NO', 'REFUSE', 'NOT_INTERESTED'].includes(value);
-}
 
 function sourceWithUsd(source, context, field) {
   const provable = convertMoney(source?.monthly_provable ?? null, 'USD', context, `${field}.monthly_provable`);
@@ -108,9 +98,7 @@ function normalizeProfile(profile = {}, context) {
     schoolNeeded: Boolean(family.school_needed),
     lgbt: profile.lgbt ?? null,
     goal: profile.goal?.long_term ?? null,
-    physicalPresence: profile.goal?.physical_presence ?? null,
     keepRuCitizenship: profile.goal?.keep_russian_citizenship ?? null,
-    languageExamReadiness: profile.goal?.language_exam_readiness ?? null,
     monthlyBudgetUsd: budgetConversion?.convertedAmount ?? totalMonthlyIncomeUsd,
     budgetMoney: budget ?? null,
     budgetConversion,
@@ -126,7 +114,7 @@ function validateContext(profile, countryPackage, context) {
   const asOf = Date.parse(context?.fx?.as_of);
   const calculationDate = Date.parse(context?.calculation_date);
   const maxAge = Number(context?.fx?.max_age_hours);
-  const stale = Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
+  const stale = context?.fx?.is_saved_fallback ? false : Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
     ? calculationDate - asOf > maxAge * 3600000
     : true;
   if (!(mxnRate > 0) || stale) {
@@ -148,222 +136,41 @@ function listRoutes(data) {
     && route.available_to_russian_citizen === true);
 }
 
-function routeAnswers(profile, routeId) {
-  return profile.routeSpecificAnswers?.[routeId] || {};
-}
-
-function thresholdUsd(route, context) {
-  if (route.income_threshold_amount == null || !route.income_threshold_currency) {
-    return { amount: null, conversion: null };
-  }
-  const conversion = convertMoney(
-    { amount: Number(route.income_threshold_amount), currency: route.income_threshold_currency },
-    'USD',
-    context,
-    `routes.${route.route_id}.income_threshold_amount`,
-  );
-  return { amount: conversion.convertedAmount, conversion };
-}
-
-function parseSavingsThresholdMxn(route) {
-  const normalized = String(route.income_formula || '').replaceAll('\u00a0', ' ');
-  const matches = [...normalized.matchAll(/(\d[\d\s.,]*)\s*MXN/giu)];
-  const match = matches.at(-1);
-  if (!match) throw new TypeError(`Mexico route ${route.route_id} has no parseable savings threshold`);
-  const raw = match[1].replace(/\s/g, '');
-  const normalizedNumber = raw.includes(',') && raw.includes('.')
-    ? raw.replace(/\./g, '').replace(',', '.')
-    : raw.replace(',', '.');
-  const amount = Number(normalizedNumber);
-  if (!(amount > 0)) throw new TypeError(`Mexico route ${route.route_id} has an invalid savings threshold`);
-  return amount;
-}
-
-function matchingEconomicIncome(profile) {
-  const sources = profile.applicantSources.filter((source) => ECONOMIC_INCOME_TYPES.has(source.type));
-  const foreign = sources.filter((source) => source.source_country && source.source_country !== 'MX');
-  const unknown = sources.filter((source) => source.source_country == null);
-  const local = sources.filter((source) => source.source_country === 'MX');
-  const eligible = [...foreign, ...unknown];
+function incomeEvaluation(route, profile, context) {
+  const evaluation = evaluateRouteRequirements(route, profile, context, { countryId: 'MX' });
+  const financial = evaluation.financial[0] || null;
+  const primary = financial?.primary || null;
+  const financialCheck = financial?.check || null;
+  const onlyUnaskedBasis = route.requirements.every(({ evaluation_mode }) => evaluation_mode === 'UNASKED_CONDITION');
   return {
-    sources,
-    foreign,
-    unknown,
-    local,
-    eligible,
-    amountUsd: eligible.reduce((sum, source) => sum + Number(source.provableUsd || 0), 0),
-    original: eligible.length === 1 ? eligible[0].monthly_provable : null,
-    conversion: eligible.length === 1 ? eligible[0].conversion : null,
-  };
-}
-
-function economicEvaluation(route, profile, context) {
-  const threshold = thresholdUsd(route, context);
-  const savingsThresholdMxn = parseSavingsThresholdMxn(route);
-  const savingsThreshold = convertMoney(
-    { amount: savingsThresholdMxn, currency: 'MXN' },
-    'USD',
-    context,
-    `routes.${route.route_id}.savings_threshold`,
-  );
-  const income = matchingEconomicIncome(profile);
-  const answers = routeAnswers(profile, route.route_id);
-  const readyToRaise = affirmative(answers.ready_to_raise_income ?? answers.ready_to_build_financial_history);
-  const incomeMeets = income.amountUsd >= threshold.amount;
-  const savingsMeets = Number(profile.savingsUsd) >= savingsThreshold.convertedAmount;
-  const incomeHistoryMonths = Math.min(
-    ...income.eligible.map((source) => Number(source.history_months ?? 0)),
-  );
-  const savingsHistoryMonths = Number(answers.savings_history_months ?? 0);
-  const checks = [];
-
-  if (income.sources.length > 0 && income.eligible.length === 0 && income.local.length > 0 && !savingsMeets) {
-    checks.push(outcome(
-      ROUTE_STATUSES.UNSUITABLE,
-      'economic_foreign_income_required',
-      'Доход от мексиканского работодателя не является иностранным финансовым основанием для резиденции по экономической состоятельности.',
-      { action: 'Использовать маршрут по местной оферте либо подтвердить иностранный доход или достаточный средний остаток.' },
-    ));
-  } else if (incomeMeets) {
-    if (income.unknown.length > 0) {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'economic_foreign_source_confirmation_required',
-        'Для части дохода не указана страна источника; консульству потребуется подтвердить, что оплата поступает из-за рубежа.',
-        {
-          condition: 'Подтвердить иностранное происхождение дохода.',
-          action: 'Подготовить договоры, письма работодателя или заказчиков и банковские выписки с иностранным источником выплат.',
-        },
-      ));
-    }
-    if (!Number.isFinite(incomeHistoryMonths) || incomeHistoryMonths < 6) {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'economic_income_history_required',
-        'Финансовый порог достигнут, но требуется полная шестимесячная история подходящего дохода.',
-        {
-          condition: 'Сформировать 6 полных месяцев подтверждаемого дохода.',
-          action: 'Подготовить выписки и подтверждения занятости или выплат за 6 полных месяцев.',
-        },
-      ));
-    }
-    if (checks.length === 0) {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE,
-        'economic_income_confirmed',
-        'Иностранный подтверждаемый доход достигает официального порога и имеет требуемую шестимесячную историю.',
-      ));
-    }
-  } else if (savingsMeets) {
-    if (savingsHistoryMonths >= 12) {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE,
-        'economic_savings_confirmed',
-        'Подтверждаемые накопления достигают официальной альтернативы и имеют требуемую двенадцатимесячную историю среднего остатка.',
-      ));
-    } else {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'economic_savings_history_required',
-        'Сумма накоплений достигает официальной альтернативы, но нужно подтвердить средний остаток за 12 месяцев.',
-        {
-          condition: 'Подтвердить средний остаток за 12 месяцев.',
-          action: 'Подготовить банковские или инвестиционные выписки за полный двенадцатимесячный период.',
-        },
-      ));
-    }
-  } else {
-    const current = Math.max(income.amountUsd || 0, profile.savingsUsd || 0);
-    const target = income.amountUsd > 0 ? threshold.amount : savingsThreshold.convertedAmount;
-    const message = `Подтверждаемое финансовое основание составляет около ${Math.round(current)} USD, а применимый порог — около ${Math.round(target)} USD.`;
-    if (readyToRaise) {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'economic_financial_increase_required',
-        message,
-        {
-          condition: 'Довести доход или средний остаток до официального порога и сформировать требуемую историю.',
-          action: `Подтвердить не менее ${Math.ceil(threshold.amount)} USD дохода в месяц за 6 месяцев либо около ${Math.ceil(savingsThreshold.convertedAmount)} USD среднего остатка за 12 месяцев.`,
-        },
-      ));
-    } else {
-      checks.push(outcome(
-        ROUTE_STATUSES.UNSUITABLE,
-        'economic_financial_below_threshold',
-        message,
-        { action: 'Увеличить подтверждаемый иностранный доход или средний остаток до официального порога.' },
-      ));
-    }
-  }
-
-  return {
-    checks,
-    thresholdUsd: threshold.amount,
-    thresholdConversion: threshold.conversion,
-    amountUsd: income.amountUsd || profile.savingsUsd || null,
-    incomeOriginal: income.original ?? profile.savingsMoney,
-    incomeConversion: income.conversion ?? profile.savingsConversion,
-    incomeTypeFit: income.eligible.length || profile.savingsUsd != null ? 'MEETS' : income.local.length ? 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
-    incomeFit: incomeMeets || savingsMeets ? fit(checks) : checks[0]?.status === ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS ? 'UNKNOWN' : 'DOES_NOT_MEET',
-    basisMissing: !(income.eligible.length || profile.savingsUsd != null),
-    incomeGuidance: `${route.income_rule_ru} В текущем расчётном контексте доходный порог — около ${Math.ceil(threshold.amount)} USD в месяц за 6 месяцев; альтернатива по накоплениям — около ${Math.ceil(savingsThreshold.convertedAmount)} USD среднего остатка за 12 месяцев.`,
-  };
-}
-
-function localJobEvaluation(route, profile) {
-  const localEmployment = profile.applicantSources.filter((source) =>
-    source.type === 'REMOTE_EMPLOYMENT' && source.source_country === 'MX');
-  const activeWork = profile.applicantSources.some((source) => ACTIVE_WORK_TYPES.has(source.type));
-  const answers = routeAnswers(profile, route.route_id);
-  const willing = answers.willing_local_job ?? answers.ready_to_get_local_offer;
-  const checks = [];
-
-  if (localEmployment.length > 0) {
-    checks.push(outcome(
-      ROUTE_STATUSES.SUITABLE,
-      'local_job_offer_confirmed',
-      'Профиль содержит трудовой доход от мексиканского работодателя; для подачи остаётся подтвердить регистрацию работодателя и предварительную авторизацию INM.',
-    ));
-  } else if (explicitlyNegative(willing) || (!activeWork && !affirmative(willing))) {
-    checks.push(outcome(
-      ROUTE_STATUSES.UNSUITABLE,
-      'local_job_offer_absent',
-      'Мексиканской оферты нет, а текущий профиль не подтверждает активную занятость или готовность искать местную работу.',
-      { action: 'Получить формальное предложение работы от зарегистрированного в INM работодателя.' },
-    ));
-  } else {
-    checks.push(outcome(
-      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'local_job_offer_required',
-      'Рабочий маршрут станет доступен после получения мексиканской оферты и предварительной авторизации INM.',
-      {
-        condition: 'Получить местную оферту и авторизацию INM.',
-        action: 'Найти работодателя в Мексике, зарегистрированного в INM, и получить оферту с профессией, сроком, местом работы и оплатой.',
-      },
-    ));
-  }
-
-  return {
-    checks,
-    thresholdUsd: null,
-    thresholdConversion: null,
-    amountUsd: localEmployment.reduce((sum, source) => sum + Number(source.provableUsd || 0), 0) || null,
-    incomeOriginal: localEmployment.length === 1 ? localEmployment[0].monthly_provable : null,
-    incomeConversion: localEmployment.length === 1 ? localEmployment[0].conversion : null,
-    incomeTypeFit: localEmployment.length ? 'MEETS' : activeWork || affirmative(willing) ? 'UNKNOWN' : 'DOES_NOT_MEET',
-    incomeFit: 'NOT_APPLICABLE',
-    basisMissing: localEmployment.length === 0,
+    checks: evaluation.checks,
+    thresholdUsd: primary?.thresholdUsd ?? null,
+    thresholdConversion: primary?.thresholdConversion ?? null,
+    amountUsd: primary?.amountUsd ?? null,
+    incomeOriginal: primary?.sources?.length === 1 ? primary.sources[0].monthly_provable : null,
+    incomeConversion: primary?.sources?.length === 1 ? primary.sources[0].conversion : null,
+    incomeTypeFit: financial ? primary?.sources?.length ? 'MEETS' : 'NOT_APPLICABLE' : 'NOT_APPLICABLE',
+    incomeFit: financialCheck
+      ? financialCheck.status === ROUTE_STATUSES.SUITABLE ? 'MEETS'
+        : financialCheck.status === ROUTE_STATUSES.UNSUITABLE ? 'DOES_NOT_MEET' : 'UNKNOWN'
+      : 'NOT_APPLICABLE',
+    basisMissing: onlyUnaskedBasis || primary?.state === 'UNASKED',
     incomeGuidance: route.income_rule_ru,
   };
 }
 
-function incomeEvaluation(route, profile, context) {
-  if (route.route_id === 'MX_TEMP_ECONOMIC_SOLVENCY') return economicEvaluation(route, profile, context);
-  if (route.route_id === 'MX_TEMP_LOCAL_JOB_OFFER') return localJobEvaluation(route, profile);
-  throw new TypeError(`Unsupported publishable Mexico route: ${route.route_id}`);
-}
-
 function applicationEvaluation(route, profile) {
+  if (route.route_id === 'MX_INTERNATIONAL_PROTECTION') {
+    return [outcome(
+      profile.currentCountry === 'MX' ? ROUTE_STATUSES.SUITABLE : ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
+      'mexico_protection_in_country_filing',
+      'Заявление о международной защите подаётся после нахождения в Мексике в COMAR или через INM.',
+      profile.currentCountry === 'MX' ? {} : { condition: 'Законно въехать в Мексику и подать заявление в COMAR или через INM.' },
+    )];
+  }
+  if (route.route_type?.startsWith('FAMILY_')) {
+    return [outcome(ROUTE_STATUSES.SUITABLE, 'mexico_family_filing_paths_recorded', 'Доступные способы подачи семейного маршрута перечислены в карточке.')];
+  }
   const methods = new Set(profile.applicationMethods || []);
   const consularAccepted = methods.has('RUSSIA') || methods.has('CURRENT_COUNTRY') || methods.has('ANY');
   if (!consularAccepted) {
@@ -382,6 +189,12 @@ function applicationEvaluation(route, profile) {
 }
 
 function familyEvaluation(route, profile) {
+  if (route.route_id === 'MX_INTERNATIONAL_PROTECTION') {
+    return [outcome(ROUTE_STATUSES.SUITABLE, 'protection_family_rules_recorded', route.family_rule_ru)];
+  }
+  if (route.route_type?.startsWith('FAMILY_')) {
+    return [outcome(ROUTE_STATUSES.SUITABLE, 'mexico_family_basis_shown_as_route_condition', route.family_rule_ru)];
+  }
   const checks = [];
   if (!profile.partnerIncluded && profile.children.length === 0) {
     return [outcome(ROUTE_STATUSES.SUITABLE, 'family_not_applicable', 'Семейное присоединение для текущего состава семьи не требуется.')];
@@ -412,30 +225,6 @@ function familyEvaluation(route, profile) {
 }
 
 function goalEvaluation(route, profile) {
-  const citizenshipRequired = ['CITIZENSHIP_MAIN_GOAL', 'CITIZENSHIP_REQUIRED'].includes(profile.goal);
-  const citizenshipRelevant = citizenshipRequired || profile.goal === 'CITIZENSHIP_DESIRED';
-  if (citizenshipRelevant && profile.languageExamReadiness === 'NO') {
-    return [outcome(
-      citizenshipRequired ? ROUTE_STATUSES.UNSUITABLE : ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'mexico_citizenship_language_required',
-      'Для натурализации требуются испанский язык, история и культура Мексики.',
-      {
-        condition: 'Подготовиться к языковому и интеграционному экзаменам.',
-        action: 'Изучить испанский и подготовиться к экзаменам по истории и культуре Мексики.',
-      },
-    )];
-  }
-  if (citizenshipRelevant && profile.physicalPresence === 'LESS_THAN_6_MONTHS') {
-    return [outcome(
-      citizenshipRequired ? ROUTE_STATUSES.UNSUITABLE : ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-      'mexico_citizenship_presence_required',
-      'Ограниченное проживание менее половины года несовместимо с правилом непрерывности для натурализации в последние два года.',
-      {
-        condition: 'Увеличить фактическое проживание и соблюдать лимит отсутствий.',
-        action: 'Планировать проживание, при котором суммарные отсутствия за последние два года перед натурализацией не превысят шесть месяцев.',
-      },
-    )];
-  }
   return [outcome(
     ROUTE_STATUSES.SUITABLE,
     'long_term_path_available',
@@ -581,7 +370,7 @@ function evaluatePractical(data, profile) {
     recommendedCity: cities[0] || null,
     usedCitySizeFallback: false,
     requestedCitySize: profile.citySize,
-    petSummary: petSelected ? data.pets?.result_text_ru || null : null,
+    petSummary: petSelected ? data.pets?.breed_rule_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
     entryForRussianCitizen: data.entry_for_russian_citizen || null,
   };

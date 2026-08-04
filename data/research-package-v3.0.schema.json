@@ -146,12 +146,21 @@
     },
     "research_quality": {
       "$ref": "#/$defs/researchQuality"
+    },
+    "detail_tables": {
+      "type": "object",
+      "description": "Нормализованные подробные таблицы, которые ещё используются адаптером и не являются источником статусной логики.",
+      "additionalProperties": true
     }
   },
   "$defs": {
     "route": {
       "type": "object",
       "additionalProperties": false,
+      "allOf": [{
+        "if": { "properties": { "publishable": { "const": true } }, "required": ["publishable"] },
+        "then": { "properties": { "requirements": {} }, "required": ["requirements"] }
+      }],
       "required": [
         "publishable",
         "available_to_russian_citizen",
@@ -316,6 +325,13 @@
           "type": "string",
           "minLength": 1
         },
+        "requirements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/routeRequirement"
+          }
+        },
         "source_ids": {
           "type": "array",
           "minItems": 1,
@@ -328,6 +344,122 @@
         "long_term_path": {
           "$ref": "#/$defs/longTermPath"
         }
+      }
+    },
+    "routeRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirement_id",
+        "type",
+        "role",
+        "subject",
+        "timing",
+        "evaluation_mode",
+        "condition_ru",
+        "source_ids",
+        "confidence"
+      ],
+      "properties": {
+        "requirement_id": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+        "type": {
+          "enum": [
+            "FINANCIAL",
+            "EMPLOYMENT_BASIS",
+            "STUDY_BASIS",
+            "FAMILY_BASIS",
+            "RETIREMENT_BASIS",
+            "PROTECTION_BASIS",
+            "APPLICATION_STEP",
+            "DOCUMENT_STEP",
+            "OTHER_BASIS"
+          ]
+        },
+        "role": { "enum": ["BLOCKER", "CONDITION", "STEP", "WARNING"] },
+        "subject": { "enum": ["APPLICANT", "PARTNER", "CHILD", "FAMILY", "SPONSOR"] },
+        "timing": { "enum": ["NOW", "BEFORE_APPLICATION", "AT_APPLICATION", "AFTER_APPROVAL", "LONG_TERM"] },
+        "evaluation_mode": { "enum": ["ENGINE", "UNASKED_CONDITION", "DISPLAY_ONLY"] },
+        "condition_ru": { "type": "string", "minLength": 1 },
+        "met_ru": { "type": "string", "minLength": 1 },
+        "unmet_ru": { "type": "string", "minLength": 1 },
+        "profile_path": { "type": ["string", "null"] },
+        "accepted_values": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": ["string", "number", "boolean"] },
+          "uniqueItems": true
+        },
+        "financial": { "$ref": "#/$defs/financialRequirement" },
+        "alternatives_ru": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] }
+      }
+    },
+    "financialRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "alternatives"],
+      "properties": {
+        "model": {
+          "enum": ["INCOME_ONLY", "SAVINGS_ONLY", "INCOME_OR_SAVINGS", "INCOME_AND_SAVINGS", "INVESTMENT_CAPITAL", "SPONSOR_OR_SCHOLARSHIP"]
+        },
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/financialAlternative" }
+        }
+      }
+    },
+    "financialAlternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "asked_in_questionnaire", "amount", "currency", "period", "source_ids", "confidence"],
+      "properties": {
+        "kind": { "enum": ["INCOME", "SAVINGS", "INVESTMENT", "SPONSOR", "SCHOLARSHIP", "PENSION"] },
+        "asked_in_questionnaire": { "type": "boolean" },
+        "amount": { "type": ["number", "null"], "minimum": 0 },
+        "currency": { "type": ["string", "null"], "pattern": "^[A-Z]{3}$" },
+        "period": { "enum": ["MONTHLY", "ANNUAL", "AVERAGE_BALANCE", "ONE_TIME", "VARIABLE", "NOT_APPLICABLE"] },
+        "comparison": { "enum": ["AT_LEAST", "GREATER_THAN"] },
+        "history_months": { "type": ["integer", "null"], "minimum": 0 },
+        "allowed_income_types": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "required_income_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "source_geography": { "enum": ["ANY", "FOREIGN", "LOCAL", "NOT_APPLICABLE"] },
+        "family_formula_ru": { "type": ["string", "null"] },
+        "family_formula": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["main_applicant_multiplier", "additional_adult_multiplier", "child_multiplier"],
+          "properties": {
+            "main_applicant_multiplier": { "type": "number", "minimum": 0 },
+            "additional_adult_multiplier": { "type": "number", "minimum": 0 },
+            "child_multiplier": { "type": "number", "minimum": 0 }
+          }
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "confidence": { "enum": ["HIGH", "MEDIUM", "LOW"] }
       }
     },
     "city": {

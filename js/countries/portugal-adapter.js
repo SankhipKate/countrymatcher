@@ -1,5 +1,6 @@
 import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
 import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
 import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
 
 const REMOTE_INCOME_TYPES = new Set([
@@ -98,7 +99,6 @@ function normalizeProfile(profile = {}, context) {
     schoolNeeded: Boolean(family.school_needed),
     lgbt: profile.lgbt ?? null,
     goal: profile.goal?.long_term ?? null,
-    physicalPresence: profile.goal?.physical_presence ?? null,
     keepRuCitizenship: profile.goal?.keep_russian_citizenship ?? null,
     monthlyBudgetUsd: budgetConversion?.convertedAmount ?? totalMonthlyIncomeUsd,
     budgetMoney: budget ?? null,
@@ -115,7 +115,7 @@ function validateContext(profile, countryPackage, context) {
   const asOf = Date.parse(context?.fx?.as_of);
   const calculationDate = Date.parse(context?.calculation_date);
   const maxAge = Number(context?.fx?.max_age_hours);
-  const stale = Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
+  const stale = context?.fx?.is_saved_fallback ? false : Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
     ? calculationDate - asOf > maxAge * 3600000
     : true;
   if (!(rate > 0) || stale) {
@@ -160,6 +160,7 @@ function matchingIncome(sources, acceptedTypes) {
 }
 
 function familyThreshold(route, profile) {
+  if (route.income_threshold_amount == null) return null;
   const base = Number(route.income_threshold_amount);
   if (!Number.isFinite(base)) return null;
   const percentages = String(route.income_formula || '')
@@ -214,24 +215,12 @@ function d8IncomeEvaluation(route, profile) {
       ));
     } else if (eligibleAmount < thresholdEur) {
       const message = `Подтверждаемый подходящий доход составляет около ${Math.round(eligibleAmount)} EUR в месяц, обязательный порог D8 — ${Math.round(thresholdEur)} EUR.`;
-      if (affirmative(answers.ready_to_raise_income)) {
-        checks.push(outcome(
-          ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-          'd8_income_increase_required',
-          message,
-          {
-            condition: `Увеличить подтверждаемый доход минимум до ${Math.ceil(thresholdEur)} EUR и сформировать историю за ${historyMonths} месяца.`,
-            action: `Увеличить подтверждаемый доход минимум до ${Math.ceil(thresholdEur)} EUR в месяц и подтвердить среднее значение за период из правил маршрута.`,
-          },
-        ));
-      } else {
-        checks.push(outcome(
-          ROUTE_STATUSES.UNSUITABLE,
-          'd8_income_below_threshold',
-          message,
-          { action: `Увеличить подтверждаемый доход минимум до ${Math.ceil(thresholdEur)} EUR в месяц и сформировать требуемую историю.` },
-        ));
-      }
+      checks.push(outcome(
+        ROUTE_STATUSES.UNSUITABLE,
+        'd8_income_below_threshold',
+        message,
+        { action: `Для повторной оценки потребуется подтверждаемый доход не ниже ${Math.ceil(thresholdEur)} EUR в месяц и требуемая история.` },
+      ));
     } else {
       if (unknownForeign.length > 0) {
         checks.push(outcome(
@@ -295,24 +284,12 @@ function d7IncomeEvaluation(route, profile) {
     ));
   } else if (income.amountEur < thresholdEur) {
     const message = `Подтверждаемый подходящий доход составляет около ${Math.round(income.amountEur)} EUR, семейная формула D7 требует ${Math.round(thresholdEur)} EUR в месяц.`;
-    if (explicitlyNegative(answers.ready_to_raise_income)) {
-      checks.push(outcome(
-        ROUTE_STATUSES.UNSUITABLE,
-        'd7_income_below_threshold',
-        message,
-        { action: `Увеличить подтверждаемый доход минимум до ${Math.ceil(thresholdEur)} EUR в месяц.` },
-      ));
-    } else {
-      checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'd7_income_increase_required',
-        message,
-        {
-          condition: `Увеличить и документально подтвердить подходящий доход минимум до ${Math.ceil(thresholdEur)} EUR в месяц.`,
-          action: `Увеличить пенсию или пассивный доход минимум до ${Math.ceil(thresholdEur)} EUR в месяц и обеспечить средства на срок из правил маршрута.`,
-        },
-      ));
-    }
+    checks.push(outcome(
+      ROUTE_STATUSES.UNSUITABLE,
+      'd7_income_below_threshold',
+      message,
+      { action: `Для повторной оценки потребуется пенсия или пассивный доход не ниже ${Math.ceil(thresholdEur)} EUR в месяц.` },
+    ));
   } else {
     checks.push(outcome(
       ROUTE_STATUSES.SUITABLE,
@@ -350,12 +327,11 @@ function d2IncomeEvaluation(route, profile) {
   if (hasExistingBasis) {
     if (income.amountEur < thresholdEur) {
       checks.push(outcome(
-        ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
-        'd2_subsistence_increase_required',
+        ROUTE_STATUSES.UNSUITABLE,
+        'd2_subsistence_below_threshold',
         `Самостоятельное основание есть, но подтверждаемые средства около ${Math.round(income.amountEur)} EUR ниже семейной формулы ${Math.round(thresholdEur)} EUR.`,
         {
-          condition: `Подтвердить средства минимум ${Math.ceil(thresholdEur)} EUR в месяц и сохранить реальное договорное или предпринимательское основание.`,
-          action: `Увеличить подтверждаемые средства минимум до ${Math.ceil(thresholdEur)} EUR в месяц.`,
+          action: `Для повторной оценки потребуется подтвердить средства не ниже ${Math.ceil(thresholdEur)} EUR в месяц.`,
         },
       ));
     } else {
@@ -392,7 +368,7 @@ function d2IncomeEvaluation(route, profile) {
     incomeOriginal: income.original,
     incomeConversion: income.conversion,
     incomeTypeFit: hasExistingBasis ? 'MEETS' : activeWork || readyToCreate ? 'UNKNOWN' : 'DOES_NOT_MEET',
-    incomeFit: hasExistingBasis ? (income.amountEur >= thresholdEur ? 'MEETS' : 'UNKNOWN') : 'NOT_APPLICABLE',
+    incomeFit: hasExistingBasis ? (income.amountEur >= thresholdEur ? 'MEETS' : 'DOES_NOT_MEET') : 'NOT_APPLICABLE',
     basisMissing: !hasExistingBasis,
   };
 }
@@ -444,12 +420,26 @@ function d1IncomeEvaluation(route, profile) {
   };
 }
 
-function incomeEvaluation(route, profile) {
-  if (route.route_id === 'PT_D8_REMOTE') return d8IncomeEvaluation(route, profile);
-  if (route.route_id === 'PT_D7_OWN_INCOME') return d7IncomeEvaluation(route, profile);
-  if (route.route_id === 'PT_D2_INDEPENDENT') return d2IncomeEvaluation(route, profile);
-  if (route.route_id === 'PT_D1_EMPLOYMENT') return d1IncomeEvaluation(route, profile);
-  throw new TypeError(`Unsupported publishable Portugal route: ${route.route_id}`);
+function incomeEvaluation(route, profile, context) {
+  const evaluation = evaluateRouteRequirements(route, profile, context, { countryId: 'PT' });
+  const financial = evaluation.financial[0] || null;
+  const primary = financial?.primary || null;
+  const financialCheck = financial?.check || null;
+  return {
+    checks: evaluation.checks,
+    thresholdEur: primary?.thresholdConversion?.originalCurrency === 'EUR'
+      ? primary.thresholdConversion.originalAmount : null,
+    amountEur: primary?.sources?.reduce((sum, source) => sum + Number(source.provableEur || 0), 0) || null,
+    amountUsd: primary?.amountUsd ?? null,
+    incomeOriginal: primary?.sources?.length === 1 ? primary.sources[0].monthly_provable : null,
+    incomeConversion: primary?.sources?.length === 1 ? primary.sources[0].conversionEur : null,
+    incomeTypeFit: financial ? primary?.sources?.length ? 'MEETS' : 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
+    incomeFit: financialCheck
+      ? financialCheck.status === ROUTE_STATUSES.SUITABLE ? 'MEETS'
+        : financialCheck.status === ROUTE_STATUSES.UNSUITABLE ? 'DOES_NOT_MEET' : 'UNKNOWN'
+      : 'NOT_APPLICABLE',
+    basisMissing: route.requirements.some(({ evaluation_mode }) => evaluation_mode === 'UNASKED_CONDITION'),
+  };
 }
 
 function applicationEvaluation(route) {
@@ -496,9 +486,9 @@ function initialPermitRequirements(route) {
   ].filter(Boolean);
 }
 
-function evaluateRoute(route, indexes, profile) {
+function evaluateRoute(route, indexes, profile, context) {
   const application = applicationEvaluation(route, profile);
-  const income = incomeEvaluation(route, profile);
+  const income = incomeEvaluation(route, profile, context);
   const family = familyEvaluation(route, profile);
   const goal = goalEvaluation(route, profile);
   const checks = [...application, ...income.checks, ...family, ...goal];
@@ -525,7 +515,7 @@ function evaluateRoute(route, indexes, profile) {
     applicationNationality: profile.applicationNationality,
     viaSecondaryNationality: false,
     thresholdUsd: null,
-    thresholdEur: income.thresholdEur,
+    thresholdEur: income.thresholdEur ?? familyThreshold(route, profile),
     incomeUsd: income.amountUsd > 0 ? income.amountUsd : profile.monthlyProvableUsd,
     incomeEur: income.amountEur > 0 ? income.amountEur : profile.monthlyProvableEur,
     incomeOriginal: income.incomeOriginal ?? profile.incomeMoney,
@@ -639,7 +629,7 @@ function evaluatePractical(data, profile) {
     recommendedCity: cities[0] || null,
     usedCitySizeFallback: false,
     requestedCitySize: profile.citySize,
-    petSummary: petSelected ? data.pets?.result_text_ru || null : null,
+    petSummary: petSelected ? data.pets?.breed_rule_ru || null : null,
     schoolSummary: profile.schoolNeeded ? data.schools?.international_school_ru || null : data.schools?.public_school_ru || null,
   };
 }

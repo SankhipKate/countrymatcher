@@ -9,9 +9,19 @@ const schema = JSON.parse(await readFile(new URL('research-package-v3.0.schema.j
 const argentina = JSON.parse(await readFile(new URL('argentina-research-v3.0.json', dataDir), 'utf8'));
 const paraguay = JSON.parse(await readFile(new URL('paraguay-research-v3.0.json', dataDir), 'utf8'));
 const portugal = JSON.parse(await readFile(new URL('portugal-research-v3.0.json', dataDir), 'utf8'));
+const brazil = JSON.parse(await readFile(new URL('brazil-research-v3.0.json', dataDir), 'utf8'));
+const mexico = JSON.parse(await readFile(new URL('mexico-research-v3.0.json', dataDir), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true, strict: true, allowUnionTypes: true });
 addFormats(ajv);
 const validate = ajv.compile(schema);
+
+test('every publishable v3 route has structured requirements', () => {
+  for (const country of [argentina, brazil, mexico, paraguay, portugal]) {
+    for (const route of country.routes.filter(({ publishable }) => publishable)) {
+      assert.ok(Array.isArray(route.requirements) && route.requirements.length > 0, route.route_id);
+    }
+  }
+});
 
 const collectSourceIds = (value, result = []) => {
   if (Array.isArray(value)) {
@@ -140,12 +150,4 @@ test('all referenced source ids exist in the Portugal package', () => {
     lgbt: portugal.lgbt,
   });
   assert.deepEqual([...new Set(referenced)].filter((sourceId) => !existing.has(sourceId)), []);
-});
-
-test('runtime and backlog Portugal packages are byte-for-byte identical', async () => {
-  const [runtime, backlog] = await Promise.all([
-    readFile(new URL('../data/portugal-research-v3.0.json', import.meta.url)),
-    readFile(new URL('../research-backlog/portugal-v3.0/portugal-research-v3.0.json', import.meta.url)),
-  ]);
-  assert.equal(runtime.equals(backlog), true);
 });

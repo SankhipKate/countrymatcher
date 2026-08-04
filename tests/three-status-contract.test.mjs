@@ -14,8 +14,8 @@ import {
 } from '../js/engine/status-contract.js';
 
 const [spain, uruguay, argentina, paraguay, portugal] = await Promise.all([
-  readFile(new URL('../data/spain-research-v2.2.json', import.meta.url), 'utf8').then(JSON.parse),
-  readFile(new URL('../data/uruguay-research-v2.2.json', import.meta.url), 'utf8').then(JSON.parse),
+  readFile(new URL('../data/spain-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
+  readFile(new URL('../data/uruguay-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
   readFile(new URL('../data/argentina-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
   readFile(new URL('../data/paraguay-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
   readFile(new URL('../data/portugal-research-v3.0.json', import.meta.url), 'utf8').then(JSON.parse),
@@ -58,8 +58,6 @@ function profile() {
     },
     goal: {
       long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT',
-      physical_presence: 'DEPENDS_ON_COUNTRY',
-      language_exam_readiness: 'DEPENDS_ON_LANGUAGE',
       keep_russian_citizenship: 'NOT_IMPORTANT',
     },
     preferences: { monthly_budget: { amount: 2500, currency: 'USD' }, city_size: 'ANY', climate: ['ANY'] },
@@ -128,7 +126,7 @@ test('current location does not block routes that allow filing after entry', () 
   assert.equal(byCountry.PT.routes.find((route) => route.routeId === 'PT_D8_REMOTE').applicationFit, 'MEETS');
 });
 
-test('runtime and legacy research schema contain no retired status names', async () => {
+test('runtime and research schema contain no retired status names', async () => {
   const paths = [
     '../js/engine/status-contract.js',
     '../js/countries/spain-adapter.js',
@@ -137,8 +135,6 @@ test('runtime and legacy research schema contain no retired status names', async
     '../js/countries/portugal-adapter.js',
     '../matcher/profile.js',
     '../matcher/app.js',
-    '../pilot/app.js',
-    '../data/research-package-v2.2.schema.json',
   ];
   const text = (await Promise.all(paths.map((path) => readFile(new URL(path, import.meta.url), 'utf8')))).join('\n');
   for (const retired of ['PRELIMINARY_SUITABLE', 'INSUFFICIENT_COUNTRY_DATA', 'INDIVIDUAL_REVIEW_REQUIRED']) {

@@ -48,6 +48,7 @@
       "presence_rule_ru": "Для продления номадского статуса требуется провести в стране не менее 50% его срока.",
       "dual_citizenship_ru": "Гражданство РФ сохраняется; после получения аргентинского гражданства действует обязанность уведомления РФ по применимым правилам.",
       "status_logic_ru": "Подходит, когда заявитель работает удалённо только на зарубежных лиц и может подтвердить деятельность. Доход не сравнивается с выдуманным порогом.",
+      "requirements": [{ "requirement_id": "AR_NOMAD_REMOTE_BASIS", "type": "FINANCIAL", "role": "BLOCKER", "subject": "APPLICANT", "timing": "AT_APPLICATION", "evaluation_mode": "ENGINE", "condition_ru": "Подтвердить удалённую деятельность только для зарубежных заказчиков или работодателей.", "met_ru": "Текущая зарубежная удалённая деятельность соответствует основанию маршрута.", "unmet_ru": "Текущий профиль не подтверждает требуемую зарубежную удалённую деятельность.", "profile_path": "income", "financial": { "model": "INCOME_ONLY", "alternatives": [{ "kind": "INCOME", "asked_in_questionnaire": true, "amount": null, "currency": null, "period": "NOT_APPLICABLE", "history_months": null, "allowed_income_types": ["REMOTE_EMPLOYMENT", "CONTRACTOR", "FREELANCE_OR_SELF_EMPLOYED", "SOLE_PROPRIETOR", "COMPANY_OWNER", "OTHER_REGULAR_REMOTE_INCOME"], "source_geography": "FOREIGN", "family_formula_ru": null, "source_ids": ["AR_SRC_VISA_RU"], "confidence": "HIGH" }] }, "source_ids": ["AR_SRC_VISA_RU"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_VISA_RU",
         "AR_SRC_NOMAD",
@@ -86,6 +87,7 @@
       "presence_rule_ru": "Для ПМЖ нужно находиться в Аргентине более 50% срока временной резиденции.",
       "dual_citizenship_ru": "Отказ от гражданства РФ не требуется; гражданство РФ сохраняется.",
       "status_logic_ru": "Подходит, когда пассивный доход основного заявителя достигает формулы и подтверждается. Отсутствующая в действующей норме семейная надбавка не выдумывается.",
+      "requirements": [{ "requirement_id": "AR_RENTISTA_FINANCIAL_BASIS", "type": "FINANCIAL", "role": "BLOCKER", "subject": "APPLICANT", "timing": "AT_APPLICATION", "evaluation_mode": "ENGINE", "condition_ru": "Подтвердить пассивный доход не ниже действующей формулы.", "met_ru": "Текущий подтверждаемый пассивный доход достигает официального порога.", "unmet_ru": "Текущий подтверждаемый пассивный доход ниже обязательного порога.", "profile_path": "income", "financial": { "model": "INCOME_ONLY", "alternatives": [{ "kind": "INCOME", "asked_in_questionnaire": true, "amount": 1862000, "currency": "ARS", "period": "MONTHLY", "history_months": null, "allowed_income_types": ["PASSIVE_INCOME"], "source_geography": "ANY", "family_formula_ru": null, "source_ids": ["AR_SRC_RENT_PENSION"], "confidence": "HIGH" }] }, "source_ids": ["AR_SRC_RENT_PENSION"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_RENT_PENSION",
         "AR_SRC_RENT_FAMILY_AMOUNT",
@@ -127,6 +129,7 @@
       "presence_rule_ru": "Для ПМЖ нужно находиться в Аргентине более 50% срока временной резиденции.",
       "dual_citizenship_ru": "Отказ от гражданства РФ не требуется; гражданство РФ сохраняется.",
       "status_logic_ru": "Подходит, когда иностранная пенсия достигает действующей формулы и подтверждается.",
+      "requirements": [{ "requirement_id": "AR_PENSION_FINANCIAL_BASIS", "type": "FINANCIAL", "role": "BLOCKER", "subject": "APPLICANT", "timing": "AT_APPLICATION", "evaluation_mode": "ENGINE", "condition_ru": "Подтвердить назначенную иностранную пенсию не ниже действующей формулы.", "met_ru": "Текущая подтверждаемая пенсия достигает официального порога.", "unmet_ru": "Текущая подтверждаемая пенсия ниже обязательного порога.", "profile_path": "income", "financial": { "model": "INCOME_ONLY", "alternatives": [{ "kind": "PENSION", "asked_in_questionnaire": true, "amount": 1862000, "currency": "ARS", "period": "MONTHLY", "history_months": null, "allowed_income_types": ["PENSION"], "source_geography": "FOREIGN", "family_formula_ru": null, "source_ids": ["AR_SRC_RENT_PENSION"], "confidence": "HIGH" }] }, "source_ids": ["AR_SRC_RENT_PENSION"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_RENT_PENSION",
         "AR_SRC_MIN_WAGE",
@@ -167,6 +170,7 @@
       "presence_rule_ru": "Для ПМЖ нужно находиться в Аргентине более 50% срока временной резиденции.",
       "dual_citizenship_ru": "Отказ от гражданства РФ не требуется; гражданство РФ сохраняется.",
       "status_logic_ru": "Подходит, когда местный договор уже есть. Нет договора — подходит с условиями, если пользователь рассматривает местную работу.",
+      "requirements": [{ "requirement_id": "AR_LOCAL_JOB_BASIS", "type": "EMPLOYMENT_BASIS", "role": "CONDITION", "subject": "APPLICANT", "timing": "BEFORE_APPLICATION", "evaluation_mode": "UNASKED_CONDITION", "condition_ru": "Найти работодателя в Аргентине и заключить местный трудовой договор.", "profile_path": null, "source_ids": ["AR_SRC_WORKER"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_WORKER",
         "AR_SRC_WORKER_ABROAD",
@@ -206,6 +210,7 @@
       "presence_rule_ru": "Для ПМЖ нужно находиться в Аргентине более 50% срока временной резиденции.",
       "dual_citizenship_ru": "Отказ от гражданства РФ не требуется; гражданство РФ сохраняется.",
       "status_logic_ru": "Подходит при существующем контракте или внутрикорпоративном переводе; без него — подходит с условиями.",
+      "requirements": [{ "requirement_id": "AR_SPECIALIST_BASIS", "type": "EMPLOYMENT_BASIS", "role": "CONDITION", "subject": "APPLICANT", "timing": "BEFORE_APPLICATION", "evaluation_mode": "UNASKED_CONDITION", "condition_ru": "Получить квалифицированный контракт либо оформить внутрикорпоративный перевод.", "profile_path": null, "source_ids": ["AR_SRC_SPECIALIST"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_SPECIALIST",
         "AR_SRC_SPECIALIST_ABROAD",
@@ -245,6 +250,7 @@
       "presence_rule_ru": "Для ПМЖ нужно находиться в Аргентине более 50% срока временной резиденции.",
       "dual_citizenship_ru": "Отказ от гражданства РФ не требуется; гражданство РФ сохраняется.",
       "status_logic_ru": "Подходит при подтверждённом зачислении; без зачисления — подходит с условиями.",
+      "requirements": [{ "requirement_id": "AR_STUDY_BASIS", "type": "STUDY_BASIS", "role": "CONDITION", "subject": "APPLICANT", "timing": "BEFORE_APPLICATION", "evaluation_mode": "UNASKED_CONDITION", "condition_ru": "Выбрать допустимую программу, поступить и получить подтверждение зачисления.", "profile_path": null, "source_ids": ["AR_SRC_STUDENT"], "confidence": "HIGH" }],
       "source_ids": [
         "AR_SRC_STUDENT",
         "AR_SRC_STUDENT_ABROAD",

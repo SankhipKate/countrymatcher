@@ -1,5 +1,6 @@
 import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
 import { convertMoney } from '../engine/currency.js?v=7.0.1';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
 import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=7.0.1';
 import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=7.0.1';
 
@@ -30,7 +31,8 @@ function normalizeProfile(profile = {}, context) {
   const primaryIncome = profile.income?.primary || {};
   const additionalIncome = profile.income?.additional_sources || [];
   const partnerIncome = profile.income?.partner?.sources || [];
-  const incomeSources = [primaryIncome, ...additionalIncome, ...partnerIncome];
+  const applicantRawSources = [primaryIncome, ...additionalIncome];
+  const incomeSources = [...applicantRawSources, ...partnerIncome];
   const budget = profile.preferences?.monthly_budget;
   const incomeConversion = convertMoney(primaryIncome.monthly_provable ?? null, 'USD', context, 'income.primary.monthly_provable');
   const totalIncomeConversions = incomeSources
@@ -40,6 +42,12 @@ function normalizeProfile(profile = {}, context) {
     ? totalIncomeConversions.reduce((sum, conversion) => sum + Number(conversion.convertedAmount || 0), 0)
     : null;
   const budgetConversion = convertMoney(budget, 'USD', context, 'preferences.monthly_budget');
+  const applicantSources = applicantRawSources.map((source, index) => {
+    const field = index === 0 ? 'income.primary.monthly_provable' : `income.additional_sources[${index - 1}].monthly_provable`;
+    const usd = convertMoney(source?.monthly_provable ?? null, 'USD', context, field);
+    const eur = convertMoney(source?.monthly_provable ?? null, 'EUR', context, field);
+    return { ...source, provableUsd: usd?.convertedAmount ?? null, provableEur: eur?.convertedAmount ?? null, conversion: usd, conversionEur: eur };
+  });
   return {
     citizenships: [...profile.citizenships],
     plannedBasis: profile.__legacy_scenario ?? primaryIncome.type ?? null,
@@ -50,6 +58,7 @@ function normalizeProfile(profile = {}, context) {
     totalMonthlyIncomeUsd,
     incomeMoney: primaryIncome.monthly_provable ?? null,
     incomeConversion,
+    applicantSources,
     incomeSourceCountry: primaryIncome.source_country ?? null,
     bankCountry: primaryIncome.bank_country ?? null,
     adults: family.adults_count ?? null,
@@ -59,8 +68,6 @@ function normalizeProfile(profile = {}, context) {
     lgbt: profile.lgbt ?? null,
     schoolNeeded: family.school_needed ?? null,
     goal: profile.goal?.long_term ?? null,
-    physicalPresence: profile.goal?.physical_presence ?? null,
-    languageReadiness: profile.goal?.language_exam_readiness ?? null,
     keepRuCitizenship: profile.goal?.keep_russian_citizenship ?? null,
     monthlyBudgetUsd: budgetConversion?.convertedAmount ?? totalMonthlyIncomeUsd,
     budgetMoney: budget ?? null,
@@ -84,9 +91,6 @@ export function legacyPilotProfileToUniversal(profile = {}) {
     : profile.legalResidence === true ? 'TEMPORARY_RESIDENCE'
       : profile.legalResidence === false ? 'TOURIST_OR_VISA_FREE' : null;
   const longTerm = profile.goal === 'TEMPORARY_RESIDENCE' ? 'TEMPORARY_RESIDENCE_SUFFICIENT' : profile.goal ?? null;
-  const presence = Number(profile.monthsPerYear) >= 10 ? 'MOST_OF_YEAR' : Number(profile.monthsPerYear) >= 8 ? 'AT_LEAST_8_MONTHS'
-    : Number(profile.monthsPerYear) >= 6 ? 'AT_LEAST_6_MONTHS' : Number.isFinite(Number(profile.monthsPerYear)) ? 'LESS_THAN_6_MONTHS' : null;
-  const language = profile.languageReadiness === 'BASIC' ? 'BASIC_ONLY' : profile.languageReadiness;
   return {
     schema_version: 'user-profile-v1',
     __legacy_scenario: profile.plannedBasis ?? null,
@@ -96,7 +100,7 @@ export function legacyPilotProfileToUniversal(profile = {}) {
     family: { adults_count: profile.adults ?? null, partner_included: Number(profile.adults) > 1 && Boolean(profile.needsFamilyVisa), relationship_type: Number(profile.adults) > 1 ? profile.relationshipType ?? null : null, children: Array.from({ length: childCount }, () => ({ age_years: null })), school_needed: Boolean(profile.schoolNeeded) },
     lgbt: { enabled: Boolean(profile.sameSexFamily), consent_for_personalization: Boolean(profile.sameSexFamily), family_recognition_relevant: Boolean(profile.sameSexFamily) },
     income: { primary: { type: scenarioTypes[profile.plannedBasis] ?? null, source_country: profile.incomeSourceCountry ?? null, bank_country: profile.bankCountry ?? null, monthly_provable: profile.monthlyIncomeUsd == null ? null : { amount: Number(profile.monthlyIncomeUsd), currency: 'USD' } } },
-    goal: { long_term: longTerm, physical_presence: presence, language_exam_readiness: language ?? null, keep_russian_citizenship: profile.keepRuCitizenship ?? null },
+    goal: { long_term: longTerm, keep_russian_citizenship: profile.keepRuCitizenship ?? null },
     preferences: { monthly_budget: profile.monthlyBudgetUsd == null ? null : { amount: Number(profile.monthlyBudgetUsd), currency: 'USD' }, city_size: profile.citySize ?? null },
     pets: { types: [profile.pet || 'NONE'] }, special_circumstances: ['NONE'], optional_modules: { medical: { specific_medicine_required: Boolean(profile.medicineRequired) } },
     route_specific_answers: { ES_DNV: { social_security_plan: profile.socialSecurityPlan ?? null } },
@@ -108,7 +112,7 @@ function validateContext(profile, countryPackage, context) {
   const asOf = Date.parse(context?.fx?.as_of);
   const calculationDate = Date.parse(context?.calculation_date);
   const maxAge = Number(context?.fx?.max_age_hours);
-  const stale = Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
+  const stale = context?.fx?.is_saved_fallback ? false : Number.isFinite(asOf) && Number.isFinite(calculationDate) && Number.isFinite(maxAge)
     ? calculationDate - asOf > maxAge * 3600000 : true;
   if (!(Number(rate) > 0) || stale) {
     throw new CalculationContextError('Для расчёта необходим актуальный положительный курс EUR.', { currency: 'EUR' });
@@ -116,14 +120,22 @@ function validateContext(profile, countryPackage, context) {
 }
 
 function buildIndexes(data) {
+  const details = data.detail_tables || data;
   return {
     data,
-    routeIncome: new Map((data.route_income || []).map((row) => [`${row.route_id}:${row.accepted_income_type}`, row])),
-    routeFamily: new Map((data.route_family || []).map((row) => [row.route_id, row])),
-    routeStatus: new Map((data.route_status || []).map((row) => [row.route_id, row])),
-    routeWork: new Map((data.route_work || []).map((row) => [row.route_id, row])),
+    routeIncome: new Map((details.route_income || []).map((row) => [`${row.route_id}:${row.accepted_income_type}`, row])),
+    routeFamily: new Map((details.route_family || []).map((row) => [row.route_id, row])),
+    routeStatus: new Map((details.route_status || []).map((row) => [row.route_id, row])),
+    routeWork: new Map((details.route_work || []).map((row) => [row.route_id, row])),
     sources: new Map((data.sources || []).map((row) => [row.source_id, row])),
   };
+}
+
+function listRoutes(data) {
+  const normalized = new Map((data.routes || []).map((route) => [route.route_id, route]));
+  const detailed = data.detail_tables?.routes;
+  if (!Array.isArray(detailed)) return data.routes || [];
+  return detailed.map((route) => ({ ...route, ...normalized.get(route.route_id), legacy: route }));
 }
 
 function familyThreshold(rule, profile) {
@@ -273,6 +285,29 @@ function incomeEvaluation(route, indexes, profile, context) {
   return { ...base, checks, thresholdEur, incomeTypeFit: 'MEETS', incomeFit: profile.monthlyIncomeUsd == null ? 'UNKNOWN' : incomeEur >= thresholdEur ? 'MEETS' : 'DOES_NOT_MEET', basisMissing: Boolean(rule.separateBasis && !rule.scenarios.includes(profile.plannedBasis)) };
 }
 
+function structuredRequirementEvaluation(route, profile, context) {
+  const countryId = route.country_id || route.route_id.slice(0, 2);
+  const evaluation = evaluateRouteRequirements(route, profile, context, { countryId });
+  const financial = evaluation.financial[0] || null;
+  const primary = financial?.primary || null;
+  const financialCheck = financial?.check || null;
+  const thresholdConversion = primary?.thresholdConversion || null;
+  return {
+    checks: evaluation.checks,
+    thresholdEur: thresholdConversion?.originalCurrency === 'EUR' ? thresholdConversion.originalAmount : null,
+    thresholdUsd: thresholdConversion?.targetCurrency === 'USD' ? thresholdConversion.convertedAmount : null,
+    incomeEur: primary?.sources?.reduce((sum, source) => sum + Number(source.provableEur || 0), 0) || null,
+    requirementConversion: thresholdConversion,
+    incomeTypeFit: financial ? primary?.sources?.length ? 'MEETS' : 'DOES_NOT_MEET' : 'NOT_APPLICABLE',
+    incomeFit: financialCheck
+      ? financialCheck.status === ROUTE_STATUSES.SUITABLE ? 'MEETS'
+        : financialCheck.status === ROUTE_STATUSES.UNSUITABLE ? 'DOES_NOT_MEET' : 'UNKNOWN'
+      : 'NOT_APPLICABLE',
+    basisMissing: route.requirements.some(({ evaluation_mode }) => evaluation_mode === 'UNASKED_CONDITION'),
+    incomeGuidance: route.income_rule_ru || null,
+  };
+}
+
 function familyChecks(route, indexes, profile) {
   if (profile.adults == null || profile.partnerIncluded == null || profile.children == null) return [clientCondition('family_answer_missing', 'Нужно уточнить состав семьи.', { field: 'family' })];
   if (route.route_id === 'UY_FAMILY_LINK') {
@@ -284,7 +319,11 @@ function familyChecks(route, indexes, profile) {
       : profile.partnerIncluded
         ? 'Партнёра нельзя включить в это разрешение.'
         : 'Детей нельзя включить в это разрешение.';
-    return [outcome(ROUTE_STATUSES.UNSUITABLE, 'digital_nomad_family_not_includable', `Разрешение цифрового кочевника оформляется только на основного заявителя. ${dependants} Для совместного переезда членам семьи потребуется собственное законное основание.`)];
+    return [outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'digital_nomad_separate_family_routes_required', `Разрешение цифрового кочевника оформляется только на основного заявителя. ${dependants}`, {
+      condition: profile.children.length > 0
+        ? 'Подтвердить отдельный допустимый маршрут ребёнка и второго взрослого либо выбрать семейно-совместимую резиденцию.'
+        : 'Если второй взрослый имеет собственный допустимый удалённый доход, подать два отдельных заявления; иначе подтвердить для него другой законный маршрут.',
+    })];
   }
   if (!profile.partnerIncluded && profile.children.length === 0) return [outcome(ROUTE_STATUSES.SUITABLE, 'no_dependants', 'Зависимые члены семьи отсутствуют.')];
   const rule = indexes.routeFamily.get(route.route_id);
@@ -295,7 +334,9 @@ function familyChecks(route, indexes, profile) {
     if (rule.partner_allowed === 'YES') checks.push(outcome(ROUTE_STATUSES.SUITABLE, 'partner_allowed', 'Партнёр может быть включён.'));
     else if (rule.partner_allowed === 'NO') {
       partnerCanBeIncluded = false;
-      checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'partner_not_allowed', 'Партнёра нельзя включить в этот маршрут.'));
+      checks.push(outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'partner_separate_application_required', 'Партнёра нельзя включить в это заявление.', {
+        condition: 'Второму взрослому нужно подать отдельное заявление по этому или другому доступному маршруту.',
+      }));
     } else {
       partnerCanBeIncluded = false;
       checks.push(countryCondition('partner_rule_unknown', 'Возможность включить партнёра не подтверждена.'));
@@ -348,14 +389,6 @@ function goalChecks(route, indexes, profile) {
   else if (hardRequired && rule[field] === 'NO') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'long_term_unavailable', `Подтверждённого пути к ${label} нет.`));
   else if (rule[field] === 'NO') checks.push(outcome(ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS, 'long_term_preference_unavailable', `Желаемый путь к ${label} не подтверждён, но первоначальный ВНЖ доступен.`, { condition: 'Учесть отсутствие подтверждённого долгосрочного пути.' }));
   else checks.push(countryCondition('long_term_path_unknown', `Данные о пути к ${label} отсутствуют.`));
-  if (citizenshipGoal && rule.language_exam_required === 'YES') {
-    if (profile.languageReadiness === 'NO' && profile.goal === 'CITIZENSHIP_REQUIRED') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'language_required', 'Для обязательной цели требуется языковой экзамен.'));
-    else if (profile.languageReadiness === 'BASIC_ONLY' && !['A1', 'A2'].includes(rule.required_language_level)) checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'language_level_insufficient', 'Базового уровня недостаточно для подтверждённого экзамена.'));
-  }
-  const presenceField = citizenshipGoal ? 'allowed_absence_for_citizenship_days' : 'allowed_absence_for_pr_days';
-  if (profile.physicalPresence === 'LESS_THAN_6_MONTHS' && rule[presenceField] == null) {
-    checks.push(countryCondition('absence_rule_missing', 'Точные допустимые отсутствия для долгосрочной цели не исследованы.'));
-  }
   if (citizenshipGoal && ['REQUIRED', 'DESIRABLE'].includes(profile.keepRuCitizenship)) {
     if (rule.multiple_citizenship_allowed === 'NO' && profile.keepRuCitizenship === 'REQUIRED') checks.push(outcome(ROUTE_STATUSES.UNSUITABLE, 'renunciation_conflict', 'Обязательное сохранение гражданства РФ конфликтует с подтверждённым правилом.'));
     else if (rule.multiple_citizenship_allowed === 'UNKNOWN') checks.push(countryCondition('multiple_citizenship_rule_unknown', 'Правило сохранения прежнего гражданства требует подтверждения.'));
@@ -366,7 +399,9 @@ function goalChecks(route, indexes, profile) {
 
 function evaluateRoute(route, indexes, profile, context) {
   const application = applicationChecks(route, indexes, profile);
-  const income = incomeEvaluation(route, indexes, profile, context);
+  const income = Array.isArray(route.requirements)
+    ? structuredRequirementEvaluation(route, profile, context)
+    : incomeEvaluation(route, indexes, profile, context);
   const family = familyChecks(route, indexes, profile);
   const goal = goalChecks(route, indexes, profile);
   const checks = [...application, ...income.checks, ...family, ...goal];
@@ -399,7 +434,10 @@ function evaluateRoute(route, indexes, profile, context) {
   const enablingActions = checks.filter((check) => check.code === 'separate_route_basis_required').map((check) => check.message);
   const actions = [...blockerActions, ...enablingActions].filter(Boolean);
   const requirementCodes = new Set(['dnv_foreign_income_source', 'social_security_required', 'means_declaration_required', 'future_uruguayan_family_link_required']);
-  const initialPermitRequirements = checks.filter((check) => requirementCodes.has(check.code)).map((check) => check.message);
+  const initialPermitRequirements = [
+    ...checks.filter((check) => requirementCodes.has(check.code)).map((check) => check.message),
+    ...(route.requirements || []).filter(({ evaluation_mode }) => evaluation_mode !== 'UNASKED_CONDITION').map(({ condition_ru }) => condition_ru),
+  ];
   const applicationGuidance = {
     ES_DNV: 'Из Испании податься можно, если вы находитесь там законно. При подаче через консульство вне России нужен резидентский статус в стране подачи; альтернативно можно подаваться из России.',
     ES_ENTREPRENEUR: 'Из Испании податься можно при законном статусе. Заявление на разрешение подаёт сам предприниматель электронно через UGE; из-за рубежа доступен визовый путь.',
@@ -412,7 +450,9 @@ function evaluateRoute(route, indexes, profile, context) {
   }[route.route_id] || null;
   return {
     routeId: route.route_id, routeName: route.name_ru || route.official_name, routeStatus, statusLabel: STATUS_LABELS_RU[routeStatus],
-    applicationNationality: profile.applicationNationality, viaSecondaryNationality: profile.applicationNationality !== 'RU', thresholdEur: income.thresholdEur, thresholdUsd: income.thresholdUsd ?? null, incomeEur: income.incomeEur,
+    applicationNationality: profile.applicationNationality, viaSecondaryNationality: profile.applicationNationality !== 'RU',
+    thresholdEur: income.thresholdEur ?? (route.income_threshold_currency === 'EUR' ? route.income_threshold_amount : null),
+    thresholdUsd: income.thresholdUsd ?? (route.income_threshold_currency === 'USD' ? route.income_threshold_amount : null), incomeEur: income.incomeEur,
     incomeUsd: profile.monthlyIncomeUsd,
     incomeOriginal: profile.incomeMoney, incomeConversion: profile.incomeConversion, incomeRequirementConversion: income.requirementConversion, basisMissing: Boolean(income.basisMissing),
     goalFit: fits(goal), applicationFit: fits(application), familyFit: fits(family), incomeTypeFit: income.incomeTypeFit, incomeFit: income.incomeFit,
@@ -436,7 +476,8 @@ function familyCost(city, profile) {
 }
 
 function evaluatePractical(data, profile) {
-  const allCities = data.cities || [];
+  const details = data.detail_tables || data;
+  const allCities = details.cities || [];
   const matchingCities = allCities.filter((city) => profile.citySize === 'ANY' || city.population_category === profile.citySize);
   const usedCitySizeFallback = profile.citySize !== 'ANY' && matchingCities.length === 0 && allCities.length > 0;
   const cities = (usedCitySizeFallback ? allCities : matchingCities).map((city) => {
@@ -468,7 +509,7 @@ function evaluatePractical(data, profile) {
 
 function evaluateLgbt(data, profile, indexes) {
   if (!profile.lgbt?.enabled) return null;
-  const rules = (data.lgbt_rules || []).map((rule) => ({
+  const rules = (data.detail_tables?.lgbt_rules || data.lgbt_rules || []).map((rule) => ({
     id: rule.lgbt_rule_id,
     topic: rule.topic,
     legalStatus: rule.legal_status,
@@ -493,10 +534,11 @@ function collectSources(data, indexes, bestRoute, practical) {
 }
 
 function collectPracticalMissing(data, profile, practical) {
+  const details = data.detail_tables || data;
   const missing = [...(practical.recommendedCity?.missing || [])];
-  if (profile.petTypes?.includes('DOG') && data.pet_rules?.find((rule) => rule.animal_type === 'DOG')?.rabies_titer_required === 'UNKNOWN') missing.push('Необходимость титра антител для ввоза собаки требует актуальной проверки.');
+  if (profile.petTypes?.includes('DOG') && details.pet_rules?.find((rule) => rule.animal_type === 'DOG')?.rabies_titer_required === 'UNKNOWN') missing.push('Необходимость титра антител для ввоза собаки требует актуальной проверки.');
   if (profile.medicineRequired) missing.push('Наличие лекарства и правила ввоза личного запаса проверяются отдельно.');
   return missing;
 }
 
-export const spainAdapter = Object.freeze({ id: 'spain', normalizeProfile, validateContext, buildIndexes, evaluateRoute, evaluatePractical, evaluateLgbt, determineCountryGroup, collectSources, collectPracticalMissing });
+export const spainAdapter = Object.freeze({ id: 'spain', normalizeProfile, validateContext, buildIndexes, listRoutes, evaluateRoute, evaluatePractical, evaluateLgbt, determineCountryGroup, collectSources, collectPracticalMissing });

@@ -47,8 +47,6 @@
     },
     "goal": {
       "long_term": "CITIZENSHIP_DESIRED",
-      "physical_presence": "MOST_OF_YEAR",
-      "language_exam_readiness": "BASIC_ONLY",
       "keep_russian_citizenship": "REQUIRED"
     },
     "preferences": {
@@ -120,8 +118,6 @@
     },
     "goal": {
       "long_term": "PR_REQUIRED",
-      "physical_presence": "AT_LEAST_8_MONTHS",
-      "language_exam_readiness": "YES",
       "keep_russian_citizenship": "DESIRABLE"
     },
     "preferences": {
@@ -199,8 +195,6 @@
     },
     "goal": {
       "long_term": "CITIZENSHIP_REQUIRED",
-      "physical_presence": "AT_LEAST_6_MONTHS",
-      "language_exam_readiness": "DEPENDS_ON_LANGUAGE",
       "keep_russian_citizenship": "REQUIRED"
     },
     "preferences": {

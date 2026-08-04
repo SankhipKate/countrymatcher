@@ -44,6 +44,12 @@ html,body{max-width:100%;overflow-x:clip}
 .route-result{margin-top:14px;padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}
 .route-result.best{border-color:var(--blue-600);background:#f7fbff}
 .route-result h3{margin:9px 0 3px}
+.route-result summary{cursor:pointer;list-style:none}.route-result summary::-webkit-details-marker{display:none}
+.route-card-heading{display:grid;grid-template-columns:max-content 1fr auto;align-items:center;gap:10px}.route-card-heading h3{margin:0}
+.best-route-label{color:var(--blue-600);font-size:13px;font-weight:700}.route-expand-label{color:var(--blue-600);font-size:13px;font-weight:700}
+.route-result details[open] .route-expand-label{font-size:0}.route-result details[open] .route-expand-label::after{content:'Скрыть подробности';font-size:13px}
+.route-card-body{padding-top:12px}
+.lgbt-assessment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}.lgbt-assessment-grid>div{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.lgbt-assessment-grid span{display:block;color:#607286;font-size:13px}.lgbt-assessment-grid b{display:block;margin-top:5px}
 .route-result p{margin:6px 0;color:#46596e}
 .route-result ul{margin:8px 0;padding-left:20px}
 .follow-up-card{margin:20px 0;padding:20px;border:1px solid #e6c47f;border-radius:16px;background:#fff9ed}
@@ -95,7 +101,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-comparison-body{padding:22px}
 .country-comparison-body>section{margin-top:22px}
 @media(max-width:1100px){.matcher-layout{grid-template-columns:1fr}}
-@media(max-width:760px){.site-header{height:76px}.nav-shell{padding:0 12px}.product-name{font-size:17px}.product-version{font-size:12px}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.lgbt-research{padding:15px}}
+@media(max-width:760px){.site-header{height:76px}.nav-shell{padding:0 12px}.product-name{font-size:17px}.product-version{font-size:12px}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{grid-template-columns:minmax(0,1fr) auto}.route-card-heading .status-pill{grid-column:1/-1;justify-self:start}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.lgbt-research{padding:15px}}
 @media(max-width:600px){.secure-note{display:none}}
 @media(max-width:430px){.two-choice,.segmented.four{grid-template-columns:1fr}.money-combo{grid-template-columns:minmax(0,1fr) 82px}}
 

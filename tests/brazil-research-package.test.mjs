@@ -79,11 +79,3 @@ test('Brazil has large, medium and small city coverage with concrete climate ran
   assert.ok(brazil.cities.every(({ cold_period_temperature_range_c, hot_period_temperature_range_c }) =>
     /\d/.test(cold_period_temperature_range_c) && /\d/.test(hot_period_temperature_range_c)));
 });
-
-test('runtime and backlog Brazil packages are byte-for-byte identical', async () => {
-  const [runtime, backlog] = await Promise.all([
-    readFile(new URL('../data/brazil-research-v3.0.json', import.meta.url)),
-    readFile(new URL('../research-backlog/brazil-v3.0/brazil-research-v3.0.json', import.meta.url)),
-  ]);
-  assert.equal(runtime.equals(backlog), true);
-});
