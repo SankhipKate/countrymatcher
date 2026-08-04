@@ -11,7 +11,7 @@ const portugal = JSON.parse(await readFile(new URL('../data/portugal-research-v3
 const spain = JSON.parse(await readFile(new URL('../data/spain-research-v3.0.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-07-30T12:00:00Z',
-  engine_version: '7.1.0',
+  engine_version: '7.1.1',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80 },
@@ -224,10 +224,10 @@ test('all public Portugal outcomes stay inside the three-status contract and exp
 test('public matcher loads Portugal without adding Portugal-specific questionnaire fields', async () => {
   const [app, html] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /portugal-adapter\.js\?v=7\.1\.0/);
-  assert.match(app, /portugal-research-v3\.0\.json\?v=7\.1\.0/);
+  assert.match(app, /portugal-adapter\.js\?v=7\.1\.1/);
+  assert.match(app, /portugal-research-v3\.0\.json\?v=7\.1\.1/);
   assert.match(app, /countryId === 'PT' \? '🇵🇹'/);
   assert.match(app, /enrichCityCategories/);
   assert.equal(/<[^>]+(?:id|name)="[^"]*(?:portugal|pt_d8|pt_d7|pt_d2|pt_d1)[^"]*"/i.test(html), false);

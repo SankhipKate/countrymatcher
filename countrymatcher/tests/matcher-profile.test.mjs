@@ -13,17 +13,17 @@ const context = { calculation_date: '2026-07-19T12:00:00Z', engine_version: '2.1
 
 test('visible matcher version matches package version', async () => {
   const [matcherHtml, packageJson, fxContext] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.1.0');
+  assert.equal(packageJson.version, '7.1.1');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.1\.0'/);
+  assert.match(fxContext, /engine_version: '7\.1\.1'/);
 });
 
 const answers = (overrides = {}) => ({
@@ -116,7 +116,7 @@ test('user can select current-country and in-country application methods togethe
 
 test('public matcher evaluates all researched filing methods without asking willingness to return', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const html = await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8');
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(app, /const applicationMethods = \['ANY'\]/);
   assert.equal(html.includes('Готовы вернуться в Россию'), false);
 });
@@ -365,7 +365,7 @@ test('machine-readable schema rejects a profile with missing child age', () => {
 });
 
 test('main matcher has no Spain-specific social-security question', async () => {
-  const source = await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8');
+  const source = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.equal(source.includes('социального страхования Испании'), false);
   assert.ok(source.includes('У вас есть гражданство РФ?'));
   assert.match(source, /id="questionnaireView"[^>]*hidden/);
@@ -373,17 +373,12 @@ test('main matcher has no Spain-specific social-security question', async () => 
   assert.equal(source.includes('name="climate"'), false);
 });
 
-test('root and legacy pilot redirect to the public matcher and are not linked from it', async () => {
-  const [root, legacy, matcher] = await Promise.all([
-    readFile(new URL('../index.html', import.meta.url), 'utf8'),
-    readFile(new URL('../pilot/index.html', import.meta.url), 'utf8'),
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
-  ]);
-  assert.match(root, /location\.replace\('\.\/matcher\/'\)/);
-  assert.match(legacy, /location\.replace\('\.\.\/matcher\/'\)/);
-  assert.ok(matcher.includes('id="matcherForm"'));
-  assert.equal(matcher.includes('href="../"'), false);
-  assert.equal(matcher.includes('href="../pilot/"'), false);
+test('root is the public matcher and does not link to a pilot page', async () => {
+  const root = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  assert.ok(root.includes('id="matcherForm"'));
+  assert.doesNotMatch(root, /location\.replace/);
+  assert.equal(root.includes('href="../"'), false);
+  assert.equal(root.includes('href="./pilot/"'), false);
 });
 
 test('result UI shows city comparisons and a human-readable row-based LGBT section', async () => {
@@ -447,7 +442,7 @@ test('result UI keeps one corrective-action section and maps country tabs to mat
 
 test('every questionnaire answer enforced by step validation is visibly marked required', async () => {
   const [matcher, app] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
   for (const label of [
@@ -499,7 +494,7 @@ test('income confirmation mode resolves one visible amount flow', () => {
 
 test('income step uses total income plus a conditional partial amount field', async () => {
   const [matcher, app] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcher, /Какую часть дохода можете подтвердить документами\?/);
@@ -521,7 +516,7 @@ test('income controls align and share one control radius', async () => {
 
 test('matcher cache keys include the current release for code and country data', async () => {
   const [matcher, app, packageJson] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
@@ -543,7 +538,8 @@ test('README describes the live matcher and maintenance rule', async () => {
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
-  assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\/matcher\//);
+  assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\//);
+  assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\/landing\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
   assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая, Португалии, Мексики и Бразилии/);

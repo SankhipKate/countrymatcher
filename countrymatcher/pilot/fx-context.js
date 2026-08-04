@@ -42,7 +42,7 @@ function readSavedContext(storage, now) {
     const { rates, asOf } = parseRates(saved?.rows);
     return {
       calculation_date: now.toISOString(),
-      engine_version: '7.1.0',
+      engine_version: '7.1.1',
       fx: { base_currency: 'USD', rates, source: saved.source || 'Frankfurter — последний доступный курс', as_of: asOf, max_age_hours: null, is_saved_fallback: true },
     };
   } catch { return null; }
@@ -60,7 +60,7 @@ export async function loadCalculationContext({ fetchImpl = globalThis.fetch, now
     }
     const context = {
       calculation_date: now.toISOString(),
-      engine_version: '7.1.0',
+      engine_version: '7.1.1',
       fx: { base_currency: 'USD', rates, source: 'Frankfurter', as_of: asOf, max_age_hours: maxAgeHours },
     };
     try {

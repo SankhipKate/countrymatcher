@@ -135,7 +135,7 @@ test('Argentina keeps 1 USD in the country KPI when the displayed best route doe
 
 test('matcher adds pension and universal passive-income help but no Argentina-specific questions', async () => {
   const [html, app] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
   assert.match(html, /value="PENSION">Пенсия</);

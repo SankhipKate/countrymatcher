@@ -7,7 +7,7 @@ import { mexicoAdapter } from '../js/countries/mexico-adapter.js';
 const mexico = JSON.parse(await readFile(new URL('../data/mexico-research-v3.0.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-08-01T08:00:00Z',
-  engine_version: '7.1.0',
+  engine_version: '7.1.1',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80, ARS: 1350, MXN: 18 },
@@ -248,8 +248,8 @@ test('public matcher loads Mexico, its adapter, its flag and researched cities',
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /mexico-adapter\.js\?v=7\.1\.0/);
-  assert.match(app, /mexico-research-v3\.0\.json\?v=7\.1\.0/);
+  assert.match(app, /mexico-adapter\.js\?v=7\.1\.1/);
+  assert.match(app, /mexico-research-v3\.0\.json\?v=7\.1\.1/);
   assert.match(app, /countryId === 'MX' \? '🇲🇽'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);
