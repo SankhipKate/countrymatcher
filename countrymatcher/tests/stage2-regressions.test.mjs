@@ -62,13 +62,13 @@ test('runtime contains no removed constructs or user FX field', async () => {
 });
 
 test('public matcher contains no social-security route-specific question', async () => {
-  const source = `${await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8')}\n${await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8')}`;
+  const source = `${await readFile(new URL('../index.html', import.meta.url), 'utf8')}\n${await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8')}`;
   assert.equal(source.includes('social' + 'SecurityPlan'), false);
   assert.equal(source.includes('Как планируете подтвердить социальное страхование'), false);
 });
 
 test('public matcher gates the questionnaire behind Russian citizenship confirmation', async () => {
-  const html = await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8');
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.ok(html.indexOf('У вас есть гражданство РФ?') < html.indexOf('id="matcherForm"'));
   assert.match(html, /id="questionnaireView"[^>]*hidden/);
@@ -80,7 +80,7 @@ test('public matcher gates the questionnaire behind Russian citizenship confirma
 
 
 test('result view uses the full page width and keeps edit action in the hero', async () => {
-  const html = await readFile(new URL('../matcher/index.html', import.meta.url), 'utf8');
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.match(html, /id="resultView" class="result-layout result-layout-single"/);
   assert.ok(html.indexOf('id="editProfile"') < html.indexOf('id="resultView"'));
@@ -92,7 +92,7 @@ test('result view uses the full page width and keeps edit action in the hero', a
 
 test('matcher selects avoid the obsolete not-selected option and align income blocks', async () => {
   const [html, app, styles] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
   ]);
@@ -106,7 +106,7 @@ test('matcher selects avoid the obsolete not-selected option and align income bl
 
 test('pet question is only yes or no and does not ask species or breed', async () => {
   const [html, app] = await Promise.all([
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
   assert.match(html, /Переезжают домашние животные\?/);

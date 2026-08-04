@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sankhipkate.github.io/countrymatcher/countrymatcher/data/research-package-v3.0.schema.json",
+  "$id": "https://sankhipkate.github.io/countrymatcher/data/research-package-v3.0.schema.json",
   "title": "MVP Research Package 3.0",
   "type": "object",
   "additionalProperties": false,

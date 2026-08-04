@@ -282,7 +282,7 @@ test('missing or stale BRL rate creates a typed country error', () => {
 test('public matcher loads Brazil data, adapter, flag, cities and version 7.1.1', async () => {
   const [app, html, fx, packageJson, readme] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
-    readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
     readFile(new URL('../README.md', import.meta.url), 'utf8'),

@@ -24,7 +24,7 @@ test('release version is identical in every required location', async () => {
   const [packageJson, packageLock, matcherHtml, readme, deployment, fxContext] = await Promise.all([
     read('package.json').then(JSON.parse),
     read('package-lock.json').then(JSON.parse),
-    read('matcher/index.html'),
+    read('index.html'),
     read('README.md'),
     read('DEPLOYMENT.md'),
     read('pilot/fx-context.js'),
