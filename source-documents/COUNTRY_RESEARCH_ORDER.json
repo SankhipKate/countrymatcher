@@ -1,0 +1,1756 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-08-04",
+  "countries": [
+    {
+      "overall_rank": 1,
+      "country": "Испания",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 2,
+      "country": "Аргентина",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 3,
+      "country": "Уругвай",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 4,
+      "country": "Бразилия",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 5,
+      "country": "Португалия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 6,
+      "country": "Мексика",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 7,
+      "country": "Колумбия",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 8,
+      "country": "Коста-Рика",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 9,
+      "country": "Эквадор",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 10,
+      "country": "Чили",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 11,
+      "country": "Греция",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 12,
+      "country": "Таиланд",
+      "region": "Азия",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 13,
+      "country": "Мальта",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 14,
+      "country": "Южно-Африканская Республика",
+      "region": "Африка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 15,
+      "country": "Германия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 16,
+      "country": "Франция",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 17,
+      "country": "Нидерланды",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 18,
+      "country": "Ирландия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 19,
+      "country": "Словения",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 20,
+      "country": "Канада",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 21,
+      "country": "Австралия",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 22,
+      "country": "Новая Зеландия",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 23,
+      "country": "Великобритания",
+      "region": "Другое",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 24,
+      "country": "США",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 25,
+      "country": "Эстония",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 26,
+      "country": "Австрия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 27,
+      "country": "Бельгия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 28,
+      "country": "Дания",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 29,
+      "country": "Швеция",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 30,
+      "country": "Норвегия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 31,
+      "country": "Финляндия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 32,
+      "country": "Исландия",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 33,
+      "country": "Швейцария",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 34,
+      "country": "Люксембург",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 35,
+      "country": "Тайвань",
+      "region": "Азия",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 36,
+      "country": "Непал",
+      "region": "Азия",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 37,
+      "country": "Лихтенштейн",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 38,
+      "country": "Куба",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 39,
+      "country": "Андорра",
+      "region": "Другое",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 40,
+      "country": "Аландские острова",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 41,
+      "country": "Бонэйр, Синт-Эстатиус и Саба",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 42,
+      "country": "Гернси",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 43,
+      "country": "Гибралтар",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 44,
+      "country": "Джерси",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 45,
+      "country": "Кюрасао",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 46,
+      "country": "о-в Мэн",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 47,
+      "country": "Сен-Бартелеми",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 48,
+      "country": "Сен-Мартен (французская часть)",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 49,
+      "country": "Фарерские острова",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 50,
+      "country": "Шпицберген и Ян-Майен",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 51,
+      "country": "Американские Виргинские острова",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 52,
+      "country": "Аруба",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 53,
+      "country": "Гваделупа",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 54,
+      "country": "Гренландия",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 55,
+      "country": "Мартиника",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 56,
+      "country": "Пуэрто-Рико",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 57,
+      "country": "Сен-Пьер и Микелон",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 58,
+      "country": "Фолклендские острова",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 59,
+      "country": "Французская Гвиана",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 60,
+      "country": "Гуам",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 61,
+      "country": "Кокосовые (Килинг) острова",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 62,
+      "country": "Новая Каледония",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 63,
+      "country": "Остров Норфолк",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 64,
+      "country": "Остров Рождества",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 65,
+      "country": "Питкэрн",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 66,
+      "country": "Северные Марианские острова",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 67,
+      "country": "Уоллис и Футуна",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 68,
+      "country": "Французская Полинезия",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 69,
+      "country": "Британская территория в Индийском океане",
+      "region": "Африка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 70,
+      "country": "Майотта",
+      "region": "Африка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 71,
+      "country": "Острова Святой Елены, Вознесения и Тристан-да-Кунья",
+      "region": "Африка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 72,
+      "country": "Реюньон",
+      "region": "Африка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 73,
+      "country": "о-в Буве",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 74,
+      "country": "Французские Южные и Антарктические территории",
+      "region": "Европа",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 75,
+      "country": "Южная Георгия и Южные Сандвичевы острова",
+      "region": "Америка",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 76,
+      "country": "о-ва Херд и Макдональд",
+      "region": "Океания",
+      "category": "Признан однополый брак",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 77,
+      "country": "Черногория",
+      "region": "Другое",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 78,
+      "country": "Италия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 79,
+      "country": "Хорватия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 80,
+      "country": "Филиппины",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 81,
+      "country": "Кипр",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 82,
+      "country": "Чехия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 83,
+      "country": "Румыния",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 84,
+      "country": "Болгария",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 85,
+      "country": "Япония",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 86,
+      "country": "Южная Корея",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 87,
+      "country": "Польша",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 88,
+      "country": "Венгрия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 89,
+      "country": "Словакия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 90,
+      "country": "Литва",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 91,
+      "country": "Латвия",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 92,
+      "country": "Индия",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 93,
+      "country": "Израиль",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 94,
+      "country": "Боливия",
+      "region": "Америка",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 95,
+      "country": "Монако",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 96,
+      "country": "Сан-Марино",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 97,
+      "country": "Суринам",
+      "region": "Америка",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 98,
+      "country": "Китай",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 99,
+      "country": "Намибия",
+      "region": "Африка",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 100,
+      "country": "Синт-Мартен (нидерландская часть)",
+      "region": "Европа",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 101,
+      "country": "Бермудские о-ва",
+      "region": "Америка",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 102,
+      "country": "о-ва Кайман",
+      "region": "Америка",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 103,
+      "country": "Гонконг (САР)",
+      "region": "Азия",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 104,
+      "country": "Американское Самоа",
+      "region": "Океания",
+      "category": "Частично признаны права пары",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 105,
+      "country": "Парагвай",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "Подключена"
+    },
+    {
+      "overall_rank": 106,
+      "country": "Панама",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 107,
+      "country": "Сербия",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 108,
+      "country": "Албания",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 109,
+      "country": "Маврикий",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 110,
+      "country": "Молдова",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 111,
+      "country": "Северная Македония",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 112,
+      "country": "Босния и Герцеговина",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 113,
+      "country": "Косово",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 114,
+      "country": "Сингапур",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 115,
+      "country": "Вьетнам",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 116,
+      "country": "Камбоджа",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 117,
+      "country": "Монголия",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 118,
+      "country": "Кабо-Верде",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 119,
+      "country": "Сейшельские Острова",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 120,
+      "country": "Доминиканская Республика",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 121,
+      "country": "Перу",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 122,
+      "country": "Гватемала",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 123,
+      "country": "Белиз",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 124,
+      "country": "Сальвадор",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 125,
+      "country": "Гондурас",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 126,
+      "country": "Никарагуа",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 127,
+      "country": "Украина",
+      "region": "Европа",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 128,
+      "country": "Антигуа и Барбуда",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 129,
+      "country": "Багамы",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 130,
+      "country": "Барбадос",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 131,
+      "country": "Венесуэла",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 132,
+      "country": "Гаити",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 133,
+      "country": "Доминика",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 134,
+      "country": "Сент-Китс и Невис",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 135,
+      "country": "Сент-Люсия",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 136,
+      "country": "Бутан",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 137,
+      "country": "Лаос",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 138,
+      "country": "Тимор-Лешти",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 139,
+      "country": "Вануату",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 140,
+      "country": "Маршалловы о-ва",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 141,
+      "country": "Микронезия",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 142,
+      "country": "Науру",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 143,
+      "country": "Палау",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 144,
+      "country": "Фиджи",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 145,
+      "country": "Ангола",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 146,
+      "country": "Бенин",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 147,
+      "country": "Ботсвана",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 148,
+      "country": "Габон",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 149,
+      "country": "Гвинея-Бисау",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 150,
+      "country": "Джибути",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 151,
+      "country": "ДР Конго",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 152,
+      "country": "Кот-д’Ивуар",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 153,
+      "country": "Лесото",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 154,
+      "country": "Мадагаскар",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 155,
+      "country": "Мозамбик",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 156,
+      "country": "Республика Конго",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 157,
+      "country": "Руанда",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 158,
+      "country": "Сан-Томе и Принсипи",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 159,
+      "country": "Центрально-Африканская Республика",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 160,
+      "country": "Экваториальная Гвинея",
+      "region": "Африка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 161,
+      "country": "Ангилья",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 162,
+      "country": "Монтсеррат",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 163,
+      "country": "Макао (САР)",
+      "region": "Азия",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 164,
+      "country": "Ниуэ",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 165,
+      "country": "Острова Кука",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 166,
+      "country": "Токелау",
+      "region": "Океания",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 167,
+      "country": "Британские Виргинские острова",
+      "region": "Другое",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 168,
+      "country": "Теркс и Кайкос",
+      "region": "Другое",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 169,
+      "country": "Внешние малые острова США",
+      "region": "Америка",
+      "category": "Нейтральная правовая среда: отношения законны, признания пары нет",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 170,
+      "country": "Грузия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 171,
+      "country": "Армения",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 172,
+      "country": "Турция",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 173,
+      "country": "Малайзия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 174,
+      "country": "Индонезия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 175,
+      "country": "Казахстан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 176,
+      "country": "Киргизия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 177,
+      "country": "Узбекистан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 178,
+      "country": "ОАЭ",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 179,
+      "country": "Азербайджан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 180,
+      "country": "Шри-Ланка",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 181,
+      "country": "Марокко",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 182,
+      "country": "Тунис",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 183,
+      "country": "Беларусь",
+      "region": "Европа",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 184,
+      "country": "Россия",
+      "region": "Европа/Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 185,
+      "country": "Гайана",
+      "region": "Америка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 186,
+      "country": "Гренада",
+      "region": "Америка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 187,
+      "country": "Сент-Винсент и Гренадины",
+      "region": "Америка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 188,
+      "country": "Тринидад и Тобаго",
+      "region": "Америка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 189,
+      "country": "Ямайка",
+      "region": "Америка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 190,
+      "country": "Афганистан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 191,
+      "country": "Бангладеш",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 192,
+      "country": "Бахрейн",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 193,
+      "country": "Бруней",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 194,
+      "country": "Йемен",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 195,
+      "country": "Иордания",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 196,
+      "country": "Ирак",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 197,
+      "country": "Иран",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 198,
+      "country": "Катар",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 199,
+      "country": "Кувейт",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 200,
+      "country": "Ливан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 201,
+      "country": "Мальдивы",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 202,
+      "country": "Оман",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 203,
+      "country": "Пакистан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 204,
+      "country": "Саудовская Аравия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 205,
+      "country": "Северная Корея",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 206,
+      "country": "Сирия",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 207,
+      "country": "Таджикистан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 208,
+      "country": "Туркменистан",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 209,
+      "country": "Кирибати",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 210,
+      "country": "Папуа — Новая Гвинея",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 211,
+      "country": "Самоа",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 212,
+      "country": "Соломоновы о-ва",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 213,
+      "country": "Тонга",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 214,
+      "country": "Тувалу",
+      "region": "Океания",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 215,
+      "country": "Алжир",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 216,
+      "country": "Буркина-Фасо",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 217,
+      "country": "Бурунди",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 218,
+      "country": "Гамбия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 219,
+      "country": "Гана",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 220,
+      "country": "Гвинея",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 221,
+      "country": "Египет",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 222,
+      "country": "Замбия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 223,
+      "country": "Зимбабве",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 224,
+      "country": "Камерун",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 225,
+      "country": "Кения",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 226,
+      "country": "Коморы",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 227,
+      "country": "Либерия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 228,
+      "country": "Ливия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 229,
+      "country": "Мавритания",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 230,
+      "country": "Малави",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 231,
+      "country": "Мали",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 232,
+      "country": "Нигер",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 233,
+      "country": "Нигерия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 234,
+      "country": "Сенегал",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 235,
+      "country": "Сомали",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 236,
+      "country": "Судан",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 237,
+      "country": "Сьерра-Леоне",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 238,
+      "country": "Танзания",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 239,
+      "country": "Того",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 240,
+      "country": "Уганда",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 241,
+      "country": "Чад",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 242,
+      "country": "Эритрея",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 243,
+      "country": "Эсватини",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 244,
+      "country": "Эфиопия",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 245,
+      "country": "Южный Судан",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 246,
+      "country": "Ватикан",
+      "region": "Другое",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 247,
+      "country": "Мьянма (Бирма)",
+      "region": "Другое",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 248,
+      "country": "Палестина",
+      "region": "Азия",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 249,
+      "country": "Западная Сахара",
+      "region": "Африка",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    },
+    {
+      "overall_rank": 250,
+      "country": "Антарктида",
+      "region": "Антарктика",
+      "category": "Остальные: криминализация, системные ограничения или особый статус",
+      "research_status": "В очереди"
+    }
+  ]
+}
