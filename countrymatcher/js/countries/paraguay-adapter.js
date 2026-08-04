@@ -1,8 +1,8 @@
-import { convertMoney } from '../engine/currency.js?v=7.0.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
+import { convertMoney } from '../engine/currency.js?v=7.1.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.0';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.0';
 
-const PUBLIC_ROUTE_IDS = new Set(['PY_TEMPORARY', 'PY_PERMANENT_AFTER_TEMP']);
+const PUBLIC_ROUTE_IDS = new Set(['PY_TEMPORARY']);
 const CITIZENSHIP_GOALS = new Set(['CITIZENSHIP_DESIRED', 'CITIZENSHIP_MAIN_GOAL', 'CITIZENSHIP_REQUIRED']);
 
 const outcome = (status, code, message, options = {}) => ({
@@ -142,10 +142,15 @@ function familyEvaluation(route, profile) {
   }
 
   if (route.route_id === 'PY_TEMPORARY') {
-    checks.push(outcome(
-      ROUTE_STATUSES.SUITABLE,
-      'family_members_apply_separately',
+    checks.push(profile.partnerIncluded ? outcome(
+      ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
+      'partner_needs_independent_temporary_route',
       'Каждый взрослый оформляет собственную временную резиденцию; дети подаются отдельно вместе с родителем или законным представителем.',
+      { condition: 'Партнёр должен отдельно соответствовать требованиям временной резиденции.' },
+    ) : outcome(
+      ROUTE_STATUSES.SUITABLE,
+      'children_apply_with_parent',
+      'Дети подаются отдельно вместе с родителем или законным представителем.',
     ));
     return checks;
   }
@@ -377,6 +382,9 @@ function evaluateLgbt(data, profile) {
   const rule = data.lgbt;
   return {
     enabled: true,
+    legalPosition: 'Существенные правовые ограничения',
+    practicalEnvironment: 'Ограниченная',
+    practicalExplanation: 'Однополые браки и партнёрства не признаются, поэтому семейная миграция и открытая жизнь парой юридически ограничены.',
     rules: [{ id: 'PY_LGBT', legalStatus: 'NO' }],
     rows: [
       ['Брак и переезд с супругом', rule.same_sex_marriage_rule_ru],

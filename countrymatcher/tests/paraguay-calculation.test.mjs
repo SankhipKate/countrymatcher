@@ -7,7 +7,7 @@ import { paraguayAdapter } from '../js/countries/paraguay-adapter.js';
 const paraguay = JSON.parse(await readFile(new URL('../data/paraguay-research-v3.0.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-07-25T12:00:00Z',
-  engine_version: '7.0.1',
+  engine_version: '7.1.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80 },
@@ -56,23 +56,20 @@ function calculate(input = profile()) {
   return calculateCountries(input, [paraguay], context, () => paraguayAdapter).results[0];
 }
 
-test('Paraguay publishes only temporary residence and permanent residence after temporary status', () => {
+test('Paraguay publishes only the initial temporary residence route', () => {
   const result = calculate();
-  assert.deepEqual(result.routes.map(({ routeId }) => routeId), ['PY_TEMPORARY', 'PY_PERMANENT_AFTER_TEMP']);
+  assert.deepEqual(result.routes.map(({ routeId }) => routeId), ['PY_TEMPORARY']);
   assert.equal(result.routes.some(({ routeId }) => routeId === 'PY_INVESTOR_PASS'), false);
 });
 
-test('applicant in Russia can travel for an in-country temporary filing and cannot skip directly to permanent residence', () => {
+test('applicant in Russia can travel for an in-country temporary filing', () => {
   const result = calculate();
   const temporary = result.routes.find(({ routeId }) => routeId === 'PY_TEMPORARY');
-  const permanent = result.routes.find(({ routeId }) => routeId === 'PY_PERMANENT_AFTER_TEMP');
   assert.equal(result.bestRoute.routeId, 'PY_TEMPORARY');
   assert.equal(temporary.routeStatus, 'SUITABLE');
   assert.equal(temporary.applicationFit, 'MEETS');
   assert.ok(temporary.actions.some((item) => item.includes('въезда и личной подачи')));
   assert.equal(temporary.conditions.some((item) => item.includes('Въехать в Парагвай')), false);
-  assert.equal(permanent.routeStatus, 'UNSUITABLE');
-  assert.ok(permanent.blockers.some((item) => item.includes('временная резиденция Парагвая')));
 });
 
 test('applicant already inside Paraguay can use the temporary residence route without an invented income threshold', () => {
@@ -87,7 +84,7 @@ test('applicant already inside Paraguay can use the temporary residence route wi
   assert.match(temporary.incomeGuidance, /универсальный числовой порог/i);
 });
 
-test('current Paraguayan temporary resident is directed to the permanent-residence transition', () => {
+test('permanent residence is described as the long-term step, not a separate route', () => {
   const input = profile({
     residence: { current_country: 'PY', current_status: 'TEMPORARY_RESIDENCE' },
     application_preferences: { methods: ['CURRENT_COUNTRY'] },
@@ -97,12 +94,9 @@ test('current Paraguayan temporary resident is directed to the permanent-residen
     },
   });
   const result = calculate(input);
-  const permanent = result.routes.find(({ routeId }) => routeId === 'PY_PERMANENT_AFTER_TEMP');
-  assert.equal(result.bestRoute.routeId, 'PY_PERMANENT_AFTER_TEMP');
-  assert.equal(permanent.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.equal(permanent.thresholdUsd, null);
-  assert.ok(permanent.initialPermitRequirements.some((item) => item.includes('последние три месяца')));
-  assert.ok(permanent.conditions.some((item) => item.includes('экономической состоятельности')));
+  assert.equal(result.routes.some(({ routeId }) => routeId === 'PY_PERMANENT_AFTER_TEMP'), false);
+  assert.equal(result.bestRoute.routeId, 'PY_TEMPORARY');
+  assert.ok(result.bestRoute.longTerm);
 });
 
 test('same-sex partner is shown as needing an independent Paraguayan route', () => {
@@ -113,8 +107,8 @@ test('same-sex partner is shown as needing an independent Paraguayan route', () 
     lgbt: { enabled: true, consent_for_personalization: true, family_recognition_relevant: true, safety_relevant: true },
   });
   const result = calculate(input);
-  const permanent = result.routes.find(({ routeId }) => routeId === 'PY_PERMANENT_AFTER_TEMP');
-  assert.ok(permanent.conditions.some((item) => item.includes('Партнёр должен отдельно')));
+  const temporary = result.routes.find(({ routeId }) => routeId === 'PY_TEMPORARY');
+  assert.ok(temporary.conditions.some((item) => item.includes('Партнёр должен отдельно')));
   assert.equal(result.lgbt.safety.tone, 'unsafe');
   assert.equal(result.lgbt.safety.level, 'небезопасно');
 });
@@ -134,8 +128,8 @@ test('Paraguay practical result uses researched family budgets and does not inve
 
 test('public matcher loads Paraguay data, adapter, flag, and dynamic city cards', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /paraguay-research-v3\.0\.json\?v=7\.0\.1/);
-  assert.match(app, /paraguay-adapter\.js\?v=7\.0\.1/);
+  assert.match(app, /paraguay-research-v3\.0\.json\?v=7\.1\.0/);
+  assert.match(app, /paraguay-adapter\.js\?v=7\.1\.0/);
   assert.match(app, /countryId === 'PY' \? '🇵🇾'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(app, /countryId === 'UY' \? 700 : 0/);

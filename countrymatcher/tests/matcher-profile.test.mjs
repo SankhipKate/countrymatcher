@@ -18,12 +18,12 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.0.1');
+  assert.equal(packageJson.version, '7.1.0');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.0\.1'/);
+  assert.match(fxContext, /engine_version: '7\.1\.0'/);
 });
 
 const answers = (overrides = {}) => ({
@@ -345,6 +345,14 @@ test('climate formatter removes internal methodology from the short range', () =
   assert.equal(formatTemperatureRange('8,6–15,1'), 'примерно 8,6–15,1 °C');
 });
 
+test('Uruguay publishes temperature ranges instead of one scalar for a period', async () => {
+  const uruguay = JSON.parse(await readFile(new URL('../data/uruguay-research-v3.0.json', import.meta.url), 'utf8'));
+  for (const city of uruguay.detail_tables.cities) {
+    assert.equal(city.cold_period_temperature_range_c.length, 2);
+    assert.equal(city.hot_period_temperature_range_c.length, 2);
+  }
+});
+
 test('missing child age is reported as a profile validation error', () => {
   const result = validateUserProfile(buildUserProfile(answers({ childAges: [''] })));
   assert.equal(result.valid, false);
@@ -392,7 +400,7 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.match(app, /Брак и переезд с супругом/);
   assert.match(app, /Правовое положение/);
   assert.match(app, /Практическая среда/);
-  assert.match(app, /Недостаточно надёжных данных/);
+  assert.equal(app.includes('Недостаточно надёжных данных'), false);
   assert.equal(app.includes('Достаточно безопасно'), false);
   assert.match(app, /Что меняется/);
   assert.equal(app.includes('Дети и родительство'), false);
@@ -535,7 +543,7 @@ test('README describes the live matcher and maintenance rule', async () => {
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
-  assert.match(readme, /immigration-country-matcher\/countrymatcher\/matcher\//);
+  assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
   assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая, Португалии, Мексики и Бразилии/);

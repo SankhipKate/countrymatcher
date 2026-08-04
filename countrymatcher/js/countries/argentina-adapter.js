@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
-import { convertMoney } from '../engine/currency.js?v=7.0.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.0';
+import { convertMoney } from '../engine/currency.js?v=7.1.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.0';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.0';
 
 const PUBLIC_STATUSES = Object.freeze({
   SUITABLE: ROUTE_STATUSES.SUITABLE,
@@ -317,6 +317,9 @@ function evaluateLgbt(data, profile) {
   const rule = data.lgbt;
   return {
     enabled: true,
+    legalPosition: 'Полное признание',
+    practicalEnvironment: 'Открытая',
+    practicalExplanation: 'Однополый брак и семейные права признаны на национальном уровне; открытая жизнь парой юридически защищена.',
     rules: [{ id: 'AR_LGBT', legalStatus: 'YES' }],
     rows: [
       ['Брак и переезд с супругом', rule.same_sex_marriage_rule_ru],

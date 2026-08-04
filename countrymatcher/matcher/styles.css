@@ -1,8 +1,8 @@
 :root{--control-radius:12px}
 html,body{max-width:100%;overflow-x:clip}
 .site-header{height:74px}
-.nav-shell{position:relative;justify-content:center}
-.brand{flex-direction:row;justify-content:center;gap:14px;text-align:left;line-height:1}
+.nav-shell{position:relative;justify-content:flex-start}
+.brand{flex-direction:row;justify-content:flex-start;gap:14px;text-align:left;line-height:1}
 .brand .brand-mark{width:25px;height:31px;flex:0 0 auto;border-color:#f3c667}
 .brand .brand-mark span{background:#fff}
 .product-name{font-size:20px;letter-spacing:.075em}.product-name em{color:#f3c667;font-style:normal}

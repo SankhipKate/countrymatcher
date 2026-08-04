@@ -1,15 +1,15 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.0.1';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.0.1';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.0.1';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.0.1';
-import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.0.1';
-import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.0.1';
-import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.0.1';
-import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.0.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.0.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.0.1';
-import { formatCurrency } from './format.js?v=7.0.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.0.1-3';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.1.0';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.1.0';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.1.0';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.1.0';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.1.0';
+import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.1.0';
+import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.1.0';
+import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.1.0';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.0';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.0';
+import { formatCurrency } from './format.js?v=7.1.0';
+import { buildUserProfile, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.0-3';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -50,11 +50,12 @@ $('#countryOptions').innerHTML = countryOptions().map(({ label }) => `<option va
 
 const PASSIVE_INCOME_HELP = 'Доход от сдачи недвижимости в аренду, дивиденды, проценты по вкладам и облигациям, купонный доход, роялти и другие регулярные выплаты от имущества или капитала. Не включает зарплату, фриланс и оплату личной работы.';
 const PENSION_HELP = 'Регулярная государственная или частная пенсия либо аналогичная постоянная выплата за ранее оказанные услуги.';
+const COMPANY_OWNER_HELP = 'Регулярные выплаты от собственной компании, которые можно подтвердить. Этот вид дохода учитывается в маршрутах для удалённой работы и владельцев иностранного бизнеса, если правила конкретной страны его допускают.';
 function syncIncomeTypeHelp(prefix) {
   const help = $(`#${prefix}IncomeTypeHelp`);
   if (!help) return;
   const type = value(`${prefix}Type`);
-  help.textContent = type === 'PASSIVE_INCOME' ? PASSIVE_INCOME_HELP : type === 'PENSION' ? PENSION_HELP : '';
+  help.textContent = type === 'PASSIVE_INCOME' ? PASSIVE_INCOME_HELP : type === 'PENSION' ? PENSION_HELP : type === 'COMPANY_OWNER' ? COMPANY_OWNER_HELP : '';
 }
 
 function enhanceCountrySearch(input) {
@@ -299,9 +300,10 @@ function renderLgbtResearch(calculation) {
   if (!calculation.lgbt?.rules?.length) return '';
   const countryId = calculation.country.countryId;
   const rows = (calculation.lgbt.rows || LGBT_ROWS[countryId] || []).filter(([title]) => title !== 'Международная защита');
-  const legalPosition = calculation.lgbt.legalPosition || 'Недостаточно надёжных данных';
-  const practicalEnvironment = calculation.lgbt.practicalEnvironment || 'Недостаточно надёжных данных';
-  const practicalExplanation = calculation.lgbt.practicalExplanation || 'Research Package пока не содержит оценки практической среды по утверждённой методике. Отдельные происшествия и общая преступность для такой оценки не используются.';
+  const legalPosition = calculation.lgbt.legalPosition;
+  const practicalEnvironment = calculation.lgbt.practicalEnvironment;
+  if (!legalPosition || !practicalEnvironment) return '';
+  const practicalExplanation = calculation.lgbt.practicalExplanation || 'Оценка основана на правовом положении, применении норм и возможности открыто жить парой.';
   const loyalCities = Array.isArray(calculation.lgbt.loyalCities) ? calculation.lgbt.loyalCities : [];
   const pendingChanges = Array.isArray(calculation.lgbt.pendingChanges)
     ? calculation.lgbt.pendingChanges
@@ -393,7 +395,6 @@ function routeCard(route, countryName, main = false) {
   const reasonsBlock = reasons.length ? `<div class="route-reasons"><h4>${reasons.length > 1 ? 'Почему не подходит — несколько независимых причин' : 'Почему не подходит'}</h4><ul>${reasons.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
   const countryMissing = route.countryMissing || route.missing || [];
   const missingBlock = !unsuitable && countryMissing.length ? `<div class="route-open-items"><h4>Что ещё не подтверждено для этого варианта</h4><ul>${countryMissing.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
-  const reviewBlock = route.review?.length ? `<div class="route-open-items"><h4>Индивидуальные проверки</h4><ul>${route.review.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
   const actions = uniqueRouteActions(route);
   const actionsBlock = actions.length && route.routeStatus === 'SUITABLE_WITH_CONDITIONS' ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4><ol>${actions.map((item) => `<li>${html(item)}</li>`).join('')}</ol></div>` : '';
   const permitRequirementsBlock = route.initialPermitRequirements?.length ? `<div class="route-requirements"><h4>Обязательные документы и действия для первоначального ВНЖ</h4><ul>${route.initialPermitRequirements.map((item) => `<li>${html(item)}</li>`).join('')}</ul></div>` : '';
@@ -401,9 +402,13 @@ function routeCard(route, countryName, main = false) {
   const applicationBlock = route.applicationGuidance ? `<div class="route-requirements"><h4>Где и как подаваться</h4><p>${html(route.applicationGuidance)}</p></div>` : '';
   const exampleSourceBlock = route.incomeGuidance && route.incomeExampleSource?.url ? `<p class="route-source"><a href="${html(route.incomeExampleSource.url)}" target="_blank" rel="noopener">Неофициальный личный опыт о принятой сумме</a></p>` : '';
   const workBlock = route.work?.rule_ru ? `<div class="route-requirements"><h4>Право на работу после выдачи ВНЖ</h4><p>Разрешены: ${html(route.work.rule_ru)}.</p></div>` : '';
+  const familyBlock = route.family?.rule_ru ? `<div class="route-requirements"><h4>Переезд семьи</h4><p>${html(route.family.rule_ru)}</p>${route.family.partner_work_rights_ru ? `<p><b>Работа партнёра:</b> ${html(route.family.partner_work_rights_ru)}</p>` : ''}</div>` : '';
   const finance = incomeTypeBlocked || route.incomeTypeFit === 'NOT_APPLICABLE' ? '' : `<p class="financial-rule">${html(requirement)}</p>`;
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${main ? '<span class="best-route-label">Лучший маршрут для ваших ответов</span>' : '<span class="route-expand-label">Показать подробности</span>'}</div>`;
-  const body = `${finance}${applicationBlock}${workBlock}${reasonsBlock}${actionsBlock}${permitRequirementsBlock}${missingBlock}${reviewBlock}${sourceBlock}${exampleSourceBlock}${longTermConditions(route)}`;
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${main ? '<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>' : unsuitable ? '' : '<span class="route-expand-label">Показать подробности</span>'}</div>`;
+  const body = unsuitable
+    ? reasonsBlock
+    : `${actionsBlock}${finance}${applicationBlock}${familyBlock}${workBlock}${permitRequirementsBlock}${missingBlock}${sourceBlock}${exampleSourceBlock}${longTermConditions(route)}`;
+  if (unsuitable) return `<article class="route-result compact">${header}<div class="route-card-body">${body}</div></article>`;
   return main
     ? `<article class="route-result best">${header}<div class="route-card-body">${body}</div></article>`
     : `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${body}</div></details></article>`;
@@ -489,7 +494,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
             ? `<span>Международная школа: <b>${html(city.internationalSchoolStatus)}</b></span>`
             : knownSchoolCost ? `<span>Международная школа: ориентир <b>+${currency(knownSchoolCost)}/мес</b></span>` : '';
         const budgetLine = delta == null ? '' : Number.isFinite(delta) && delta >= 0
-          ? `<span class="budget-ok">В бюджет укладывается, запас ${currency(delta)}</span>`
+          ? '<span class="budget-ok">В бюджет укладывается</span>'
           : '<span class="budget-short">Выше бюджета</span>';
         const coldValue = city.coldRange ?? city.avgTempColdestMonthC;
         const hotValue = city.hotRange ?? city.avgTempHottestMonthC;
@@ -500,10 +505,11 @@ function renderCountryResult(calculation, changed = false, active = false) {
       }).join('')}</div>${schoolSummary}${daycareNote ? `<p class="research-caveat">${html(daycareNote)}</p>` : ''}<p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
-    <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>${entryBlock}${petInfo}
+    <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
+    ${entryBlock}
     <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
-    ${renderLgbtResearch(calculation)}</div></article>`;
+    ${renderLgbtResearch(calculation)}${petInfo}</div></article>`;
 }
 
 function calculateAllCountries() {
@@ -590,7 +596,7 @@ form.addEventListener('submit', (event) => {
   try { switchToResult(calculateAllCountries()); }
   catch (error) { $('#formError').hidden = false; $('#formError').textContent = `Не удалось выполнить расчёт: ${error.message}`; }
 });
-$('#saveDraft').addEventListener('click', () => { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft())); showToast('Черновик сохранён в этом браузере'); });
+$('#saveDraft').addEventListener('click', () => { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft())); showToast('Ответы сохранены только в этом браузере. Можно вернуться позже.'); });
 $('#clearDraft').addEventListener('click', clearAll);
 $('#editProfile').addEventListener('click', () => { $('#resultView').hidden = true; $('#questionnaireView').hidden = false; $('#heroTitle').textContent = 'Подберём вариант иммиграции'; $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.'; $('#editProfile').hidden = true; showStep(1); });
 
@@ -598,14 +604,14 @@ async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
     const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, portugalResponse, mexicoResponse, brazilResponse, schemaResponse] = await Promise.all([
-      fetch('../data/spain-research-v3.0.json?v=7.0.1'),
-      fetch('../data/uruguay-research-v3.0.json?v=7.0.1'),
-      fetch('../data/argentina-research-v3.0.json?v=7.0.1'),
-      fetch('../data/paraguay-research-v3.0.json?v=7.0.1'),
-      fetch('../data/portugal-research-v3.0.json?v=7.0.1'),
-      fetch('../data/mexico-research-v3.0.json?v=7.0.1'),
-      fetch('../data/brazil-research-v3.0.json?v=7.0.1'),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=7.0.1'),
+      fetch('../data/spain-research-v3.0.json?v=7.1.0'),
+      fetch('../data/uruguay-research-v3.0.json?v=7.1.0'),
+      fetch('../data/argentina-research-v3.0.json?v=7.1.0'),
+      fetch('../data/paraguay-research-v3.0.json?v=7.1.0'),
+      fetch('../data/portugal-research-v3.0.json?v=7.1.0'),
+      fetch('../data/mexico-research-v3.0.json?v=7.1.0'),
+      fetch('../data/brazil-research-v3.0.json?v=7.1.0'),
+      fetch('../data/schemas/user-profile-v1.schema.json?v=7.1.0'),
     ]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !portugalResponse.ok || !mexicoResponse.ok || !brazilResponse.ok || !schemaResponse.ok) {
       throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${portugalResponse.status}/${mexicoResponse.status}/${brazilResponse.status}/${schemaResponse.status}`);

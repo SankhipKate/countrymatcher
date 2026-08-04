@@ -14,7 +14,7 @@
     ],
     "principle_ru": "Статус показывает, выполнены ли проверяемые требования маршрута. Он не предсказывает решение миграционной службы."
   },
-  "country_summary_ru": "Для гражданина РФ подтверждены два публикуемых этапа обычной легализации: общая временная резиденция и последующий переход на постоянную при документальном подтверждении состоятельности. Investor Pass сохранён как скрытый маршрут, потому что текущая анкета не проверяет инвестиции.",
+  "country_summary_ru": "Для гражданина РФ подтверждена общая временная резиденция. Последующий переход на постоянную резиденцию показывается как долгосрочный этап, а не как отдельный первоначальный маршрут. Investor Pass скрыт, потому что текущая анкета не проверяет инвестиции.",
   "routes": [
     {
       "publishable": true,
@@ -63,9 +63,9 @@
         }
       ],
       "source_ids": [
+        "PY_SRC_TEMP",
         "PY_SRC_VISA_RU",
         "PY_SRC_TRANSIT_EXTENSION",
-        "PY_SRC_TEMP",
         "PY_SRC_TEMP_EXTENSION",
         "PY_SRC_MIGRATION_LAW",
         "PY_SRC_ABSENCE",
@@ -74,7 +74,7 @@
       ]
     },
     {
-      "publishable": true,
+      "publishable": false,
       "available_to_russian_citizen": true,
       "renewal_available": false,
       "income_threshold_amount": null,
@@ -434,10 +434,10 @@
   ],
   "completeness": {
     "overall_percent": 89,
-    "public_routes_ready": 2,
-    "hidden_routes": 1,
+    "public_routes_ready": 1,
+    "hidden_routes": 2,
     "country_ready_status": "READY_WITH_SCOPED_EXCLUSIONS",
-    "country_ready_status_ru": "Исследование готово для подключения двух обычных этапов легализации: временной резиденции и перехода на постоянную. Investor Pass скрыт до расширения анкеты.",
+    "country_ready_status_ru": "Исследование готово для подключения первоначальной временной резиденции. Переход на постоянную резиденцию показывается внутри долгосрочного пути; Investor Pass скрыт до расширения анкеты.",
     "blocks": [
       {
         "block": "Маршруты и подача",

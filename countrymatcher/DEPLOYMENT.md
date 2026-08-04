@@ -4,7 +4,7 @@
 
 Основной пользовательский интерфейс:
 
-- `https://sankhipkate.github.io/immigration-country-matcher/countrymatcher/matcher/`
+- `https://sankhipkate.github.io/countrymatcher/matcher/`
 
 Корневой адрес проекта и прежний адрес `/pilot/` не содержат самостоятельных интерфейсов. Они автоматически перенаправляют пользователя на `/matcher/` и закрыты от индексации как отдельные страницы.
 
@@ -22,7 +22,7 @@ GitHub Pages публикует содержимое ветки `main` из ко
 
 ## Текущая версия
 
-Версия интерфейса: **7.0.1**.
+Версия интерфейса: **7.1.0**.
 
 В пользовательский расчёт подключены семь стран:
 
@@ -34,7 +34,7 @@ GitHub Pages публикует содержимое ветки `main` из ко
 - Мексика;
 - Бразилия.
 
-Код, стили и страновые JSON используют cache key `7.0.1`. Актуальный состав пользовательского интерфейса описан в `README.md`; нормативные правила исследования и расчёта находятся только в `../source-documents/COUNTRY_RESEARCH_STANDARD.md` и `../source-documents/MATCHING_AND_RESULT_STANDARD.md`.
+Код, стили и страновые JSON используют cache key `7.1.0`. Актуальный состав пользовательского интерфейса описан в `README.md`; нормативные правила исследования и расчёта находятся только в `../source-documents/COUNTRY_RESEARCH_STANDARD.md` и `../source-documents/MATCHING_AND_RESULT_STANDARD.md`.
 
 ## Проверка перед merge
 

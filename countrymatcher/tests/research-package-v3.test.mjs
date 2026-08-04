@@ -92,14 +92,13 @@ test('Paraguay satisfies the strict Research Package 3.0 schema', () => {
   assert.equal(validate(paraguay), true, ajv.errorsText(validate.errors, { separator: '\n' }));
 });
 
-test('Paraguay exposes two publishable routes and keeps Investor Pass hidden', () => {
+test('Paraguay exposes one initial route and keeps later-stage and investor routes hidden', () => {
   assert.deepEqual(paraguay.routes.filter(({ publishable }) => publishable).map(({ route_id }) => route_id), [
     'PY_TEMPORARY',
-    'PY_PERMANENT_AFTER_TEMP',
   ]);
-  assert.deepEqual(paraguay.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id), ['PY_INVESTOR_PASS']);
-  assert.equal(paraguay.completeness.public_routes_ready, 2);
-  assert.equal(paraguay.completeness.hidden_routes, 1);
+  assert.deepEqual(paraguay.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id), ['PY_PERMANENT_AFTER_TEMP', 'PY_INVESTOR_PASS']);
+  assert.equal(paraguay.completeness.public_routes_ready, 1);
+  assert.equal(paraguay.completeness.hidden_routes, 2);
 });
 
 test('all referenced source ids exist in the Paraguay package', () => {

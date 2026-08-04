@@ -2,10 +2,10 @@
 
 Этот файл не является третьим нормативным стандартом. Он содержит только готовое задание для ChatGPT. Единственные правила исследования и пользовательского результата находятся в двух документах:
 
-- [стандарт исследования страны](https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/source-documents/COUNTRY_RESEARCH_STANDARD.md);
-- [стандарт сопоставления и результата](https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/source-documents/MATCHING_AND_RESULT_STANDARD.md).
+- [стандарт исследования страны](https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/source-documents/COUNTRY_RESEARCH_STANDARD.md);
+- [стандарт сопоставления и результата](https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/source-documents/MATCHING_AND_RESULT_STANDARD.md).
 
-Структура итогового JSON определяется [Research Package 3.0 Schema](https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/countrymatcher/data/research-package-v3.0.schema.json).
+Структура итогового JSON определяется [Research Package 3.0 Schema](https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/countrymatcher/data/research-package-v3.0.schema.json).
 
 ## Как использовать
 
@@ -20,9 +20,9 @@
 Проведи полное исследование страны [СТРАНА] (ISO-код: [КОД ISO]) для проекта Country Matcher.
 
 Перед началом полностью прочитай:
-1. https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/source-documents/COUNTRY_RESEARCH_STANDARD.md
-2. https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/source-documents/MATCHING_AND_RESULT_STANDARD.md
-3. https://raw.githubusercontent.com/SankhipKate/immigration-country-matcher/main/countrymatcher/data/research-package-v3.0.schema.json
+1. https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/source-documents/COUNTRY_RESEARCH_STANDARD.md
+2. https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/source-documents/MATCHING_AND_RESULT_STANDARD.md
+3. https://raw.githubusercontent.com/SankhipKate/countrymatcher/main/countrymatcher/data/research-package-v3.0.schema.json
 
 Первый документ является единственным нормативным источником о том, что и как исследовать. Второй документ нужен, чтобы правильно заполнить структурированные данные, которые позднее использует движок и показывает браузер. Не придумывай новые статусы, вопросы анкеты или правила оценки пользователя.
 

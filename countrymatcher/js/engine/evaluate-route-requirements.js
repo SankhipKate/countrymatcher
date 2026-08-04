@@ -1,5 +1,5 @@
-import { convertMoney } from './currency.js?v=7.0.1';
-import { ROUTE_STATUSES, resolveStatusConflict } from './status-contract.js?v=7.0.1';
+import { convertMoney } from './currency.js?v=7.1.0';
+import { ROUTE_STATUSES, resolveStatusConflict } from './status-contract.js?v=7.1.0';
 
 const check = (status, requirement, message, condition = null) => ({
   status,
@@ -13,6 +13,21 @@ const check = (status, requirement, message, condition = null) => ({
 });
 
 const isIncomeAlternative = (alternative) => ['INCOME', 'PENSION'].includes(alternative.kind);
+
+function roundUsd(amount) {
+  if (amount >= 10000) return Math.round(amount / 10) * 10;
+  return Math.round(amount);
+}
+
+function addUsdEquivalent(condition, alternative, amount) {
+  if (amount == null) return condition;
+  const formattedUsd = roundUsd(amount).toLocaleString('ru-RU');
+  const formattedOriginal = String(Number(alternative.amount)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const officialAmount = `${formattedOriginal} ${alternative.currency}`;
+  const equivalent = `${officialAmount} (ок. ${formattedUsd} USD)`;
+  if (condition.includes(officialAmount)) return condition.replace(officialAmount, equivalent);
+  return `${condition} ${equivalent}.`;
+}
 
 function convertedThreshold(alternative, profile, context, field) {
   if (alternative.amount == null || alternative.currency == null) return null;
@@ -90,10 +105,9 @@ function evaluateFinancial(requirement, profile, context, countryId, field) {
       'Подтвердить иностранное происхождение дохода.',
     );
   } else if (unasked) {
-    const amount = unasked.thresholdUsd == null ? null : Math.ceil(unasked.thresholdUsd);
-    const condition = amount == null
-      ? requirement.condition_ru
-      : `${requirement.condition_ru} Ориентир по текущему валютному контексту — около ${amount.toLocaleString('ru-RU')} USD.`;
+    const condition = evaluated
+      .filter(({ state }) => state === 'UNASKED')
+      .reduce((text, item) => addUsdEquivalent(text, item.alternative, item.thresholdUsd), requirement.condition_ru);
     result = check(
       ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
       requirement,

@@ -8,7 +8,7 @@ const brazil = JSON.parse(await readFile(new URL('../data/brazil-research-v3.0.j
 
 const context = {
   calculation_date: '2026-08-01T08:00:00Z',
-  engine_version: '7.0.1',
+  engine_version: '7.1.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, ARS: 1350, MXN: 18, BRL: 5.5, RUB: 80, UYU: 40 },
@@ -209,7 +209,9 @@ test('productive investment keeps official BRL capital as an unasked condition w
   assert.ok(Math.abs(investor.thresholdUsd - 500000 / 5.5) < 0.001);
   assert.equal(investor.incomeRequirementConversion.originalCurrency, 'BRL');
   assert.equal(investor.incomeRequirementConversion.originalAmount, 500000);
-  assert.ok(investor.conditions.some((condition) => condition.includes('500 000 BRL')));
+  assert.ok(investor.conditions.some((condition) => /500 000 BRL \(ок\. [\d\s]+ USD\)/.test(condition)));
+  assert.ok(investor.conditions.some((condition) => /150 000 BRL \(ок\. [\d\s]+ USD\)/.test(condition)));
+  assert.equal(investor.conditions.some((condition) => condition.includes('Ориентир по текущему валютному контексту')), false);
 });
 
 test('productive investment ignores injected capital and preserves both researched alternatives', () => {
@@ -277,7 +279,7 @@ test('missing or stale BRL rate creates a typed country error', () => {
   assert.equal(staleResult.errors[0].code, 'CALCULATION_CONTEXT_INCOMPLETE');
 });
 
-test('public matcher loads Brazil data, adapter, flag, cities and version 7.0.1', async () => {
+test('public matcher loads Brazil data, adapter, flag, cities and version 7.1.0', async () => {
   const [app, html, fx, packageJson, readme] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/index.html', import.meta.url), 'utf8'),
@@ -286,13 +288,13 @@ test('public matcher loads Brazil data, adapter, flag, cities and version 7.0.1'
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
   ]);
   assert.match(app, /brazilAdapter/);
-  assert.match(app, /brazil-research-v3\.0\.json\?v=7\.0\.1/);
+  assert.match(app, /brazil-research-v3\.0\.json\?v=7\.1\.0/);
   assert.match(app, /countryId === 'BR' \? '🇧🇷'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);
   assert.match(fx, /\['EUR', 'ARS', 'MXN', 'BRL'\]/);
-  assert.equal(packageJson.version, '7.0.1');
-  assert.match(html, /версия 7\.0\.1/);
+  assert.equal(packageJson.version, '7.1.0');
+  assert.match(html, /версия 7\.1\.0/);
   assert.match(readme, /Бразилии/);
   assert.match(readme, /семи стран/i);
 });

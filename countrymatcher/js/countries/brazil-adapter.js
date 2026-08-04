@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
-import { convertMoney } from '../engine/currency.js?v=7.0.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.0';
+import { convertMoney } from '../engine/currency.js?v=7.1.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.0';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.0';
 
 const PUBLIC_ROUTE_IDS = new Set([
   'BR_DIGITAL_NOMAD',
@@ -362,6 +362,10 @@ function evaluateLgbt(data, profile) {
   const rule = data.lgbt;
   return {
     enabled: true,
+    legalPosition: 'Полное признание',
+    practicalEnvironment: 'Неоднородная',
+    practicalExplanation: 'Семейные права признаны на национальном уровне, но практическая среда заметно различается между регионами и городами.',
+    loyalCities: ['Сан-Паулу', 'Флорианополис'],
     rules: [{ id: 'BR_LGBT', legalStatus: rule.same_sex_marriage_recognized ? 'YES' : 'NO' }],
     rows: [
       ['Брак и переезд с супругом', rule.same_sex_marriage_rule_ru],

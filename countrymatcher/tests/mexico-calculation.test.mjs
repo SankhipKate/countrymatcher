@@ -7,7 +7,7 @@ import { mexicoAdapter } from '../js/countries/mexico-adapter.js';
 const mexico = JSON.parse(await readFile(new URL('../data/mexico-research-v3.0.json', import.meta.url), 'utf8'));
 const context = {
   calculation_date: '2026-08-01T08:00:00Z',
-  engine_version: '7.0.1',
+  engine_version: '7.1.0',
   fx: {
     base_currency: 'USD',
     rates: { EUR: 0.87, RUB: 80, ARS: 1350, MXN: 18 },
@@ -89,7 +89,8 @@ test('international protection is conditional for everyone and requires individu
   const protection = route(calculate(), 'MX_INTERNATIONAL_PROTECTION');
   assert.equal(protection.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.ok(protection.conditions.some((condition) => condition.includes('индивидуальные обстоятельства')));
-  assert.ok(protection.conditions.some((condition) => condition.includes('Одного желания')));
+  assert.ok(protection.conditions.some((condition) => condition.includes('определённой социальной группе')));
+  assert.equal(protection.conditions.some((condition) => condition.includes('Одного желания')), false);
   assert.equal(protection.incomeTypeFit, 'NOT_APPLICABLE');
 });
 
@@ -171,7 +172,7 @@ test('local-job route stays conditional because finding work is an allowed futur
   assert.ok(job.conditions.some((condition) => condition.includes('формальную оферту')));
 });
 
-test('family members add a separate family-unity condition', () => {
+test('standard family-unity paperwork does not lower a suitable route', () => {
   const candidate = profile({
     family: {
       adults_count: 2,
@@ -183,8 +184,23 @@ test('family members add a separate family-unity condition', () => {
   });
   const economic = route(calculate(candidate), 'MX_TEMP_ECONOMIC_SOLVENCY');
   assert.equal(economic.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.ok(economic.conditions.some((condition) => condition.includes('семейное единство')));
+  assert.equal(economic.conditions.some((condition) => condition.includes('семейное единство')), false);
   assert.ok(economic.conditions.some((condition) => condition.includes('фактический союз')));
+});
+
+test('registered family and standard apostilles keep a qualifying economic route suitable', () => {
+  const candidate = profile({
+    family: {
+      adults_count: 2,
+      partner_included: true,
+      relationship_type: 'MARRIAGE',
+      children: [{ age_years: 9 }],
+      school_needed: false,
+    },
+  });
+  const economic = route(calculate(candidate), 'MX_TEMP_ECONOMIC_SOLVENCY');
+  assert.equal(economic.routeStatus, 'SUITABLE');
+  assert.equal(economic.conditions.some((condition) => /апостил|легализ|заявлен/i.test(condition)), false);
 });
 
 test('Mexico exposes researched cities, schools, pets, LGBT data and long-term texts', () => {
@@ -232,8 +248,8 @@ test('public matcher loads Mexico, its adapter, its flag and researched cities',
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /mexico-adapter\.js\?v=7\.0\.1/);
-  assert.match(app, /mexico-research-v3\.0\.json\?v=7\.0\.1/);
+  assert.match(app, /mexico-adapter\.js\?v=7\.1\.0/);
+  assert.match(app, /mexico-research-v3\.0\.json\?v=7\.1\.0/);
   assert.match(app, /countryId === 'MX' \? '🇲🇽'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);

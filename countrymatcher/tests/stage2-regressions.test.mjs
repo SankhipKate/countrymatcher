@@ -72,7 +72,7 @@ test('public matcher gates the questionnaire behind Russian citizenship confirma
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.ok(html.indexOf('У вас есть гражданство РФ?') < html.indexOf('id="matcherForm"'));
   assert.match(html, /id="questionnaireView"[^>]*hidden/);
-  assert.ok(html.includes('Для других гражданств эти сведения неприменимы.'));
+  assert.ok(html.includes('Сейчас Country Matcher подбирает маршруты с учётом правил, действующих для граждан РФ.'));
   assert.ok(app.includes("$('#gateYes').addEventListener('click'"));
   assert.ok(app.includes("$('#gateNo').addEventListener('click'"));
   assert.equal(/дополнительн(?:ое|ые) гражданств/i.test(html), false);

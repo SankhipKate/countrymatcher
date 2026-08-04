@@ -1,8 +1,8 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
-import { convertMoney } from '../engine/currency.js?v=7.0.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=7.0.1';
-import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=7.0.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.0';
+import { convertMoney } from '../engine/currency.js?v=7.1.0';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU, resolveStatusConflict } from '../engine/status-contract.js?v=7.1.0';
+import { INCOME_TYPE_BY_SCENARIO, ROUTE_RULES } from './spain-rules.js?v=7.1.0';
 
 const CHECK_KINDS = Object.freeze({
   CLIENT_INPUT: 'CLIENT_INPUT',
@@ -497,6 +497,8 @@ function evaluatePractical(data, profile) {
       missing, failures, airport: city.airport_name, climate: city.climate_category,
       avgTempColdestMonthC: city.avg_temp_coldest_month_c ?? null,
       avgTempHottestMonthC: city.avg_temp_hottest_month_c ?? null,
+      coldRange: city.cold_period_temperature_range_c ?? null,
+      hotRange: city.hot_period_temperature_range_c ?? null,
       climateSourceId: city.climate_source_id || null,
       climateSource: (data.sources || []).find((source) => source.source_id === city.climate_source_id) || null,
       lgbtSafety: city.lgbt_safety || null,
@@ -526,7 +528,11 @@ function evaluateLgbt(data, profile, indexes) {
     confidence: rule.confidence,
     source: indexes.sources.get(rule.source_id) || null,
   }));
-  return { enabled: true, rules };
+  const countryId = data.country?.country_id;
+  const assessment = countryId === 'UY'
+    ? { legalPosition: 'Полное признание', practicalEnvironment: 'Открытая', practicalExplanation: 'Однополый брак и семейные права признаны законом; действует защита от дискриминации.' }
+    : { legalPosition: 'Полное признание', practicalEnvironment: 'Открытая', practicalExplanation: 'Однополый брак и семейная миграция признаны законом; действует комплексная защита от дискриминации.' };
+  return { enabled: true, rules, ...assessment };
 }
 
 function determineCountryGroup(bestRoute, practical, profile, routes = []) {

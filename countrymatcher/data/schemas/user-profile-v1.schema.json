@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sankhipkate.github.io/immigration-country-matcher/data/schemas/user-profile-v1.schema.json",
+  "$id": "https://sankhipkate.github.io/countrymatcher/countrymatcher/data/schemas/user-profile-v1.schema.json",
   "title": "COUNTRY MATCHER — completed universal user profile v1",
   "description": "Строгий контракт заполненного универсального профиля. В профиль не входят валютные курсы и специфические вопросы отдельных стран или вариантов легализации.",
   "type": "object",

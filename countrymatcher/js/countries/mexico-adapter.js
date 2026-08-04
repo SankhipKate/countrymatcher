@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.0.1';
-import { convertMoney } from '../engine/currency.js?v=7.0.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.0.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.0.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.0';
+import { convertMoney } from '../engine/currency.js?v=7.1.0';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.0';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.0';
 
 const PUBLIC_ROUTE_IDS = new Set([
   'MX_TEMP_ECONOMIC_SOLVENCY',
@@ -201,13 +201,9 @@ function familyEvaluation(route, profile) {
   }
 
   checks.push(outcome(
-    ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS,
+    ROUTE_STATUSES.SUITABLE,
     'family_unity_after_residence',
     'Партнёр и дети присоединяются по отдельной процедуре семейного единства после оформления статуса основного резидента.',
-    {
-      condition: 'Оформить семейное единство и подтвердить родство или семейную связь.',
-      action: 'Подготовить апостилированные или легализованные акты, перевод на испанский и отдельные заявления членов семьи.',
-    },
   ));
 
   if (profile.partnerIncluded && profile.relationshipType === 'UNREGISTERED_PARTNER') {
@@ -381,6 +377,10 @@ function evaluateLgbt(data, profile) {
   const rule = data.lgbt;
   return {
     enabled: true,
+    legalPosition: 'Полное признание',
+    practicalEnvironment: 'Неоднородная',
+    practicalExplanation: 'Однополый брак признаётся по всей стране, но практическая среда и доступность профильной поддержки различаются по штатам и городам.',
+    loyalCities: ['Мехико', 'Пуэрто-Вальярта'],
     rules: [{ id: 'MX_LGBT', legalStatus: rule.same_sex_marriage_recognized ? 'YES' : 'NO' }],
     rows: [
       ['Брак и переезд с супругом', rule.same_sex_marriage_rule_ru],
