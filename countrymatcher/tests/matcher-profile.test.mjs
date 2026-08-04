@@ -535,7 +535,7 @@ test('README describes the live matcher and maintenance rule', async () => {
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
     readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
-  assert.match(readme, /immigration-country-matcher\/matcher\//);
+  assert.match(readme, /immigration-country-matcher\/countrymatcher\/matcher\//);
   assert.match(readme, /README обновляется при каждом изменении/);
   assert.ok(readme.includes(packageJson.version));
   assert.match(readme, /Испании, Уругвая, Аргентины, Парагвая, Португалии, Мексики и Бразилии/);

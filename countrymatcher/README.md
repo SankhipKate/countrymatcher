@@ -6,7 +6,7 @@
 
 Публичная страница:
 
-- `https://sankhipkate.github.io/immigration-country-matcher/matcher/`
+- `https://sankhipkate.github.io/immigration-country-matcher/countrymatcher/matcher/`
 
 Версия интерфейса: **7.0.1**.
 

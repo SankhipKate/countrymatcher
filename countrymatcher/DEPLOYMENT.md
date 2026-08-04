@@ -4,7 +4,7 @@
 
 Основной пользовательский интерфейс:
 
-- `https://sankhipkate.github.io/immigration-country-matcher/matcher/`
+- `https://sankhipkate.github.io/immigration-country-matcher/countrymatcher/matcher/`
 
 Корневой адрес проекта и прежний адрес `/pilot/` не содержат самостоятельных интерфейсов. Они автоматически перенаправляют пользователя на `/matcher/` и закрыты от индексации как отдельные страницы.
 
