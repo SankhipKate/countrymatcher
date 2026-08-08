@@ -1713,6 +1713,38 @@
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "xz08tpk4d1");
 </script>
+<style id="payment-block-polish">
+.payment-value-plain {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.payment-link-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  background: #ffc83d;
+  color: #102744;
+  font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.payment-link-button:hover {
+  filter: brightness(.97);
+}
+
+.payment-link-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .22);
+  outline-offset: 2px;
+}
+</style>
+
 </head>
 <body>
 <nav class="nav">
@@ -2063,7 +2095,7 @@
 <div class="paypal-payment-card paypal-live-card">
 <div class="payment-label">PayPal или банковская карта</div>
 <h3>Оплатить доступ — $9</h3>
-<p class="paypal-checkout-note">Разовая оплата. Постоянный доступ откроется автоматически.</p>
+<p class="paypal-checkout-note"><strong>Один платёж — постоянный доступ.</strong> Без подписки и ежемесячных списаний.</p>
 <div class="paypal-button-wrap paypal-button-live-wrap">
 <div id="paypal-checkout-container"></div>
 </div>
@@ -2089,9 +2121,9 @@
 </article>
 <article>
 <div class="payment-label">Другие страны</div>
-<h3>Wise или банковский перевод</h3>
-<p>Реквизиты зависят от выбранного способа перевода.</p>
-<div class="payment-value"><a href="https://t.me/sankhipkate" rel="noreferrer" target="_blank">Запросить реквизиты в Telegram →</a></div>
+<h3>Wise / банковский перевод</h3>
+<p>Реквизиты — в Telegram.</p>
+<div class="payment-value payment-value-plain"><a class="payment-link-button" href="https://t.me/sankhipkate" rel="noreferrer" target="_blank">Получить реквизиты →</a></div>
 </article>
 </div>
 <div class="other-payments-followup"><p class="other-payments-note"><strong>После оплаты СБП, GCash, Wise или банковским переводом:</strong> отправьте подтверждение в Telegram — я пришлю код доступа.</p><a class="button" href="https://t.me/sankhipkate" rel="noreferrer" target="_blank">Отправить подтверждение →</a></div></details>
