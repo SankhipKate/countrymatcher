@@ -7,7 +7,7 @@
   <link rel="canonical" href="https://sankhipkate.github.io/countrymatcher/">
   <title>COUNTRY MATCHER</title>
   <script>document.documentElement.classList.add("access-locked")</script>
-  <link rel="stylesheet" href="./matcher/access-gate.css?v=1.0.0">
+  <link rel="stylesheet" href="./matcher/access-gate.css?v=4.0.1">
   <link rel="stylesheet" href="./pilot/styles.css?v=7.1.1"><link rel="stylesheet" href="./matcher/styles.css?v=7.1.1">
 </head>
 <body>
@@ -15,15 +15,16 @@
     <div class="access-card">
       <a class="access-brand" href="./landing/">COUNTRY MATCHER</a>
       <span class="access-label">Персональный подбор стран</span>
-      <h1 id="accessTitle">Введите код доступа</h1>
-      <p>Код вы получите после оплаты. Доступ сохранится на этом устройстве на 30 дней.</p>
-      <form id="accessForm">
-        <label for="accessCode">Код доступа</label>
+      <h1 id="accessTitle">Доступ к Country Matcher</h1>
+      <p id="accessStatus" class="access-status" role="status" aria-live="polite">Проверяем оплату и открываем доступ…</p>
+      <button id="accessRetry" class="access-retry" type="button" hidden>Проверить ещё раз</button>
+      <form id="accessForm" hidden>
+        <label for="accessCode">Код для другого способа оплаты</label>
         <input id="accessCode" type="text" autocomplete="one-time-code" spellcheck="false" required>
         <p id="accessError" class="access-error" role="alert" hidden>Код не подошёл. Проверьте символы и попробуйте ещё раз.</p>
         <button type="submit">Открыть Country Matcher →</button>
       </form>
-      <p class="access-help">Нужен доступ? <a href="https://t.me/sankhipkate">Напишите @sankhipkate в Telegram</a></p>
+      <p class="access-help">Для СБП, GCash, Wise или банковского перевода: <a href="https://t.me/sankhipkate">получить код в Telegram</a>. Доступ постоянный и сохраняется в этом браузере.</p>
     </div>
   </section>
   <header class="site-header"><div class="nav-shell"><a class="brand" href="./" aria-label="COUNTRY MATCHER"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="product-name">COUNTRY <em>MATCHER</em></span></a><div class="secure-note"><span aria-hidden="true">◇</span> Данные остаются в браузере</div></div></header>
@@ -88,7 +89,7 @@
     <section id="resultView" class="result-layout result-layout-single" hidden><div id="result" class="surface result-main"></div></section>
     <footer class="version-footer" aria-label="Версия приложения">COUNTRY MATCHER · версия 7.1.1</footer>
   </main>
-  <script src="./matcher/access-gate.js?v=1.0.0"></script>
+  <script type="module" src="./matcher/access-gate.js?v=5.0.0"></script>
   <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./matcher/app.js?v=7.1.1"></script>
 </body>
 </html>
