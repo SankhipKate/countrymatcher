@@ -413,7 +413,7 @@
       .payment-foot { align-items: flex-start; flex-direction: column; }
     }
   </style>
-<script src="https://www.paypal.com/sdk/js?client-id=BAAiPkC5o9rBaewGNriyZ31UBcqIY8l7vylqcIPgQvE_SUc13xt49vzvhbolMmAbC2-Ls4Wunm-l-5po70&amp;components=hosted-buttons&amp;disable-funding=venmo&amp;currency=USD"></script><style>
+<style>
   .brand-image {
     padding: 0;
     background: transparent;
@@ -661,7 +661,7 @@
   .paypal-button-live-wrap {
     max-width: 520px;
   }
-  #paypal-container-B3A58DHQ5ZAWE {
+  #paypal-checkout-container {
     min-height: 115px;
   }
 
@@ -1650,23 +1650,58 @@
 <style id="paypal-container-desktop-only-update">
   .paypal-button-live-wrap {
     width: 100% !important;
-    max-width: none !important;
-    min-height: 420px !important;
+    max-width: 560px !important;
+    min-height: 150px !important;
     box-sizing: border-box;
   }
 
-  #paypal-container-B3A58DHQ5ZAWE {
+  #paypal-checkout-container {
     width: 100% !important;
-    min-height: 380px !important;
+    min-height: 120px !important;
+  }
+
+  #paypal-checkout-container[hidden] {
+    display: none !important;
+  }
+
+  .paypal-checkout-note {
+    margin: 0;
+    color: #52677d;
+    line-height: 1.5;
+  }
+
+  .paypal-checkout-status {
+    width: 100%;
+    max-width: 560px;
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #eef4fa;
+    color: #29435f;
+    line-height: 1.45;
+  }
+
+  .paypal-checkout-status[data-tone="success"] {
+    background: #e7f7ed;
+    color: #176334;
+  }
+
+  .paypal-checkout-status[data-tone="error"] {
+    background: #fff0f0;
+    color: #a52424;
+  }
+
+  .paypal-checkout-open {
+    margin-top: 4px;
   }
 
   @media (max-width: 760px) {
     .paypal-button-live-wrap {
-      min-height: 640px !important;
+      min-height: 150px !important;
     }
 
-    #paypal-container-B3A58DHQ5ZAWE {
-      min-height: 600px !important;
+    #paypal-checkout-container {
+      min-height: 120px !important;
     }
   }
 </style>
@@ -2021,9 +2056,11 @@
 <div class="paypal-payment-card paypal-live-card">
 <div class="payment-label">PayPal или банковская карта</div>
 <h3>Оплатить доступ — $9</h3>
+<p class="paypal-checkout-note">Разовая оплата. Постоянный доступ откроется автоматически.</p>
 <div class="paypal-button-wrap paypal-button-live-wrap">
-<div id="paypal-container-B3A58DHQ5ZAWE"></div>
+<div id="paypal-checkout-container"></div>
 </div>
+<p id="paypal-checkout-status" class="paypal-checkout-status" role="status" aria-live="polite">Загружаем безопасную форму оплаты…</p>
 </div>
 <details class="other-payments">
 <summary>
@@ -2105,7 +2142,7 @@
 <span>Что произойдёт после оплаты?</span>
 <i aria-hidden="true">+</i>
 </summary>
-<p>Отправьте подтверждение оплаты в Telegram — я пришлю код доступа к Country Matcher.</p>
+<p>После оплаты через PayPal или банковскую карту доступ откроется автоматически. Для СБП, GCash, Wise или банковского перевода отправьте подтверждение в Telegram — я пришлю код доступа.</p>
 </details>
 <details class="faq-item">
 <summary>
@@ -2140,15 +2177,7 @@
 <a href="https://t.me/countrymatcher" rel="noreferrer" target="_blank">t.me/countrymatcher</a>
 </div>
 </footer>
-<script>
-window.addEventListener("DOMContentLoaded", function () {
-  if (window.paypal && paypal.HostedButtons) {
-    paypal.HostedButtons({
-      hostedButtonId: "B3A58DHQ5ZAWE"
-    }).render("#paypal-container-B3A58DHQ5ZAWE");
-  }
-});
-</script><script id="reviews-centered-script">(() => {
+<script type="module" src="./paypal-checkout.js?v=7.0.0"></script><script id="reviews-centered-script">(() => {
   const carousel = document.querySelector("[data-carousel]");
   if (!carousel) return;
   const cards = Array.from(carousel.querySelectorAll(".review-card"));

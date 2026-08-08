@@ -29,6 +29,7 @@ test('root index is the application and matcher has no user page or redirect', a
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /<form id="matcherForm"/);
   assert.match(html, /<section id="accessGate"/);
+  assert.match(html, /<form id="accessForm" hidden>[\s\S]*?<\/form>\s*<p class="access-help">/);
   assert.doesNotMatch(html, /<meta[^>]+http-equiv=["']refresh["']/i);
   assert.doesNotMatch(html, /window\.location\.replace/);
   assert.doesNotMatch(html, /(?:url=|location)[^>\n]*\.\/matcher\//i);
@@ -36,10 +37,10 @@ test('root index is the application and matcher has no user page or redirect', a
   assert.match(html, /<link rel="canonical" href="https:\/\/sankhipkate\.github\.io\/countrymatcher\/">/);
 
   const assets = [
-    './matcher/access-gate.css?v=1.0.0',
+    './matcher/access-gate.css?v=4.0.1',
     './pilot/styles.css?v=7.1.1',
     './matcher/styles.css?v=7.1.1',
-    './matcher/access-gate.js?v=1.0.0',
+    './matcher/access-gate.js?v=5.0.0',
     './matcher/app.js?v=7.1.1',
   ];
   for (const asset of assets) {

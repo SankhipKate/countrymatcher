@@ -1,5 +1,19 @@
+html.access-locked body {
+  overflow: hidden;
+}
+
 .access-locked body > :not(#accessGate) {
   display: none !important;
+}
+
+.access-gate[hidden],
+#accessForm[hidden],
+.access-retry[hidden] {
+  display: none !important;
+}
+
+#accessForm[hidden] + .access-help {
+  display: none;
 }
 
 .access-gate {
@@ -11,99 +25,122 @@
     radial-gradient(circle at top right, rgba(74, 145, 255, .22), transparent 34%),
     linear-gradient(145deg, #06172f, #0b2b53);
   color: #10213a;
-  font-family: Inter, Arial, sans-serif;
 }
 
 .access-card {
-  width: min(100%, 470px);
-  padding: 40px;
-  border-radius: 24px;
+  width: min(520px, 100%);
+  padding: 42px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 26px;
   background: #fff;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, .3);
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .36);
 }
 
 .access-brand {
-  color: #10213a;
-  font-size: 18px;
-  font-weight: 750;
+  display: inline-block;
+  margin-bottom: 18px;
+  color: #0b2b53;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: .06em;
   text-decoration: none;
-}
-
-.access-brand em {
-  color: #2874d0;
-  font-style: normal;
 }
 
 .access-label {
   display: block;
-  margin-top: 34px;
+  margin-bottom: 12px;
   color: #2874d0;
   font-size: 13px;
-  font-weight: 750;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
 }
 
 .access-card h1 {
-  margin: 10px 0 12px;
-  font-size: clamp(30px, 7vw, 42px);
-  line-height: 1.05;
+  margin: 0 0 14px;
+  font-size: clamp(30px, 6vw, 42px);
+  line-height: 1.08;
 }
 
 .access-card > p {
-  color: #56657a;
+  margin: 0 0 20px;
+  color: #58677a;
   line-height: 1.55;
 }
 
-.access-card form {
-  margin-top: 28px;
-}
-
-.access-card label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 700;
-}
-
-.access-card input {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 15px 16px;
-  border: 1px solid #bcc7d6;
+.access-status {
+  padding: 13px 15px;
   border-radius: 12px;
-  font: inherit;
-  font-size: 18px;
-  text-transform: uppercase;
+  background: #eef4fb;
+  color: #28435f !important;
+  font-size: 14px;
 }
 
-.access-card input:focus {
-  border-color: #2874d0;
-  outline: 3px solid rgba(40, 116, 208, .14);
+.access-status[data-tone="error"] {
+  background: #fff0f0;
+  color: #a52424 !important;
 }
 
-.access-card button {
+#accessForm {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+#accessForm label {
+  color: #33465f;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+#accessCode {
   width: 100%;
-  margin-top: 14px;
-  padding: 16px;
+  padding: 14px 16px;
+  border: 2px solid #d7e1ec;
+  border-radius: 12px;
+  background: #fff;
+  color: #10213a;
+  font: inherit;
+  font-size: 17px;
+  text-align: center;
+  letter-spacing: .06em;
+  outline: none;
+}
+
+#accessCode:focus {
+  border-color: #2874d0;
+  box-shadow: 0 0 0 4px rgba(40, 116, 208, .14);
+}
+
+#accessForm button,
+.access-retry {
+  width: 100%;
+  padding: 14px 18px;
   border: 0;
   border-radius: 12px;
-  background: #2874d0;
-  color: white;
+  background: linear-gradient(135deg, #2874d0, #1156ac);
+  color: #fff;
   font: inherit;
-  font-weight: 750;
+  font-size: 16px;
+  font-weight: 850;
   cursor: pointer;
 }
 
+.access-retry {
+  margin: 0 0 16px;
+  background: #e8f0fa;
+  color: #174c86;
+}
+
 .access-error {
-  margin: 10px 0 0;
-  color: #b42318;
+  margin: 0;
+  color: #bd2727;
   font-size: 14px;
 }
 
 .access-help {
-  margin: 24px 0 0;
+  margin-top: 22px !important;
   font-size: 14px;
-  text-align: center;
 }
 
 .access-help a {
