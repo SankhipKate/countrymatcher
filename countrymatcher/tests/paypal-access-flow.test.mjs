@@ -507,7 +507,7 @@ test("landing and access gate are wired to dual sandbox and live payment runtime
   );
 
   assert.match(landing, /id="paypal-checkout-container"/);
-  assert.match(landing, /paypal-checkout\.js\?v=7\.0\.0/);
+  assert.match(landing, /paypal-checkout\.js\?v=7\.0\.1/);
   assert.match(matcher, /id="accessStatus"/);
   assert.match(matcher, /id="accessRetry"/);
   assert.ok(matcher.includes("\u041f\u0440\u043e\u0432\u0435\u0440\u044f\u0435\u043c \u043e\u043f\u043b\u0430\u0442\u0443 \u0438 \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0435\u043c \u0434\u043e\u0441\u0442\u0443\u043f\u2026"));

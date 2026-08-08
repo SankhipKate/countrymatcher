@@ -1,4 +1,10 @@
 import {
+  CLARITY_EVENTS,
+  trackClarityEvent,
+  trackPayPalFundingSource,
+} from "./clarity-analytics.js?v=1.0.0";
+
+import {
   assertAllowedPaymentHost,
   TOKEN_STORAGE_KEY,
   captureUrl,
@@ -318,6 +324,9 @@ async function initializeCheckout() {
     try {
       const recovery = await recoverPendingOrder();
       if (isCompletedPermanentAccess(recovery)) {
+        trackClarityEvent(
+          CLARITY_EVENTS.PAYMENT_ACCESS_RECOVERED,
+        );
         setStatus(
           status,
           "Оплата подтверждена. Постоянный доступ восстановлен. Переходим в Country Matcher…",
@@ -366,6 +375,10 @@ async function initializeCheckout() {
         label: "pay",
       },
 
+      onClick: (data) => {
+        trackPayPalFundingSource(data?.fundingSource);
+      },
+
       createOrder: async () => {
         setStatus(status, "Создаём защищённый заказ PayPal…");
 
@@ -380,6 +393,9 @@ async function initializeCheckout() {
         }
 
         savePendingOrder(localStorage, order.id);
+        trackClarityEvent(
+          CLARITY_EVENTS.PAYMENT_ORDER_CREATED,
+        );
         return order.id;
       },
 
@@ -393,6 +409,10 @@ async function initializeCheckout() {
           );
           return;
         }
+
+        trackClarityEvent(
+          CLARITY_EVENTS.PAYMENT_APPROVED,
+        );
 
         try {
           markPendingOrderApproved(localStorage, orderId);
@@ -411,6 +431,9 @@ async function initializeCheckout() {
 
         try {
           await captureAndStoreAccess(orderId);
+          trackClarityEvent(
+            CLARITY_EVENTS.PAYMENT_ACCESS_GRANTED,
+          );
           setStatus(
             status,
             "Оплата прошла. Постоянный доступ открыт. Переходим в Country Matcher…",
@@ -419,6 +442,7 @@ async function initializeCheckout() {
           addOpenAccessLink(status.parentElement);
           redirectToMatcher();
         } catch (error) {
+          trackClarityEvent(CLARITY_EVENTS.PAYMENT_ERROR);
           console.error(error);
           setStatus(
             status,
@@ -429,11 +453,13 @@ async function initializeCheckout() {
       },
 
       onCancel: () => {
+        trackClarityEvent(CLARITY_EVENTS.PAYMENT_CANCELLED);
         clearPendingOrder(localStorage);
         setStatus(status, "Оплата отменена. Деньги не списывались.");
       },
 
       onError: (error) => {
+        trackClarityEvent(CLARITY_EVENTS.PAYMENT_ERROR);
         console.error(error);
         setStatus(
           status,
