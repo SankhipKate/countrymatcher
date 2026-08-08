@@ -1745,6 +1745,38 @@
 }
 </style>
 
+<style id="result-preview-static-polish">
+  .calc-preview-label {
+    margin: 0 0 12px;
+    color: #9fb6cf;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .calc-grid {
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+  }
+
+  .routes-panel {
+    max-height: none;
+    overflow: visible;
+  }
+
+  @media (max-width: 760px) {
+    .calc-grid {
+      height: auto;
+    }
+
+    .routes-panel {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+</style>
+
 </head>
 <body>
 <nav class="nav">
@@ -1772,19 +1804,16 @@
 </div>
 </div>
 <div aria-label="Пример страницы результатов Country Matcher" class="calc-preview">
+<div class="calc-preview-label">Пример готового результата</div>
 <div class="calc-grid">
-<aside class="country-panel">
-<h3>Выберите страну</h3>
-<div class="search-box">⌕ Поиск страны…</div>
-<div aria-label="Прокручиваемый список стран" class="country-list" tabindex="0"><div class="country-item"><span class="flag-chip">PT</span>Португалия</div><div class="country-item"><span class="flag-chip">UY</span>Уругвай</div><div class="country-item"><span class="flag-chip">AR</span>Аргентина</div><div class="country-item active"><span class="flag-chip">PY</span>Парагвай</div><div class="country-item"><span class="flag-chip">ES</span>Испания</div><div class="country-item"><span class="flag-chip">MX</span>Мексика</div><div class="country-item"><span class="flag-chip">BR</span>Бразилия</div><div class="country-item"><span class="flag-chip">GE</span>Грузия</div><div class="country-item"><span class="flag-chip">AM</span>Армения</div><div class="country-item"><span class="flag-chip">ME</span>Черногория</div><div class="country-item"><span class="flag-chip">TH</span>Таиланд</div><div class="country-item"><span class="flag-chip">MY</span>Малайзия</div><div class="country-item"><span class="flag-chip">RS</span>Сербия</div><div class="country-item"><span class="flag-chip">AL</span>Албания</div><div class="country-item"><span class="flag-chip">TR</span>Турция</div><div class="country-item"><span class="flag-chip">CY</span>Кипр</div><div class="country-item"><span class="flag-chip">AE</span>ОАЭ</div><div class="country-item"><span class="flag-chip">CL</span>Чили</div><div class="country-item"><span class="flag-chip">CO</span>Колумбия</div><div class="country-item"><span class="flag-chip">AD</span>Андорра</div></div>
-</aside>
+
 <section class="routes-panel">
 <div class="country-head">
 <div class="country-name">
-<span class="flag-chip">PY</span>
+<span class="flag-chip" aria-hidden="true">🇵🇾</span>
 <div><strong>Парагвай</strong><small>Результаты по вашим ответам</small></div>
 </div>
-<button class="edit-btn" type="button">Изменить ответы</button>
+
 </div>
 <div class="filter-row">
 <span class="filter-pill">Все маршруты 7</span>
@@ -1808,14 +1837,7 @@
 <div class="route-meta"><span>Срок: 2 года</span><span>Продление: да</span><span>ПМЖ: через 4 года</span></div>
 <div class="route-desc">Потребуется зарегистрировать бизнес и подтвердить экономическую активность.</div>
 </article>
-<article class="route-card conditional">
-<div class="route-top">
-<div class="route-title">ВНЖ для наёмных работников</div>
-<span class="route-status conditional">Подходит с условиями</span>
-</div>
-<div class="route-meta"><span>Срок: зависит от контракта</span><span>Разрешение на работу: требуется</span></div>
-<div class="route-desc">Маршрут требует предложения от местного работодателя.</div>
-</article>
+
 </section>
 </div>
 </div>
