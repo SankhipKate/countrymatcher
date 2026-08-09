@@ -128,8 +128,9 @@ test('Paraguay practical result uses researched family budgets and does not inve
 
 test('public matcher loads Paraguay data, adapter, flag, and dynamic city cards', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /paraguay-research-v3\.0\.json\?v=7\.1\.1/);
-  assert.match(app, /paraguay-adapter\.js\?v=7\.1\.1/);
+  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
+  assert.ok(app.includes(`paraguay-research-v3.0.json?v=${version}`));
+  assert.ok(app.includes(`paraguay-adapter.js?v=${version}`));
   assert.match(app, /countryId === 'PY' \? '🇵🇾'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(app, /countryId === 'UY' \? 700 : 0/);

@@ -226,8 +226,9 @@ test('public matcher loads Portugal without adding Portugal-specific questionnai
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /portugal-adapter\.js\?v=7\.1\.1/);
-  assert.match(app, /portugal-research-v3\.0\.json\?v=7\.1\.1/);
+  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
+  assert.ok(app.includes(`portugal-adapter.js?v=${version}`));
+  assert.ok(app.includes(`portugal-research-v3.0.json?v=${version}`));
   assert.match(app, /countryId === 'PT' \? '🇵🇹'/);
   assert.match(app, /enrichCityCategories/);
   assert.equal(/<[^>]+(?:id|name)="[^"]*(?:portugal|pt_d8|pt_d7|pt_d2|pt_d1)[^"]*"/i.test(html), false);

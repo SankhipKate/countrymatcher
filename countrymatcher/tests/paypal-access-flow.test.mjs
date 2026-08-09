@@ -506,6 +506,8 @@ test("landing and access gate are wired to dual sandbox and live payment runtime
     "utf8",
   );
 
+  const releaseVersion = (await readFile(new URL("../VERSION", import.meta.url), "utf8")).trim();
+
   assert.match(landing, /id="paypal-checkout-container"/);
   assert.match(landing, /paypal-checkout\.js\?v=7\.0\.1/);
   assert.match(matcher, /id="accessStatus"/);
@@ -517,8 +519,8 @@ test("landing and access gate are wired to dual sandbox and live payment runtime
   assert.match(checkout, /isAllowedPaymentHost\(window\.location\)/);
   assert.match(checkout, /recoverPendingOrder/);
   assert.match(checkout, /markPendingOrderApproved/);
-  assert.match(checkout, /payment-config\.js\?v=7\.1\.1/);
-  assert.match(gateSource, /payment-config\.js\?v=7\.1\.1/);
+  assert.ok(checkout.includes(`payment-config.js?v=${releaseVersion}`));
+  assert.ok(gateSource.includes(`payment-config.js?v=${releaseVersion}`));
   assert.ok(paymentConfig.includes(SANDBOX_WORKER_URL));
   assert.ok(paymentConfig.includes(LIVE_WORKER_URL));
   assert.ok(paymentConfig.includes("sankhipkate.github.io"));

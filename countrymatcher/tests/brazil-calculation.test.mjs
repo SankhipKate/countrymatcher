@@ -279,7 +279,7 @@ test('missing or stale BRL rate creates a typed country error', () => {
   assert.equal(staleResult.errors[0].code, 'CALCULATION_CONTEXT_INCOMPLETE');
 });
 
-test('public matcher loads Brazil data, adapter, flag, cities and version 7.1.1', async () => {
+test('public matcher loads Brazil data, adapter, flag, cities and current release', async () => {
   const [app, html, fx, packageJson, readme] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
@@ -288,13 +288,12 @@ test('public matcher loads Brazil data, adapter, flag, cities and version 7.1.1'
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
   ]);
   assert.match(app, /brazilAdapter/);
-  assert.match(app, /brazil-research-v3\.0\.json\?v=7\.1\.1/);
+  assert.ok(app.includes(`brazil-research-v3.0.json?v=${packageJson.version}`));
   assert.match(app, /countryId === 'BR' \? '🇧🇷'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);
   assert.match(fx, /\['EUR', 'ARS', 'MXN', 'BRL'\]/);
-  assert.equal(packageJson.version, '7.1.1');
-  assert.match(html, /версия 7\.1\.1/);
+  assert.match(html, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
   assert.match(readme, /Бразилии/);
   assert.match(readme, /семи стран/i);
 });

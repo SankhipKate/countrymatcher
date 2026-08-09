@@ -1,7 +1,7 @@
-import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.1';
-import { convertMoney } from '../engine/currency.js?v=7.1.1';
-import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.1';
-import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.1';
+import { CalculationContextError } from '../engine/calculate-country.js?v=7.1.2';
+import { convertMoney } from '../engine/currency.js?v=7.1.2';
+import { evaluateRouteRequirements } from '../engine/evaluate-route-requirements.js?v=7.1.2';
+import { ROUTE_STATUSES, STATUS_LABELS_RU } from '../engine/status-contract.js?v=7.1.2';
 
 const REMOTE_INCOME_TYPES = new Set([
   'REMOTE_EMPLOYMENT',
