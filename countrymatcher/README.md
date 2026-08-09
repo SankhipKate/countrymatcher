@@ -93,10 +93,11 @@
 - `data/portugal-research-v3.0.json` — подключённый исследовательский пакет Португалии по шаблону 3.0;
 - `data/mexico-research-v3.0.json` — подключённый исследовательский пакет Мексики по шаблону 3.0;
 - `data/brazil-research-v3.0.json` — подключённый исследовательский пакет Бразилии по шаблону 3.0;
-- `data/research-package-v3.0.schema.json` — единая действующая схема всех Research Package и новых исследований;
-- `../source-documents/COUNTRY_RESEARCH_STANDARD.md` — единственный стандарт исследования страны;
-- `../source-documents/MATCHING_AND_RESULT_STANDARD.md` — единственный стандарт сопоставления анкеты, статусов, сортировки и результата в браузере;
-- `../source-documents/NEW_COUNTRY_RESEARCH_PROMPT.md` — готовое ненормативное задание для запуска исследования новой страны по действующему стандарту;
+- `data/research-package-v4.0.schema.json` — текущий контракт новых и пересобранных Research Package;
+- `data/research-package-v3.0.schema.json` — прежний формат ещё не мигрированных исследований стран и их тестов;
+- `../source-documents/COUNTRY_RESEARCH_STANDARD_v4.0.md` — единственный действующий стандарт исследования страны;
+- `../source-documents/MATCHING_AND_RESULT_STANDARD_v4.0.md` — единственный действующий стандарт сопоставления анкеты, статусов, сортировки и результата в браузере;
+- `../source-documents/NEW_COUNTRY_RESEARCH_PROMPT_v4.0.md` — готовое ненормативное задание для запуска исследования новой страны по действующему стандарту;
 - `docs/research/argentina/`, `docs/research/portugal/`, `docs/research/mexico/` и `docs/research/brazil/` — отчёты, аудит полноты и рабочие материалы подключённых исследований;
 - `data/schemas/user-profile-v1.schema.json` — схема профиля пользователя;
 - `tests/` — автоматические проверки движка, профиля, страновых пакетов и интерфейса.

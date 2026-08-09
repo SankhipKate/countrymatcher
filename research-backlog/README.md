@@ -8,7 +8,7 @@
 2. актуальные отчёты и источники переносятся в `countrymatcher/docs/research/<страна>/`;
 3. адаптер и тесты добавляются в `countrymatcher/`;
 4. папка страны удаляется из `research-backlog/`;
-5. статус страны в `source-documents/COUNTRY_RESEARCH_ORDER.json` меняется на `Подключена`;
+5. статус страны в `source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json` меняется на `Подключена`;
 6. книга `source-documents/ОЧЕРЕДЬ_ИССЛЕДОВАНИЙ_СТРАН.xlsx` обновляется из этого списка.
 
 Старые версии и копии уже подключённых стран здесь не хранятся.

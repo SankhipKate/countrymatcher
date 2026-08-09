@@ -38,7 +38,7 @@ GitHub Pages workflow публикует папку `countrymatcher/` как к�
 - Мексика;
 - Бразилия.
 
-Код, стили и страновые JSON используют cache key `7.1.1`. Актуальный состав пользовательского интерфейса описан в `README.md`; нормативные правила исследования и расчёта находятся только в `../source-documents/COUNTRY_RESEARCH_STANDARD.md` и `../source-documents/MATCHING_AND_RESULT_STANDARD.md`.
+Код, стили и страновые JSON используют cache key `7.1.1`. Актуальный состав пользовательского интерфейса описан в `README.md`; нормативные правила исследования и расчёта находятся только в `../source-documents/COUNTRY_RESEARCH_STANDARD_v4.0.md` и `../source-documents/MATCHING_AND_RESULT_STANDARD_v4.0.md`. Текущая схема новых и пересобранных исследований — `data/research-package-v4.0.schema.json`; Schema 3.0 сохраняется только для ещё не мигрированных стран.
 
 ## Нормативные правила версионирования
 

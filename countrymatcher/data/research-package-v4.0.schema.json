@@ -1,0 +1,3902 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sankhipkate.github.io/countrymatcher/data/research-package-v4.0.schema.json",
+  "title": "Country Matcher Research Package 4.0",
+  "description": "Единый контракт результата исследования страны. Содержит факты исследования, необходимые для расчёта, пользовательского вывода и контроля полноты; не хранит страновую логику статуса и вручную рассчитанные USD-эквиваленты.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "canon_revision",
+    "country_id",
+    "country_name_ru",
+    "research_date",
+    "review_schedule",
+    "country_currency",
+    "country_summary_ru",
+    "route_coverage",
+    "entry_for_russian_citizen",
+    "routes",
+    "cities",
+    "schools",
+    "pets",
+    "lgbt",
+    "taxes",
+    "open_items",
+    "completeness",
+    "sources",
+    "pending_changes"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "4.0"
+    },
+    "country_id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$",
+      "description": "ISO 3166-1 alpha-2."
+    },
+    "country_name_ru": {
+      "type": "string",
+      "minLength": 1
+    },
+    "research_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "review_schedule": {
+      "$ref": "#/$defs/reviewSchedule"
+    },
+    "country_currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "country_summary_ru": {
+      "type": "string",
+      "minLength": 1
+    },
+    "route_coverage": {
+      "type": "array",
+      "minItems": 13,
+      "maxItems": 13,
+      "items": {
+        "$ref": "#/$defs/routeCoverageItem"
+      },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "DIGITAL_NOMAD_REMOTE_WORK"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "INCOME_FINANCIALLY_INDEPENDENT"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "RETIREMENT"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "LOCAL_EMPLOYMENT"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "HIGHLY_QUALIFIED_SPECIALIST"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "INTRA_COMPANY_TRANSFER"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "INVESTMENT"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "STUDY"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "FAMILY"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "GENERAL_RESIDENCE"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "INTERNATIONAL_PROTECTION"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "const": "OTHER"
+              }
+            },
+            "required": [
+              "category"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    },
+    "entry_for_russian_citizen": {
+      "$ref": "#/$defs/entryForRussianCitizen"
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/route"
+      }
+    },
+    "cities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/city"
+      }
+    },
+    "schools": {
+      "$ref": "#/$defs/schools"
+    },
+    "pets": {
+      "$ref": "#/$defs/pets"
+    },
+    "lgbt": {
+      "$ref": "#/$defs/lgbt"
+    },
+    "taxes": {
+      "$ref": "#/$defs/taxes"
+    },
+    "open_items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/openItem"
+      }
+    },
+    "completeness": {
+      "$ref": "#/$defs/completeness"
+    },
+    "sources": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source"
+      }
+    },
+    "pending_changes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pendingChange"
+      }
+    },
+    "canon_revision": {
+      "const": "2026-08-08-final-lock",
+      "description": "Final Lock revision of Research Package 4.0. Earlier 4.0 drafts are superseded and must be rebuilt."
+    }
+  },
+  "$defs": {
+    "reviewSchedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_consular_next_review",
+        "migration_rules_next_review",
+        "financial_costs_next_review",
+        "taxes_next_review",
+        "lgbt_legal_next_review",
+        "lgbt_practical_next_review",
+        "schools_pets_next_review",
+        "climate_next_review"
+      ],
+      "properties": {
+        "entry_consular_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "migration_rules_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "financial_costs_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "taxes_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "lgbt_legal_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "lgbt_practical_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "schools_pets_next_review": {
+          "type": "string",
+          "format": "date"
+        },
+        "climate_next_review": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "routeCoverageItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category",
+        "result",
+        "explanation_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "category": {
+          "enum": [
+            "DIGITAL_NOMAD_REMOTE_WORK",
+            "INCOME_FINANCIALLY_INDEPENDENT",
+            "RETIREMENT",
+            "LOCAL_EMPLOYMENT",
+            "HIGHLY_QUALIFIED_SPECIALIST",
+            "INTRA_COMPANY_TRANSFER",
+            "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+            "INVESTMENT",
+            "STUDY",
+            "FAMILY",
+            "GENERAL_RESIDENCE",
+            "INTERNATIONAL_PROTECTION",
+            "OTHER"
+          ]
+        },
+        "result": {
+          "enum": [
+            "ROUTE_EXISTS",
+            "NO_ROUTE",
+            "UNAVAILABLE_TO_RU",
+            "INSUFFICIENT_DATA"
+          ]
+        },
+        "linked_route_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          },
+          "uniqueItems": true
+        },
+        "explanation_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "ROUTE_EXISTS"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "then": {
+            "required": [
+              "linked_route_ids"
+            ],
+            "properties": {
+              "linked_route_ids": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "string",
+                  "pattern": "^[A-Z0-9_]+$"
+                },
+                "uniqueItems": true
+              }
+            }
+          }
+        }
+      ]
+    },
+    "money": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "amount",
+        "currency",
+        "period",
+        "price_date"
+      ],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "period": {
+          "enum": [
+            "ONE_TIME",
+            "MONTHLY",
+            "ANNUAL",
+            "ACADEMIC_YEAR",
+            "SEMESTER",
+            "TERM",
+            "WEEKLY",
+            "DAILY"
+          ]
+        },
+        "price_date": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "processingTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "official_days",
+        "official_rule_ru",
+        "practical_range_ru",
+        "official_source_ids",
+        "practical_source_ids"
+      ],
+      "properties": {
+        "official_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Официальный числовой нормативный срок рассмотрения/решения в днях. Не выводится из practical_range_ru или пользовательских кейсов. Сравнивается только с official_days того же смысла; иначе null/критерий пропускается."
+        },
+        "official_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "practical_range_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "official_source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "practical_source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "shortfallCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "calculation",
+        "coverage_months",
+        "condition_ru"
+      ],
+      "properties": {
+        "calculation": {
+          "const": "MONTHLY_SHORTFALL_X_MONTHS"
+        },
+        "coverage_months": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "condition_ru": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "familyFormula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_applicant_amount",
+        "additional_adult_amount",
+        "child_amount"
+      ],
+      "properties": {
+        "base_applicant_amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "additional_adult_amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "child_amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "orderedFamilyFormula": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_applicant_amount",
+        "first_additional_member_amount",
+        "each_further_member_amount"
+      ],
+      "properties": {
+        "base_applicant_amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "first_additional_member_amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "each_further_member_amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    },
+    "financialAlternative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "asked_in_questionnaire",
+        "amount",
+        "currency",
+        "period",
+        "comparison",
+        "history_months",
+        "allowed_income_types",
+        "source_geography",
+        "family_formula_ru",
+        "source_ids",
+        "confidence"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "INCOME",
+            "SAVINGS",
+            "CAPITAL",
+            "SPONSOR",
+            "SCHOLARSHIP"
+          ]
+        },
+        "asked_in_questionnaire": {
+          "type": "boolean"
+        },
+        "amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "period": {
+          "enum": [
+            "MONTHLY",
+            "ANNUAL",
+            "ONE_TIME",
+            "ACADEMIC_YEAR",
+            "OTHER"
+          ]
+        },
+        "comparison": {
+          "enum": [
+            "AT_LEAST",
+            "MORE_THAN",
+            "EXACT",
+            "OFFICIAL_FORMULA",
+            "NO_FIXED_THRESHOLD"
+          ]
+        },
+        "history_months": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "allowed_income_types": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "enum": [
+              "REMOTE_EMPLOYMENT",
+              "CONTRACTOR",
+              "FREELANCE_OR_SELF_EMPLOYED",
+              "SOLE_PROPRIETOR",
+              "COMPANY_OWNER",
+              "LOCAL_EMPLOYMENT",
+              "PENSION",
+              "PASSIVE_INCOME",
+              "INVESTMENT_INCOME",
+              "OTHER_REGULAR_INCOME",
+              "NO_REGULAR_INCOME"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "source_geography": {
+          "enum": [
+            "ANY",
+            "FOREIGN",
+            "DESTINATION_COUNTRY",
+            "MIXED_ALLOWED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "family_formula_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "family_formula": {
+          "$ref": "#/$defs/familyFormula"
+        },
+        "family_formula_ordered": {
+          "$ref": "#/$defs/orderedFamilyFormula"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM"
+          ]
+        },
+        "income_owners": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "APPLICANT",
+              "PARTNER",
+              "SPONSOR"
+            ]
+          },
+          "description": "Whose income legally supplies this INCOME alternative. PARTNER and SPONSOR are never inferred from FAMILY subject or family formulas."
+        }
+      },
+      "allOf": [
+        {
+          "not": {
+            "required": [
+              "family_formula",
+              "family_formula_ordered"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "INCOME"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "income_owners"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "income_owners"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "financialRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "alternatives"
+      ],
+      "properties": {
+        "model": {
+          "enum": [
+            "INCOME_ONLY",
+            "SAVINGS_ONLY",
+            "INCOME_OR_SAVINGS",
+            "INCOME_AND_SAVINGS",
+            "INCOME_WITH_SAVINGS_SHORTFALL",
+            "INVESTMENT_CAPITAL",
+            "SPONSOR_OR_SCHOLARSHIP"
+          ]
+        },
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/financialAlternative"
+          }
+        },
+        "shortfall_coverage": {
+          "$ref": "#/$defs/shortfallCoverage"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "model": {
+                "const": "INCOME_WITH_SAVINGS_SHORTFALL"
+              }
+            },
+            "required": [
+              "model"
+            ]
+          },
+          "then": {
+            "required": [
+              "shortfall_coverage"
+            ]
+          }
+        }
+      ]
+    },
+    "routeRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requirement_id",
+        "type",
+        "subject",
+        "timing",
+        "evaluation_mode",
+        "unmet_effect",
+        "condition_ru",
+        "source_ids",
+        "confidence"
+      ],
+      "properties": {
+        "requirement_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "type": {
+          "enum": [
+            "FINANCIAL",
+            "EMPLOYMENT_BASIS",
+            "STUDY_BASIS",
+            "FAMILY_BASIS",
+            "RETIREMENT_BASIS",
+            "PROTECTION_BASIS",
+            "AGE",
+            "EDUCATION",
+            "EXPERIENCE",
+            "PROFESSION",
+            "LICENSE",
+            "NATIONALITY",
+            "OTHER_BASIS"
+          ]
+        },
+        "subject": {
+          "enum": [
+            "APPLICANT",
+            "PARTNER",
+            "CHILD",
+            "FAMILY",
+            "SPONSOR"
+          ]
+        },
+        "timing": {
+          "enum": [
+            "NOW",
+            "BEFORE_APPLICATION",
+            "AT_APPLICATION",
+            "DURING_PROCESSING",
+            "AFTER_APPROVAL",
+            "LONG_TERM"
+          ]
+        },
+        "evaluation_mode": {
+          "enum": [
+            "ENGINE",
+            "UNASKED_CONDITION",
+            "DISPLAY_ONLY"
+          ]
+        },
+        "unmet_effect": {
+          "enum": [
+            "BLOCKS",
+            "BECOMES_CONDITION",
+            "NONE"
+          ]
+        },
+        "condition_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "met_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unmet_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile_path": {
+          "enum": [
+            null,
+            "CURRENT_COUNTRY",
+            "CURRENT_STATUS",
+            "ADULT_AGE",
+            "FAMILY_RELATIONSHIP",
+            "CHILDREN",
+            "INCOME_APPLICANT",
+            "INCOME_PARTNER",
+            "LONG_TERM_GOAL",
+            "KEEP_RUSSIAN_CITIZENSHIP"
+          ]
+        },
+        "financial": {
+          "$ref": "#/$defs/financialRequirement"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM"
+          ]
+        },
+        "engine_rule": {
+          "$ref": "#/$defs/engineRule"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "ENGINE"
+              }
+            },
+            "required": [
+              "evaluation_mode"
+            ]
+          },
+          "then": {
+            "required": [
+              "met_ru",
+              "unmet_ru",
+              "profile_path"
+            ],
+            "properties": {
+              "confidence": {
+                "enum": [
+                  "HIGH",
+                  "MEDIUM"
+                ]
+              },
+              "unmet_effect": {
+                "enum": [
+                  "BLOCKS",
+                  "BECOMES_CONDITION"
+                ]
+              },
+              "profile_path": {
+                "enum": [
+                  "CURRENT_COUNTRY",
+                  "CURRENT_STATUS",
+                  "ADULT_AGE",
+                  "FAMILY_RELATIONSHIP",
+                  "CHILDREN",
+                  "INCOME_APPLICANT",
+                  "INCOME_PARTNER",
+                  "LONG_TERM_GOAL",
+                  "KEEP_RUSSIAN_CITIZENSHIP"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "UNASKED_CONDITION"
+              }
+            },
+            "required": [
+              "evaluation_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unmet_effect": {
+                "const": "BECOMES_CONDITION"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "DISPLAY_ONLY"
+              }
+            },
+            "required": [
+              "evaluation_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unmet_effect": {
+                "const": "NONE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "FINANCIAL"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "financial"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "ENGINE"
+              },
+              "type": {
+                "not": {
+                  "const": "FINANCIAL"
+                }
+              }
+            },
+            "required": [
+              "evaluation_mode",
+              "type"
+            ]
+          },
+          "then": {
+            "required": [
+              "engine_rule"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "FINANCIAL"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "not": {
+              "required": [
+                "engine_rule"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "workRightDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "available_after_months",
+        "rule_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "ALLOWED",
+            "NOT_ALLOWED",
+            "SEPARATE_PERMISSION_REQUIRED",
+            "CONDITIONAL",
+            "NOT_APPLICABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "available_after_months": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "not": {
+                  "const": "NOT_RESEARCHED"
+                }
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "workRights": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "employment",
+        "self_employment",
+        "remote_foreign_work",
+        "allowed_remote_activity_types"
+      ],
+      "properties": {
+        "employment": {
+          "$ref": "#/$defs/workRightDimension"
+        },
+        "self_employment": {
+          "$ref": "#/$defs/workRightDimension"
+        },
+        "remote_foreign_work": {
+          "$ref": "#/$defs/workRightDimension"
+        },
+        "allowed_remote_activity_types": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "enum": [
+              "REMOTE_EMPLOYMENT",
+              "CONTRACTOR",
+              "FREELANCE_OR_SELF_EMPLOYED",
+              "SOLE_PROPRIETOR",
+              "COMPANY_OWNER"
+            ]
+          },
+          "uniqueItems": true,
+          "description": "null = не исследовано; [] = исследовано, ни одна форма не разрешена."
+        }
+      }
+    },
+    "longTermPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "first_permit_months",
+        "initial_status_ru",
+        "renewal_status",
+        "renewal_months",
+        "renewal_ru",
+        "pr_path_status",
+        "years_to_pr",
+        "residence_counts_for_pr",
+        "pr_path_ru",
+        "citizenship_path_status",
+        "years_to_citizenship",
+        "residence_counts_for_citizenship",
+        "citizenship_path_ru",
+        "renunciation_required",
+        "presence_rule_ru",
+        "language_requirements_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "first_permit_months": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "initial_status_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renewal_status": {
+          "enum": [
+            "AVAILABLE",
+            "NOT_AVAILABLE",
+            "CONDITIONAL",
+            "NOT_APPLICABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "renewal_months": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "renewal_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pr_path_status": {
+          "enum": [
+            "DIRECT",
+            "AVAILABLE_AFTER_RESIDENCE",
+            "REQUIRES_CHANGE_OF_BASIS",
+            "NOT_AVAILABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "years_to_pr": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "residence_counts_for_pr": {
+          "enum": [
+            "YES",
+            "NO",
+            "PARTIAL",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "pr_path_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "citizenship_path_status": {
+          "enum": [
+            "AVAILABLE",
+            "NOT_AVAILABLE",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "years_to_citizenship": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "residence_counts_for_citizenship": {
+          "enum": [
+            "YES",
+            "NO",
+            "PARTIAL",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "citizenship_path_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renunciation_required": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Формальное требование страны назначения заявить/оформить отказ от предыдущего гражданства при натурализации; не доказывает автоматическое прекращение гражданства РФ."
+        },
+        "presence_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "language_requirements_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "renewal_status": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "renewal_status"
+                ]
+              },
+              {
+                "properties": {
+                  "pr_path_status": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "pr_path_status"
+                ]
+              },
+              {
+                "properties": {
+                  "citizenship_path_status": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "citizenship_path_status"
+                ]
+              },
+              {
+                "properties": {
+                  "residence_counts_for_pr": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "residence_counts_for_pr"
+                ]
+              },
+              {
+                "properties": {
+                  "residence_counts_for_citizenship": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "residence_counts_for_citizenship"
+                ]
+              },
+              {
+                "properties": {
+                  "years_to_pr": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "years_to_pr"
+                ]
+              },
+              {
+                "properties": {
+                  "years_to_citizenship": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "years_to_citizenship"
+                ]
+              },
+              {
+                "properties": {
+                  "renunciation_required": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "renunciation_required"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "memberLongTermPath": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "initial_status_ru",
+        "renewal_ru",
+        "years_to_pr",
+        "years_to_citizenship",
+        "renunciation_required",
+        "source_ids"
+      ],
+      "properties": {
+        "initial_status_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "renewal_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "years_to_pr": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "years_to_citizenship": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "renunciation_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "familyScenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scenario_id",
+        "applies_to",
+        "relationship_types",
+        "child_age_min",
+        "child_age_max",
+        "simultaneous_move",
+        "separate_route_required",
+        "linked_route_id",
+        "join_stage",
+        "separation_months_min",
+        "separation_months_max",
+        "member_long_term_path",
+        "condition_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "scenario_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "applies_to": {
+          "enum": [
+            "PARTNER",
+            "CHILD",
+            "PARTNER_AND_CHILDREN",
+            "OTHER_ADULT"
+          ]
+        },
+        "relationship_types": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "enum": [
+              "MARRIED",
+              "REGISTERED_PARTNERSHIP",
+              "UNREGISTERED_PARTNERSHIP"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "child_age_min": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "child_age_max": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "simultaneous_move": {
+          "enum": [
+            "YES",
+            "NO",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "separate_route_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "linked_route_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "join_stage": {
+          "enum": [
+            "WITH_INITIAL_APPLICATION",
+            "AFTER_INITIAL_RESIDENCE",
+            "AFTER_PR",
+            "AFTER_CITIZENSHIP",
+            "SEPARATE_ROUTE",
+            "NOT_AVAILABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "separation_months_min": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "separation_months_max": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "member_long_term_path": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/memberLongTermPath"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "condition_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "simultaneous_move": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "simultaneous_move"
+                ]
+              },
+              {
+                "properties": {
+                  "join_stage": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "join_stage"
+                ]
+              },
+              {
+                "properties": {
+                  "separate_route_required": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "separate_route_required"
+                ]
+              },
+              {
+                "properties": {
+                  "linked_route_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "linked_route_id"
+                ]
+              },
+              {
+                "properties": {
+                  "member_long_term_path": {
+                    "type": "object"
+                  }
+                },
+                "required": [
+                  "member_long_term_path"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "applicationMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "availability",
+        "country_id",
+        "city_ru",
+        "coordinates",
+        "applicant_status_requirement",
+        "entry_condition_ru",
+        "rule_checked_at",
+        "condition_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "method": {
+          "enum": [
+            "ORIGIN_COUNTRY",
+            "CURRENT_LEGAL_RESIDENCE",
+            "IN_COUNTRY",
+            "THIRD_COUNTRY",
+            "ONLINE"
+          ],
+          "description": "Географические способы: ORIGIN_COUNTRY, CURRENT_LEGAL_RESIDENCE, IN_COUNTRY, THIRD_COUNTRY. ONLINE — только дополнительный канал/этап и не является самостоятельным местом подачи."
+        },
+        "availability": {
+          "enum": [
+            "AVAILABLE",
+            "CONDITIONAL",
+            "NOT_AVAILABLE",
+            "NOT_RESEARCHED"
+          ],
+          "description": "Доступность метода. Для ONLINE значение описывает наличие канала и само по себе не создаёт пользовательское condition."
+        },
+        "country_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{2}$"
+        },
+        "city_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "coordinates": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "lat",
+            "lon"
+          ],
+          "properties": {
+            "lat": {
+              "type": "number",
+              "minimum": -90,
+              "maximum": 90
+            },
+            "lon": {
+              "type": "number",
+              "minimum": -180,
+              "maximum": 180
+            }
+          }
+        },
+        "applicant_status_requirement": {
+          "enum": [
+            "ANY",
+            "CITIZEN_OR_RESIDENT",
+            "LEGAL_RESIDENT",
+            "PHYSICAL_PRESENCE",
+            "NOT_APPLICABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "visa_required_for_ru": {
+          "type": [
+            "boolean",
+            "null"
+          ],
+          "description": "Для THIRD_COUNTRY: нужна ли гражданину РФ виза для въезда в эту третью страну. Для других method допускается null/отсутствие; въезд в страну назначения задаётся entry_for_russian_citizen."
+        },
+        "entry_condition_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "condition_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "availability": {
+                "not": {
+                  "const": "NOT_RESEARCHED"
+                }
+              }
+            },
+            "required": [
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "THIRD_COUNTRY"
+              },
+              "availability": {
+                "enum": [
+                  "AVAILABLE",
+                  "CONDITIONAL"
+                ]
+              }
+            },
+            "required": [
+              "method",
+              "availability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "country_id": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              },
+              "city_ru": {
+                "type": "string",
+                "minLength": 1
+              },
+              "visa_required_for_ru": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "country_id",
+              "city_ru",
+              "visa_required_for_ru"
+            ]
+          }
+        }
+      ]
+    },
+    "protectionDetails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protection_types_ru",
+        "recognized_grounds_ru",
+        "individual_risk_rule_ru",
+        "protected_ground_link_ru",
+        "evidence_rule_ru",
+        "admissibility_ru",
+        "safe_third_country_ru",
+        "previous_applications_ru",
+        "right_to_remain_during_processing_ru",
+        "reception_housing_ru",
+        "assistance_ru",
+        "healthcare_ru",
+        "appeal_ru",
+        "status_after_positive_decision_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "protection_types_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recognized_grounds_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "individual_risk_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "protected_ground_link_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "admissibility_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "safe_third_country_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "previous_applications_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_to_remain_during_processing_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reception_housing_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assistance_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "healthcare_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "appeal_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status_after_positive_decision_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "route": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "route_id",
+        "name_ru",
+        "official_term_ru",
+        "route_type",
+        "covers_categories",
+        "route_subtype_ru",
+        "basis_ru",
+        "publishable",
+        "requirements",
+        "processing_time",
+        "application_methods",
+        "family_scenarios",
+        "applicant_work_rights",
+        "partner_work_rights",
+        "long_term_path",
+        "official_source_id"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "name_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "official_term_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "route_type": {
+          "enum": [
+            "DIGITAL_NOMAD_REMOTE_WORK",
+            "INCOME_FINANCIALLY_INDEPENDENT",
+            "RETIREMENT",
+            "LOCAL_EMPLOYMENT",
+            "HIGHLY_QUALIFIED_SPECIALIST",
+            "INTRA_COMPANY_TRANSFER",
+            "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+            "INVESTMENT",
+            "STUDY",
+            "FAMILY",
+            "GENERAL_RESIDENCE",
+            "INTERNATIONAL_PROTECTION",
+            "OTHER"
+          ]
+        },
+        "route_subtype_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "basis_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publishable": {
+          "type": "boolean"
+        },
+        "requirements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/routeRequirement"
+          },
+          "minItems": 1
+        },
+        "processing_time": {
+          "$ref": "#/$defs/processingTime"
+        },
+        "application_methods": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/applicationMethod"
+          }
+        },
+        "family_scenarios": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/familyScenario"
+          },
+          "minItems": 1
+        },
+        "applicant_work_rights": {
+          "$ref": "#/$defs/workRights"
+        },
+        "partner_work_rights": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/workRights"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "long_term_path": {
+          "$ref": "#/$defs/longTermPath"
+        },
+        "protection_details": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/protectionDetails"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "official_source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "covers_categories": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "DIGITAL_NOMAD_REMOTE_WORK",
+              "INCOME_FINANCIALLY_INDEPENDENT",
+              "RETIREMENT",
+              "LOCAL_EMPLOYMENT",
+              "HIGHLY_QUALIFIED_SPECIALIST",
+              "INTRA_COMPANY_TRANSFER",
+              "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+              "INVESTMENT",
+              "STUDY",
+              "FAMILY",
+              "GENERAL_RESIDENCE",
+              "INTERNATIONAL_PROTECTION",
+              "OTHER"
+            ]
+          },
+          "description": "Все обязательные глобальные категории route_coverage, которые реально закрывает этот один маршрут. route_type остаётся основной категорией маршрута и обязан входить в covers_categories."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "route_type": {
+                "const": "INTERNATIONAL_PROTECTION"
+              }
+            },
+            "required": [
+              "route_type"
+            ]
+          },
+          "then": {
+            "required": [
+              "protection_details"
+            ],
+            "properties": {
+              "protection_details": {
+                "$ref": "#/$defs/protectionDetails"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "protection_details": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "entryForRussianCitizen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_type",
+        "visa_required",
+        "rule_ru",
+        "authorization_validity_days",
+        "maximum_stay_days",
+        "processing_time_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "entry_type": {
+          "enum": [
+            "VISA_FREE",
+            "ETA",
+            "E_VISA",
+            "CONSULAR_VISA",
+            "OTHER",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "visa_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorization_validity_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "maximum_stay_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "processing_time_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "entry_type": {
+                "not": {
+                  "const": "NOT_RESEARCHED"
+                }
+              }
+            },
+            "required": [
+              "entry_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "costComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component",
+        "amount",
+        "currency",
+        "period",
+        "household_basis",
+        "condition_ru",
+        "price_date",
+        "source_ids",
+        "confidence"
+      ],
+      "properties": {
+        "component": {
+          "enum": [
+            "RENT_STANDARD",
+            "GROCERIES",
+            "TRANSPORT",
+            "HEALTHCARE",
+            "UTILITIES",
+            "OTHER_CORE"
+          ]
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "period": {
+          "enum": [
+            "MONTHLY",
+            "ANNUAL",
+            "ONE_TIME"
+          ]
+        },
+        "household_basis": {
+          "enum": [
+            "PER_HOUSEHOLD",
+            "PER_ADULT",
+            "PER_CHILD",
+            "PER_PERSON"
+          ]
+        },
+        "condition_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "price_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        }
+      }
+    },
+    "climate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "category_ru",
+        "cold_min_c",
+        "cold_max_c",
+        "cold_months",
+        "hot_min_c",
+        "hot_max_c",
+        "hot_months",
+        "climate_normal_period",
+        "notes_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "category_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cold_min_c": {
+          "type": "number"
+        },
+        "cold_max_c": {
+          "type": "number"
+        },
+        "cold_months": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "uniqueItems": true
+        },
+        "hot_min_c": {
+          "type": "number"
+        },
+        "hot_max_c": {
+          "type": "number"
+        },
+        "hot_months": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "uniqueItems": true
+        },
+        "climate_normal_period": {
+          "type": "string",
+          "minLength": 1
+        },
+        "notes_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "city": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "city_id",
+        "name_ru",
+        "structural_roles",
+        "population_municipality",
+        "population_agglomeration",
+        "size_basis_ru",
+        "cost_components",
+        "climate",
+        "source_ids",
+        "confidence"
+      ],
+      "properties": {
+        "city_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "name_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "population_municipality": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "population_agglomeration": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "size_basis_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cost_components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/costComponent"
+          }
+        },
+        "climate": {
+          "$ref": "#/$defs/climate"
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        },
+        "structural_roles": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "CAPITAL",
+              "LARGE",
+              "MEDIUM",
+              "SMALL"
+            ]
+          }
+        }
+      }
+    },
+    "publicSchoolRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "jurisdiction_ru",
+        "foreign_child_access",
+        "language_ru",
+        "compulsory_age_min",
+        "compulsory_age_max",
+        "is_free",
+        "tuition",
+        "rule_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "jurisdiction_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foreign_child_access": {
+          "enum": [
+            "AVAILABLE",
+            "CONDITIONAL",
+            "NOT_AVAILABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "language_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "compulsory_age_min": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 21
+        },
+        "compulsory_age_max": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 25
+        },
+        "is_free": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "tuition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "is_free": {
+                "const": true
+              }
+            },
+            "required": [
+              "is_free"
+            ]
+          },
+          "then": {
+            "properties": {
+              "tuition": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "internationalSchool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "school_id",
+        "name_ru",
+        "city_id",
+        "tuition",
+        "paid_months_per_year",
+        "admission_fee",
+        "source_ids"
+      ],
+      "properties": {
+        "school_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "name_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "tuition": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "null = школа подтверждена, но надёжная цена обучения не найдена."
+        },
+        "paid_months_per_year": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1,
+          "maximum": 12
+        },
+        "admission_fee": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "schools": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "public_school_rules",
+        "international_school_status",
+        "international_schools"
+      ],
+      "properties": {
+        "public_school_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/publicSchoolRule"
+          }
+        },
+        "international_schools": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/internationalSchool"
+          }
+        },
+        "international_school_status": {
+          "enum": [
+            "AVAILABLE",
+            "RESEARCHED_NONE_FOUND",
+            "NOT_RESEARCHED"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "international_school_status": {
+                "const": "AVAILABLE"
+              }
+            },
+            "required": [
+              "international_school_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "international_schools": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "$ref": "#/$defs/internationalSchool"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "restrictionAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "explanation_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "RESTRICTIONS_FOUND",
+            "RESEARCHED_NONE_FOUND",
+            "RESEARCHED_NO_RELIABLE_DATA",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "explanation_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "RESTRICTIONS_FOUND",
+                  "RESEARCHED_NONE_FOUND",
+                  "RESEARCHED_NO_RELIABLE_DATA"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "pets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dog_breed_restrictions",
+        "cat_breed_restrictions",
+        "regional_restrictions"
+      ],
+      "properties": {
+        "dog_breed_restrictions": {
+          "$ref": "#/$defs/restrictionAssessment"
+        },
+        "cat_breed_restrictions": {
+          "$ref": "#/$defs/restrictionAssessment"
+        },
+        "regional_restrictions": {
+          "$ref": "#/$defs/restrictionAssessment"
+        }
+      }
+    },
+    "lgbtLegalAssessment": {
+      "enum": [
+        "FULL_RECOGNITION",
+        "PARTIAL_RECOGNITION",
+        "SIGNIFICANT_LEGAL_RESTRICTIONS",
+        "CRIMINALIZATION",
+        "INSUFFICIENT_RELIABLE_DATA"
+      ]
+    },
+    "lgbtPracticalAssessment": {
+      "enum": [
+        "OPEN",
+        "HETEROGENEOUS",
+        "RESTRICTED",
+        "STATE_PRESSURE",
+        "INSUFFICIENT_RELIABLE_DATA"
+      ]
+    },
+    "antiDiscrimination": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "areas_ru",
+        "applies_to_foreigners",
+        "complaint_mechanisms_ru",
+        "rule_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "areas_ru": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "applies_to_foreigners": {
+          "enum": [
+            "YES",
+            "NO",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "complaint_mechanisms_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applies_to_foreigners": {
+                "not": {
+                  "const": "NOT_RESEARCHED"
+                }
+              }
+            },
+            "required": [
+              "applies_to_foreigners"
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "friendlyCity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "city_ru",
+        "study_date",
+        "methodology_ru",
+        "coverage_ru",
+        "limitations_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "city_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "study_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "methodology_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "coverage_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "limitations_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "lgbt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checked_at",
+        "same_sex_relations_legal",
+        "same_sex_relations_rule_ru",
+        "state_restrictions_ru",
+        "same_sex_marriage_recognized",
+        "same_sex_marriage_rule_ru",
+        "registered_partnership_recognized",
+        "registered_partnership_rule_ru",
+        "family_route_available",
+        "foreign_documents_recognized",
+        "foreign_document_rule_ru",
+        "parenthood_ru",
+        "anti_discrimination",
+        "systemic_practical_restrictions_ru",
+        "regional_differences_ru",
+        "friendly_cities",
+        "legal_assessment",
+        "practical_assessment",
+        "assessment_basis_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "same_sex_relations_legal": {
+          "enum": [
+            "YES",
+            "NO",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "same_sex_relations_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "state_restrictions_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "same_sex_marriage_recognized": {
+          "enum": [
+            "YES",
+            "NO",
+            "PARTIAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "same_sex_marriage_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "registered_partnership_recognized": {
+          "enum": [
+            "YES",
+            "NO",
+            "PARTIAL",
+            "NOT_APPLICABLE",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "registered_partnership_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "family_route_available": {
+          "enum": [
+            "YES",
+            "NO",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "foreign_documents_recognized": {
+          "enum": [
+            "YES",
+            "NO",
+            "CONDITIONAL",
+            "NOT_RESEARCHED"
+          ]
+        },
+        "foreign_document_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parenthood_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anti_discrimination": {
+          "$ref": "#/$defs/antiDiscrimination"
+        },
+        "systemic_practical_restrictions_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "regional_differences_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "friendly_cities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/friendlyCity"
+          }
+        },
+        "legal_assessment": {
+          "$ref": "#/$defs/lgbtLegalAssessment"
+        },
+        "practical_assessment": {
+          "$ref": "#/$defs/lgbtPracticalAssessment"
+        },
+        "assessment_basis_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "same_sex_relations_legal": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "same_sex_relations_legal"
+                ]
+              },
+              {
+                "properties": {
+                  "same_sex_marriage_recognized": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "same_sex_marriage_recognized"
+                ]
+              },
+              {
+                "properties": {
+                  "registered_partnership_recognized": {
+                    "not": {
+                      "enum": [
+                        "NOT_RESEARCHED",
+                        "NOT_APPLICABLE"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "registered_partnership_recognized"
+                ]
+              },
+              {
+                "properties": {
+                  "family_route_available": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "family_route_available"
+                ]
+              },
+              {
+                "properties": {
+                  "foreign_documents_recognized": {
+                    "not": {
+                      "const": "NOT_RESEARCHED"
+                    }
+                  }
+                },
+                "required": [
+                  "foreign_documents_recognized"
+                ]
+              },
+              {
+                "properties": {
+                  "legal_assessment": {
+                    "not": {
+                      "const": "INSUFFICIENT_RELIABLE_DATA"
+                    }
+                  }
+                },
+                "required": [
+                  "legal_assessment"
+                ]
+              },
+              {
+                "properties": {
+                  "practical_assessment": {
+                    "not": {
+                      "const": "INSUFFICIENT_RELIABLE_DATA"
+                    }
+                  }
+                },
+                "required": [
+                  "practical_assessment"
+                ]
+              },
+              {
+                "properties": {
+                  "friendly_cities": {
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "friendly_cities"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "source_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "taxRate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from_amount",
+        "to_amount",
+        "rate_percent",
+        "currency",
+        "rule_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "from_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "to_amount": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "rate_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "currency": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z]{3}$"
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "taxes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "checked_at",
+        "tax_residency_rule_ru",
+        "typical_day_threshold",
+        "other_residency_triggers_ru",
+        "personal_income_tax_ru",
+        "personal_income_tax_rates",
+        "social_contributions_ru",
+        "foreign_income_ru",
+        "double_taxation_with_russia_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "tax_residency_rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "typical_day_threshold": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 366
+        },
+        "other_residency_triggers_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "personal_income_tax_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "personal_income_tax_rates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/taxRate"
+          }
+        },
+        "social_contributions_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foreign_income_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "double_taxation_with_russia_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "openItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "item_id",
+        "block",
+        "priority",
+        "related_route_id",
+        "blocks_publication",
+        "missing_ru",
+        "handling_ru"
+      ],
+      "properties": {
+        "item_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "block": {
+          "enum": [
+            "ROUTE_COVERAGE",
+            "ROUTES",
+            "ENTRY_APPLICATION",
+            "FAMILY",
+            "WORK_RIGHTS",
+            "LONG_TERM",
+            "PROTECTION",
+            "TAXES",
+            "CITIES_COST",
+            "CLIMATE",
+            "SCHOOLS",
+            "PETS",
+            "LGBT",
+            "SOURCES"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        },
+        "related_route_id": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "blocks_publication": {
+          "type": "boolean"
+        },
+        "missing_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "handling_ru": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "completenessBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "block",
+        "status",
+        "open_item_ids"
+      ],
+      "properties": {
+        "block": {
+          "enum": [
+            "ROUTE_COVERAGE",
+            "ROUTES",
+            "ENTRY_APPLICATION",
+            "FAMILY",
+            "WORK_RIGHTS",
+            "LONG_TERM",
+            "PROTECTION",
+            "TAXES",
+            "CITIES_COST",
+            "CLIMATE",
+            "SCHOOLS",
+            "PETS",
+            "LGBT",
+            "SOURCES"
+          ]
+        },
+        "status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL_NON_BLOCKING",
+            "BLOCKING_GAP"
+          ]
+        },
+        "open_item_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "country_ready_status",
+        "blocks"
+      ],
+      "properties": {
+        "country_ready_status": {
+          "enum": [
+            "READY",
+            "PARTIAL",
+            "BLOCKED"
+          ]
+        },
+        "blocks": {
+          "type": "array",
+          "minItems": 14,
+          "maxItems": 14,
+          "items": {
+            "$ref": "#/$defs/completenessBlock"
+          },
+          "allOf": [
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "ROUTE_COVERAGE"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "ROUTES"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "ENTRY_APPLICATION"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "FAMILY"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "WORK_RIGHTS"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "LONG_TERM"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "PROTECTION"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "TAXES"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "CITIES_COST"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "CLIMATE"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "SCHOOLS"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "PETS"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "LGBT"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            },
+            {
+              "contains": {
+                "type": "object",
+                "properties": {
+                  "block": {
+                    "const": "SOURCES"
+                  }
+                },
+                "required": [
+                  "block"
+                ]
+              },
+              "minContains": 1,
+              "maxContains": 1
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "blocks": {
+                "contains": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "const": "BLOCKING_GAP"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                },
+                "minContains": 1
+              }
+            },
+            "required": [
+              "blocks"
+            ]
+          },
+          "then": {
+            "properties": {
+              "country_ready_status": {
+                "enum": [
+                  "PARTIAL",
+                  "BLOCKED"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "source_type",
+        "authority",
+        "title_ru",
+        "url",
+        "supports_ru",
+        "checked_at",
+        "confidence",
+        "published_or_updated_at",
+        "language"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "source_type": {
+          "enum": [
+            "LAW_OR_REGULATION",
+            "OFFICIAL_GOVERNMENT_RULE",
+            "OFFICIAL_FORM_OR_INSTRUCTION",
+            "OFFICIAL_STATISTICS",
+            "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+            "RELIABLE_SECONDARY"
+          ]
+        },
+        "authority": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "supports_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checked_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "confidence": {
+          "enum": [
+            "HIGH",
+            "MEDIUM",
+            "LOW"
+          ]
+        },
+        "published_or_updated_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "language": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    },
+    "pendingChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "change_id",
+        "status",
+        "title_ru",
+        "summary_ru",
+        "expected_effective_date",
+        "impact_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "change_id": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "status": {
+          "enum": [
+            "ADOPTED_NOT_IN_FORCE",
+            "OFFICIALLY_SCHEDULED"
+          ]
+        },
+        "title_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expected_effective_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "impact_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "engineRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operator"
+      ],
+      "properties": {
+        "operator": {
+          "enum": [
+            "EQUALS",
+            "IN",
+            "AT_LEAST",
+            "AT_MOST",
+            "NON_EMPTY"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": [
+              "string",
+              "number",
+              "boolean"
+            ]
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operator": {
+                "const": "IN"
+              }
+            },
+            "required": [
+              "operator"
+            ]
+          },
+          "then": {
+            "required": [
+              "values"
+            ],
+            "not": {
+              "required": [
+                "value"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operator": {
+                "enum": [
+                  "EQUALS",
+                  "AT_LEAST",
+                  "AT_MOST"
+                ]
+              }
+            },
+            "required": [
+              "operator"
+            ]
+          },
+          "then": {
+            "required": [
+              "value"
+            ],
+            "not": {
+              "required": [
+                "values"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "operator": {
+                "const": "NON_EMPTY"
+              }
+            },
+            "required": [
+              "operator"
+            ]
+          },
+          "then": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "value"
+                  ]
+                },
+                {
+                  "required": [
+                    "values"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

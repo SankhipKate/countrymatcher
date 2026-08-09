@@ -76,9 +76,9 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
 });
 
 test('schema ids and maintained public documents use canonical addresses', async () => {
-  const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v3.0.schema.json', import.meta.url), 'utf8'));
+  const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
   const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
-  assert.equal(researchSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/research-package-v3.0.schema.json');
+  assert.equal(researchSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/research-package-v4.0.schema.json');
   assert.equal(profileSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/schemas/user-profile-v1.schema.json');
 
   const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
@@ -123,7 +123,7 @@ test('every connected country has legal-entry data for a Russian citizen and the
 });
 
 test('research order mirrors all countries and marks every packaged country as connected', async () => {
-  const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER.json', import.meta.url), 'utf8'));
+  const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
