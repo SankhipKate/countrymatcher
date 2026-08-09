@@ -248,8 +248,9 @@ test('public matcher loads Mexico, its adapter, its flag and researched cities',
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /mexico-adapter\.js\?v=7\.1\.1/);
-  assert.match(app, /mexico-research-v3\.0\.json\?v=7\.1\.1/);
+  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
+  assert.ok(app.includes(`mexico-adapter.js?v=${version}`));
+  assert.ok(app.includes(`mexico-research-v3.0.json?v=${version}`));
   assert.match(app, /countryId === 'MX' \? '🇲🇽'/);
   assert.match(app, /enrichCityCategories/);
   assert.match(fx, /quotes=EUR,ARS,MXN,BRL/);

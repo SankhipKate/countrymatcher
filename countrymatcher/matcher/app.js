@@ -1,15 +1,15 @@
-import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.1.1';
-import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.1.1';
-import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.1.1';
-import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.1.1';
-import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.1.1';
-import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.1.1';
-import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.1.1';
-import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.1.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.1';
-import { formatCurrency } from './format.js?v=7.1.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
+import { STATUS_LABELS_RU } from '../js/spain-calculator.js?v=7.1.2';
+import { calculateCountries } from '../js/engine/calculate-countries.js?v=7.1.2';
+import { spainAdapter } from '../js/countries/spain-adapter.js?v=7.1.2';
+import { argentinaAdapter } from '../js/countries/argentina-adapter.js?v=7.1.2';
+import { paraguayAdapter } from '../js/countries/paraguay-adapter.js?v=7.1.2';
+import { portugalAdapter } from '../js/countries/portugal-adapter.js?v=7.1.2';
+import { mexicoAdapter } from '../js/countries/mexico-adapter.js?v=7.1.2';
+import { brazilAdapter } from '../js/countries/brazil-adapter.js?v=7.1.2';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.2';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.2';
+import { formatCurrency } from './format.js?v=7.1.2';
+import { buildUserProfile, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.2';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -17,6 +17,8 @@ const form = $('#matcherForm');
 const steps = $$('.wizard-step');
 const TOTAL_STEPS = steps.length;
 const DRAFT_KEY = 'immigration-matcher-universal-draft-v2';
+const DATA_BASE = new URL('../data/', import.meta.url);
+const DATA_LOAD_ERROR_MESSAGE = 'Не удалось загрузить данные для расчёта. Попробуйте обновить страницу. Если ошибка повторяется, расчёт временно недоступен.';
 let currentStep = 1;
 let spainData;
 let uruguayData;
@@ -28,6 +30,7 @@ let brazilData;
 let calculationContext;
 let currentProfile;
 let profileSchema;
+let dataLoadErrorMessage = '';
 
 const value = (id) => $(`#${id}`)?.value ?? '';
 const checked = (id) => Boolean($(`#${id}`)?.checked);
@@ -587,7 +590,13 @@ form.addEventListener('change', (event) => { if (event.target?.name === 'hasChil
 form.addEventListener('input', () => renderProfileSummary(profile()));
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (!validateStep(currentStep) || !spainData || !uruguayData || !argentinaData || !paraguayData || !portugalData || !mexicoData || !brazilData || !calculationContext) return;
+  if (!validateStep(currentStep)) return;
+  if (!spainData || !uruguayData || !argentinaData || !paraguayData || !portugalData || !mexicoData || !brazilData || !calculationContext || !profileSchema) {
+    $('#formError').hidden = false;
+    $('#formError').textContent = dataLoadErrorMessage || DATA_LOAD_ERROR_MESSAGE;
+    $('#formError').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
   currentProfile = profile();
   const validation = validateUserProfile(currentProfile);
   if (!validation.valid) { $('#formError').hidden = false; $('#formError').textContent = validation.errors[0].message; return; }
@@ -604,14 +613,14 @@ async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
     const [spainResponse, uruguayResponse, argentinaResponse, paraguayResponse, portugalResponse, mexicoResponse, brazilResponse, schemaResponse] = await Promise.all([
-      fetch('../data/spain-research-v3.0.json?v=7.1.1'),
-      fetch('../data/uruguay-research-v3.0.json?v=7.1.1'),
-      fetch('../data/argentina-research-v3.0.json?v=7.1.1'),
-      fetch('../data/paraguay-research-v3.0.json?v=7.1.1'),
-      fetch('../data/portugal-research-v3.0.json?v=7.1.1'),
-      fetch('../data/mexico-research-v3.0.json?v=7.1.1'),
-      fetch('../data/brazil-research-v3.0.json?v=7.1.1'),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=7.1.1'),
+      fetch(new URL('spain-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('uruguay-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('argentina-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('paraguay-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('portugal-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('mexico-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('brazil-research-v3.0.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('schemas/user-profile-v1.schema.json?v=7.1.2', DATA_BASE)),
     ]);
     if (!spainResponse.ok || !uruguayResponse.ok || !argentinaResponse.ok || !paraguayResponse.ok || !portugalResponse.ok || !mexicoResponse.ok || !brazilResponse.ok || !schemaResponse.ok) {
       throw new Error(`HTTP ${spainResponse.status}/${uruguayResponse.status}/${argentinaResponse.status}/${paraguayResponse.status}/${portugalResponse.status}/${mexicoResponse.status}/${brazilResponse.status}/${schemaResponse.status}`);
@@ -628,8 +637,12 @@ async function init() {
     ]);
     calculationContext = await loadCalculationContext();
   } catch (error) {
+    console.error(error);
+    dataLoadErrorMessage = error.code === 'CALCULATION_CONTEXT_INCOMPLETE'
+      ? 'Расчёт временно недоступен: не удалось получить актуальный курс валют.'
+      : DATA_LOAD_ERROR_MESSAGE;
     $('#formError').hidden = false;
-    $('#formError').textContent = error.code === 'CALCULATION_CONTEXT_INCOMPLETE' ? 'Расчёт временно недоступен: не удалось получить актуальный курс валют.' : `Не удалось загрузить данные: ${error.message}`;
+    $('#formError').textContent = dataLoadErrorMessage;
   }
 }
 

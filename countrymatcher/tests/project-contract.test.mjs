@@ -38,10 +38,10 @@ test('root index is the application and matcher has no user page or redirect', a
 
   const assets = [
     './matcher/access-gate.css?v=4.0.1',
-    './pilot/styles.css?v=7.1.1',
-    './matcher/styles.css?v=7.1.1',
+    './pilot/styles.css?v=7.1.2',
+    './matcher/styles.css?v=7.1.2',
     './matcher/access-gate.js?v=5.0.0',
-    './matcher/app.js?v=7.1.1',
+    './matcher/app.js?v=7.1.2',
   ];
   for (const asset of assets) {
     assert.ok(html.includes(`"${asset}"`), asset);
@@ -53,6 +53,46 @@ test('root index is the application and matcher has no user page or redirect', a
   await assert.rejects(access(new URL('../matcher/index.html', import.meta.url)));
   await assert.rejects(access(new URL('../pilot/index.html', import.meta.url)));
   await access(new URL('../landing/index.html', import.meta.url));
+});
+
+test('matcher resolves runtime data relative to its module and reports load failure', async () => {
+  const ui = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
+
+  assert.ok(
+    ui.includes("const DATA_BASE = new URL('../data/', import.meta.url);"),
+  );
+
+  assert.equal(ui.includes("fetch('../data/"), false);
+
+  for (const file of [
+    'spain-research-v3.0.json',
+    'uruguay-research-v3.0.json',
+    'argentina-research-v3.0.json',
+    'paraguay-research-v3.0.json',
+    'portugal-research-v3.0.json',
+    'mexico-research-v3.0.json',
+    'brazil-research-v3.0.json',
+    'schemas/user-profile-v1.schema.json',
+  ]) {
+    assert.ok(
+      ui.includes(`fetch(new URL('${file}?v=${version}', DATA_BASE))`),
+      file,
+    );
+  }
+
+  const publicDataBase = new URL(
+    '../data/',
+    'https://sankhipkate.github.io/countrymatcher/matcher/app.js',
+  );
+
+  assert.equal(
+    new URL('spain-research-v3.0.json', publicDataBase).href,
+    'https://sankhipkate.github.io/countrymatcher/data/spain-research-v3.0.json',
+  );
+
+  assert.ok(ui.includes('DATA_LOAD_ERROR_MESSAGE'));
+  assert.ok(ui.includes('dataLoadErrorMessage || DATA_LOAD_ERROR_MESSAGE'));
 });
 
 test('Pages workflow tests before publishing only countrymatcher', async () => {

@@ -1,5 +1,5 @@
-import { convertMoney } from './currency.js?v=7.1.1';
-import { ROUTE_STATUSES, resolveStatusConflict } from './status-contract.js?v=7.1.1';
+import { convertMoney } from './currency.js?v=7.1.2';
+import { ROUTE_STATUSES, resolveStatusConflict } from './status-contract.js?v=7.1.2';
 
 const check = (status, requirement, message, condition = null) => ({
   status,
