@@ -1,0 +1,4701 @@
+{
+  "schema_version": "4.0",
+  "country_id": "ES",
+  "country_name_ru": "Испания",
+  "research_date": "2026-08-07",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-07",
+    "migration_rules_next_review": "2027-02-07",
+    "financial_costs_next_review": "2027-02-07",
+    "taxes_next_review": "2027-02-07",
+    "lgbt_legal_next_review": "2027-08-07",
+    "lgbt_practical_next_review": "2027-08-07",
+    "schools_pets_next_review": "2027-02-07",
+    "climate_next_review": "2031-01-01"
+  },
+  "country_currency": "EUR",
+  "country_summary_ru": "Испания предлагает широкий набор маршрутов для граждан РФ: финансово независимую резиденцию, цифрового кочевника, работу, предпринимательство, высококвалифицированные и внутрикорпоративные маршруты, учёбу, семейные основания и международную защиту. Отдельная инвесторская «золотая виза» для новых заявителей отменена. Однополый брак полностью признаётся.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть отдельная резиденция международного телеработника.",
+      "source_ids": [
+        "ES_DNV",
+        "ES_LAW14"
+      ],
+      "linked_route_ids": [
+        "ES_DNV"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Некоммерческая резиденция покрывает финансово независимый сценарий.",
+      "source_ids": [
+        "ES_NLV"
+      ],
+      "linked_route_ids": [
+        "ES_NLV"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Отдельного пенсионного ВНЖ нет; пенсионер может использовать тот же NLV при достаточных средствах, поэтому один ES_NLV закрывает обе категории.",
+      "source_ids": [
+        "ES_NLV"
+      ],
+      "linked_route_ids": [
+        "ES_NLV"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть обычная резиденция и работа по найму.",
+      "source_ids": [
+        "ES_EMP"
+      ],
+      "linked_route_ids": [
+        "ES_EMP"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть национальный HQP и Голубая карта ЕС.",
+      "source_ids": [
+        "ES_HQP",
+        "ES_LAW14"
+      ],
+      "linked_route_ids": [
+        "ES_HQP_BLUE",
+        "ES_HQP_NATIONAL"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть ICT-разрешение.",
+      "source_ids": [
+        "ES_ICT",
+        "ES_LAW14"
+      ],
+      "linked_route_ids": [
+        "ES_ICT"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть обычная работа за свой счёт и отдельный инновационный предпринимательский режим UGE.",
+      "source_ids": [
+        "ES_SELF",
+        "ES_ENT"
+      ],
+      "linked_route_ids": [
+        "ES_SELF",
+        "ES_ENT"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "NO_ROUTE",
+      "explanation_ru": "Новые инвесторские/«золотые» разрешения отменены с 3 апреля 2025; отдельного действующего первоначального инвесторского маршрута не публикуем.",
+      "source_ids": [
+        "ES_INV_REPEAL"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть долгосрочное учебное пребывание.",
+      "source_ids": [
+        "ES_STUDY"
+      ],
+      "linked_route_ids": [
+        "ES_STUDY"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть семейная резиденция родственников испанца и воссоединение семьи иностранного резидента.",
+      "source_ids": [
+        "ES_FAM_SP",
+        "ES_REUN"
+      ],
+      "linked_route_ids": [
+        "ES_FAM_SP",
+        "ES_REUN"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "NO_ROUTE",
+      "explanation_ru": "Долгосрочная резиденция после пяти лет является следующим этапом, а не отдельным универсальным первоначальным основанием.",
+      "source_ids": [
+        "ES_LONG"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Международная защита исследована как самостоятельный условный маршрут.",
+      "source_ids": [
+        "ES_ASYLUM",
+        "ES_ASYLUM_2026"
+      ],
+      "linked_route_ids": [
+        "ES_PROTECTION"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Дополнительно действуют исследовательская резиденция, специальный аудиовизуальный режим и резиденция для практики.",
+      "source_ids": [
+        "ES_RESEARCHER",
+        "ES_AUDIOVISUAL",
+        "ES_INTERNSHIP"
+      ],
+      "linked_route_ids": [
+        "ES_RESEARCHER",
+        "ES_AUDIOVISUAL",
+        "ES_INTERNSHIP"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "CONSULAR_VISA",
+    "visa_required": true,
+    "rule_ru": "Для обычного краткосрочного въезда гражданину РФ требуется шенгенская виза; для долгосрочного проживания обычно используется соответствующая национальная виза или разрешение, если маршрут допускает подачу внутри Испании.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": "Срок зависит от вида визы и консульской процедуры; единый срок для всех оснований не используется.",
+    "source_ids": [
+      "ES_ENTRY_SHORT",
+      "ES_ENTRY_LONG"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "ES_NLV",
+      "name_ru": "Некоммерческая резиденция",
+      "official_term_ru": "Autorización inicial de residencia temporal no lucrativa",
+      "route_type": "INCOME_FINANCIALLY_INDEPENDENT",
+      "covers_categories": [
+        "INCOME_FINANCIALLY_INDEPENDENT",
+        "RETIREMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_NLV_FIN",
+          "type": "FINANCIAL",
+          "subject": "FAMILY",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить средства на уровне 400% IPREM заявителю и 100% IPREM каждому члену семьи; допускается подтверждение достаточного капитала на период проживания.",
+          "source_ids": [
+            "ES_NLV",
+            "ES_IPREM"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 2400,
+                "currency": "EUR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PASSIVE_INCOME",
+                  "PENSION"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": "2 400 EUR заявителю + 600 EUR каждому сопровождающему члену семьи в месяц.",
+                "source_ids": [
+                  "ES_NLV",
+                  "ES_IPREM"
+                ],
+                "confidence": "HIGH",
+                "family_formula": {
+                  "base_applicant_amount": 2400,
+                  "additional_adult_amount": 600,
+                  "child_amount": 600
+                },
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": 28800,
+                "currency": "EUR",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "28 800 EUR заявителю + 7 200 EUR каждому сопровождающему на первый год.",
+                "source_ids": [
+                  "ES_NLV",
+                  "ES_IPREM"
+                ],
+                "confidence": "HIGH",
+                "family_formula": {
+                  "base_applicant_amount": 28800,
+                  "additional_adult_amount": 7200,
+                  "child_amount": 7200
+                }
+              }
+            ]
+          },
+          "met_ru": "Подтверждаемые допустимые средства достигают порога.",
+          "unmet_ru": "Текущий допустимый доход ниже порога; если накопления не подтверждены, маршрут не подходит по финансовому критерию."
+        },
+        {
+          "requirement_id": "ES_NLV_NOWORK",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AFTER_APPROVAL",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Некоммерческая резиденция не разрешает трудовую или профессиональную деятельность.",
+          "source_ids": [
+            "ES_NLV"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_NLV"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для гражданина РФ отдельная въездная виза не нужна до подачи: подача идёт на национальную визу/резиденцию в консульстве.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Подать в компетентное консульство Испании в РФ.",
+          "source_ids": [
+            "ES_NLV_MOSCOW"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Допускается консульская подача по месту законного проживания.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_NLV_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семья может подаваться одновременно; финансовый порог увеличивается на каждого сопровождающего.",
+          "source_ids": [
+            "ES_NLV",
+            "ES_NLV_MOSCOW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не разрешает работу по найму.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не разрешает самостоятельную профессиональную деятельность.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа также является профессиональной деятельностью и не разрешена по некоммерческому статусу.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не разрешает работу по найму.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не разрешает самостоятельную профессиональную деятельность.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа также является профессиональной деятельностью и не разрешена по некоммерческому статусу.",
+          "source_ids": [
+            "ES_NLV"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Первый ВНЖ — 1 год.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — на 2 года при сохранении условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_NLV",
+          "ES_NLV_RENEW",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_NLV"
+    },
+    {
+      "route_id": "ES_DNV",
+      "name_ru": "Резиденция международного телеработника",
+      "official_term_ru": "Autorización de residencia para teletrabajadores de carácter internacional",
+      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
+      "covers_categories": [
+        "DIGITAL_NOMAD_REMOTE_WORK"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Удалённая работа или профессиональная деятельность преимущественно для компаний вне Испании.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_DNV_FIN",
+          "type": "FINANCIAL",
+          "subject": "FAMILY",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить семейный финансовый порог; дефицит можно покрыть ликвидными накоплениями за 36 месяцев.",
+          "source_ids": [
+            "ES_DNV",
+            "ES_SMI"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_WITH_SAVINGS_SHORTFALL",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 2442,
+                "currency": "EUR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": 3,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "2 442 EUR заявителю + 915,75 EUR первому дополнительному члену семьи + 305,25 EUR каждому следующему.",
+                "source_ids": [
+                  "ES_DNV",
+                  "ES_SMI"
+                ],
+                "confidence": "HIGH",
+                "family_formula_ordered": {
+                  "base_applicant_amount": 2442,
+                  "first_additional_member_amount": 915.75,
+                  "each_further_member_amount": 305.25
+                },
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ],
+            "shortfall_coverage": {
+              "calculation": "MONTHLY_SHORTFALL_X_MONTHS",
+              "coverage_months": 36,
+              "condition_ru": "Накопления покрывают месячный дефицит между семейным порогом и допустимым доходом за 36 месяцев."
+            }
+          },
+          "met_ru": "Доход достигает семейного порога.",
+          "unmet_ru": "Доход ниже порога: требуется подтвердить рассчитанную сумму накоплений."
+        },
+        {
+          "requirement_id": "ES_DNV_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить реальную деятельность иностранной компании минимум год и связь с ней минимум три месяца; деятельность должна выполняться дистанционно.",
+          "source_ids": [
+            "ES_DNV",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_DNV_QUAL",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить подходящее высшее/профессиональное образование либо не менее трёх лет релевантного профессионального опыта.",
+          "source_ids": [
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Нужно находиться в Испании законно.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Электронная подача из Испании при законном нахождении.",
+          "source_ids": [
+            "ES_LAW14",
+            "ES_UGE_APPLY"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для въезда после консульского этапа используется национальная виза.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Можно начинать через визу международного телеработника.",
+          "source_ids": [
+            "ES_LAW14",
+            "ES_ENTRY_LONG"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявления на разрешения Закона 14/2013 подаются электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_DNV_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семья может подаваться одновременно; финансовый порог увеличивается по формуле 75%/25%.",
+          "source_ids": [
+            "ES_LAW14",
+            "ES_DNV"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "По трудовому договору телеработник работает только для компаний вне Испании.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "При профессиональной деятельности допускается работа с клиентом/компанией в Испании до 20% общей профессиональной деятельности.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность для компаний вне Испании является основой статуса.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Разрешение на резиденцию — до 3 лет либо на более короткий срок работы.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — по 2 года при сохранении условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_DNV"
+    },
+    {
+      "route_id": "ES_EMP",
+      "name_ru": "Работа по найму",
+      "official_term_ru": "Autorización inicial de residencia temporal y trabajo por cuenta ajena",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Работодатель в Испании запрашивает разрешение для найма иностранного работника.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_EMP_OFFER",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подходящий трудовой договор; заявление подаёт работодатель и должны выполняться условия рынка труда/исключений, работодателя и профессии.",
+          "source_ids": [
+            "ES_EMP"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_EMP_QUAL",
+          "type": "PROFESSION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Если профессия регулируемая, подтвердить требуемую квалификацию и разрешение на её осуществление.",
+          "source_ids": [
+            "ES_EMP"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_EMP"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "После одобрения работодателю работник получает национальную визу.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Работодатель начинает процесс в Испании; работник завершает визовый этап.",
+          "source_ids": [
+            "ES_EMP",
+            "ES_ENTRY_LONG"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_EMP_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "ES_REUN",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 12,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Обычный трудовой маршрут не даёт автоматической одновременной подачи семьи; после выполнения условий резидент может использовать воссоединение.",
+          "source_ids": [
+            "ES_REUN"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение выдаётся для работы по найму по одобренному договору.",
+          "source_ids": [
+            "ES_EMP"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Первоначальное разрешение по найму не является разрешением на самостоятельную деятельность.",
+          "source_ids": [
+            "ES_EMP"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Иная работа зависит от совместимости и условий конкретного разрешения.",
+          "source_ids": [
+            "ES_EMP"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Супруг/партнёр, воссоединённый с резидентом, имеет право работать по найму.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_REUN_RENEW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Воссоединённый супруг/партнёр имеет право работать самостоятельно.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима в рамках общего права работать.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Срок первоначального разрешения связан со сроком договора: более 90 дней и менее 5 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 48,
+        "renewal_ru": "Продление по найму обычно выдаётся на 4 года при выполнении условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_EMP",
+          "ES_EMP_RENEW",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_EMP"
+    },
+    {
+      "route_id": "ES_SELF",
+      "name_ru": "Работа за свой счёт",
+      "official_term_ru": "Autorización inicial de residencia temporal y trabajo por cuenta propia",
+      "route_type": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "covers_categories": [
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Самостоятельная прибыльная деятельность в Испании при выполнении профессиональных, лицензионных и инвестиционных требований.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_SELF_PROJECT",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подготовить жизнеспособный проект самостоятельной деятельности и подтвердить достаточное финансирование/инвестицию для проекта.",
+          "source_ids": [
+            "ES_SELF"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_SELF_PROF",
+          "type": "PROFESSION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Если заявленная деятельность регулируемая, подтвердить необходимые профессиональные требования, квалификацию и лицензии.",
+          "source_ids": [
+            "ES_SELF"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_SELF"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Первичная подача — в консульстве по месту проживания.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Подать лично в компетентное испанское консульство.",
+          "source_ids": [
+            "ES_SELF"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Консульская подача по месту законного проживания.",
+          "source_ids": [
+            "ES_SELF"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_SELF_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "ES_REUN",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 12,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семья обычно присоединяется через последующее воссоединение после выполнения условий спонсора.",
+          "source_ids": [
+            "ES_REUN"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Первоначальная авторизация выдана для самостоятельной деятельности.",
+          "source_ids": [
+            "ES_SELF"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение прямо предназначено для работы за свой счёт.",
+          "source_ids": [
+            "ES_SELF"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённые услуги допустимы как часть разрешённой самостоятельной деятельности при соблюдении испанских правил.",
+          "source_ids": [
+            "ES_SELF"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Супруг/партнёр, воссоединённый с резидентом, имеет право работать по найму.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_REUN_RENEW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Воссоединённый супруг/партнёр имеет право работать самостоятельно.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима в рамках общего права работать.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Первичное разрешение — 1 год.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 48,
+        "renewal_ru": "Продление — 4 года и разрешает работу по найму и за свой счёт.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_SELF",
+          "ES_SELF_RENEW",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_SELF"
+    },
+    {
+      "route_id": "ES_FAM_SP",
+      "name_ru": "Член семьи гражданина Испании",
+      "official_term_ru": "Autorización de residencia temporal de familiares de personas con nacionalidad española",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Резиденция для иностранного члена семьи гражданина Испании при сохранении предусмотренной законом семейной связи.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_FAMSP_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить допустимую семейную связь с гражданином Испании и выполнение условий соответствующей категории.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_FAM_SP"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "При применимом сценарии заявление возможно в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Подача в Oficina de Extranjería по месту проживания.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "При сценарии из-за рубежа может потребоваться национальный визовый этап.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретная последовательность зависит от категории члена семьи.",
+          "source_ids": [
+            "ES_FAM_SP",
+            "ES_ENTRY_LONG"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_FAMSP_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг/партнёр гражданина Испании относится к прямо предусмотренным семейным основаниям.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        {
+          "scenario_id": "ES_FAMSP_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Дети в предусмотренных законом категориях могут получить семейную резиденцию.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резиденция члена семьи гражданина Испании разрешает работу по найму.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена самостоятельная деятельность.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена в рамках общего права работать.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резиденция члена семьи гражданина Испании разрешает работу по найму.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена самостоятельная деятельность.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена в рамках общего права работать.",
+          "source_ids": [
+            "ES_FAM_SP"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Разрешение выдаётся максимум до 5 лет либо на более короткий применимый период.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 60,
+        "renewal_ru": "Если первоначальный срок был меньше максимального, возможно продление до 5 лет или на более короткий срок проживания испанского родственника.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для супруга/супруги гражданина Испании возможен сокращённый срок гражданства в 1 год при выполнении условий ст. 22 ГК; для других родственников применяются их собственные сроки.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_FAM_SP",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_FAM_SP"
+    },
+    {
+      "route_id": "ES_STUDY",
+      "name_ru": "Долгосрочная учёба",
+      "official_term_ru": "Autorización de estancia de larga duración por estudios",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Пребывание более 90 дней для высшего или предусмотренного постобязательного образования.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_STUDY_ADMIT",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Поступить в допустимое авторизованное учебное заведение на программу, отвечающую требованиям маршрута.",
+          "source_ids": [
+            "ES_STUDY"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_STUDY_FIN",
+          "type": "FINANCIAL",
+          "subject": "FAMILY",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить средства по формуле IPREM; допускаются предусмотренные альтернативы накоплений, спонсорства или стипендии.",
+          "source_ids": [
+            "ES_STUDY",
+            "ES_IPREM"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "SPONSOR_OR_SCHOLARSHIP",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 600,
+                "currency": "EUR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": "100% IPREM студенту + 75% IPREM первому родственнику + 50% IPREM каждому следующему.",
+                "source_ids": [
+                  "ES_STUDY",
+                  "ES_IPREM"
+                ],
+                "confidence": "HIGH",
+                "family_formula_ordered": {
+                  "base_applicant_amount": 600,
+                  "first_additional_member_amount": 450,
+                  "each_further_member_amount": 300
+                },
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": 7200,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Годовой эквивалент 100% IPREM для студента; жильё, оплаченное заранее, может учитываться по специальному правилу.",
+                "source_ids": [
+                  "ES_STUDY",
+                  "ES_IPREM"
+                ],
+                "confidence": "HIGH",
+                "family_formula_ordered": {
+                  "base_applicant_amount": 7200,
+                  "first_additional_member_amount": 5400,
+                  "each_further_member_amount": 3600
+                }
+              },
+              {
+                "kind": "SPONSOR",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "OTHER",
+                "comparison": "OFFICIAL_FORMULA",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Допустимо подтверждение средств через разрешённого спонсора по правилам процедуры.",
+                "source_ids": [
+                  "ES_STUDY"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "SCHOLARSHIP",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "ACADEMIC_YEAR",
+                "comparison": "OFFICIAL_FORMULA",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Стипендия может подтверждать финансовое обеспечение в допустимом объёме.",
+                "source_ids": [
+                  "ES_STUDY"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_STUDY"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для долгосрочной учёбы из-за рубежа оформляется национальная виза.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Консульская подача из РФ.",
+          "source_ids": [
+            "ES_STUDY",
+            "ES_ENTRY_LONG"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для высшего образования допускается подача из Испании при совершеннолетии и законном нахождении.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Внутренняя подача доступна для ограниченных учебных сценариев.",
+          "source_ids": [
+            "ES_STUDY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_STUDY_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семья допускается для определённых учебных программ, прежде всего высшего образования; финансовый порог увеличивается.",
+          "source_ids": [
+            "ES_STUDY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Для высшего образования работа может быть разрешена автоматически при совместимости с учёбой и ограничениях по времени.",
+          "source_ids": [
+            "ES_STUDY",
+            "ES_STUDY_WORK"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность возможна при соблюдении условий совместимости и применимых разрешений.",
+          "source_ids": [
+            "ES_STUDY_WORK"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима только в пределах правил доступа студента к занятости.",
+          "source_ids": [
+            "ES_STUDY_WORK"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождающий родственник по учебному пребыванию сам по себе не получает право работать.",
+          "source_ids": [
+            "ES_STUDY"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейное пребывание при студенте не даёт самостоятельного права работать.",
+          "source_ids": [
+            "ES_STUDY"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа не разрешается только на основании семейного учебного пребывания.",
+          "source_ids": [
+            "ES_STUDY"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Срок пребывания соответствует учебной программе и не является обычной временной резиденцией.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при продолжении допустимой учебной программы и выполнении условий.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Учебное пребывание само по себе не является обычной резиденцией для национального ПМЖ; перед долгосрочной целью обычно требуется перейти на резиденцию.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Период учебного пребывания сам по себе не считается проживанием для гражданства по резиденции; после перехода на резиденцию начинается применимый срок.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_STUDY",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_STUDY"
+    },
+    {
+      "route_id": "ES_ENT",
+      "name_ru": "Предприниматель UGE",
+      "official_term_ru": "Autorización de residencia para emprendedores",
+      "route_type": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "covers_categories": [
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Инновационный предпринимательский проект, имеющий особый экономический интерес для Испании и положительное заключение ENISA.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_ENT_PROJECT",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подготовить инновационный проект и получить положительное заключение ENISA; фиксированного минимума инвестиций или рабочих мест нет.",
+          "source_ids": [
+            "ES_ENT",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на разрешение Закона 14/2013 подаётся электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY",
+            "ES_LAW14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для ряда UGE-разрешений возможна подача при законном нахождении/действующем статусе в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретный субъект подачи зависит от маршрута.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_ENT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления по Закону 14/2013 могут подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа по найму не является основой предпринимательской авторизации.",
+          "source_ids": [
+            "ES_ENT",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение предназначено для развития одобренного предпринимательского проекта.",
+          "source_ids": [
+            "ES_ENT",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность допустима только в пределах одобренного предпринимательского основания.",
+          "source_ids": [
+            "ES_ENT",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Разрешение обычно до 3 лет, если основание не рассчитано на более короткий срок.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — по 2 года при сохранении условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_ENT"
+    },
+    {
+      "route_id": "ES_HQP_BLUE",
+      "name_ru": "Голубая карта ЕС",
+      "official_term_ru": "Tarjeta azul-UE",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST"
+      ],
+      "route_subtype_ru": "EU_BLUE_CARD",
+      "basis_ru": "Высококвалифицированная работа по действительному договору или твёрдой оферте минимум на шесть месяцев с квалификацией и зарплатным порогом.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_BLUE_JOB",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить договор или твёрдую оферту высококвалифицированной работы минимум на шесть месяцев.",
+          "source_ids": [
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_BLUE_QUAL",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить требуемую высшую квалификацию либо предусмотренный эквивалентный профессиональный опыт.",
+          "source_ids": [
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_BLUE_SAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Будущая зарплата по договору должна достигать действующего порога Голубой карты ЕС.",
+          "source_ids": [
+            "ES_HQP_SALARY_ORDER",
+            "ES_HQP_SALARY_2026"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 41356.36,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "DESTINATION_COUNTRY",
+                "family_formula_ru": "Базовый опубликованный порог Голубой карты ЕС на 2026 год; для предусмотренных законом случаев действует сниженный порог 33 085,09 EUR.",
+                "source_ids": [
+                  "ES_HQP_SALARY_ORDER",
+                  "ES_HQP_SALARY_2026"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на разрешение Закона 14/2013 подаётся электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY",
+            "ES_LAW14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для ряда UGE-разрешений возможна подача при законном нахождении/действующем статусе в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретный субъект подачи зависит от маршрута.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_HQP_BLUE_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления по Закону 14/2013 могут подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение связано с высококвалифицированной работой по одобренному договору/оферте.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность не является основанием этой авторизации.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённый формат возможен только как часть одобренной высококвалифицированной занятости.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Разрешение — до 3 лет либо срок договора плюс 3 месяца, если договор короче, но не более 3 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — 2 года при сохранении условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_HQP"
+    },
+    {
+      "route_id": "ES_HQP_NATIONAL",
+      "name_ru": "Национальный высококвалифицированный специалист",
+      "official_term_ru": "Autorización de residencia nacional para profesionales altamente cualificados",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST"
+      ],
+      "route_subtype_ru": "NATIONAL_HQP",
+      "basis_ru": "Высококвалифицированная работа или профессиональная деятельность с квалификацией/эквивалентным опытом по национальному режиму Закона 14/2013.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_HQPN_JOB",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подходящую высококвалифицированную работу или профессиональное основание.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_HQPN_QUAL",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить квалификацию минимум уровня, предусмотренного ст. 71, либо не менее трёх лет эквивалентного опыта.",
+          "source_ids": [
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на разрешение Закона 14/2013 подаётся электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY",
+            "ES_LAW14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для ряда UGE-разрешений возможна подача при законном нахождении/действующем статусе в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретный субъект подачи зависит от маршрута.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_HQP_NATIONAL_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления по Закону 14/2013 могут подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение связано с высококвалифицированной работой по одобренному договору/оферте.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность не является основанием этой авторизации.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённый формат возможен только как часть одобренной высококвалифицированной занятости.",
+          "source_ids": [
+            "ES_HQP",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Разрешение — до 3 лет либо срок договора плюс 3 месяца, если он короче, но не более 3 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — 2 года.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_HQP"
+    },
+    {
+      "route_id": "ES_ICT",
+      "name_ru": "Внутрикорпоративный перевод",
+      "official_term_ru": "Autorización de residencia por traslado intraempresarial",
+      "route_type": "INTRA_COMPANY_TRANSFER",
+      "covers_categories": [
+        "INTRA_COMPANY_TRANSFER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Перевод в Испанию внутри компании или группы компаний для работы, профессиональной деятельности или обучения.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_ICT_WORK_HISTORY",
+          "type": "EXPERIENCE",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить реальную деятельность компании/группы и непрерывную связь с ней не менее трёх месяцев.",
+          "source_ids": [
+            "ES_ICT",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_ICT_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить решение работодателя о внутрикорпоративном переводе в Испанию в рамках соответствующей компании или группы компаний.",
+          "source_ids": [
+            "ES_ICT",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_ICT_QUAL",
+          "type": "EXPERIENCE",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить высшую квалификацию или не менее трёх лет эквивалентного профессионального опыта для соответствующей категории.",
+          "source_ids": [
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на разрешение Закона 14/2013 подаётся электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY",
+            "ES_LAW14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для ряда UGE-разрешений возможна подача при законном нахождении/действующем статусе в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретный субъект подачи зависит от маршрута.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_ICT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления по Закону 14/2013 могут подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение даёт право на работу в рамках одобренного внутрикорпоративного перевода.",
+          "source_ids": [
+            "ES_ICT",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность не является основанием ICT.",
+          "source_ids": [
+            "ES_ICT",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность допустима в рамках отношений с группой компаний и условий перевода.",
+          "source_ids": [
+            "ES_ICT",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Срок зависит от подтипа ICT; для менеджера/специалиста предельный период обычно до 3 лет, для стажёра — до 1 года.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Продление зависит от подтипа и максимально допустимой длительности перевода.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_ICT",
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_ICT"
+    },
+    {
+      "route_id": "ES_REUN",
+      "name_ru": "Воссоединение семьи резидента",
+      "official_term_ru": "Autorización de residencia temporal por reagrupación familiar",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Законный резидент Испании после выполнения требований может воссоединить предусмотренных членов семьи.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_REUN_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "SPONSOR",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Иметь подходящего спонсора — иностранного резидента Испании, имеющего право на воссоединение с заявленным членом семьи.",
+          "source_ids": [
+            "ES_REUN"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_REUN_SPONSOR",
+          "type": "FAMILY_BASIS",
+          "subject": "SPONSOR",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Спонсор обычно должен прожить в Испании минимум год и запросить разрешение ещё минимум на год; для отдельных категорий есть исключения.",
+          "source_ids": [
+            "ES_REUN"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_REUN_FIN",
+          "type": "FINANCIAL",
+          "subject": "FAMILY",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить финансовое обеспечение семьи по формуле 150% IPREM для двух членов + 50% IPREM каждого следующего, с отдельными снижениями в случаях с несовершеннолетними.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_IPREM"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 900,
+                "currency": "EUR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": "Для семьи из двух человек требуется 150% IPREM; на каждого следующего — ещё 50% IPREM.",
+                "source_ids": [
+                  "ES_REUN",
+                  "ES_IPREM"
+                ],
+                "confidence": "HIGH",
+                "family_formula_ordered": {
+                  "base_applicant_amount": 900,
+                  "first_additional_member_amount": 0,
+                  "each_further_member_amount": 300
+                },
+                "income_owners": [
+                  "SPONSOR"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "requirement_id": "ES_REUN_HOUSING",
+          "type": "OTHER_BASIS",
+          "subject": "SPONSOR",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить подходящее жильё и медицинское покрытие.",
+          "source_ids": [
+            "ES_REUN"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый сопоставимый срок в днях не установлен в использованном источнике.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_REUN"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Спонсор начинает заявление в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Первичное заявление на воссоединение подаёт спонсор в Испании.",
+          "source_ids": [
+            "ES_REUN"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "После одобрения член семьи получает национальную визу.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Визовый этап после одобрения воссоединения.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_ENTRY_LONG"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_REUN_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или партнёр может быть воссоединён после выполнения спонсором условий.",
+          "source_ids": [
+            "ES_REUN"
+          ]
+        },
+        {
+          "scenario_id": "ES_REUN_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Дети предусмотренных законом категорий могут быть воссоединены.",
+          "source_ids": [
+            "ES_REUN"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Супруг/партнёр, воссоединённый с резидентом, имеет право работать по найму.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_REUN_RENEW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Воссоединённый супруг/партнёр имеет право работать самостоятельно.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима в рамках общего права работать.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Супруг/партнёр, воссоединённый с резидентом, имеет право работать по найму.",
+          "source_ids": [
+            "ES_REUN",
+            "ES_REUN_RENEW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Воссоединённый супруг/партнёр имеет право работать самостоятельно.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима в рамках общего права работать.",
+          "source_ids": [
+            "ES_REUN_RENEW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Срок первоначальной семейной резиденции связан со сроком разрешения спонсора.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 48,
+        "renewal_ru": "Продление семейной резиденции — 4 года и даёт право работать по найму и за свой счёт.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_REUN",
+          "ES_REUN_RENEW",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_REUN"
+    },
+    {
+      "route_id": "ES_PROTECTION",
+      "name_ru": "Международная защита",
+      "official_term_ru": "Solicitud de protección internacional: asilo o protección subsidiaria",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальный риск преследования по защищаемому основанию либо реальный риск серьёзного вреда при возвращении.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_PROT_RISK",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальный риск преследования по защищаемому основанию либо реальный риск серьёзного вреда.",
+          "source_ids": [
+            "ES_ASYLUM",
+            "ES_ASYLUM_PROCESS"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_PROT_RESP",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "DURING_PROCESSING",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Испания должна быть ответственным государством за рассмотрение; после 12 июня 2026 применяются новые процедуры ЕС.",
+          "source_ids": [
+            "ES_ASYLUM_2026"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от применимой обычной, ускоренной или пограничной процедуры по правилам ЕС с 12 июня 2026; одного универсального срока для всей категории не используется.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_ASYLUM_2026"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Обычная процедура запускается на границе либо на территории Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление формализуется лично с интервью.",
+          "source_ids": [
+            "ES_ASYLUM",
+            "ES_ASYLUM_2026"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "NOT_AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Обычное заявление не подаётся из России.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Обычная процедура убежища не является консульской визовой процедурой.",
+          "source_ids": [
+            "ES_ASYLUM"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_PROT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "После признания защиты возможно распространение статуса или воссоединение семьи; условия зависят от родства, зависимости и национальности.",
+          "source_ids": [
+            "ES_ASYLUM_FAMILY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Право работать возникает через шесть месяцев после формализации заявления, если оно остаётся на рассмотрении.",
+          "source_ids": [
+            "ES_ASYLUM_WORK",
+            "ES_REG_2024"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Через шесть месяцев разрешение на работу не ограничено только наймом и допускает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_ASYLUM_WORK",
+            "ES_REG_2024"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Удалённая работа возможна в рамках общего права работать после шестимесячного срока.",
+          "source_ids": [
+            "ES_ASYLUM_WORK",
+            "ES_REG_2024"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "После распространения защиты или семейного воссоединения предоставляется разрешение на проживание и, применимо, работу аналогичной силы.",
+          "source_ids": [
+            "ES_ASYLUM_FAMILY",
+            "ES_ASYLUM_EFFECTS"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейный статус после признания защиты допускает работу в предусмотренном законом объёме.",
+          "source_ids": [
+            "ES_ASYLUM_FAMILY",
+            "ES_ASYLUM_EFFECTS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа допустима в рамках общего права работать.",
+          "source_ids": [
+            "ES_ASYLUM_FAMILY",
+            "ES_ASYLUM_EFFECTS"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Во время рассмотрения действует статус заявителя; положительное решение об убежище или дополнительной защите даёт постоянное разрешение на проживание и работу.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Для признанной международной защиты не применяется обычное продление временного ВНЖ как основной механизм.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Положительное решение сразу даёт постоянное разрешение на проживание и работу.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для признанного беженца срок гражданства по проживанию сокращён до 5 лет; для дополнительной защиты действует общий применимый срок, обычно 10 лет для гражданина РФ.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_ASYLUM_EFFECTS",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Право убежища (статус беженца) и дополнительная защита; процедура после 12 июня 2026 также подчиняется непосредственно применимым регламентам ЕС.",
+        "recognized_grounds_ru": "Для убежища оценивается преследование по защищаемому основанию; для дополнительной защиты — реальный риск серьёзного вреда.",
+        "individual_risk_rule_ru": "Нужно показать индивидуальный обоснованный риск, а не только принадлежность к гражданству или группе.",
+        "protected_ground_link_ru": "Для статуса беженца преследование должно быть связано с расой, религией, гражданством, политическими убеждениями или принадлежностью к определённой социальной группе.",
+        "evidence_rule_ru": "Заявитель излагает обстоятельства на личном интервью и представляет доступные доказательства; действует право на адвоката и переводчика.",
+        "admissibility_ru": "Допустимость и вид процедуры определяются Законом 12/2009 и регламентами ЕС 2024/1348 и 2024/1351, применяемыми с 12 июня 2026.",
+        "safe_third_country_ru": "Могут применяться правила ответственности другого государства и концепции безопасной третьей страны по действующему праву ЕС.",
+        "previous_applications_ru": "Предыдущие заявления и ответственность другого государства ЕС учитываются по действующим правилам управления убежищем.",
+        "right_to_remain_during_processing_ru": "Подача приостанавливает возврат/выдворение в предусмотренных законом случаях; заявитель имеет право оставаться на время процедуры в установленном порядке.",
+        "reception_housing_ru": "При отсутствии средств доступна система приёма в пределах официально установленных условий и наличия права на неё.",
+        "assistance_ru": "Предусмотрены информация, юридическая помощь и социальные меры в установленном законом объёме.",
+        "healthcare_ru": "Заявителю предоставляется доступ к необходимой медицинской помощи в предусмотренном законом объёме.",
+        "appeal_ru": "Отрицательные решения могут обжаловаться; с 12 июня 2026 действуют специальные правила, связанные с новым Пактом ЕС об убежище.",
+        "status_after_positive_decision_ru": "Признание убежища или дополнительной защиты даёт постоянное разрешение на проживание и работу и защиту от возвращения.",
+        "source_ids": [
+          "ES_ASYLUM",
+          "ES_ASYLUM_PROCESS",
+          "ES_ASYLUM_2026",
+          "ES_ASYLUM_EFFECTS",
+          "ES_ASYLUM_APPEAL_2026"
+        ]
+      },
+      "official_source_id": "ES_ASYLUM"
+    },
+    {
+      "route_id": "ES_RESEARCHER",
+      "name_ru": "Исследователь",
+      "official_term_ru": "Autorización de residencia para investigación",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Исследование, разработка, инновации или предусмотренная законом подготовка в публичной или частной организации.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_RES_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подходящий исследовательский договор, hosting agreement или иное предусмотренное ст. 72 основание.",
+          "source_ids": [
+            "ES_RESEARCHER",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на разрешение Закона 14/2013 подаётся электронно.",
+          "source_ids": [
+            "ES_UGE_APPLY",
+            "ES_LAW14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Для ряда UGE-разрешений возможна подача при законном нахождении/действующем статусе в Испании.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Конкретный субъект подачи зависит от маршрута.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_RESEARCHER_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления по Закону 14/2013 могут подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение позволяет исследовательскую деятельность и, для исследовательской UE, связанную преподавательскую деятельность.",
+          "source_ids": [
+            "ES_RESEARCHER",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность вне исследовательского основания не является целью разрешения.",
+          "source_ids": [
+            "ES_RESEARCHER",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённый формат допустим в пределах исследовательского договора/соглашения.",
+          "source_ids": [
+            "ES_RESEARCHER",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Разрешение для исследования — 3 года либо срок договора/hosting agreement, если он короче.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление — 2 года.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_RESEARCHER",
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_RESEARCHER"
+    },
+    {
+      "route_id": "ES_AUDIOVISUAL",
+      "name_ru": "Работник аудиовизуального и культурного сектора",
+      "official_term_ru": "Autorización de residencia para profesionales del sector audiovisual y cultural",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Работа артистом, техником или профессионалом аудиовизуального/культурного сектора на период свыше 180 дней.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ES_AUDIO_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Иметь одобренную профессиональную деятельность в аудиовизуальном или культурном секторе на срок свыше 180 дней.",
+          "source_ids": [
+            "ES_AUDIOVISUAL",
+            "ES_AUDIOVISUAL_ORDER"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Специальный режим устанавливает максимальный срок решения 20 дней.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_AUDIOVISUAL_ORDER"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление на резиденцию подаётся компанией/уполномоченным субъектом электронно.",
+          "source_ids": [
+            "ES_AUDIOVISUAL",
+            "ES_AUDIOVISUAL_ORDER"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": {
+            "lat": 55.7558,
+            "lon": 37.6173
+          },
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "После одобрения резиденции находящийся за рубежом заявитель получает соответствующую визу.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Визовый этап после одобрения разрешения.",
+          "source_ids": [
+            "ES_AUDIOVISUAL",
+            "ES_ENTRY_LONG"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_AUDIO_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Сопровождающие члены семьи предусмотрены специальным режимом аудиовизуального сектора.",
+          "source_ids": [
+            "ES_AUDIOVISUAL_ORDER"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение позволяет выполнять одобренную работу в аудиовизуальном/культурном секторе.",
+          "source_ids": [
+            "ES_AUDIOVISUAL",
+            "ES_AUDIOVISUAL_ORDER"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность зависит от формы одобренной профессиональной деятельности.",
+          "source_ids": [
+            "ES_AUDIOVISUAL_ORDER"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённый формат возможен только как часть одобренной деятельности сектора.",
+          "source_ids": [
+            "ES_AUDIOVISUAL_ORDER"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация по Закону 14/2013 разрешает работу.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Семейная авторизация разрешает самостоятельную деятельность.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа разрешена при наличии права работать.",
+          "source_ids": [
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Разрешение — на срок договора/перевода, максимум 2 года.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Возможно продление последующими периодами до 2 лет при сохранении основания.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_AUDIOVISUAL_ORDER",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_AUDIOVISUAL"
+    },
+    {
+      "route_id": "ES_INTERNSHIP",
+      "name_ru": "Резиденция для практики",
+      "official_term_ru": "Autorización de residencia para prácticas",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Практика по соглашению или договору после получения высшего образования в последние два года либо во время обучения для высшего образования.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "ES_INT_EDU",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Иметь высшее образование, полученное в последние два года, либо проходить обучение, ведущее к высшему образованию.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ES_INT_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Заключить соглашение о практике или трудовой договор на практику с принимающей организацией.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 20,
+        "official_rule_ru": "Максимальный срок решения по разрешениям Закона 14/2013 — 20 дней с электронной подачи.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ES_LAW14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Не применимо.",
+          "rule_checked_at": "2026-08-07",
+          "condition_ru": "Заявление подаётся в установленном электронном порядке принимающей стороной/уполномоченным субъектом.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ES_INT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": null,
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Разрешение для практики не исследуется как самостоятельное семейное основание; семье нужен отдельный подходящий маршрут.",
+          "source_ids": [
+            "ES_INTERNSHIP"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "При трудовом договоре на практику работа осуществляется по его условиям; при нетрудовом соглашении статус не равен общему разрешению на работу.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешение на практику само по себе не является разрешением на самостоятельную деятельность.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённый формат зависит от условий конкретной практики и не является самостоятельным основанием.",
+          "source_ids": [
+            "ES_INTERNSHIP",
+            "ES_LAW14"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": null,
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Разрешение для практики — 12 месяцев или срок соглашения, если он короче.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Возможно одно продление; общий срок первоначального разрешения и продления по соглашению не превышает 2 лет.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После пяти лет законного и непрерывного проживания при выполнении условий можно претендовать на долгосрочную резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 10,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для гражданина РФ общий срок гражданства по проживанию — 10 лет законного, непрерывного проживания непосредственно перед заявлением.",
+        "renunciation_required": true,
+        "presence_rule_ru": "Для ПМЖ и гражданства действуют требования законного и непрерывного проживания и ограничения на отсутствия.",
+        "language_requirements_ru": "Для гражданства обычно требуются CCSE и DELE A2, если нет законного освобождения.",
+        "source_ids": [
+          "ES_INTERNSHIP",
+          "ES_LAW14",
+          "ES_LONG",
+          "ES_CIVIL_CODE_22"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "ES_INTERNSHIP"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "ES_MADRID",
+      "name_ru": "Мадрид",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Размер выбран относительно национальной системы расселения Испании.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1378.4,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "1 спальня в центре, ориентир Numbeo.",
+          "price_date": "2026-06-14",
+          "source_ids": [
+            "ES_NUMBEO_MADRID"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 35,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Обычный месячный проездной.",
+          "price_date": "2026-06-14",
+          "source_ids": [
+            "ES_NUMBEO_MADRID"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 168.39,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Базовые коммунальные услуги для квартиры около 85 м².",
+          "price_date": "2026-06-14",
+          "source_ids": [
+            "ES_NUMBEO_MADRID"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Континентальный средиземноморский",
+        "cold_min_c": 1,
+        "cold_max_c": 11,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 33,
+        "hot_months": [
+          6,
+          7,
+          8
+        ],
+        "climate_normal_period": "1991-2020",
+        "notes_ru": "Сухое жаркое лето; возможны волны жары.",
+        "source_ids": [
+          "ES_AEMET"
+        ]
+      },
+      "source_ids": [
+        "ES_NUMBEO_MADRID",
+        "ES_AEMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ES_SAN_SEBASTIAN",
+      "name_ru": "Сан-Себастьян",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Размер выбран относительно национальной системы расселения Испании.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1230,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "1 спальня в центре, ориентир Numbeo.",
+          "price_date": "2026-05-04",
+          "source_ids": [
+            "ES_NUMBEO_SANSE"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Океанический",
+        "cold_min_c": 5,
+        "cold_max_c": 13,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 16,
+        "hot_max_c": 25,
+        "hot_months": [
+          7,
+          8
+        ],
+        "climate_normal_period": "1991-2020",
+        "notes_ru": "Мягкое лето и высокая влажность; осадки распределены по году.",
+        "source_ids": [
+          "ES_AEMET"
+        ]
+      },
+      "source_ids": [
+        "ES_NUMBEO_SANSE",
+        "ES_AEMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ES_BURGOS",
+      "name_ru": "Бургос",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Размер выбран относительно национальной системы расселения Испании.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 683.33,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "1 спальня в центре.",
+          "price_date": "2026-05-07",
+          "source_ids": [
+            "ES_NUMBEO_BURGOS"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 118.56,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Базовые коммунальные услуги для квартиры около 85 м².",
+          "price_date": "2026-05-07",
+          "source_ids": [
+            "ES_NUMBEO_BURGOS"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Континентальный высокогорный",
+        "cold_min_c": -1,
+        "cold_max_c": 8,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 11,
+        "hot_max_c": 28,
+        "hot_months": [
+          7,
+          8
+        ],
+        "climate_normal_period": "1991-2020",
+        "notes_ru": "Холодные зимние ночи; заметная суточная амплитуда.",
+        "source_ids": [
+          "ES_AEMET"
+        ]
+      },
+      "source_ids": [
+        "ES_NUMBEO_BURGOS",
+        "ES_AEMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ES_JAEN",
+      "name_ru": "Хаэн",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Размер выбран относительно национальной системы расселения Испании.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 500,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "1 спальня в центре.",
+          "price_date": "2026-02-24",
+          "source_ids": [
+            "ES_NUMBEO_JAEN"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 168.39,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Базовые коммунальные услуги для квартиры около 85 м².",
+          "price_date": "2026-02-24",
+          "source_ids": [
+            "ES_NUMBEO_JAEN"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Жаркий средиземноморский",
+        "cold_min_c": 4,
+        "cold_max_c": 15,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 36,
+        "hot_months": [
+          6,
+          7,
+          8
+        ],
+        "climate_normal_period": "1991-2020",
+        "notes_ru": "Летом возможна экстремальная жара выше типичного диапазона.",
+        "source_ids": [
+          "ES_AEMET"
+        ]
+      },
+      "source_ids": [
+        "ES_NUMBEO_JAEN",
+        "ES_AEMET"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Испания (общегосударственные правила; администрирование — автономные сообщества)",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Испанский и, в автономных сообществах, соответствующий соофициальный язык; конкретная школа зависит от региона.",
+        "compulsory_age_min": 6,
+        "compulsory_age_max": 16,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Начальная школа и ESO обязательны; ESO прямо определяется как обязательная и бесплатная. Иностранные ученики школьного возраста включаются в соответствующий курс с учётом возраста и предыдущего обучения.",
+        "source_ids": [
+          "ES_EDU_PRIMARY",
+          "ES_EDU_SECONDARY"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [
+      {
+        "school_id": "ES_ICS_MADRID",
+        "name_ru": "International College Spain",
+        "city_id": "ES_MADRID",
+        "tuition": null,
+        "paid_months_per_year": null,
+        "admission_fee": null,
+        "source_ids": [
+          "ES_ICS"
+        ]
+      },
+      {
+        "school_id": "ES_STPATRICK_SANSE",
+        "name_ru": "St. Patrick's English School",
+        "city_id": "ES_SAN_SEBASTIAN",
+        "tuition": null,
+        "paid_months_per_year": null,
+        "admission_fee": null,
+        "source_ids": [
+          "ES_STPATRICK"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "dog_breed_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Для некоторых пород/типов собак действует национальный режим потенциально опасных животных с дополнительными требованиями; общие ветеринарные процедуры в продукт не входят.",
+      "source_ids": [
+        "ES_DOG"
+      ]
+    },
+    "cat_breed_restrictions": {
+      "status": "RESEARCHED_NONE_FOUND",
+      "explanation_ru": "В проверенных национальных правилах не найден сопоставимый список запрещённых пород кошек; обычные ветеринарные условия исключены из продукта.",
+      "source_ids": [
+        "ES_PET"
+      ]
+    },
+    "regional_restrictions": {
+      "status": "RESEARCHED_NO_RELIABLE_DATA",
+      "explanation_ru": "Единой подтверждённой матрицы региональных породных ограничений для всех автономных сообществ не собрано.",
+      "source_ids": [
+        "ES_PET",
+        "ES_DOG"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-07",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны; национальное право не криминализует их.",
+    "state_restrictions_ru": "Системных государственных запретов на однополые отношения или LGTBI-организации в действующем национальном праве не выявлено; Закон 4/2023, напротив, закрепляет защиту и равенство.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Гражданский кодекс устанавливает одинаковые требования и последствия брака для пар одного и разного пола.",
+    "registered_partnership_recognized": "YES",
+    "registered_partnership_rule_ru": "Партнёрства регулируются также на региональном уровне; для миграции Закон об иностранцах и новые семейные правила признают предусмотренные формы зарегистрированной/стабильной связи.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранные семейные документы могут использоваться при соблюдении испанских правил действительности, регистрации/легализации и доказательства связи; конкретная миграционная процедура определяет требования.",
+    "parenthood_ru": "Испанское право признаёт семейное разнообразие и равные последствия установленных форм родительства; конкретное иностранное родительство требует проверки документов для миграционной процедуры.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "работа",
+        "жильё",
+        "товары и услуги",
+        "образование",
+        "здравоохранение",
+        "действия публичной власти"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Доступны административные, судебные и иные механизмы защиты от дискриминации по общему законодательству и Закону 4/2023.",
+      "rule_ru": "Закон 4/2023 устанавливает меры предотвращения и устранения дискриминации LGTBI в публичной и частной сферах.",
+      "source_ids": [
+        "ES_LGBT_LAW4",
+        "ES_ANTIDISCR"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Профильные отчёты фиксируют сохраняющиеся случаи дискриминации и насилия, но не системный запрет открытой жизни со стороны государства.",
+    "regional_differences_ru": "Практическая среда и региональные законы/институциональные механизмы различаются между автономными сообществами; национальные гарантии действуют по всей стране.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "HETEROGENEOUS",
+    "assessment_basis_ru": "Брак и семейное признание доступны, действует широкая национальная антидискриминационная защита; одновременно профильные отчёты показывают сохраняющиеся различия практической среды и случаи дискриминации.",
+    "source_ids": [
+      "ES_MARRIAGE",
+      "ES_LGBT_LAW4",
+      "ES_ANTIDISCR",
+      "ES_FRA"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-07",
+    "tax_residency_rule_ru": "Физлицо обычно становится налоговым резидентом Испании при пребывании более 183 дней в календарном году либо если в Испании находится основной центр его деятельности или экономических интересов; существует также опровержимая семейная презумпция.",
+    "typical_day_threshold": 183,
+    "other_residency_triggers_ru": "Основной центр или база деятельности/экономических интересов в Испании; презумпция при обычном проживании в Испании нераздельного супруга и зависимых несовершеннолетних детей.",
+    "personal_income_tax_ru": "Налоговый резидент платит IRPF с мирового дохода. Итоговая ставка зависит от вида дохода и автономного сообщества, поэтому единый рейтинг по ставке в v3.0 не строится.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Обязательные социальные взносы зависят от трудового статуса: наёмный работник и работодатель платят взносы по правилам Seguridad Social, самозанятые — по режиму autónomos; точная персональная сумма не моделируется в v3.0.",
+    "foreign_income_ru": "Налоговый резидент Испании в общем случае декларирует мировой доход с учётом применимых правил устранения двойного налогообложения.",
+    "double_taxation_with_russia_ru": "Agencia Tributaria продолжает публиковать разъяснение для резидентов Испании с доходами из России и отсылает к испано-российскому соглашению об избежании двойного налогообложения. Практическое применение со стороны РФ после односторонних ограничений требует отдельной налоговой проверки и не используется в рейтинге.",
+    "source_ids": [
+      "ES_TAX_RU"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "ES_GAP_CITY_COST",
+      "block": "CITIES_COST",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для четырёх городов нет одинаково полного набора прямых компонентов продуктов и базовой медицины; Numbeo хорошо покрывает аренду и часть транспорта/коммунальных услуг, но одинаковая месячная корзина не подтверждена.",
+      "handling_ru": "Показывать доступные прямые компоненты; медианную стоимость и критерий сортировки по цене пропускать до сопоставимой корзины."
+    },
+    {
+      "item_id": "ES_GAP_SCHOOL_FEES",
+      "block": "SCHOOLS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для подтверждённых международных школ не найдены надёжно опубликованные актуальные тарифы 2026/27 в первичных источниках.",
+      "handling_ru": "Показывать наличие школ; стоимость не считать и не заменять нулём."
+    },
+    {
+      "item_id": "ES_GAP_PETS_REGIONAL",
+      "block": "PETS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Не собрана единая надёжная матрица региональных породных ограничений по всем автономным сообществам.",
+      "handling_ru": "Показывать подтверждённое национальное правило и честно отмечать региональный пробел."
+    },
+    {
+      "item_id": "ES_GAP_LGBT_CITIES",
+      "block": "LGBT",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Не найдено единое актуальное методологичное исследование ЛГБТ-жителей, позволяющее ранжировать испанские города как «наиболее лояльные» по стандарту проекта.",
+      "handling_ru": "Не придумывать список городов; показывать национальную правовую и практическую оценку без городского рейтинга."
+    },
+    {
+      "item_id": "ES_GAP_ICT_DURATION",
+      "block": "LONG_TERM",
+      "priority": "LOW",
+      "related_route_id": "ES_ICT",
+      "blocks_publication": false,
+      "missing_ru": "Точный первоначальный срок ICT зависит от подтипа (ICT-EU менеджер/специалист/стажёр либо национальный ICT), поэтому одно значение first_permit_months не используется.",
+      "handling_ru": "Показывать текстовое правило срока и не использовать одно искусственное число."
+    },
+    {
+      "item_id": "ES_GAP_FAMSP_CIT",
+      "block": "LONG_TERM",
+      "priority": "LOW",
+      "related_route_id": "ES_FAM_SP",
+      "blocks_publication": false,
+      "missing_ru": "Срок гражданства внутри широкого семейного маршрута различается: супруг испанца может иметь 1-летнее исключение, другие родственники — нет.",
+      "handling_ru": "Показывать условное правило и не присваивать всей категории одно число."
+    },
+    {
+      "item_id": "ES_GAP_INTERNSHIP_FAMILY",
+      "block": "FAMILY",
+      "priority": "HIGH",
+      "related_route_id": "ES_INTERNSHIP",
+      "blocks_publication": true,
+      "missing_ru": "Для маршрута практики не исследован подтверждённый отдельный семейный маршрут или собственный долгосрочный путь сопровождающих членов семьи.",
+      "handling_ru": "Маршрут ES_INTERNSHIP временно publishable=false; исследовать linked_route_id либо member_long_term_path до публикации."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "READY",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_INTERNSHIP_FAMILY"
+        ]
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_ICT_DURATION",
+          "ES_GAP_FAMSP_CIT"
+        ]
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_CITY_COST"
+        ]
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_SCHOOL_FEES"
+        ]
+      },
+      {
+        "block": "PETS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_PETS_REGIONAL"
+        ]
+      },
+      {
+        "block": "LGBT",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ES_GAP_LGBT_CITIES"
+        ]
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "ES_DNV",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Международные телеработники — первичная подача",
+      "url": "https://www.inclusion.gob.es/documents/d/unidadgrandesempresas/informacion-documentacion-pagina-web-titular-v2",
+      "supports_ru": "200% SMI, семейные надбавки, три месяца дохода, покрытие недостающего дохода ликвидными накоплениями, квалификация.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_LAW14",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Закон 14/2013",
+      "url": "https://boe.es/buscar/act.php?id=BOE-A-2013-10074&p=20250409&tn=0",
+      "supports_ru": "DNV, предприниматель, HQP, ICT и сроки разрешений.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NLV",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Первичная некоммерческая резиденция",
+      "url": "https://inclusion.gob.es/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-no-lucrativa",
+      "supports_ru": "400% IPREM заявителю, 100% каждому члену семьи, отсутствие права работать, консульская подача, срок один год.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NLV_RENEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Продление некоммерческой резиденции",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/renovacion-de-la-autorizacion-de-residencia-temporal-no-lucrativa",
+      "supports_ru": "Продление NLV на два года.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_NLV_MOSCOW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Consulado General de España en Moscú",
+      "title_ru": "Виза некоммерческой резиденции",
+      "url": "https://www.exteriores.gob.es/Consulados/moscu/es/ServiciosConsulares/Paginas/index.aspx?scca=Visados&scco=Rusia&scd=203&scs=Visados+Nacionales+-+Visado+de+residencia+no+lucrativa",
+      "supports_ru": "Применимость к гражданам/резидентам консульского округа РФ, семья и место подачи.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_SELF",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Работа за свой счёт",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-y-trabajo-por-cuenta-propia",
+      "supports_ru": "Проект самостоятельной деятельности, консульская подача, первый год.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_SELF_RENEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Продление работы за свой счёт",
+      "url": "https://www.inclusion.gob.es/web/migraciones/w/15.-renovacion-de-la-autorizacion-de-residencia-temporal-y-trabajo-por-cuenta-propia",
+      "supports_ru": "Продление на четыре года.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_FAM_SP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Семья гражданина Испании",
+      "url": "https://ciudadaniaexterior.inclusion.gob.es/web/migraciones/w/18.-autorizacion-de-residencia-temporal-de-familiares-de-personas-con-nacionalidad-espanola",
+      "supports_ru": "Семейное основание, подача, срок до пяти лет, право работать.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_EMP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Работа по найму",
+      "url": "https://ciudadaniaexterior.inclusion.gob.es/web/migraciones/w/autorizacion-inicial-de-residencia-temporal-y-trabajo-por-cuenta-ajena-hi-16-",
+      "supports_ru": "Работодатель подаёт заявление; срок более 90 дней и менее пяти лет.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_STUDY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Долгосрочная учёба",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/estancia-por-estudios",
+      "supports_ru": "Учебное основание, 100% IPREM, срок по программе.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_ENT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Unidad de Grandes Empresas y Colectivos Estratégicos",
+      "title_ru": "Предприниматели",
+      "url": "https://www.inclusion.gob.es/en/web/unidadgrandesempresas/emprendedores",
+      "supports_ru": "Инновационный проект без фиксированного минимального капитала.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_HQP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Unidad de Grandes Empresas y Colectivos Estratégicos",
+      "title_ru": "Высококвалифицированные специалисты",
+      "url": "https://www.inclusion.gob.es/en/web/unidadgrandesempresas/profesionales-altamente-cualificados",
+      "supports_ru": "Квалифицированная оферта и образование либо опыт.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_ICT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Unidad de Grandes Empresas y Colectivos Estratégicos",
+      "title_ru": "Внутрикорпоративный перевод ICT",
+      "url": "https://www.inclusion.gob.es/gl/web/unidadgrandesempresas/trabajadores",
+      "supports_ru": "Подтипы руководителей, специалистов и стажёров.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "gl"
+    },
+    {
+      "source_id": "ES_REUN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Воссоединение семьи резидента",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/autorizacion-de-residencia-temporal-por-reagrupacion-familiar",
+      "supports_ru": "150% IPREM на двух членов, права семьи работать, срок по разрешению спонсора.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_LONG",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Национальная длительная резиденция",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/49.-autorizacion-de-residencia-de-larga-duracion-nacional",
+      "supports_ru": "Длительная резиденция после пяти лет.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_CIT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Justicia",
+      "title_ru": "Гражданство по проживанию",
+      "url": "https://www.mjusticia.gob.es/es/ciudadania/tramites/nacionalidad-residencia",
+      "supports_ru": "Законное непрерывное проживание, CCSE и DELE.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_CIVIL",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Гражданский кодекс",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1889-4763",
+      "supports_ru": "Общий десятилетний срок и декларация отказа от прежнего гражданства.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_SMI",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "SMI 2026",
+      "url": "https://boe.es/buscar/doc.php?id=BOE-A-2026-3815",
+      "supports_ru": "SMI 1 221 EUR в месяц.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-02-19",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_IPREM",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Servicio Público de Empleo Estatal",
+      "title_ru": "SMI и IPREM",
+      "url": "https://sepe.es/HomeSepe/prestaciones-desempleo/Cuantias-anuales.html",
+      "supports_ru": "IPREM 600 EUR в месяц.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ENTRY_SHORT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Consulado General de España en Moscú",
+      "title_ru": "Шенгенская виза",
+      "url": "https://www.exteriores.gob.es/Consulados/moscu/es/ServiciosConsulares/Paginas/index.aspx?scca=Visados&scco=Rusia&scd=203&scs=Visado+de+estancia+%28visado+Schengen%29",
+      "supports_ru": "Гражданам РФ нужна шенгенская виза для поездки до 90 дней.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ENTRY_LONG",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Consulado General de España en Moscú",
+      "title_ru": "Национальные визы",
+      "url": "https://www.exteriores.gob.es/Consulados/moscu/es/ServiciosConsulares/Paginas/index.aspx?scca=Visados&scco=Rusia&scd=203&scs=Visados+Nacionales+-+Informaci%C3%B3n+general",
+      "supports_ru": "Национальная виза для проживания, работы или учёбы свыше 90 дней.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_INV_REPEAL",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Отмена инвесторских статей 63–67",
+      "url": "https://boe.es/buscar/act.php?id=BOE-A-2013-10074&p=20250409&tn=1",
+      "supports_ru": "Новые инвесторские разрешения отменены с 3 апреля 2025 года.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Подача на международную защиту",
+      "url": "https://proteccion-asilo.interior.gob.es/es/proteccion-internacional/presentacion-de-la-solicitud/index.html",
+      "supports_ru": "Подача на границе или в Испании и интервью.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_PROCESS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Рассмотрение международной защиты",
+      "url": "https://proteccion-asilo.interior.gob.es/es/proteccion-internacional/tramitacion-de-la-solicitud/",
+      "supports_ru": "Допуск и углублённое рассмотрение.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_MARRIAGE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Закон 13/2005",
+      "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2005-11364",
+      "supports_ru": "Равный доступ однополых пар к браку.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ANTIDISCR",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Закон 15/2022",
+      "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2022-11589",
+      "supports_ru": "Запрет дискриминации по сексуальной ориентации и гендерной идентичности.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_FRA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "European Union Agency for Fundamental Rights",
+      "title_ru": "LGBTIQ equality at a crossroads",
+      "url": "https://fra.europa.eu/en/publication/2024/lgbtiq-equality-crossroads-progress-and-challenges",
+      "supports_ru": "Методологическое исследование реального опыта ЛГБТИК-людей.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2024-05-14",
+      "language": "en"
+    },
+    {
+      "source_id": "ES_SCHOOL",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación, Formación Profesional y Deportes",
+      "title_ru": "Доступ к обязательному среднему образованию",
+      "url": "https://educagob.educacionfpydeportes.gob.es/ensenanzas/secundaria/informacion-general/acceso.html",
+      "supports_ru": "Доступ к обязательному государственному образованию.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_PET",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Agricultura, Pesca y Alimentación",
+      "title_ru": "Ввоз собак и кошек",
+      "url": "https://www.mapa.gob.es/es/ganaderia/temas/comercio-exterior-ganadero/desplazamiento-animales-compania/dogs-cats-ferrets.aspx",
+      "supports_ru": "Национальные правила ввоза; отдельный породный запрет не найден.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_DOG",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Королевский декрет 287/2002",
+      "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2002-6016",
+      "supports_ru": "Породы потенциально опасных собак и режим владения.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_AEMET",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Agencia Estatal de Meteorología",
+      "title_ru": "Климатические нормы Испании",
+      "url": "https://www.aemet.es/es/serviciosclimaticos/datosclimatologicos/valoresclimatologicos",
+      "supports_ru": "Климатические нормы выбранных станций.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_COST",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Стоимость жизни в городах Испании",
+      "url": "https://livingcost.org/cost/spain",
+      "supports_ru": "Оценки одного человека и семьи из четырёх.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_NUMBEO",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Аренда и международные школы",
+      "url": "https://www.numbeo.com/cost-of-living/country_result.jsp?country=Spain",
+      "supports_ru": "Ориентиры аренды и международных школ.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_ECB",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "European Central Bank",
+      "title_ru": "Конвертер валют ЕЦБ",
+      "url": "https://data.ecb.europa.eu/currency-converter",
+      "supports_ru": "Ориентировочный курс EUR/USD для пересчёта практических цен; юридические пороги хранятся в EUR.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "ES_EMP_RENEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Продление временной резиденции и работы по найму",
+      "url": "https://ciudadaniaexterior.inclusion.gob.es/web/migraciones/w/renovacion-de-la-autorizacion-de-residencia-temporal-y-trabajo-por-cuenta-ajena",
+      "supports_ru": "Условия продления; подача работником; продление на четыре года и право работать по найму и за свой счёт по всей Испании.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-05-01",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_STUDY_WORK",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Доступ к работе обладателей долгосрочного учебного пребывания",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/hoja-4-bis-acceso-al-empleo-de-las-personas-titulares-de-una-autorizacion-de-estancia-de-larga-duracion-por-estudios-movilidad-de-alumnos-servicios-de-voluntariado-o-actividades-formativas",
+      "supports_ru": "Работа по найму и за свой счёт должна быть совместима с учёбой и обычно ограничена 30 часами в неделю.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-05-01",
+      "language": "en"
+    },
+    {
+      "source_id": "ES_UGE_APPLY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Unidad de Grandes Empresas y Colectivos Estratégicos",
+      "title_ru": "Электронная подача заявлений по Закону 14/2013",
+      "url": "https://www.inclusion.gob.es/web/unidadgrandesempresas/solicitudes",
+      "supports_ru": "Заявления и связанные документы по Закону 14/2013 подаются электронно.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_HQP_SALARY_ORDER",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Приказ PJC/44/2026 о зарплатном пороге для Голубой карты ЕС",
+      "url": "https://www.boe.es/eli/es/o/2026/01/27/pjc44",
+      "supports_ru": "Общий порог 1,4 средней годовой зарплаты и коэффициент 0,8 для предусмотренных законом случаев.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-30",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_HQP_SALARY_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Unidad de Grandes Empresas y Colectivos Estratégicos",
+      "title_ru": "Обновление зарплатного порога Голубой карты ЕС, июнь 2026",
+      "url": "https://www.inclusion.gob.es/documents/d/unidadgrandesempresas/umbral-salarial.pdf",
+      "supports_ru": "Порог 2026: 41 356,36 EUR; сниженный порог: 33 085,09 EUR.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-01",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_REUN_RENEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Продление временной резиденции по воссоединению семьи",
+      "url": "https://inclusion.gob.es/web/migraciones/w/renovacion-de-la-autorizacion-de-residencia-por-reagrupacion-familiar.",
+      "supports_ru": "Продление на четыре года, связанное со статусом спонсора; неограниченное право работать по найму и за свой счёт.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-05-01",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_2026",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Инструкция от 11 июня 2026 года о новых процедурах международной защиты",
+      "url": "https://www.boe.es/eli/es/ins/2026/06/11/%281%29",
+      "supports_ru": "С 12 июня 2026 года заявления рассматриваются по процедурам Регламента ЕС 2024/1348: пограничной, ускоренной или обычной, с определением ответственного государства.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-13",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_WORK",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Регламент об авторизации работы заявителей международной защиты",
+      "url": "https://www.boe.es/diario_boe/txt.php?id=BOE-A-2024-24099",
+      "supports_ru": "Заявитель получает право работать через шесть месяцев после подачи при допуске заявления и отсутствии решения не по его вине.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2024-11-20",
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_FAMILY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Расширение и воссоединение семьи при международной защите",
+      "url": "https://proteccion-asilo.interior.gob.es/es/proteccion-internacional/extension-y-reagrupacion-familiar/",
+      "supports_ru": "Категории семьи, расширение защиты, воссоединение и аналогичные права на проживание и работу.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_EFFECTS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Последствия положительного решения по международной защите",
+      "url": "https://proteccion-asilo.interior.gob.es/es/proteccion-internacional/efectos-de-la-resolucion/",
+      "supports_ru": "Положительное решение предоставляет постоянное разрешение на проживание и работу.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_CIVIL_CODE_22",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Гражданский кодекс Испании, статья 22",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-1889-4763",
+      "supports_ru": "Общий срок гражданства 10 лет, 5 лет для признанных беженцев и 1 год для супруга гражданина Испании при соблюдении условий.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_REG_2024",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Регламент иностранцев RD 1155/2024",
+      "url": "https://www.boe.es/buscar/act.php?id=BOE-A-2024-24099",
+      "supports_ru": "Действующие с 20 мая 2025 правила обычных резиденций, работы, семьи, учёбы и продлений.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_RESEARCHER",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Исследователи — UGE",
+      "url": "https://www.inclusion.gob.es/en/web/unidadgrandesempresas/investigadores",
+      "supports_ru": "Исследовательские разрешения по ст. 72 Закона 14/2013.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_AUDIOVISUAL",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Работники аудиовизуального и культурного сектора",
+      "url": "https://www.inclusion.gob.es/en/web/unidadgrandesempresas/sector-audiovisual-y-cultural",
+      "supports_ru": "Резиденция свыше 180 дней для работников аудиовизуального и культурного сектора.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_AUDIOVISUAL_ORDER",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Orden PCM/1238/2021",
+      "url": "https://www.boe.es/buscar/doc.php?id=BOE-A-2021-18531",
+      "supports_ru": "Процедура и условия для работников аудиовизуального сектора и сопровождающей семьи.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_INTERNSHIP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Inclusión, Seguridad Social y Migraciones",
+      "title_ru": "Разрешение на резиденцию для практики",
+      "url": "https://www.inclusion.gob.es/en/web/migraciones/w/21.-autorizacion-de-residencia-para-practicas",
+      "supports_ru": "Практика после высшего образования или во время обучения; договор/соглашение.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_TAX_RU",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Agencia Tributaria",
+      "title_ru": "Налоговые резиденты Испании с доходом из России",
+      "url": "https://sede.agenciatributaria.gob.es/Sede/ayuda/manuales-videos-folletos/folletos/folletos-residentes-rentas-extranjeras/rusia.html",
+      "supports_ru": "Резидентство >183 дней, центр экономических интересов, мировые доходы и ссылка на российско-испанское соглашение.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_LGBT_LAW4",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Закон 4/2023 о равенстве LGTBI",
+      "url": "https://www.boe.es/eli/es/l/2023/02/28/4/con",
+      "supports_ru": "Национальные гарантии равенства и запрета дискриминации LGTBI.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_EDU_PRIMARY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación, Formación Profesional y Deportes",
+      "title_ru": "Доступ к начальному образованию",
+      "url": "https://educagob.educacionfpydeportes.gob.es/en/ensenanzas/primaria/informacion-general/acceso.html",
+      "supports_ru": "Обязательная школа с 6 лет; иностранные школьники включаются в систему.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_EDU_SECONDARY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación, Formación Profesional y Deportes",
+      "title_ru": "Доступ к ESO",
+      "url": "https://educagob.educacionfpydeportes.gob.es/ensenanzas/secundaria/informacion-general/acceso.html",
+      "supports_ru": "ESO обязательна и бесплатна, обычно 12–16 лет; иностранные школьники принимаются.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ICS",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "International Baccalaureate Organization",
+      "title_ru": "International College Spain — IB World School",
+      "url": "https://www.ibo.org/en/school/000168",
+      "supports_ru": "Подтверждает международную школу в Мадриде и язык обучения.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_STPATRICK",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "St. Patrick's English School",
+      "title_ru": "St. Patrick's English School — San Sebastián",
+      "url": "https://www.st-patricks.com/en/quienes-somos/1976/school-we-want-our-children",
+      "supports_ru": "Подтверждает англоязычную частную школу в Сан-Себастьяне.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NUMBEO_MADRID",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Стоимость жизни — Мадрид",
+      "url": "https://www.numbeo.com/cost-of-living/in/Madrid",
+      "supports_ru": "Аренда, транспорт, коммунальные услуги; обновлено летом 2026.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NUMBEO_SANSE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Стоимость жизни — Сан-Себастьян",
+      "url": "https://www.numbeo.com/cost-of-living/in/San-Sebastian",
+      "supports_ru": "Аренда и сопоставимые городские цены; май 2026.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NUMBEO_BURGOS",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Стоимость жизни — Бургос",
+      "url": "https://www.numbeo.com/cost-of-living/in/Burgos-Spain",
+      "supports_ru": "Аренда, транспорт, коммунальные услуги; май 2026.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_NUMBEO_JAEN",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Стоимость жизни — Хаэн",
+      "url": "https://www.numbeo.com/cost-of-living/in/Jaen-Spain",
+      "supports_ru": "Аренда и коммунальные услуги; февраль 2026.",
+      "checked_at": "2026-08-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "ES_ASYLUM_APPEAL_2026",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Boletín Oficial del Estado",
+      "title_ru": "Инструкция 11 июня 2026 о пересмотре решений по международной защите",
+      "url": "https://www.boe.es/eli/es/ins/2026/06/11/%282%29",
+      "supports_ru": "Обжалование после начала применения нового Пакта ЕС об убежище с 12 июня 2026.",
+      "checked_at": "2026-08-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    }
+  ],
+  "pending_changes": [],
+  "canon_revision": "2026-08-08-final-lock"
+}
