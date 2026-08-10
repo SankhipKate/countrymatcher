@@ -12,6 +12,7 @@ import {
   compareFinancialAmount,
   evaluateEngineRule,
   evaluateFinancialRequirement,
+  evaluateFamilyScenarios,
   evaluateRoute,
 } from '../js/engine/rp4-engine.js';
 
@@ -32,9 +33,17 @@ const incomeSource = (owner, type, amount, currency = 'EUR', countryId = 'US', g
 });
 const profile = ({ applicantAmount = 4000, applicantCurrency = 'EUR', applicantType = 'REMOTE_EMPLOYMENT',
   applicantCountryId = 'US', applicantGeography = 'SINGLE_COUNTRY', additionalSources = [],
-  partnerAmount = null, savings = null, capital = null, adults = 1, children = 0 } = {}) => ({
+  partnerAmount = null, savings = null, capital = null, adults = 1, children = 0, childAges = null,
+  partnerIncluded = adults === 2, relationshipType = partnerIncluded ? 'MARRIED' : null, schoolNeeded = null } = {}) => ({
   residence: { current_country: 'RU', current_status: 'CITIZEN' },
-  family: { adults_count: adults, adult_ages: Array(adults).fill(35), children: Array(children).fill(null).map(() => ({ age_years: 7 })) },
+  family: {
+    adults_count: adults,
+    adult_ages: Array(adults).fill(35),
+    partner_included: partnerIncluded,
+    relationship_type: partnerIncluded ? relationshipType : null,
+    children: (childAges || Array(children).fill(7)).map((age) => ({ age_years: age })),
+    school_needed: (childAges ? childAges.length : children) > 0 && Boolean(schoolNeeded),
+  },
   income: {
     primary: incomeSource('APPLICANT', applicantType, applicantAmount, applicantCurrency, applicantCountryId, applicantGeography),
     additional_sources: additionalSources,
@@ -45,6 +54,14 @@ const profile = ({ applicantAmount = 4000, applicantCurrency = 'EUR', applicantT
   goal: { long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT', keep_russian_citizenship: 'NOT_REQUIRED' },
 });
 const route = (requirements, extra = {}) => ({ route_id: 'TEST', name_ru: 'Test', publishable: true, requirements, ...extra });
+const familyScenario = (extra = {}) => ({
+  scenario_id: 'FAM', applies_to: 'PARTNER_AND_CHILDREN',
+  relationship_types: ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP'],
+  child_age_min: null, child_age_max: null, simultaneous_move: 'YES', separate_route_required: false,
+  linked_route_id: null, join_stage: 'WITH_INITIAL_APPLICATION', separation_months_min: null,
+  separation_months_max: null, member_long_term_path: null, condition_ru: 'Выполнить семейное условие.',
+  source_ids: ['SRC'], ...extra,
+});
 const requirement = (extra = {}) => ({
   requirement_id: 'REQ', type: 'OTHER_BASIS', evaluation_mode: 'ENGINE', unmet_effect: 'BLOCKS',
   condition_ru: 'Выполнить требование.', met_ru: 'Выполнено.', unmet_ru: 'Не выполнено.',
@@ -303,6 +320,184 @@ test('Spain DNV distinguishes known and unknown income geography', () => {
   }));
   assert.equal(sufficient.routeStatus, 'SUITABLE');
   assert.equal(sufficient.conditions.some((text) => text.includes('поступают из-за пределов')), false);
+});
+
+test('generic family evaluator covers solo, partner paths, timing, and linked routes', () => {
+  const solo = evaluateFamilyScenarios({ family_scenarios: [familyScenario()] }, profile(), []);
+  assert.equal(solo.state, 'NOT_APPLICABLE');
+  assert.equal(solo.classification, 'SOLO');
+
+  const partner = profile({ adults: 2 });
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [familyScenario()] }, partner, []).state, 'PASS');
+  const alternate = evaluateFamilyScenarios({ family_scenarios: [
+    familyScenario({ scenario_id: 'FIRST', relationship_types: ['REGISTERED_PARTNERSHIP'] }),
+    familyScenario({ scenario_id: 'SECOND' }),
+  ] }, partner, []);
+  assert.equal(alternate.state, 'PASS');
+  assert.deepEqual(alternate.applicableScenarioIds, ['SECOND']);
+
+  const relationship = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ relationship_types: ['REGISTERED_PARTNERSHIP'] })] }, partner, []);
+  assert.equal(relationship.state, 'CONDITION');
+  const conditional = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ simultaneous_move: 'CONDITIONAL' })] }, partner, []);
+  assert.equal(conditional.classification, 'CONDITIONAL_SIMULTANEOUS');
+  const later = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ simultaneous_move: 'NO', join_stage: 'AFTER_INITIAL_RESIDENCE' })] }, partner, []);
+  assert.equal(later.state, 'CONDITION');
+  assert.equal(later.classification, 'LATER_JOIN');
+  const linked = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ separate_route_required: true, linked_route_id: 'LINKED', join_stage: 'SEPARATE_ROUTE' })] }, partner, [{ route_id: 'LINKED' }]);
+  assert.equal(linked.state, 'CONDITION');
+  assert.equal(linked.classification, 'SEPARATE_LINKED_ROUTE');
+  assert.deepEqual(linked.linkedRouteIds, ['LINKED']);
+});
+
+test('reliable alternative family paths outrank damaged scenarios', () => {
+  const partner = profile({ adults: 2 });
+  const damaged = familyScenario({ scenario_id: 'DAMAGED', simultaneous_move: 'NOT_RESEARCHED' });
+  const passing = familyScenario({ scenario_id: 'PASSING' });
+  const conditional = familyScenario({ scenario_id: 'CONDITIONAL', simultaneous_move: 'CONDITIONAL' });
+  const passResult = evaluateFamilyScenarios({ family_scenarios: [damaged, passing] }, partner, []);
+  assert.equal(passResult.state, 'PASS');
+  assert.deepEqual(passResult.applicableScenarioIds, ['PASSING']);
+  const conditionResult = evaluateFamilyScenarios({ family_scenarios: [damaged, conditional] }, partner, []);
+  assert.equal(conditionResult.state, 'CONDITION');
+  assert.deepEqual(conditionResult.applicableScenarioIds, ['CONDITIONAL']);
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [damaged] }, partner, []).state, 'DATA_CONTRACT_PROBLEM');
+});
+
+test('relationship mismatch creates only canonical formalization conditions', () => {
+  const unregistered = profile({ adults: 2, relationshipType: 'UNREGISTERED_PARTNERSHIP' });
+  const married = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ relationship_types: ['MARRIED'] })] }, unregistered, []);
+  assert.equal(married.state, 'CONDITION');
+  assert.equal(married.classification, 'SIMULTANEOUS');
+  assert.deepEqual(married.conditions, ['Для этого маршрута потребуется оформить признаваемый брак.']);
+  const registered = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ relationship_types: ['REGISTERED_PARTNERSHIP'] })] }, unregistered, []);
+  assert.deepEqual(registered.conditions, ['Для этого маршрута потребуется оформить признаваемое зарегистрированное партнёрство.']);
+  const either = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ relationship_types: ['MARRIED', 'REGISTERED_PARTNERSHIP'] })] }, unregistered, []);
+  assert.deepEqual(either.conditions, ['Для этого маршрута потребуется оформить одну из признаваемых форм отношений: брак или зарегистрированное партнёрство.']);
+
+  const mismatchOnlyUnregistered = familyScenario({ scenario_id: 'ONLY_UNREGISTERED', relationship_types: ['UNREGISTERED_PARTNERSHIP'] });
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [mismatchOnlyUnregistered] }, profile({ adults: 2, relationshipType: 'MARRIED' }), []).state, 'DATA_CONTRACT_PROBLEM');
+  const operational = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ relationship_types: ['MARRIED'], simultaneous_move: 'CONDITIONAL' })] }, unregistered, []);
+  assert.deepEqual(operational.conditions, [
+    'Для этого маршрута потребуется оформить признаваемый брак.',
+    'Выполнить семейное условие.',
+  ]);
+  assert.equal(operational.classification, 'CONDITIONAL_SIMULTANEOUS');
+});
+
+test('synthetic profile helper follows production school-needed semantics', () => {
+  assert.equal(profile({ children: 1 }).family.school_needed, false);
+  assert.equal(profile({ children: 1, schoolNeeded: false }).family.school_needed, false);
+  assert.equal(profile({ children: 1, schoolNeeded: true }).family.school_needed, true);
+  assert.equal(profile({ children: 0, schoolNeeded: true }).family.school_needed, false);
+});
+
+test('generic family evaluator checks every child and exact scenario IDs', () => {
+  const family = profile({ adults: 2, childAges: [5, 17] });
+  const scenarios = [
+    familyScenario({ scenario_id: 'YOUNG', applies_to: 'CHILD', relationship_types: null, child_age_min: 0, child_age_max: 10 }),
+    familyScenario({ scenario_id: 'OLDER', applies_to: 'CHILD', relationship_types: null, child_age_min: 11, child_age_max: 20, simultaneous_move: 'CONDITIONAL' }),
+    familyScenario({ scenario_id: 'PARTNER', applies_to: 'PARTNER' }),
+    familyScenario({ scenario_id: 'OTHER', applies_to: 'OTHER_ADULT', relationship_types: null }),
+  ];
+  const result = evaluateFamilyScenarios({ family_scenarios: scenarios }, family, []);
+  assert.equal(result.state, 'CONDITION');
+  assert.deepEqual(result.applicableScenarioIds.sort(), ['OLDER', 'PARTNER', 'YOUNG']);
+  assert.equal(result.memberResults.length, 3);
+  assert.equal(result.memberResults.find(({ memberId }) => memberId === 'CHILD_1').state, 'PASS');
+  assert.equal(result.memberResults.find(({ memberId }) => memberId === 'CHILD_2').state, 'CONDITION');
+
+  const combined = evaluateFamilyScenarios({ family_scenarios: [familyScenario({ scenario_id: 'COMBINED' })] }, family, []);
+  assert.equal(combined.state, 'PASS');
+  assert.equal(combined.memberResults.length, 3);
+  assert.deepEqual(combined.applicableScenarioIds, ['COMBINED']);
+});
+
+test('family data contract problems are route-local and never become public statuses', () => {
+  const partner = profile({ adults: 2 });
+  const problem = (scenario, packageRoutes = []) => evaluateFamilyScenarios({ family_scenarios: Array.isArray(scenario) ? scenario : [scenario] }, partner, packageRoutes);
+  assert.equal(problem(familyScenario({ simultaneous_move: 'NOT_RESEARCHED' })).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(problem(familyScenario({ join_stage: 'NOT_AVAILABLE' })).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(problem(familyScenario({ separate_route_required: true, linked_route_id: 'MISSING', join_stage: 'SEPARATE_ROUTE' })).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(problem(familyScenario({ applies_to: 'CHILD', relationship_types: null })).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(problem([familyScenario({ scenario_id: 'DUP' }), familyScenario({ scenario_id: 'DUP' })]).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [familyScenario({ scenario_id: 'DUP' }), familyScenario({ scenario_id: 'DUP' })] }, profile(), []).state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [familyScenario({ scenario_id: 'SAME' })] }, partner, []).state, 'PASS');
+  assert.equal(evaluateFamilyScenarios({ family_scenarios: [familyScenario({ scenario_id: 'SAME' })] }, partner, []).state, 'PASS');
+
+  const childGap = evaluateFamilyScenarios({ family_scenarios: [
+    familyScenario({ applies_to: 'PARTNER' }),
+    familyScenario({ scenario_id: 'BABY', applies_to: 'CHILD', relationship_types: null, child_age_min: 0, child_age_max: 5 }),
+  ] }, profile({ adults: 2, childAges: [4, 13] }), []);
+  assert.equal(childGap.state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(childGap.memberResults.find(({ memberId }) => memberId === 'CHILD_2').state, 'DATA_CONTRACT_PROBLEM');
+});
+
+test('family exclusions happen before best-route selection and support zero evaluable routes', () => {
+  const base = spain.routes.find(({ route_id }) => route_id === 'ES_DNV');
+  const good = { ...base, route_id: 'GOOD', family_scenarios: [familyScenario({ scenario_id: 'GOOD_FAM' })] };
+  const bad = { ...base, route_id: 'BAD', family_scenarios: [familyScenario({ scenario_id: 'DUP' }), familyScenario({ scenario_id: 'DUP' })] };
+  const pkg = (routes) => ({ ...spain, routes });
+  const mixed = calculateActiveCountry(profile({ adults: 2, applicantAmount: 6000 }), pkg([bad, good]), context);
+  assert.deepEqual(mixed.routes.map(({ routeId }) => routeId), ['GOOD']);
+  assert.equal(mixed.bestRoute.routeId, 'GOOD');
+  assert.deepEqual(mixed.excludedRoutes.map(({ routeId }) => routeId), ['BAD']);
+
+  const empty = calculateActiveCountry(profile({ adults: 2, applicantAmount: 6000 }), pkg([bad]), context);
+  assert.deepEqual(empty.routes, []);
+  assert.equal(empty.bestRoute, null);
+  assert.equal(empty.evaluationState, 'NO_EVALUABLE_ROUTES');
+  assert.equal(empty.country.group, null);
+
+  const referencing = { ...good, route_id: 'REF', family_scenarios: [familyScenario({ scenario_id: 'REF_FAM', separate_route_required: true, linked_route_id: 'BAD', join_stage: 'SEPARATE_ROUTE' })] };
+  const noCascade = calculateActiveCountry(profile({ adults: 2, applicantAmount: 6000 }), pkg([referencing, bad]), context);
+  assert.deepEqual(noCascade.routes.map(({ routeId }) => routeId), ['REF']);
+  assert.deepEqual(noCascade.routes[0].familyEvaluation.linkedRouteIds, ['BAD']);
+});
+
+test('family conditions extend existing conditions and deduplicate identical text', () => {
+  const base = spain.routes.find(({ route_id }) => route_id === 'ES_DNV');
+  const existingText = 'Существующее условие requirement.';
+  const familyText = 'Отдельное семейное условие.';
+  const source = {
+    ...base,
+    route_id: 'CONDITIONS',
+    requirements: [requirement({ evaluation_mode: 'UNASKED_CONDITION', engine_rule: undefined, unmet_effect: 'BECOMES_CONDITION', condition_ru: existingText })],
+    family_scenarios: [familyScenario({ simultaneous_move: 'CONDITIONAL', condition_ru: familyText })],
+  };
+  const result = calculateActiveCountry(profile({ adults: 2 }), { ...spain, routes: [source] }, context).routes[0];
+  assert.deepEqual(result.conditions, [existingText, familyText]);
+  assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  const duplicate = { ...source, family_scenarios: [familyScenario({ simultaneous_move: 'CONDITIONAL', condition_ru: existingText })] };
+  assert.deepEqual(calculateActiveCountry(profile({ adults: 2 }), { ...spain, routes: [duplicate] }, context).routes[0].conditions, [existingText]);
+});
+
+test('Spain family acceptance matches Final Lock scenarios without family exclusions', () => {
+  const familyResult = calculateActiveCountry(profile({ adults: 2, childAges: [13], applicantAmount: 6000 }), spain, context);
+  const byState = (state) => familyResult.routes.filter(({ familyEvaluation }) => familyEvaluation.state === state).map(({ routeId }) => routeId).sort();
+  assert.equal(familyResult.routes.length, 14);
+  assert.equal(familyResult.excludedRoutes.length, 0);
+  assert.deepEqual(byState('PASS'), ['ES_AUDIOVISUAL', 'ES_DNV', 'ES_ENT', 'ES_FAM_SP', 'ES_HQP_BLUE', 'ES_HQP_NATIONAL', 'ES_ICT', 'ES_NLV', 'ES_RESEARCHER'].sort());
+  assert.deepEqual(byState('CONDITION'), ['ES_EMP', 'ES_PROTECTION', 'ES_REUN', 'ES_SELF', 'ES_STUDY'].sort());
+  assert.equal(familyResult.routes.some(({ routeStatus }) => !['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'UNSUITABLE'].includes(routeStatus)), false);
+  assert.deepEqual(familyResult.routes.find(({ routeId }) => routeId === 'ES_EMP').familyEvaluation.linkedRouteIds, ['ES_REUN']);
+  const dnvPresentation = familyResult.routes.find(({ routeId }) => routeId === 'ES_DNV');
+  assert.equal(dnvPresentation.family[0].scenarioId, 'ES_DNV_FAM');
+  assert.deepEqual(dnvPresentation.familyEvaluation.applicableScenarioIds, ['ES_DNV_FAM']);
+  assert.deepEqual(familyResult.routes.find(({ routeId }) => routeId === 'ES_SELF').familyEvaluation.linkedRouteIds, ['ES_REUN']);
+  for (const [routeId, scenarioId] of [['ES_STUDY', 'ES_STUDY_FAM'], ['ES_PROTECTION', 'ES_PROT_FAM']]) {
+    const item = familyResult.routes.find((routeResult) => routeResult.routeId === routeId);
+    assert.deepEqual(item.familyEvaluation.applicableScenarioIds, [scenarioId]);
+    assert.equal(item.family.find((scenario) => scenario.scenarioId === scenarioId).simultaneousMove, 'CONDITIONAL');
+  }
+  assert.ok(familyResult.routes.find(({ routeId }) => routeId === 'ES_REUN').familyEvaluation.joinStages.includes('AFTER_INITIAL_RESIDENCE'));
+  assert.equal(dnvPresentation.routeStatus, 'SUITABLE');
+  assert.deepEqual(dnvPresentation.conditions, []);
+
+  const soloResult = calculateActiveCountry(profile({ applicantAmount: 6000 }), spain, context);
+  assert.equal(soloResult.routes.length, 14);
+  assert.equal(soloResult.excludedRoutes.length, 0);
+  assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.state === 'NOT_APPLICABLE'), true);
+  assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.conditions.length === 0), true);
 });
 
 test('FX conversion returns 5400 EUR for 6000 USD and preserves below/above threshold', () => {

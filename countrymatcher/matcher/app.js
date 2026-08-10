@@ -304,7 +304,9 @@ function routeCard(route, countryName, main = false) {
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const applicationBlock = route.application?.length ? `<div class="route-requirements"><h4>Как можно подать заявление</h4>${list(route.application.map((item) => item.guidance))}</div>` : "";
   const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4>Первый статус</h4><p>${html(route.firstPermit.description)}</p></div>` : "";
-  const familyBlock = route.family?.length ? `<div class="route-requirements"><h4>Семья</h4>${list(route.family.map((item) => item.description))}</div>` : "";
+  const applicableFamily = route.familyEvaluation?.state === 'NOT_APPLICABLE' ? []
+    : (route.family || []).filter((item) => route.familyEvaluation?.applicableScenarioIds?.includes(item.scenarioId));
+  const familyBlock = applicableFamily.length ? `<div class="route-requirements"><h4>Семья</h4>${list(applicableFamily.map((item) => item.description))}</div>` : "";
   const workItems = [...(route.workRights?.applicant || []).map((item) => `Заявитель: ${item.rule}`), ...(route.workRights?.partner || []).map((item) => `Партнёр: ${item.rule}`)];
   const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
   const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
@@ -332,7 +334,9 @@ function countryPresentation(calculation) {
 
 function renderCountryTab(calculation, active = false) {
   const { best, countryId, countryName, flag } = countryPresentation(calculation);
-  return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong><small>${html(best?.routeName || 'Маршрут не определён')}</small></span><span class="status-pill ${statusClass(best?.routeStatus)}">${html(STATUS_LABELS_RU[best?.routeStatus] || 'Подходит с условиями')}</span></button>`;
+  const summary = best ? `<small>${html(best.routeName)}</small>` : '<small>Нет маршрутов для надёжной оценки</small>';
+  const status = best ? `<span class="status-pill ${statusClass(best.routeStatus)}">${html(STATUS_LABELS_RU[best.routeStatus])}</span>` : '';
+  return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong>${summary}</span>${status}</button>`;
 }
 
 function renderCountryResult(calculation, changed = false, active = false) {
@@ -340,6 +344,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const children = calculation.profile.children?.length || 0;
   const family = `${calculation.profile.adults} ${calculation.profile.adults === 1 ? 'взрослый' : 'взрослых'}${children ? `, ${children} ${children === 1 ? 'ребёнок' : 'детей'}` : ''}`;
   const { routeLabel } = describeResultIntro(calculation.routes, changed);
+  if (!sortedRoutes.length || !best) return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${html(routeLabel)}</p></div></div></article>`;
   const incomeCurrency = calculation.country.resultCurrency || 'USD';
   const incomeAmount = calculation.applicantProvableIncome?.amount;
   const primaryFinancial = best?.financialSummary?.alternatives?.find((item) => item.kind === 'INCOME')

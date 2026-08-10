@@ -288,6 +288,13 @@ test('all unsuitable routes are not presented as the best option', () => {
   assert.equal(intro.routeLabel, 'Первый из проверенных неподходящих маршрутов');
 });
 
+test('empty route result uses neutral wording', () => {
+  const intro = describeResultIntro([]);
+  assert.equal(intro.heading, 'Сейчас нет маршрутов, доступных для надёжной оценки');
+  assert.equal(intro.routeLabel, 'Сейчас нет маршрутов с завершёнными данными, которые можно надёжно оценить по вашим ответам.');
+  assert.doesNotMatch(`${intro.heading} ${intro.routeLabel}`, /Подходит|Не подходит|Наиболее подходящий/);
+});
+
 test('result routes are ordered through the three-status contract', () => {
   const routes = [
     { routeId: 'no', routeStatus: 'UNSUITABLE' },
@@ -511,6 +518,15 @@ test('result UI reserves corrective actions for conditional routes', async () =>
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.equal(app.includes('Что должно измениться для повторной оценки'), false);
   assert.match(app, /route\.routeStatus === ["']SUITABLE_WITH_CONDITIONS["']/);
+});
+
+test('result UI handles no evaluable routes and filters family presentation by scenarioId', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(app, /STATUS_LABELS_RU\[best\?\.routeStatus\]\s*\|\|\s*'Подходит с условиями'/);
+  assert.match(app, /Нет маршрутов для надёжной оценки/);
+  assert.match(app, /if \(!sortedRoutes\.length \|\| !best\) return/);
+  assert.match(app, /familyEvaluation\?\.state === 'NOT_APPLICABLE'/);
+  assert.match(app, /applicableScenarioIds\?\.includes\(item\.scenarioId\)/);
 });
 
 test('city cards grow with content, wrap long text, and constrain mobile overflow', async () => {
