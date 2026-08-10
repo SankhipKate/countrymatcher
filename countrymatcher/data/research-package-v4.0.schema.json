@@ -606,6 +606,72 @@
         }
       }
     },
+    "practicalFinancialEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_date", "evidence_type"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1 },
+        "source_date": { "type": "string", "format": "date" },
+        "evidence_type": {
+          "enum": ["PRACTITIONER_GUIDANCE", "REPORTED_PRACTICE", "INDIVIDUAL_CASE"]
+        }
+      }
+    },
+    "practicalFinancialFigure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "period",
+        "family_context_ru",
+        "evidence",
+        "note_ru"
+      ],
+      "properties": {
+        "amount": { "type": "number", "exclusiveMinimum": 0 },
+        "amount_min": { "type": "number", "exclusiveMinimum": 0 },
+        "amount_max": { "type": "number", "exclusiveMinimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "period": { "enum": ["MONTHLY", "YEARLY", "ONE_TIME", "OTHER"] },
+        "family_context_ru": { "type": "string", "minLength": 1 },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/practicalFinancialEvidence" }
+        },
+        "note_ru": { "type": "string", "minLength": 1 }
+      },
+      "oneOf": [
+        {
+          "required": ["amount"],
+          "not": { "anyOf": [{ "required": ["amount_min"] }, { "required": ["amount_max"] }] }
+        },
+        {
+          "required": ["amount_min", "amount_max"],
+          "not": { "required": ["amount"] }
+        }
+      ]
+    },
+    "practicalFinancialGuidance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evaluation_mode", "status", "summary_ru", "figures", "disclaimer_ru"],
+      "properties": {
+        "evaluation_mode": { "const": "DISPLAY_ONLY" },
+        "status": { "enum": ["FOUND", "NOT_FOUND"] },
+        "summary_ru": { "type": "string", "minLength": 1 },
+        "figures": { "type": "array", "items": { "$ref": "#/$defs/practicalFinancialFigure" } },
+        "disclaimer_ru": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "FOUND" } }, "required": ["status"] },
+          "then": { "properties": { "figures": { "minItems": 1 } } },
+          "else": { "properties": { "figures": { "maxItems": 0 } } }
+        }
+      ]
+    },
     "financialAlternative": {
       "type": "object",
       "additionalProperties": false,
@@ -745,6 +811,9 @@
             ]
           },
           "description": "Whose income legally supplies this INCOME alternative. PARTNER and SPONSOR are never inferred from FAMILY subject or family formulas."
+        },
+        "practical_financial_guidance": {
+          "$ref": "#/$defs/practicalFinancialGuidance"
         }
       },
       "allOf": [
@@ -777,6 +846,16 @@
               "required": [
                 "income_owners"
               ]
+            }
+          }
+        },
+        {
+          "if": { "required": ["practical_financial_guidance"] },
+          "then": {
+            "properties": {
+              "comparison": { "const": "NO_FIXED_THRESHOLD" },
+              "amount": { "type": "null" },
+              "currency": { "type": "null" }
             }
           }
         }

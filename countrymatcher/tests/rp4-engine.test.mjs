@@ -124,6 +124,32 @@ test('active matcher calculates real Spain and Argentina packages through the sa
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
 });
 
+test('practical financial figures are presentation-only and cannot change matching', () => {
+  const input = profile({ applicantAmount: 4000, applicantCurrency: 'USD' });
+  const outcomes = [500, 1500, 10000].map((amount) => {
+    const pkg = structuredClone(argentina);
+    const nomad = pkg.routes.find(({ route_id }) => route_id === 'AR_NOMAD');
+    const item = nomad.requirements.find(({ type }) => type === 'FINANCIAL').financial.alternatives
+      .find(({ comparison }) => comparison === 'NO_FIXED_THRESHOLD');
+    item.practical_financial_guidance = {
+      evaluation_mode: 'DISPLAY_ONLY', status: 'FOUND', summary_ru: 'Практический ориентир.',
+      figures: [{ amount, currency: 'USD', period: 'MONTHLY', family_context_ru: 'Один заявитель', evidence: [{ source_id: item.source_ids[0], source_date: '2026-08-10', evidence_type: 'REPORTED_PRACTICE' }], note_ru: 'Тестовый ориентир.' }],
+      disclaimer_ru: 'Это не обязательный минимум.',
+    };
+    const result = calculateActiveCountry(input, pkg, context).routes.find(({ routeId }) => routeId === 'AR_NOMAD');
+    const financial = result.financialSummary.alternatives.find(({ kind }) => kind === 'INCOME');
+    return { routeStatus: result.routeStatus, financialState: result.financialSummary.state, alternativeState: financial.state, practicalGuidance: financial.practicalGuidance };
+  });
+  assert.deepEqual(outcomes.map(({ practicalGuidance, ...matching }) => matching), Array(3).fill({
+    routeStatus: outcomes[0].routeStatus,
+    financialState: outcomes[0].financialState,
+    alternativeState: outcomes[0].alternativeState,
+  }));
+  assert.deepEqual(outcomes.map((x) => x.practicalGuidance.figures[0].amount), [500, 1500, 10000]);
+  const unchanged = calculateActiveCountry(input, argentina, context).routes.find(({ routeId }) => routeId === 'AR_NOMAD');
+  assert.equal(unchanged.financialSummary.alternatives.find(({ kind }) => kind === 'INCOME').practicalGuidance, null);
+});
+
 test('DISPLAY_ONLY, UNASKED_CONDITION, and ENGINE keep their distinct status effects', () => {
   const display = evaluateRoute(route([requirement({ evaluation_mode: 'DISPLAY_ONLY', engine_rule: undefined })]), profile(), context, 'ES');
   assert.equal(display.routeStatus, 'SUITABLE');

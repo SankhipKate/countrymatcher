@@ -130,6 +130,29 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
 });
 
+test('matcher renders practical financial guidance separately from official numeric thresholds', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(matcher, /\.filter\(\(item\) => item\.threshold != null\)/);
+  assert.match(matcher, /const practicalGuidanceBlock =/);
+  assert.match(matcher, /item\.practicalGuidance/);
+  assert.match(matcher, /practicalGuidanceItems[\s\S]*?\.filter\(\(item\) => item\.state !== 'FAIL' && item\.practicalGuidance\)[\s\S]*?\.map\(\(item\) => item\.practicalGuidance\)/);
+  assert.match(matcher, /const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems\.length/);
+  assert.match(matcher, /PRACTITIONER_GUIDANCE:\s*'Практическая рекомендация специалиста'/);
+  assert.match(matcher, /REPORTED_PRACTICE:\s*'Опубликованная практика'/);
+  assert.match(matcher, /INDIVIDUAL_CASE:\s*'Индивидуальный кейс'/);
+  assert.match(matcher, /figure\.evidence\.map\(\(evidence\) =>/);
+  assert.match(matcher, /practicalEvidenceLabel\[evidence\.evidence_type\]/);
+  assert.match(matcher, /formatPracticalSourceDate\(evidence\.source_date\)/);
+  assert.doesNotMatch(matcher, /figure\.(?:evidence_type|source_date|source_ids)/);
+  assert.match(matcher, /Дата источника:/);
+  assert.match(matcher, /Это не официальный минимальный порог\./);
+  assert.match(matcher, /надёжную практическую сумму найти не удалось/);
+  assert.doesNotMatch(matcher, /thresholdUsd[^\n]+practicalGuidance|practicalGuidance[^\n]+thresholdUsd/);
+  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?\}\) \|\| \[\];/);
+  assert.ok(numericFinancialItems);
+  assert.doesNotMatch(numericFinancialItems[0], /practicalGuidance/);
+});
+
 test('research order marks only migrated RP4 countries connected and ignores archived RP3 files', async () => {
   const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);

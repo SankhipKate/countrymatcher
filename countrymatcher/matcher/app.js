@@ -306,6 +306,36 @@ function routeCard(route, countryName, main = false) {
     return `${item.kind}: ${official}${equivalent}`;
   }) || [];
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
+  const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ONE_TIME: 'единовременно', OTHER: '' };
+  const practicalEvidenceLabel = {
+    PRACTITIONER_GUIDANCE: 'Практическая рекомендация специалиста',
+    REPORTED_PRACTICE: 'Опубликованная практика',
+    INDIVIDUAL_CASE: 'Индивидуальный кейс',
+  };
+  const formatPracticalSourceDate = (sourceDate) => {
+    const [year, month, day] = sourceDate.split('-');
+    return `${day}.${month}.${year}`;
+  };
+  const practicalGuidanceItems = route.financialSummary?.alternatives
+    ?.filter((item) => item.state !== 'FAIL' && item.practicalGuidance)
+    .map((item) => item.practicalGuidance) || [];
+  const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems.length ? `<div class="route-requirements practical-warning"><h4>Практический финансовый ориентир</h4>${practicalGuidanceItems.map((guidance) => {
+    if (guidance.status === 'NOT_FOUND') return `<p>${html(guidance.summary_ru)}</p><p>Официального фиксированного порога нет; надёжную практическую сумму найти не удалось.</p><p>${html(guidance.disclaimer_ru)}</p>`;
+    const figures = guidance.figures.map((figure) => {
+      const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+      const value = figure.amount != null
+        ? `Около ${number(figure.amount)} ${figure.currency}`
+        : `${number(figure.amount_min)}–${number(figure.amount_max)} ${figure.currency}`;
+      const period = practicalPeriod[figure.period] ? ` ${practicalPeriod[figure.period]}` : '';
+      const evidenceLines = figure.evidence.map((evidence) => {
+        const label = practicalEvidenceLabel[evidence.evidence_type];
+        const sourceDate = formatPracticalSourceDate(evidence.source_date);
+        return `${html(label)} · Дата источника: ${html(sourceDate)}.`;
+      }).join('<br>');
+      return `<li><b>${html(value)}${html(period)}</b> — ${html(figure.family_context_ru)}.<br>${evidenceLines}<br>${html(figure.note_ru)}</li>`;
+    }).join('');
+    return `<p>${html(guidance.summary_ru)}</p><ul>${figures}</ul><p><b>Это не официальный минимальный порог.</b> ${html(guidance.disclaimer_ru)}</p>`;
+  }).join('')}</div>` : "";
   const applicationBlock = route.application?.length ? `<div class="route-requirements"><h4>Как можно подать заявление</h4>${list(route.application.map((item) => item.guidance))}</div>` : "";
   const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4>Первый статус</h4><p>${html(route.firstPermit.description)}</p></div>` : "";
   const applicableFamily = route.familyEvaluation?.state === 'NOT_APPLICABLE' ? []
@@ -317,7 +347,7 @@ function routeCard(route, countryName, main = false) {
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
   const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : unsuitable ? "" : `<span class="route-expand-label">Показать подробности</span>`}</div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
-  const body = `${descriptionBlock}${financeBlock}${unsuitable ? blockersBlock : actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
+  const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${unsuitable ? blockersBlock : actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
   if (unsuitable) return `<article class="route-result compact">${header}<div class="route-card-body">${body}</div></article>`;
   return main ? `<article class="route-result best">${header}<div class="route-card-body">${body}</div></article>`
     : `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${body}</div></details></article>`;

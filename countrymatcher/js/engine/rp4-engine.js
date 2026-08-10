@@ -315,6 +315,7 @@ function presentFinancial(requirementResults, context) {
       threshold: item.threshold ?? null,
       currency: item.currency ?? null,
       period: item.alternative.period,
+      practicalGuidance: item.alternative?.practical_financial_guidance ?? null,
       thresholdUsd: item.threshold == null || item.currency == null ? null
         : roundedDisplayAmount(convertAmount(item.threshold, item.currency, 'USD', context)),
       shortfall: item.shortfall ?? null,

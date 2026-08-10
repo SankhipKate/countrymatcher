@@ -275,6 +275,68 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                                 f"$.routes[{route_id}].requirements[{k}].financial.alternatives[{a}].asked_in_questionnaire: must be false for UNASKED_CONDITION",
                                 errors,
                             )
+                        guidance = alternative.get("practical_financial_guidance")
+                        if guidance is not None:
+                            alternative_path = f"$.routes[{route_id}].requirements[{k}].financial.alternatives[{a}]"
+                            if alternative.get("comparison") != "NO_FIXED_THRESHOLD" or alternative.get("amount") is not None or alternative.get("currency") is not None:
+                                fail(
+                                    f"{alternative_path}.practical_financial_guidance: allowed only with NO_FIXED_THRESHOLD and null amount/currency",
+                                    errors,
+                                )
+                            if not isinstance(guidance, dict):
+                                continue
+                            if guidance.get("evaluation_mode") != "DISPLAY_ONLY":
+                                fail(f"{alternative_path}.practical_financial_guidance.evaluation_mode: expected DISPLAY_ONLY", errors)
+                            status = guidance.get("status")
+                            figures = guidance.get("figures")
+                            if status == "FOUND" and (not isinstance(figures, list) or not figures):
+                                fail(f"{alternative_path}.practical_financial_guidance.figures: FOUND requires at least one figure", errors)
+                            if status == "NOT_FOUND" and figures != []:
+                                fail(f"{alternative_path}.practical_financial_guidance.figures: NOT_FOUND requires an empty list", errors)
+                            if isinstance(figures, list):
+                                for f, figure in enumerate(figures):
+                                    if not isinstance(figure, dict):
+                                        continue
+                                    figure_path = f"{alternative_path}.practical_financial_guidance.figures[{f}]"
+                                    has_amount = "amount" in figure
+                                    has_min = "amount_min" in figure
+                                    has_max = "amount_max" in figure
+                                    if has_amount == (has_min or has_max) or (has_min != has_max):
+                                        fail(f"{figure_path}: requires either amount or amount_min + amount_max, never both", errors)
+                                    for amount_field in ("amount", "amount_min"):
+                                        if amount_field in figure and (not isinstance(figure[amount_field], (int, float)) or figure[amount_field] <= 0):
+                                            fail(f"{figure_path}.{amount_field}: must be > 0", errors)
+                                    minimum = figure.get("amount_min")
+                                    maximum = figure.get("amount_max")
+                                    if minimum is not None and maximum is not None and maximum < minimum:
+                                        fail(
+                                            f"{figure_path}: amount_max must be >= amount_min",
+                                            errors,
+                                        )
+                                    if not isinstance(figure.get("currency"), str):
+                                        fail(f"{figure_path}.currency: required", errors)
+                                    if figure.get("period") not in {"MONTHLY", "YEARLY", "ONE_TIME", "OTHER"}:
+                                        fail(f"{figure_path}.period: invalid or missing", errors)
+                                    evidence = figure.get("evidence")
+                                    if not isinstance(evidence, list) or not evidence:
+                                        fail(f"{figure_path}.evidence: requires at least one evidence record", errors)
+                                    else:
+                                        evidence_source_ids: list[str] = []
+                                        for e, record in enumerate(evidence):
+                                            if not isinstance(record, dict):
+                                                continue
+                                            evidence_path = f"{figure_path}.evidence[{e}]"
+                                            source_id = record.get("source_id")
+                                            if not isinstance(source_id, str) or not source_id:
+                                                fail(f"{evidence_path}.source_id: required", errors)
+                                            else:
+                                                evidence_source_ids.append(source_id)
+                                                if source_id not in source_set:
+                                                    fail(f"{evidence_path}.source_id: unknown source_id {source_id}", errors)
+                                            if record.get("evidence_type") not in {"PRACTITIONER_GUIDANCE", "REPORTED_PRACTICE", "INDIVIDUAL_CASE"}:
+                                                fail(f"{evidence_path}.evidence_type: invalid or missing", errors)
+                                        for duplicate_id in sorted(duplicates(evidence_source_ids)):
+                                            fail(f"{figure_path}.evidence: duplicate source_id {duplicate_id}", errors)
 
             for item in open_items:
                 if (
