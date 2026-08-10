@@ -13,7 +13,7 @@
     "family": {
       "adults_count": 2,
       "partner_included": true,
-      "relationship_type": "MARRIAGE",
+      "relationship_type": "MARRIED",
       "children": [{ "age_years": 13 }],
       "school_needed": true
     },
@@ -27,7 +27,8 @@
       "primary": {
         "owner": "APPLICANT",
         "type": "REMOTE_EMPLOYMENT",
-        "source_country": "PH",
+        "source_geography": "SINGLE_COUNTRY",
+        "country_id": "PH",
         "bank_country": "PH",
         "monthly_provable": { "amount": 3000, "currency": "USD" },
         "evidence_level": "FULL",
@@ -46,7 +47,7 @@
       "savings": null
     },
     "goal": {
-      "long_term": "CITIZENSHIP_DESIRED",
+      "long_term": "CITIZENSHIP_REQUIRED",
       "keep_russian_citizenship": "REQUIRED"
     },
     "preferences": {
@@ -98,7 +99,8 @@
       "primary": {
         "owner": "APPLICANT",
         "type": "FREELANCE_OR_SELF_EMPLOYED",
-        "source_country": "US",
+        "source_geography": "SINGLE_COUNTRY",
+        "country_id": "US",
         "bank_country": "GE",
         "monthly_provable": { "amount": 4200, "currency": "USD" },
         "evidence_level": "FULL",
@@ -118,7 +120,7 @@
     },
     "goal": {
       "long_term": "PR_REQUIRED",
-      "keep_russian_citizenship": "DESIRABLE"
+      "keep_russian_citizenship": "NOT_REQUIRED"
     },
     "preferences": {
       "monthly_budget": null,
@@ -161,7 +163,8 @@
       "primary": {
         "owner": "APPLICANT",
         "type": "PASSIVE_INCOME",
-        "source_country": "RU",
+        "source_geography": "SINGLE_COUNTRY",
+        "country_id": "RU",
         "bank_country": "RU",
         "monthly_provable": { "amount": 180000, "currency": "RUB" },
         "evidence_level": "PARTIAL",
@@ -175,8 +178,9 @@
       "additional_sources": [
         {
           "owner": "APPLICANT",
-          "type": "OTHER_REGULAR_REMOTE_INCOME",
-          "source_country": "RU",
+          "type": "OTHER_REGULAR_INCOME",
+          "source_geography": "SINGLE_COUNTRY",
+          "country_id": "RU",
           "bank_country": "RU",
           "monthly_provable": { "amount": 50000, "currency": "RUB" },
           "evidence_level": "PARTIAL",

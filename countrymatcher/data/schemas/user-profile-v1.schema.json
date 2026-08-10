@@ -106,9 +106,9 @@
         "relationship_type": {
           "type": ["string", "null"],
           "enum": [
-            "MARRIAGE",
+            "MARRIED",
             "REGISTERED_PARTNERSHIP",
-            "UNREGISTERED_PARTNER",
+            "UNREGISTERED_PARTNERSHIP",
             null
           ]
         },
@@ -130,9 +130,9 @@
               "adults_count": { "const": 2 },
               "relationship_type": {
                 "enum": [
-                  "MARRIAGE",
+                  "MARRIED",
                   "REGISTERED_PARTNERSHIP",
-                  "UNREGISTERED_PARTNER"
+                  "UNREGISTERED_PARTNERSHIP"
                 ]
               }
             }
@@ -250,14 +250,11 @@
           "enum": [
             "TEMPORARY_RESIDENCE_SUFFICIENT",
             "PR_REQUIRED",
-            "CITIZENSHIP_DESIRED",
-            "CITIZENSHIP_MAIN_GOAL",
-            "CITIZENSHIP_REQUIRED",
-            "UNDECIDED"
+            "CITIZENSHIP_REQUIRED"
           ]
         },
         "keep_russian_citizenship": {
-          "enum": ["REQUIRED", "DESIRABLE", "NOT_IMPORTANT", "WILLING_TO_RENOUNCE"]
+          "enum": ["REQUIRED", "NOT_REQUIRED"]
         }
       }
     },
@@ -392,7 +389,7 @@
         "owner",
         "type",
         "source_geography",
-        "source_country",
+        "country_id",
         "bank_country",
         "monthly_provable",
         "evidence_level"
@@ -401,22 +398,24 @@
         "owner": { "enum": ["APPLICANT", "PARTNER"] },
         "type": {
           "enum": [
-            "NO_REGULAR_INCOME",
             "REMOTE_EMPLOYMENT",
             "CONTRACTOR",
             "FREELANCE_OR_SELF_EMPLOYED",
             "SOLE_PROPRIETOR",
             "COMPANY_OWNER",
-            "PASSIVE_INCOME",
+            "LOCAL_EMPLOYMENT",
             "PENSION",
-            "OTHER_REGULAR_REMOTE_INCOME"
+            "PASSIVE_INCOME",
+            "INVESTMENT_INCOME",
+            "OTHER_REGULAR_INCOME",
+            "NO_REGULAR_INCOME"
           ]
         },
-        "source_country": {
+        "country_id": {
           "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }],
           "description": "Страна источника может быть null для фриланса или самозанятости без единого иностранного заказчика."
         },
-        "source_geography": { "enum": ["ONE_COUNTRY", "MULTIPLE_COUNTRIES", "NO_PERMANENT_PAYER"] },
+        "source_geography": { "enum": ["SINGLE_COUNTRY", "MULTIPLE_COUNTRIES", "NO_STABLE_PAYER"] },
         "bank_country": { "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }] },
         "monthly_total": { "$ref": "#/$defs/money" },
         "monthly_provable": { "$ref": "#/$defs/money" },
@@ -438,7 +437,17 @@
           "type": ["integer", "null"],
           "minimum": 0
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "source_geography": { "const": "SINGLE_COUNTRY" } },
+            "required": ["source_geography"]
+          },
+          "then": { "properties": { "country_id": { "$ref": "#/$defs/countryCode" } } },
+          "else": { "properties": { "country_id": { "type": "null" } } }
+        }
+      ]
     }
   }
 }

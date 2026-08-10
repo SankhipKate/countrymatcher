@@ -1,0 +1,84 @@
+{
+  "country_id": "ES",
+  "rules_version": "4.0",
+  "cases": [
+    {
+      "case_id": "DNV_EXISTING_REMOTE_WORK_ABOVE_FAMILY_THRESHOLD",
+      "profile_summary": "Иностранная удалённая работа уже существует; допустимый семейный подтверждаемый доход выше DNV-порога.",
+      "expected": {
+        "ES_DNV": "SUITABLE"
+      },
+      "must_display_requirements": [
+        "срок деятельности компании",
+        "три месяца",
+        "образование",
+        "профессионального опыта"
+      ]
+    },
+    {
+      "case_id": "ICT_EXISTING_WORK_NO_TRANSFER_DECISION",
+      "profile_summary": "Работа уже существует, но отдельное решение о внутрикорпоративном переводе не подтверждено анкетой.",
+      "expected": {
+        "ES_ICT": "SUITABLE_WITH_CONDITIONS"
+      },
+      "condition_must_reference": "внутрикорпоративном переводе",
+      "display_only_must_reference": "не менее трёх месяцев"
+    },
+    {
+      "case_id": "BLUE_CARD_NO_SPANISH_OFFER",
+      "profile_summary": "Есть текущая удалённая работа и опыт/диплом не проверяются; испанской оферты анкета не подтверждает.",
+      "expected": {
+        "ES_HQP_BLUE": "SUITABLE_WITH_CONDITIONS"
+      },
+      "condition_must_reference": "договор или твёрдую оферту"
+    },
+    {
+      "case_id": "STUDY_ADMISSION_UNASKED",
+      "profile_summary": "Анкета не спрашивает, зачислен ли пользователь.",
+      "expected": {
+        "ES_STUDY": "SUITABLE_WITH_CONDITIONS"
+      },
+      "condition_must_reference": "Поступить"
+    },
+    {
+      "case_id": "INTERNSHIP_BLOCKING_FAMILY_GAP_NOT_PUBLISHED",
+      "profile_summary": "Пока обязательная семейная ветка Internship не исследована полностью, маршрут остаётся в Research Package, но исключён из пользовательского расчёта.",
+      "expected_publishable": {
+        "ES_INTERNSHIP": false
+      },
+      "must_not_appear_in_calculated_routes": [
+        "ES_INTERNSHIP"
+      ]
+    },
+    {
+      "case_id": "NLV_ACTIVE_REMOTE_INCOME_WITH_UNASKED_SAVINGS",
+      "profile_summary": "Текущий доход активный и не подходит как NLV-income, но накопления анкета не спрашивает.",
+      "expected": {
+        "ES_NLV": "SUITABLE_WITH_CONDITIONS"
+      },
+      "must_not_be": "UNSUITABLE"
+    },
+    {
+      "case_id": "ONLINE_DOES_NOT_OVERRIDE_GEOGRAPHIC_METHOD",
+      "profile_summary": "Маршрут содержит ONLINE и IN_COUNTRY; пользователь находится вне Испании.",
+      "expected_rule": "ONLINE is guidance only; geographic method controls filing-location evaluation"
+    },
+    {
+      "case_id": "VISA_CONDITION_IS_ACTION_ONLY",
+      "profile_summary": "Выбранный географический способ требует въезда в Испанию, а гражданину РФ нужна виза.",
+      "condition_exact": "Получить необходимую въездную визу.",
+      "must_not_repeat_entry_rule_in_condition": true
+    },
+    {
+      "case_id": "NLV_FAMILY_THRESHOLD_TEXT_AND_CONVERSION_MATCH",
+      "profile_summary": "Два взрослых и один ребёнок; savings-альтернатива NLV.",
+      "expected_original_threshold": {
+        "amount": 43200,
+        "currency": "EUR"
+      },
+      "require_same_threshold_for_usd_conversion": true
+    }
+  ],
+  "canonical_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock"
+}

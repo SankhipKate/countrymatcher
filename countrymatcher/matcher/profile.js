@@ -13,8 +13,8 @@ export function resolveProvableAmount(totalAmount, evidenceLevel, partialAmount)
 const incomeSource = (prefix, owner, answers) => answers[`${prefix}Type`] === 'NO_REGULAR_INCOME' ? ({
   owner,
   type: 'NO_REGULAR_INCOME',
-  source_geography: 'NO_PERMANENT_PAYER',
-  source_country: null,
+  source_geography: 'NO_STABLE_PAYER',
+  country_id: null,
   bank_country: null,
   monthly_total: { amount: 0, currency: 'USD' },
   monthly_provable: { amount: 0, currency: 'USD' },
@@ -27,8 +27,8 @@ const incomeSource = (prefix, owner, answers) => answers[`${prefix}Type`] === 'N
 }) : ({
   owner,
   type: answers[`${prefix}Type`],
-  source_geography: answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER'),
-  source_country: (answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER')) === 'ONE_COUNTRY'
+  source_geography: answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'SINGLE_COUNTRY' : 'NO_STABLE_PAYER'),
+  country_id: (answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'SINGLE_COUNTRY' : 'NO_STABLE_PAYER')) === 'SINGLE_COUNTRY'
     ? parseCountryCode(answers[`${prefix}SourceCountry`]) : null,
   bank_country: null,
   monthly_total: money(answers[`${prefix}TotalAmount`] ?? answers[`${prefix}Amount`], answers[`${prefix}Currency`]),
@@ -125,8 +125,8 @@ export function validateUserProfile(profile) {
   const sources = [profile?.income?.primary, ...(profile?.income?.additional_sources || []), ...(profile?.income?.partner?.sources || [])];
   for (const source of sources) {
     if (!source?.type) add('primaryType', 'Укажите тип дохода.');
-    if (!['ONE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_PERMANENT_PAYER'].includes(source?.source_geography)) add('primarySourceScope', 'Укажите географию источников дохода.');
-    if (source?.source_geography === 'ONE_COUNTRY' && !code(source?.source_country)) add('primarySourceCountry', 'Укажите страну источника дохода.');
+    if (!['SINGLE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER'].includes(source?.source_geography)) add('primarySourceScope', 'Укажите географию источников дохода.');
+    if (source?.source_geography === 'SINGLE_COUNTRY' && !code(source?.country_id)) add('primarySourceCountry', 'Укажите страну источника дохода.');
     const noIncome = source?.type === 'NO_REGULAR_INCOME';
     const totalValid = noIncome || (Boolean(positiveMoney(source?.monthly_total)) && source.monthly_total.amount > 0);
     const provableValid = Boolean(positiveMoney(source?.monthly_provable));

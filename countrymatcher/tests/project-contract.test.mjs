@@ -98,38 +98,29 @@ test('schema ids and maintained public documents use canonical addresses', async
   }
 });
 
-test('every connected country has legal-entry data for a Russian citizen and the UI renders it', async () => {
-  const packageFiles = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json')).sort();
-  for (const file of packageFiles) {
-    const data = JSON.parse(await readFile(new URL(file, dataRoot), 'utf8'));
-    const entry = data.entry_for_russian_citizen;
-    assert.ok(entry, `${file}: entry_for_russian_citizen`);
-    assert.ok(entry.summary_ru.length > 40, `${file}: summary_ru`);
-    assert.ok(entry.maximum_stay_days > 0, `${file}: maximum_stay_days`);
-    assert.ok(entry.source_ids.length > 0, `${file}: source_ids`);
-    for (const sourceId of entry.source_ids) {
-      assert.ok(data.sources.some(({ source_id }) => source_id === sourceId), `${file}: missing ${sourceId}`);
-    }
-  }
-  const adapters = await Promise.all([
-    'argentina-adapter.js', 'brazil-adapter.js', 'mexico-adapter.js',
-    'paraguay-adapter.js', 'portugal-adapter.js', 'spain-adapter.js',
-  ].map((file) => readFile(new URL(`../js/countries/${file}`, import.meta.url), 'utf8')));
-  assert.equal(adapters.every((source) => source.includes('entryForRussianCitizen: data.entry_for_russian_citizen || null')), true);
-  assert.equal(adapters.every((source) => source.includes('data.entry_for_russian_citizen?.source_ids')), true);
-  const ui = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.ok(ui.includes('Как гражданину РФ законно въехать'));
-  assert.ok(ui.includes("replace(/[.;]+$/u, '')"));
+test('active matcher loads only the Final Lock Spain Research Package 4.0', async () => {
+  const [spain, matcher] = await Promise.all([
+    readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8').then(JSON.parse),
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+  ]);
+  assert.equal(spain.schema_version, '4.0');
+  assert.equal(spain.canon_revision, '2026-08-08-final-lock');
+  assert.match(matcher, /ES-research-v4\.0\.json/);
+  assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
+  assert.doesNotMatch(matcher, /countries\/.+-adapter\.js/);
 });
 
-test('research order mirrors all countries and marks every packaged country as connected', async () => {
+test('research order connects only migrated Spain and ignores archived RP3 files', async () => {
   const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  const packageFiles = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
-  for (const file of packageFiles) {
-    const data = JSON.parse(await readFile(new URL(file, dataRoot), 'utf8'));
-    assert.equal(byName.get(data.country_name_ru)?.research_status, 'Подключена', data.country_name_ru);
+  assert.equal(byName.get('Испания')?.research_status, 'Подключена');
+  for (const country of ['Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай']) {
+    assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
   }
+  const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
+  assert.ok(archivedV3.length > 0);
+  const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
+  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания']);
 });
