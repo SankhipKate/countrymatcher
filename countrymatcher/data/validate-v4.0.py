@@ -348,11 +348,24 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                         errors,
                     )
 
-    if completeness.get("country_ready_status") == "READY":
+    ready_status = completeness.get("country_ready_status")
+    if ready_status in {"READY", "PARTIAL"}:
         if has_blocking_gap:
-            fail("$.completeness.country_ready_status=READY conflicts with BLOCKING_GAP", errors)
+            fail(f"$.completeness.country_ready_status={ready_status} conflicts with BLOCKING_GAP", errors)
         if country_blocking_items:
-            fail("$.completeness.country_ready_status=READY conflicts with country-level blocking open_items", errors)
+            fail(f"$.completeness.country_ready_status={ready_status} conflicts with country-level blocking open_items", errors)
+
+        block_status = {
+            block.get("block"): block.get("status")
+            for block in blocks
+            if isinstance(block, dict)
+        }
+        if block_status.get("LGBT") != "COMPLETE":
+            fail(
+                f"$.completeness.country_ready_status={ready_status} requires LGBT=COMPLETE; "
+                "PARTIAL cannot replace mandatory LGBT research",
+                errors,
+            )
 
     count_open_links: dict[str, int] = {x: 0 for x in open_item_set}
     for block in blocks:
@@ -388,11 +401,18 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
         roles_seen.update(
             role for role in (city.get("structural_roles") or []) if isinstance(role, str)
         )
-        if not (city.get("cost_components") or []) and not city_cost_open_items:
-            fail(
-                f"$.cities[{i}].cost_components: empty list requires an explicit CITIES_COST open_item",
-                errors,
-            )
+        if not (city.get("cost_components") or []):
+            if ready_status in {"READY", "PARTIAL"}:
+                fail(
+                    f"$.cities[{i}].cost_components: {ready_status} country requires real city cost data; "
+                    "empty cost_components means BLOCKED, not PARTIAL",
+                    errors,
+                )
+            elif not city_cost_open_items:
+                fail(
+                    f"$.cities[{i}].cost_components: empty list requires an explicit CITIES_COST open_item",
+                    errors,
+                )
 
     missing_roles = REQUIRED_CITY_ROLES - roles_seen
     if missing_roles and not city_cost_open_items:

@@ -122,10 +122,27 @@ function geographyCondition(researchGeography) {
 function incomeAlternative(alternative, profile, context, countryId) {
   if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative };
   if (alternative.income_owners?.includes('SPONSOR')) return { state: 'UNKNOWN', alternative };
-  const threshold = calculateFamilyThreshold(alternative, profile);
-  if (threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency };
   const sources = sourcesForOwners(profile, alternative.income_owners || []);
   const allowed = new Set(alternative.allowed_income_types || []);
+  if (alternative.comparison === 'NO_FIXED_THRESHOLD') {
+    let hasConfirmedSource = false;
+    let hasUnknownGeography = false;
+    for (const source of sources) {
+      if (allowed.size && !allowed.has(source.type)) continue;
+      const geographyState = incomeGeographyState(alternative.source_geography, source, countryId);
+      if (geographyState === 'PASS') hasConfirmedSource = true;
+      else if (geographyState === 'UNKNOWN') hasUnknownGeography = true;
+    }
+    const state = hasConfirmedSource ? 'PASS' : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
+    return {
+      state, alternative, amount: null, confirmedAmount: null,
+      unknownGeographyAmount: null, potentialAmount: null,
+      unknownReason: state === 'UNKNOWN' ? 'GEOGRAPHY' : null,
+      hasUnknownGeography, threshold: null, currency: null,
+    };
+  }
+  const threshold = calculateFamilyThreshold(alternative, profile);
+  if (threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency };
   let confirmedAmount = 0;
   let unknownGeographyAmount = 0;
   for (const source of sources) {

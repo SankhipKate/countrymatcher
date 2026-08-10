@@ -336,13 +336,13 @@ test('countries are stably ordered by the status of their best route', () => {
   assert.deepEqual(countries.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY', 'PT']);
 });
 
-test('countries with equal legal and family fit use comparable median city cost', () => {
+test('countries with equal legal, family, and goal fit keep stable input order', () => {
   const country = (countryId, costs) => ({
     country: { countryId, group: 'SUITABLE' },
     bestRoute: { routeStatus: 'SUITABLE', familyFit: 'MEETS', goalFit: 'MEETS' },
     cities: costs.map((costUsd) => ({ costUsd })),
   });
-  assert.deepEqual(sortCountriesForDisplay([country('EXPENSIVE', [3000, 4000, 5000]), country('CHEAPER', [1000, 1500, 2000])]).map(({ country }) => country.countryId), ['CHEAPER', 'EXPENSIVE']);
+  assert.deepEqual(sortCountriesForDisplay([country('FIRST', [3000, 4000, 5000]), country('SECOND', [1000, 1500, 2000])]).map(({ country }) => country.countryId), ['FIRST', 'SECOND']);
 });
 
 test('route actions are deduplicated and omit actions already present in mandatory requirements', () => {

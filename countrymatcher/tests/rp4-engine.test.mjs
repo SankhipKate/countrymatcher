@@ -19,14 +19,23 @@ import {
 import { sortCountriesForDisplay } from '../matcher/profile.js';
 
 const FIXTURE_SHA256 = '7b07859dfd5bd88c6ff92446ece8f1d90f75fd8846f0a17c94a7de6bc02b23ae';
+const AR_FIXTURE_SHA256 = 'dc6e173f3497ccb45c2c4d4ca1e358be9153d793a020dcfef1f3b0f5b3b79cda';
 const fixtureBytes = await readFile(new URL('./fixtures/ES_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url));
 const fixture = JSON.parse(fixtureBytes);
+const arFixtureBytes = await readFile(new URL('./fixtures/AR_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url));
+const arFixture = JSON.parse(arFixtureBytes);
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
-const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
+const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
+const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
   const value = fixture.cases.find(({ case_id }) => case_id === caseId);
   assert.ok(value, `canonical fixture case ${caseId}`);
+  return value;
+};
+const argentinaCase = (caseId) => {
+  const value = arFixture.cases.find(({ case_id }) => case_id === caseId);
+  assert.ok(value, `Argentina fixture case ${caseId}`);
   return value;
 };
 const incomeSource = (owner, type, amount, currency = 'EUR', countryId = 'US', geography = 'SINGLE_COUNTRY') => ({
@@ -87,25 +96,30 @@ test('repository regression fixture has pinned canonical provenance', () => {
   assert.equal(fixture.rules_version, '4.0');
   assert.equal(fixture.canonical_version, ACTIVE_RESEARCH_SCHEMA_VERSION);
   assert.equal(fixture.canon_revision, ACTIVE_CANON_REVISION);
+  assert.equal(createHash('sha256').update(arFixtureBytes).digest('hex'), AR_FIXTURE_SHA256);
+  assert.equal(arFixture.country_id, 'AR');
+  assert.equal(arFixture.rules_version, '4.0');
+  assert.equal(arFixture.canonical_version, ACTIVE_RESEARCH_SCHEMA_VERSION);
+  assert.equal(arFixture.canon_revision, ACTIVE_CANON_REVISION);
 });
 
 test('active contract accepts only Final Lock Research Package 4.0 without fallback', () => {
   assert.equal(ACTIVE_RESEARCH_SCHEMA_VERSION, '4.0');
   assert.equal(ACTIVE_CANON_REVISION, '2026-08-08-final-lock');
   assert.doesNotThrow(() => assertActiveResearchPackage(spain));
+  assert.doesNotThrow(() => assertActiveResearchPackage(argentina));
   assert.throws(() => assertActiveResearchPackage({ ...spain, schema_version: '3.0' }), /schema_version 4\.0/);
   assert.throws(() => assertActiveResearchPackage({ ...spain, canon_revision: 'draft' }), /2026-08-08-final-lock/);
 });
 
-test('active matcher calculates one or many RP4 packages through the same country pipeline', () => {
-  const input = profile({ applicantAmount: 6000 });
+test('active matcher calculates real Spain and Argentina packages through the same country pipeline', () => {
+  const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
   const one = calculateActiveMatcher(input, [spain], context);
   assert.equal(one.results.length, 1);
   assert.equal(one.results[0].country.countryId, 'ES');
-  const argentina = { ...spain, country_id: 'AR', country_name_ru: 'Аргентина' };
   const two = calculateActiveMatcher(input, [spain, argentina], context);
   assert.deepEqual(two.results.map(({ country }) => country.countryId), ['ES', 'AR']);
-  assert.equal(two.results.every(({ routes }) => routes.length === 14), true);
+  assert.deepEqual(two.results.map(({ routes }) => routes.length), [14, 9]);
   assert.deepEqual(sortCountriesForDisplay(two.results).map(({ country }) => country.countryId), ['ES', 'AR']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
 });
@@ -175,6 +189,19 @@ test('INCOME_ONLY matrix covers PASS, FAIL, and UNKNOWN', () => {
   assert.equal(financialState('INCOME_ONLY', [alternative('INCOME')]).state, 'PASS');
   assert.equal(financialState('INCOME_ONLY', [alternative('INCOME', true, { amount: 5000 })]).state, 'FAIL');
   assert.equal(financialState('INCOME_ONLY', [alternative('INCOME', false)]).state, 'UNKNOWN');
+});
+
+test('NO_FIXED_THRESHOLD checks income type and geography without inventing a numeric threshold', () => {
+  const noThreshold = alternative('INCOME', true, {
+    amount: null, currency: null, comparison: 'NO_FIXED_THRESHOLD',
+    allowed_income_types: ['REMOTE_EMPLOYMENT'], source_geography: 'FOREIGN',
+  });
+  assert.equal(financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 0, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US' })).state, 'PASS');
+  assert.equal(financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'PENSION', applicantCountryId: 'US' })).state, 'FAIL');
+  assert.equal(financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'ES' })).state, 'FAIL');
+  const unknown = financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantGeography: 'MULTIPLE_COUNTRIES', applicantCountryId: null }));
+  assert.equal(unknown.state, 'UNKNOWN');
+  assert.match(unknown.condition, /предел/);
 });
 
 test('SAVINGS_ONLY matrix covers PASS, FAIL, and UNKNOWN', () => {
@@ -513,6 +540,57 @@ test('Spain family acceptance matches Final Lock scenarios without family exclus
   assert.equal(soloResult.excludedRoutes.length, 0);
   assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.state === 'NOT_APPLICABLE'), true);
   assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.conditions.length === 0), true);
+});
+
+test('Argentina RP4 regression fixture matches real route, family, city, and publication behavior', () => {
+  const routeById = (result, routeId) => result.routes.find((route) => route.routeId === routeId);
+
+  let canonical = argentinaCase('NOMAD_REMOTE_FOREIGN_SOLO');
+  let result = calculateActiveCountry(profile({ applicantAmount: 3000, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_NOMAD').routeStatus, canonical.expected.AR_NOMAD);
+
+  canonical = argentinaCase('NOMAD_NON_REMOTE_INCOME_REJECTED');
+  result = calculateActiveCountry(profile({ applicantAmount: 3000, applicantCurrency: 'USD', applicantType: 'PENSION', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_NOMAD').routeStatus, canonical.expected.AR_NOMAD);
+
+  canonical = argentinaCase('NOMAD_DESTINATION_SOURCE_REJECTED');
+  result = calculateActiveCountry(profile({ applicantAmount: 3000, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'AR' }), argentina, context);
+  assert.equal(routeById(result, 'AR_NOMAD').routeStatus, canonical.expected.AR_NOMAD);
+
+  canonical = argentinaCase('NOMAD_UNKNOWN_GEOGRAPHY_IS_CONDITION');
+  result = calculateActiveCountry(profile({ applicantAmount: 3000, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantGeography: 'MULTIPLE_COUNTRIES', applicantCountryId: null }), argentina, context);
+  const nomadUnknown = routeById(result, 'AR_NOMAD');
+  assert.equal(nomadUnknown.routeStatus, canonical.expected.AR_NOMAD);
+  assert.ok(nomadUnknown.conditions.some((text) => text.includes(canonical.condition_must_reference)));
+
+  canonical = argentinaCase('RENTISTA_THRESHOLD_BOUNDARY');
+  result = calculateActiveCountry(profile({ applicantAmount: canonical.threshold.amount, applicantCurrency: 'ARS', applicantType: 'PASSIVE_INCOME', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_RENTISTA').routeStatus, canonical.expected_at_threshold.AR_RENTISTA);
+  result = calculateActiveCountry(profile({ applicantAmount: canonical.threshold.amount - 1, applicantCurrency: 'ARS', applicantType: 'PASSIVE_INCOME', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_RENTISTA').routeStatus, canonical.expected_below_threshold.AR_RENTISTA);
+
+  canonical = argentinaCase('PENSIONADO_THRESHOLD_BOUNDARY');
+  result = calculateActiveCountry(profile({ applicantAmount: canonical.threshold.amount, applicantCurrency: 'ARS', applicantType: 'PENSION', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_PENSIONADO').routeStatus, canonical.expected_at_threshold.AR_PENSIONADO);
+  result = calculateActiveCountry(profile({ applicantAmount: canonical.threshold.amount - 1, applicantCurrency: 'ARS', applicantType: 'PENSION', applicantCountryId: 'US' }), argentina, context);
+  assert.equal(routeById(result, 'AR_PENSIONADO').routeStatus, canonical.expected_below_threshold.AR_PENSIONADO);
+
+  canonical = argentinaCase('NOMAD_FAMILY_REQUIRES_SEPARATE_BASIS');
+  result = calculateActiveCountry(profile({ applicantAmount: 3000, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US', adults: 2, childAges: [13] }), argentina, context);
+  const familyNomad = routeById(result, 'AR_NOMAD');
+  assert.equal(familyNomad.routeStatus, canonical.expected.AR_NOMAD);
+  assert.equal(familyNomad.familyEvaluation.classification, canonical.family_classification);
+
+  canonical = argentinaCase('INVESTOR_BLOCKING_GAP_NOT_PUBLISHED');
+  const investor = argentina.routes.find(({ route_id }) => route_id === 'AR_INVESTOR_HIDDEN');
+  assert.equal(investor.publishable, canonical.expected_publishable.AR_INVESTOR_HIDDEN);
+  assert.equal(result.routes.some(({ routeId }) => routeId === 'AR_INVESTOR_HIDDEN'), false);
+
+  assert.equal(argentina.cities.length, arFixture.country_invariants.displayed_cities);
+  assert.ok(argentina.cities.every((city) => city.cost_components.length >= arFixture.country_invariants.minimum_cost_components_per_city));
+  const lgbtCompleteness = argentina.completeness.blocks.find(({ block }) => block === 'LGBT');
+  assert.equal(lgbtCompleteness.status, arFixture.country_invariants.lgbt_completeness);
+  assert.deepEqual(argentina.lgbt.friendly_cities, []);
 });
 
 test('FX conversion returns 5400 EUR for 6000 USD and preserves below/above threshold', () => {

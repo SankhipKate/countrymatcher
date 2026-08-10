@@ -286,12 +286,6 @@ export function sortRoutesForDisplay(routes = []) {
 export function sortCountriesForDisplay(countries = []) {
   const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
   const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
-  const medianCost = (country) => {
-    const values = (country?.cities || []).map((city) => Number(city.costUsd)).filter(Number.isFinite).sort((a, b) => a - b);
-    if (!values.length) return null;
-    const middle = Math.floor(values.length / 2);
-    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
-  };
   return countries
     .map((country, originalIndex) => ({ country, originalIndex }))
     .sort((left, right) => {
@@ -306,9 +300,6 @@ export function sortCountriesForDisplay(countries = []) {
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[leftBest?.goalFit] ?? 1) - (goalRank[rightBest?.goalFit] ?? 1);
       if (goalDifference) return goalDifference;
-      const leftCost = medianCost(left.country);
-      const rightCost = medianCost(right.country);
-      if (leftCost != null && rightCost != null && leftCost !== rightCost) return leftCost - rightCost;
       return left.originalIndex - right.originalIndex;
     })
     .map(({ country }) => country);

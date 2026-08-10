@@ -3838,15 +3838,6 @@
       "handling_ru": "Показывать подтверждённое национальное правило и честно отмечать региональный пробел."
     },
     {
-      "item_id": "ES_GAP_LGBT_CITIES",
-      "block": "LGBT",
-      "priority": "LOW",
-      "related_route_id": null,
-      "blocks_publication": false,
-      "missing_ru": "Не найдено единое актуальное методологичное исследование ЛГБТ-жителей, позволяющее ранжировать испанские города как «наиболее лояльные» по стандарту проекта.",
-      "handling_ru": "Не придумывать список городов; показывать национальную правовую и практическую оценку без городского рейтинга."
-    },
-    {
       "item_id": "ES_GAP_ICT_DURATION",
       "block": "LONG_TERM",
       "priority": "LOW",
@@ -3950,10 +3941,8 @@
       },
       {
         "block": "LGBT",
-        "status": "PARTIAL_NON_BLOCKING",
-        "open_item_ids": [
-          "ES_GAP_LGBT_CITIES"
-        ]
+        "status": "COMPLETE",
+        "open_item_ids": []
       },
       {
         "block": "SOURCES",

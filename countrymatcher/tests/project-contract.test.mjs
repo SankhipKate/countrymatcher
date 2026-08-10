@@ -122,6 +122,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
     assert.equal(pkg.schema_version, '4.0');
     assert.equal(pkg.canon_revision, '2026-08-08-final-lock');
+    assert.notEqual(pkg.completeness.country_ready_status, 'BLOCKED');
   }
   assert.match(matcher, /Promise\.all\(ACTIVE_RP4_PACKAGES\.map/);
   assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
@@ -129,17 +130,17 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
 });
 
-test('research order connects only migrated Spain and ignores archived RP3 files', async () => {
+test('research order marks only migrated RP4 countries connected and ignores archived RP3 files', async () => {
   const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  assert.equal(byName.get('Испания')?.research_status, 'Подключена');
-  for (const country of ['Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай']) {
+  for (const country of ['Испания', 'Аргентина']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
+  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай']) {
     assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
   }
   const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
   assert.ok(archivedV3.length > 0);
   const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
-  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания']);
+  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина']);
 });
