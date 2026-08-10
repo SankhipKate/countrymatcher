@@ -23,6 +23,30 @@ test('repository has one application folder, one backlog, and one source-documen
   assert.equal(appChildren.includes('research-backlog'), false);
   assert.equal(appChildren.includes('source-documents'), false);
   assert.equal(visible.some((name) => name.includes('immigration-country-matcher')), false);
+
+  const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
+  for (const path of [
+    'README.md',
+    'canon-v4.0/CANON_MANIFEST.md',
+    'canon-v4.0/COUNTRY_RESEARCH_STANDARD.md',
+    'canon-v4.0/MATCHING_AND_RESULT_STANDARD.md',
+    'canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md',
+    'canon-v4.0/FINAL_LOCK_VALIDATION_REPORT_v4.0.md',
+    'canon-v4.0/process/',
+  ]) await access(new URL(path, sourceDocumentsRoot));
+  for (const path of [
+    'README_v4.0.md',
+    'COUNTRY_RESEARCH_STANDARD_v4.0.md',
+    'MATCHING_AND_RESULT_STANDARD_v4.0.md',
+    'NEW_COUNTRY_RESEARCH_PROMPT_v4.0.md',
+    'canon-v4.0/CANON_MANIFEST_v4.0.md',
+  ]) await assert.rejects(access(new URL(path, sourceDocumentsRoot)));
+
+  const sourceReadme = await readFile(new URL('README.md', sourceDocumentsRoot), 'utf8');
+  assert.match(sourceReadme, /Действующий Canon: 4\.0/);
+  assert.match(sourceReadme, /source-documents\/canon-v4\.0\//);
+  const manifest = await readFile(new URL('canon-v4.0/CANON_MANIFEST.md', sourceDocumentsRoot), 'utf8');
+  assert.match(manifest, /Только эти два документа являются normative standards Canon 4\.0\./);
 });
 
 test('root index is the application and matcher has no user page or redirect', async () => {
@@ -95,18 +119,31 @@ test('schema ids and maintained public documents use canonical addresses', async
   assert.equal(profileSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/schemas/user-profile-v1.schema.json');
 
   const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
-  const sourceMarkdown = (await readdir(sourceDocumentsRoot)).filter((name) => name.endsWith('.md'));
+  const sourceMarkdown = (await readdir(sourceDocumentsRoot, { recursive: true })).filter((name) => name.endsWith('.md'));
   const maintainedFiles = [
     new URL('../index.html', import.meta.url),
     new URL('../landing/index.html', import.meta.url),
     new URL('../README.md', import.meta.url),
     new URL('../DEPLOYMENT.md', import.meta.url),
+    new URL('../docs/research/README.md', import.meta.url),
     ...sourceMarkdown.map((name) => new URL(name, sourceDocumentsRoot)),
   ];
   for (const file of maintainedFiles) {
     const contents = await readFile(file, 'utf8');
     for (const oldUrl of oldPublicUrls) {
       assert.equal(contents.includes(oldUrl), false, `${file.pathname}: ${oldUrl}`);
+    }
+  }
+
+  const markdownFiles = maintainedFiles.filter((file) => file.pathname.endsWith('.md'));
+  for (const file of markdownFiles) {
+    const contents = await readFile(file, 'utf8');
+    const targets = [...contents.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)].map((match) => match[1].trim());
+    for (const target of targets) {
+      if (/^(?:https?:|mailto:|tel:|data:|#)/i.test(target)) continue;
+      const localTarget = target.split('#', 1)[0].split('?', 1)[0];
+      if (!localTarget) continue;
+      await access(new URL(localTarget, file));
     }
   }
 });

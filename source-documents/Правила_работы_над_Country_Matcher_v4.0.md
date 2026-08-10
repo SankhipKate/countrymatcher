@@ -83,8 +83,8 @@ Codex получает только задачи на:
 
 1. Последнее прямое решение пользователя.
 2. Действующие нормативные документы проекта:
-   - `source-documents/COUNTRY_RESEARCH_STANDARD_v4.0.md`;
-   - `source-documents/MATCHING_AND_RESULT_STANDARD_v4.0.md`.
+   - `source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md`;
+   - `source-documents/canon-v4.0/MATCHING_AND_RESULT_STANDARD.md`.
 3. Фактическое текущее состояние кода, данных, тестов и опубликованного сайта.
 4. Другие актуальные документы проекта, если они не противоречат двум нормативным стандартам.
 5. Исторические документы, старые PDF, предыдущие планы и прежняя память о проекте.
@@ -254,7 +254,7 @@ ChatGPT:
 
 ## 14. Semantic change audit нормативных документов
 
-Перед утверждением любой новой версии `COUNTRY_RESEARCH_STANDARD_v4.0.md` или `MATCHING_AND_RESULT_STANDARD_v4.0.md` создаётся и сохраняется отдельный semantic change audit.
+Перед утверждением любой новой версии `COUNTRY_RESEARCH_STANDARD.md` или `MATCHING_AND_RESULT_STANDARD.md` создаётся и сохраняется отдельный semantic change audit.
 
 Аудит сравнивает не строки текста, а правила поведения вида «при условии X система обязана Y». Для каждого правила предыдущей версии фиксируется одно решение:
 

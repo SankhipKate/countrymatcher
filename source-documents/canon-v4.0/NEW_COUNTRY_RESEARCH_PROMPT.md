@@ -5,9 +5,9 @@
 
 Этот файл не является отдельным нормативным стандартом. Единственные правила находятся в:
 
-- `COUNTRY_RESEARCH_STANDARD_v4.0.md` — что и как исследовать;
-- `MATCHING_AND_RESULT_STANDARD_v4.0.md` — как данные используются в расчёте и пользовательском результате;
-- `research-package-v4.0.schema.json` — точная структура Research Package 4.0 (`canon_revision = 2026-08-08-final-lock`).
+- `source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md` — что и как исследовать;
+- `source-documents/canon-v4.0/MATCHING_AND_RESULT_STANDARD.md` — как данные используются в расчёте и пользовательском результате;
+- `countrymatcher/data/research-package-v4.0.schema.json` — точная структура Research Package 4.0 (`canon_revision = 2026-08-08-final-lock`).
 
 ## Как использовать
 
@@ -22,13 +22,13 @@
 Проведи полное исследование страны [СТРАНА] (ISO-код: [КОД ISO]) для проекта Country Matcher.
 
 Перед началом полностью прочитай актуальные файлы:
-1. source-documents/COUNTRY_RESEARCH_STANDARD_v4.0.md
-2. source-documents/MATCHING_AND_RESULT_STANDARD_v4.0.md
+1. source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md
+2. source-documents/canon-v4.0/MATCHING_AND_RESULT_STANDARD.md
 3. countrymatcher/data/research-package-v4.0.schema.json
 
 Если работа идёт не внутри архива проекта, используй их актуальные raw-ссылки из репозитория Country Matcher.
 
-COUNTRY_RESEARCH_STANDARD_v4.0.md — единственный норматив о том, что и насколько полно исследовать. MATCHING_AND_RESULT_STANDARD_v4.0.md нужен, чтобы понимать назначение структурированных фактов. JSON Schema задаёт точную форму результата. Не придумывай новые статусы, вопросы анкеты, поля, правила расчёта или страновую логику.
+COUNTRY_RESEARCH_STANDARD.md — единственный норматив о том, что и насколько полно исследовать. MATCHING_AND_RESULT_STANDARD.md нужен, чтобы понимать назначение структурированных фактов. JSON Schema задаёт точную форму результата. Не придумывай новые статусы, вопросы анкеты, поля, правила расчёта или страновую логику.
 
 Исследуй действующее на дату проверки право и практические данные для гражданина РФ. Используй актуальный веб-поиск. Для юридических и миграционных фактов отдавай приоритет законам, официальным государственным, миграционным и консульским источникам. Не подменяй неизвестный факт предположением.
 
@@ -36,7 +36,7 @@ COUNTRY_RESEARCH_STANDARD_v4.0.md — единственный норматив 
 
 ОБЯЗАТЕЛЬНЫЙ ОХВАТ МАРШРУТОВ
 
-Проверь все 13 категорий route_coverage из COUNTRY_RESEARCH_STANDARD_v4.0.md. Для каждой запиши ровно один результат:
+Проверь все 13 категорий route_coverage из COUNTRY_RESEARCH_STANDARD.md. Для каждой запиши ровно один результат:
 - ROUTE_EXISTS;
 - NO_ROUTE;
 - UNAVAILABLE_TO_RU;
@@ -161,7 +161,7 @@ family_formula и family_formula_ordered не используются одно�
 
 completeness обязан содержать ровно 14 блоков из схемы. Не ставь READY, если существует BLOCKING_GAP. Не используй произвольный общий процент полноты.
 
-Перед объявлением исследования завершённым проверь: КАЖДЫЙ обязательный раздел COUNTRY_RESEARCH_STANDARD_v4.0.md либо полностью представлен структурированными данными JSON, либо имеет явный open_item. Валидный JSON сам по себе не означает полное исследование.
+Перед объявлением исследования завершённым проверь: КАЖДЫЙ обязательный раздел COUNTRY_RESEARCH_STANDARD.md либо полностью представлен структурированными данными JSON, либо имеет явный open_item. Валидный JSON сам по себе не означает полное исследование.
 
 АКТУАЛЬНОСТЬ
 

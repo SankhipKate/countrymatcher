@@ -54,9 +54,9 @@
 - `data/*-research-v3.0.json` — инертные сохранённые исследования, не входящие в runtime;
 - `data/research-package-v4.0.schema.json` — текущий контракт новых и пересобранных Research Package;
 - `data/research-package-v3.0.schema.json` — прежний формат ещё не мигрированных исследований стран и их тестов;
-- `../source-documents/COUNTRY_RESEARCH_STANDARD_v4.0.md` — единственный действующий стандарт исследования страны;
-- `../source-documents/MATCHING_AND_RESULT_STANDARD_v4.0.md` — единственный действующий стандарт сопоставления анкеты, статусов, сортировки и результата в браузере;
-- `../source-documents/NEW_COUNTRY_RESEARCH_PROMPT_v4.0.md` — готовое ненормативное задание для запуска исследования новой страны по действующему стандарту;
+- `../source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md` — единственный действующий стандарт исследования страны;
+- `../source-documents/canon-v4.0/MATCHING_AND_RESULT_STANDARD.md` — единственный действующий стандарт сопоставления анкеты, статусов, сортировки и результата в браузере;
+- `../source-documents/canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md` — готовое ненормативное задание для запуска исследования новой страны по действующему стандарту;
 - `docs/research/` — архивные отчёты и материалы исследований стран;
 - `data/schemas/user-profile-v1.schema.json` — схема профиля пользователя;
 - `tests/` — автоматические проверки движка, профиля, страновых пакетов и интерфейса.
