@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildUserProfile, cityCategories, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { buildUserProfile, cityCategories, countryFlag, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
 import { formatCurrency } from '../matcher/format.js';
 import { STATUS_LABELS_RU } from '../js/engine/status-contract.js';
 import { countryOptions, parseCountryCode, searchCountries } from '../matcher/countries.js';
@@ -23,6 +23,13 @@ test('visible matcher version matches package version', async () => {
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
   assert.match(fxContext, /engine_version: '7\.1\.1'/);
+});
+
+test('country flags are derived generically from ISO alpha-2 codes', () => {
+  assert.equal(countryFlag('ES'), '🇪🇸');
+  assert.equal(countryFlag('AR'), '🇦🇷');
+  assert.equal(countryFlag('BR'), '🇧🇷');
+  assert.equal(countryFlag('INVALID'), '🌍');
 });
 
 test('active questionnaire enums match the Final Lock profile schema', async () => {
@@ -586,7 +593,8 @@ test('matcher cache keys include the current release for code and country data',
   const version = packageJson.version.replaceAll('.', '\\.');
   assert.match(matcher, new RegExp(`styles\\.css\\?v=${version}`));
   assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
-  assert.match(app, new RegExp(`ES-research-v4\\.0\\.json\\?v=${version}`));
+  assert.match(app, /'ES-research-v4\.0\.json'/);
+  assert.match(app, new RegExp(`fetch\\(\`\\.\\.\\/data\\/\\$\\{filename\\}\\?v=${version}\``));
   assert.equal(app.includes("-research-v3.0.json"), false);
   assert.equal(app.includes("-adapter.js"), false);
 });

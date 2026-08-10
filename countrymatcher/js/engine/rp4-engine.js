@@ -565,6 +565,7 @@ export function calculateActiveCountry(profile, pkg, context) {
   };
 }
 
-export function calculateActiveMatcher(profile, pkg, context) {
-  return { calculatedAt: new Date().toISOString(), results: [calculateActiveCountry(profile, pkg, context)], errors: [] };
+export function calculateActiveMatcher(profile, packages, context) {
+  if (!Array.isArray(packages)) throw new TypeError('Active RP4 packages must be an array.');
+  return { calculatedAt: new Date().toISOString(), results: packages.map((pkg) => calculateActiveCountry(profile, pkg, context)), errors: [] };
 }

@@ -2,6 +2,11 @@ import { parseCountryCode } from './countries.js';
 
 const money = (amount, currency) => amount === '' || amount == null ? null : ({ amount: Number(amount), currency });
 
+export function countryFlag(countryId) {
+  if (!/^[A-Z]{2}$/.test(countryId || '')) return '🌍';
+  return [...countryId].map((letter) => String.fromCodePoint(letter.charCodeAt(0) + 127397)).join('');
+}
+
 
 export function resolveProvableAmount(totalAmount, evidenceLevel, partialAmount) {
   if (evidenceLevel === 'FULL') return totalAmount === '' || totalAmount == null ? null : Number(totalAmount);

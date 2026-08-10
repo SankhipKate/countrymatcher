@@ -7,6 +7,7 @@ import {
   ACTIVE_RESEARCH_SCHEMA_VERSION,
   assertActiveResearchPackage,
   calculateActiveCountry,
+  calculateActiveMatcher,
   calculateFamilyThreshold,
   combineFinancialAlternatives,
   compareFinancialAmount,
@@ -15,6 +16,7 @@ import {
   evaluateFamilyScenarios,
   evaluateRoute,
 } from '../js/engine/rp4-engine.js';
+import { sortCountriesForDisplay } from '../matcher/profile.js';
 
 const FIXTURE_SHA256 = '7b07859dfd5bd88c6ff92446ece8f1d90f75fd8846f0a17c94a7de6bc02b23ae';
 const fixtureBytes = await readFile(new URL('./fixtures/ES_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url));
@@ -93,6 +95,19 @@ test('active contract accepts only Final Lock Research Package 4.0 without fallb
   assert.doesNotThrow(() => assertActiveResearchPackage(spain));
   assert.throws(() => assertActiveResearchPackage({ ...spain, schema_version: '3.0' }), /schema_version 4\.0/);
   assert.throws(() => assertActiveResearchPackage({ ...spain, canon_revision: 'draft' }), /2026-08-08-final-lock/);
+});
+
+test('active matcher calculates one or many RP4 packages through the same country pipeline', () => {
+  const input = profile({ applicantAmount: 6000 });
+  const one = calculateActiveMatcher(input, [spain], context);
+  assert.equal(one.results.length, 1);
+  assert.equal(one.results[0].country.countryId, 'ES');
+  const argentina = { ...spain, country_id: 'AR', country_name_ru: 'Аргентина' };
+  const two = calculateActiveMatcher(input, [spain, argentina], context);
+  assert.deepEqual(two.results.map(({ country }) => country.countryId), ['ES', 'AR']);
+  assert.equal(two.results.every(({ routes }) => routes.length === 14), true);
+  assert.deepEqual(sortCountriesForDisplay(two.results).map(({ country }) => country.countryId), ['ES', 'AR']);
+  assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
 });
 
 test('DISPLAY_ONLY, UNASKED_CONDITION, and ENGINE keep their distinct status effects', () => {

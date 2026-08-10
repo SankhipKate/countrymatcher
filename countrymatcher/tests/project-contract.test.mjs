@@ -75,6 +75,19 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
   assert.ok(testPosition > -1 && testPosition < uploadPosition && uploadPosition < deployPosition);
 });
 
+test('CI and Pages validate every RP4 package before completion or deploy', async () => {
+  const workflows = await Promise.all(['test.yml', 'pages.yml'].map((name) => readFile(new URL(`../../.github/workflows/${name}`, import.meta.url), 'utf8')));
+  for (const workflow of workflows) {
+    assert.match(workflow, /actions\/setup-python@v5/);
+    assert.match(workflow, /pip install -r countrymatcher\/requirements\.txt/);
+    assert.match(workflow, /packages=\(countrymatcher\/data\/\*-research-v4\.0\.json\)/);
+    assert.match(workflow, /if \[ \$\{#packages\[@\]\} -eq 0 \]/);
+    assert.match(workflow, /python3 countrymatcher\/data\/validate-v4\.0\.py "\$package"/);
+  }
+  const pages = workflows[1];
+  assert.ok(pages.indexOf('validate-v4.0.py') < pages.indexOf('actions/upload-pages-artifact@v3'));
+});
+
 test('schema ids and maintained public documents use canonical addresses', async () => {
   const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
   const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
@@ -98,16 +111,22 @@ test('schema ids and maintained public documents use canonical addresses', async
   }
 });
 
-test('active matcher loads only the Final Lock Spain Research Package 4.0', async () => {
-  const [spain, matcher] = await Promise.all([
-    readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8').then(JSON.parse),
-    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
-  ]);
-  assert.equal(spain.schema_version, '4.0');
-  assert.equal(spain.canon_revision, '2026-08-08-final-lock');
-  assert.match(matcher, /ES-research-v4\.0\.json/);
+test('active matcher declares a non-empty list of Final Lock RP4 packages', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+  const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+  assert.ok(filenames.length > 0);
+  for (const filename of filenames) {
+    assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
+    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+    assert.equal(pkg.schema_version, '4.0');
+    assert.equal(pkg.canon_revision, '2026-08-08-final-lock');
+  }
+  assert.match(matcher, /Promise\.all\(ACTIVE_RP4_PACKAGES\.map/);
   assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
   assert.doesNotMatch(matcher, /countries\/.+-adapter\.js/);
+  assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
 });
 
 test('research order connects only migrated Spain and ignores archived RP3 files', async () => {

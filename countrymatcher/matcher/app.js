@@ -3,7 +3,7 @@ import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engin
 import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.1';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.1';
 import { formatCurrency } from './format.js?v=7.1.1';
-import { buildUserProfile, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
+import { buildUserProfile, countryFlag, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -11,8 +11,11 @@ const form = $('#matcherForm');
 const steps = $$('.wizard-step');
 const TOTAL_STEPS = steps.length;
 const DRAFT_KEY = 'immigration-matcher-universal-draft-v3';
+const ACTIVE_RP4_PACKAGES = [
+  'ES-research-v4.0.json',
+];
 let currentStep = 1;
-let spainData;
+let activeResearchPackages = [];
 let calculationContext;
 let currentProfile;
 let profileSchema;
@@ -328,7 +331,7 @@ function countryPresentation(calculation) {
     best,
     countryId,
     countryName: calculation.country.name,
-    flag: countryId === 'ES' ? '🇪🇸' : '🌍',
+    flag: countryFlag(countryId),
   };
 }
 
@@ -419,8 +422,8 @@ function renderCountryResult(calculation, changed = false, active = false) {
     ${renderLgbtResearch(calculation)}${petInfo}</div></article>`;
 }
 
-function calculateActiveSpain() {
-  return calculateActiveMatcher(currentProfile, spainData, calculationContext);
+function calculateActiveCountries() {
+  return calculateActiveMatcher(currentProfile, activeResearchPackages, calculationContext);
 }
 
 function renderResult(calculation, changed = false) {
@@ -485,13 +488,13 @@ form.addEventListener('change', (event) => { if (event.target?.name === 'hasChil
 form.addEventListener('input', () => renderProfileSummary(profile()));
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  if (!validateStep(currentStep) || !spainData || !calculationContext) return;
+  if (!validateStep(currentStep) || !activeResearchPackages.length || !calculationContext) return;
   currentProfile = profile();
   const validation = validateUserProfile(currentProfile);
   if (!validation.valid) { $('#formError').hidden = false; $('#formError').textContent = validation.errors[0].message; return; }
   const schemaErrors = validateAgainstSchema(currentProfile, profileSchema);
   if (schemaErrors.length) { $('#formError').hidden = false; $('#formError').textContent = `Проверьте ответы: ${schemaErrors[0].message}`; return; }
-  try { switchToResult(calculateActiveSpain()); }
+  try { switchToResult(calculateActiveCountries()); }
   catch (error) { $('#formError').hidden = false; $('#formError').textContent = `Не удалось выполнить расчёт: ${error.message}`; }
 });
 $('#saveDraft').addEventListener('click', () => { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft())); showToast('Ответы сохранены только в этом браузере. Можно вернуться позже.'); });
@@ -501,19 +504,21 @@ $('#editProfile').addEventListener('click', () => { $('#resultView').hidden = tr
 async function init() {
   restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [spainResponse, schemaResponse] = await Promise.all([
-      fetch('../data/ES-research-v4.0.json?v=7.1.1'),
+    const [packages, schemaResponse, context] = await Promise.all([
+      Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
+        const response = await fetch(`../data/${filename}?v=7.1.1`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
+        const pkg = await response.json();
+        assertActiveResearchPackage(pkg);
+        return pkg;
+      })),
       fetch('../data/schemas/user-profile-v1.schema.json?v=7.1.1'),
+      loadCalculationContext(),
     ]);
-    if (!spainResponse.ok || !schemaResponse.ok) {
-      throw new Error(`HTTP ${spainResponse.status}/${schemaResponse.status}`);
-    }
-    [spainData, profileSchema] = await Promise.all([
-      spainResponse.json(),
-      schemaResponse.json(),
-    ]);
-    assertActiveResearchPackage(spainData);
-    calculationContext = await loadCalculationContext();
+    if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
+    activeResearchPackages = packages;
+    profileSchema = await schemaResponse.json();
+    calculationContext = context;
   } catch (error) {
     $('#formError').hidden = false;
     $('#formError').textContent = error.code === 'CALCULATION_CONTEXT_INCOMPLETE' ? 'Расчёт временно недоступен: не удалось получить актуальный курс валют.' : `Не удалось загрузить данные: ${error.message}`;
