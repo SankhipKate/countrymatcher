@@ -3,7 +3,7 @@ import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engin
 import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.1';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.1';
 import { formatCurrency } from './format.js?v=7.1.1';
-import { buildUserProfile, countryFlag, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -303,7 +303,7 @@ function routeCard(route, countryName, main = false) {
   const financialItems = route.financialSummary?.alternatives?.filter((item) => item.threshold != null).map((item) => {
     const official = `${currency(item.threshold, item.currency)}${item.period === "MONTHLY" ? "/мес" : ""}`;
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (ок. ${currency(item.thresholdUsd, "USD")})` : "";
-    return `${item.kind}: ${official}${equivalent}`;
+    return `${item.kindLabel}: ${official}${equivalent}`;
   }) || [];
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ONE_TIME: 'единовременно', OTHER: '' };
@@ -336,19 +336,20 @@ function routeCard(route, countryName, main = false) {
     }).join('');
     return `<p>${html(guidance.summary_ru)}</p><ul>${figures}</ul><p><b>Это не официальный минимальный порог.</b> ${html(guidance.disclaimer_ru)}</p>`;
   }).join('')}</div>` : "";
-  const applicationBlock = route.application?.length ? `<div class="route-requirements"><h4>Как можно подать заявление</h4>${list(route.application.map((item) => item.guidance))}</div>` : "";
-  const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4>Первый статус</h4><p>${html(route.firstPermit.description)}</p></div>` : "";
+  const applicationItems = route.application?.map(applicationPresentationText) || [];
+  const applicationBlock = applicationItems.length ? `<div class="route-requirements"><h4>Как можно подать заявление</h4>${list(applicationItems)}</div>` : "";
+  const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4>Первый статус</h4><p>${html(route.firstPermit.description)}</p>${route.firstPermit.months != null ? `<p>Срок первого разрешения: ${html(russianMonths(route.firstPermit.months))}.</p>` : ''}</div>` : "";
   const applicableFamily = route.familyEvaluation?.state === 'NOT_APPLICABLE' ? []
     : (route.family || []).filter((item) => route.familyEvaluation?.applicableScenarioIds?.includes(item.scenarioId));
   const familyBlock = applicableFamily.length ? `<div class="route-requirements"><h4>Семья</h4>${list(applicableFamily.map((item) => item.description))}</div>` : "";
-  const workItems = [...(route.workRights?.applicant || []).map((item) => `Заявитель: ${item.rule}`), ...(route.workRights?.partner || []).map((item) => `Партнёр: ${item.rule}`)];
+  const workItems = deduplicatedWorkRights(route.workRights);
   const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
   const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : unsuitable ? "" : `<span class="route-expand-label">Показать подробности</span>`}</div>`;
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${unsuitable ? `<span class="route-expand-label">Показать подробности</span>` : main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : `<span class="route-expand-label">Показать подробности</span>`}</div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
-  const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${unsuitable ? blockersBlock : actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
-  if (unsuitable) return `<article class="route-result compact">${header}<div class="route-card-body">${body}</div></article>`;
+  const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
+  if (unsuitable) return `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${blockersBlock}</div></details></article>`;
   return main ? `<article class="route-result best">${header}<div class="route-card-body">${body}</div></article>`
     : `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${body}</div></details></article>`;
 }
@@ -368,7 +369,7 @@ function countryPresentation(calculation) {
 
 function renderCountryTab(calculation, active = false) {
   const { best, countryId, countryName, flag } = countryPresentation(calculation);
-  const summary = best ? `<small>${html(best.routeName)}</small>` : '<small>Нет маршрутов для надёжной оценки</small>';
+  const summary = best ? '' : '<small>Нет маршрутов для надёжной оценки</small>';
   const status = best ? `<span class="status-pill ${statusClass(best.routeStatus)}">${html(STATUS_LABELS_RU[best.routeStatus])}</span>` : '';
   return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong>${summary}</span>${status}</button>`;
 }
@@ -400,9 +401,10 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const comparisonCities = (calculation.cities || []).map((city) => ({
         name: city.cityName,
         size: city.populationCategory,
-        roles: city.roles || [],
-        categories: [...(city.roles || []), ...(city.labels || [])],
+        roles: [...(city.roles || []), ...(city.labels || [])],
+        categories: cityCategories(city.populationCategory, [...(city.roles || []), ...(city.labels || [])]),
         cost: city.costUsd,
+        costComparable: city.costComparable,
         costIsFamilySpecific: true,
         coldRange: city.coldRange,
         hotRange: city.hotRange,

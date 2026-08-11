@@ -311,7 +311,15 @@ const CITY_SIZE_LABELS = new Map([
   ['LARGE', 'Большой город'],
 ]);
 
+const RP4_CITY_ROLE_LABELS = new Map([
+  ['CAPITAL', 'Столица'],
+  ['LARGE', 'Большой город'],
+  ['MEDIUM', 'Средний город'],
+  ['SMALL', 'Небольшой город'],
+]);
+
 const CITY_ROLE_LABELS = new Map([
+  // Display labels produced by presentCities() enter the RP4 UI through this mapping.
   ['столица', 'Столица'],
   ['самый недорогой', 'Самый недорогой'],
   ['самый дорогой', 'Самый дорогой'],
@@ -321,11 +329,48 @@ const CITY_ROLE_LABELS = new Map([
 ]);
 
 export function cityCategories(size, roles = []) {
+  const roleLabel = (role) => {
+    const value = String(role).trim();
+    if (RP4_CITY_ROLE_LABELS.has(value)) return RP4_CITY_ROLE_LABELS.get(value);
+    const legacy = CITY_ROLE_LABELS.get(value.toLocaleLowerCase('ru'));
+    if (legacy) return legacy;
+    if (/^[A-Z_]+$/.test(value)) throw new TypeError(`Unsupported RP4 city structural role: ${value}`);
+    return null;
+  };
   const categories = [
     CITY_SIZE_LABELS.get(size),
-    ...roles.map((role) => CITY_ROLE_LABELS.get(String(role).trim().toLocaleLowerCase('ru'))),
+    ...roles.map(roleLabel),
   ].filter(Boolean);
   return [...new Set(categories)];
+}
+
+export function russianMonths(value) {
+  const months = Number(value);
+  const mod100 = months % 100;
+  const mod10 = months % 10;
+  const word = mod100 >= 11 && mod100 <= 14 ? 'месяцев'
+    : mod10 === 1 ? 'месяц' : mod10 >= 2 && mod10 <= 4 ? 'месяца' : 'месяцев';
+  return `${months} ${word}`;
+}
+
+export function deduplicatedWorkRights(workRights = {}) {
+  const lines = [
+    ...(workRights.applicant || []).map(({ rule }) => ({ subject: 'Заявитель', rule })),
+    ...(workRights.partner || []).map(({ rule }) => ({ subject: 'Партнёр', rule })),
+  ].filter(({ rule }) => rule);
+  return [...new Map(lines.map((item) => [`${item.subject}\u0000${item.rule}`, `${item.subject}: ${item.rule}`])).values()];
+}
+
+const normalizedApplicationSentinel = (value) => String(value || '').trim()
+  .replace(/[\s.!?;:]+$/u, '')
+  .toLocaleLowerCase('ru');
+
+export function applicationPresentationText(item = {}) {
+  const guidance = String(item.guidance || '').trim();
+  const rawEntryGuidance = String(item.entryGuidance || '').trim();
+  const entryGuidance = normalizedApplicationSentinel(rawEntryGuidance) === 'не применимо' ? '' : rawEntryGuidance;
+  const details = [guidance, entryGuidance && entryGuidance !== guidance ? entryGuidance : null].filter(Boolean).join(' ');
+  return `${item.methodLabel || ''}${details ? `: ${details}` : ''}`;
 }
 
 const temperatureNumbers = (value) => String(value ?? '')
@@ -349,8 +394,9 @@ export function enrichCityCategories(cities = []) {
   const cold = (city) => temperatureNumbers(city.coldRange)[0] ?? Number(city.avgTempColdestMonthC);
   const hot = (city) => temperatureNumbers(city.hotRange).at(-1) ?? Number(city.avgTempHottestMonthC);
   const finite = (selector) => cities.filter((city) => Number.isFinite(selector(city)));
-  const mostExpensive = finite(cost).sort((a, b) => cost(b) - cost(a))[0];
-  const cheapest = finite(cost).sort((a, b) => cost(a) - cost(b))[0];
+  const comparableCosts = cities.length > 1 && cities.every((city) => city.costComparable !== false);
+  const mostExpensive = comparableCosts ? finite(cost).sort((a, b) => cost(b) - cost(a))[0] : null;
+  const cheapest = comparableCosts ? finite(cost).sort((a, b) => cost(a) - cost(b))[0] : null;
   const coolest = finite(cold).sort((a, b) => cold(a) - cold(b))[0];
   const hottest = finite(hot).sort((a, b) => hot(b) - hot(a))[0];
   return cities.map((city) => ({

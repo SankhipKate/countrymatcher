@@ -1,14 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { buildUserProfile, cityCategories, countryFlag, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
 import { formatCurrency } from '../matcher/format.js';
+import { APPLICATION_METHOD_LABELS_RU } from '../js/engine/rp4-engine.js';
 import { STATUS_LABELS_RU } from '../js/engine/status-contract.js';
 import { countryOptions, parseCountryCode, searchCountries } from '../matcher/countries.js';
 import { DOG_BREEDS, isKnownDogBreed, searchDogBreeds } from '../matcher/dog-breeds.js';
 
 const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
 const universalProfiles = JSON.parse(await readFile(new URL('./fixtures/universal-profile-samples-v1.json', import.meta.url), 'utf8'));
+const spainResearch = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 
 test('visible matcher version matches package version', async () => {
   const [matcherHtml, packageJson, fxContext] = await Promise.all([
@@ -381,6 +383,11 @@ test('city size is the first approved category and uses the complete city label'
     'Самый дорогой',
   ]);
   assert.deepEqual(cityCategories('ANY', ['Неутверждённая категория']), []);
+  assert.deepEqual(cityCategories('LARGE', ['CAPITAL', 'LARGE']), ['Большой город', 'Столица']);
+  assert.deepEqual(cityCategories(null, ['CAPITAL', 'LARGE', 'MEDIUM', 'SMALL']), [
+    'Столица', 'Большой город', 'Средний город', 'Небольшой город',
+  ]);
+  assert.throws(() => cityCategories(null, ['UNKNOWN_ROLE']), /Unsupported RP4 city structural role/);
 });
 
 test('city comparison derives expensive, cool and hot categories from displayed data', () => {
@@ -393,6 +400,24 @@ test('city comparison derives expensive, cool and hot categories from displayed 
   assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый недорогой'));
   assert.ok(cities.find(({ name }) => name === 'B').categories.includes('Самый жаркий'));
   assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый прохладный'));
+});
+
+test('non-comparable city baskets are never ranked by finite partial totals', () => {
+  const cities = enrichCityCategories([
+    { name: 'Partial A', size: 'LARGE', cost: 2000, costComparable: false },
+    { name: 'Partial B', size: 'SMALL', cost: 500, costComparable: false },
+  ]);
+  assert.equal(cities.some(({ categories }) => categories.includes('Самый дорогой') || categories.includes('Самый недорогой')), false);
+});
+
+test('month duration and work-right presentation are generic and deduplicated by subject plus text', () => {
+  assert.deepEqual([1, 2, 5, 11, 21, 22, 25].map(russianMonths), [
+    '1 месяц', '2 месяца', '5 месяцев', '11 месяцев', '21 месяц', '22 месяца', '25 месяцев',
+  ]);
+  const sameRule = { rule: 'Работа разрешена.' };
+  assert.deepEqual(deduplicatedWorkRights({
+    applicant: [sameRule, sameRule, sameRule], partner: [sameRule, sameRule, sameRule],
+  }), ['Заявитель: Работа разрешена.', 'Партнёр: Работа разрешена.']);
 });
 
 test('researched city roles are authoritative and are not duplicated by numeric derivation', () => {
@@ -483,10 +508,78 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.match(app, /budgetDerivedFromIncome/);
   assert.match(app, /data-country-tab/);
   assert.doesNotMatch(app, /enrichCityCategories/);
+  assert.match(app, /cityCategories\(city\.populationCategory/);
   assert.equal(app.includes('Самый дорогой по индексу Expatistan'), false);
   assert.equal(app.includes('Сравнение стран'), false);
   assert.equal(app.includes('Страна расчёта'), false);
   assert.match(styles, /\.country-tab \.status-pill\{grid-column:2/);
+});
+
+test('country navigation omits route names and unsuitable cards are collapsed blocker-only details', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const tabSource = app.slice(app.indexOf('function renderCountryTab'), app.indexOf('function renderCountryResult'));
+  assert.match(tabSource, /html\(countryName\)/);
+  assert.match(tabSource, /STATUS_LABELS_RU\[best\.routeStatus\]/);
+  assert.equal(tabSource.includes('best.routeName'), false);
+  const cardSource = app.slice(app.indexOf('function routeCard'), app.indexOf('function countryPresentation'));
+  assert.match(cardSource, /if \(unsuitable\) return `<article class="route-result compact"><details><summary>/);
+  assert.match(cardSource, /<div class="route-card-body">\$\{blockersBlock\}<\/div><\/details>/);
+  assert.match(cardSource, /Почему не подходит/);
+  assert.match(cardSource, /unsuitable \? `<span class="route-expand-label">Показать подробности<\/span>` : main \?/);
+  assert.equal(/if \(unsuitable\)[^\n]*\$\{body\}/.test(cardSource), false);
+});
+
+test('result UI renders localized methods, entry guidance, duration, and deduplicated work rights', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /route\.application\?\.map\(applicationPresentationText\)/);
+  assert.match(app, /Срок первого разрешения:/);
+  assert.match(app, /russianMonths\(route\.firstPermit\.months\)/);
+  assert.match(app, /deduplicatedWorkRights\(route\.workRights\)/);
+  assert.doesNotMatch(app, /return `\$\{item\.kind\}:/);
+  assert.match(app, /return `\$\{item\.kindLabel\}:/);
+});
+
+test('application presentation suppresses only normalized not-applicable sentinels', () => {
+  const item = { methodLabel: 'Способ', guidance: 'Основное правило.' };
+  assert.equal(applicationPresentationText(item), 'Способ: Основное правило.');
+  assert.equal(applicationPresentationText({ ...item, entryGuidance: 'Нужно законно находиться в месте подачи.' }),
+    'Способ: Основное правило. Нужно законно находиться в месте подачи.');
+  for (const sentinel of ['Не применимо', ' Не применимо. ', 'Не применимо ;', 'Не применимо;']) {
+    assert.equal(applicationPresentationText({ ...item, entryGuidance: sentinel }), 'Способ: Основное правило.');
+  }
+  const meaningful = 'Электронный этап не заменяет требуемое личное завершение процедуры.';
+  assert.ok(applicationPresentationText({ ...item, entryGuidance: meaningful }).includes(meaningful));
+});
+
+test('all current Spain available application sentinels are suppressed across affected method types', () => {
+  const affected = spainResearch.routes.flatMap(({ application_methods = [] }) => application_methods)
+    .filter(({ availability, entry_condition_ru: entry }) => availability === 'AVAILABLE'
+      && String(entry || '').trim().replace(/[\s.!?;:]+$/u, '').toLocaleLowerCase('ru') === 'не применимо');
+  assert.equal(affected.length, 10);
+  assert.deepEqual([...new Set(affected.map(({ method }) => method))].sort(), ['CURRENT_LEGAL_RESIDENCE', 'ONLINE']);
+  for (const method of affected) {
+    const rendered = applicationPresentationText({
+      methodLabel: APPLICATION_METHOD_LABELS_RU[method.method],
+      guidance: method.condition_ru,
+      entryGuidance: method.entry_condition_ru,
+    });
+    assert.doesNotMatch(rendered, /Не применимо/u);
+    assert.match(rendered, new RegExp(APPLICATION_METHOD_LABELS_RU[method.method]));
+  }
+  assert.equal(APPLICATION_METHOD_LABELS_RU.ONLINE, 'Электронная подача или электронный этап процедуры');
+  assert.doesNotMatch(APPLICATION_METHOD_LABELS_RU.ONLINE, /полностью|без въезда|дистанционно/u);
+});
+
+test('LGBT neutral city state is wired while pending changes rendering remains deferred', async () => {
+  const [app, engine] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../js/engine/rp4-engine.js', import.meta.url), 'utf8'),
+  ]);
+  assert.match(engine, /loyalCities: \(value\.friendly_cities \|\| \[\]\)\.map\(\(city\) => city\.city_ru\)/);
+  assert.match(app, /Методологически надёжная оценка городов пока не найдена/);
+  assert.match(app, /pendingChanges/);
+  assert.match(app, /Что меняется/);
+  assert.doesNotMatch(engine, /pendingChanges:/);
 });
 
 test('result UI keeps one corrective-action section and maps country tabs to matching panels', async () => {

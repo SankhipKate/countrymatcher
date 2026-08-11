@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import {
   ACTIVE_CANON_REVISION,
   ACTIVE_RESEARCH_SCHEMA_VERSION,
+  APPLICATION_METHOD_LABELS_RU,
   assertActiveResearchPackage,
   calculateActiveCountry,
   calculateActiveMatcher,
@@ -15,6 +16,9 @@ import {
   evaluateFinancialRequirement,
   evaluateFamilyScenarios,
   evaluateRoute,
+  FINANCIAL_KIND_LABELS_RU,
+  LGBT_LEGAL_LABELS_RU,
+  LGBT_PRACTICAL_LABELS_RU,
 } from '../js/engine/rp4-engine.js';
 import { sortCountriesForDisplay } from '../matcher/profile.js';
 
@@ -755,6 +759,66 @@ test('LGBT presentation follows the profile toggle and contains only RP4 fields'
   assert.ok(visible);
   assert.equal(visible.practicalExplanation, spain.lgbt.assessment_basis_ru);
   assert.ok(visible.rows.some(([title, text]) => title === 'Однополый брак' && text === spain.lgbt.same_sex_marriage_rule_ru));
+});
+
+test('RP4 presentation mappings exhaustively localize financial kinds and application methods', () => {
+  assert.deepEqual(FINANCIAL_KIND_LABELS_RU, {
+    INCOME: 'Доход', SAVINGS: 'Накопления', CAPITAL: 'Инвестиционный капитал',
+    SPONSOR: 'Спонсорское финансирование', SCHOLARSHIP: 'Стипендия',
+  });
+  assert.deepEqual(APPLICATION_METHOD_LABELS_RU, {
+    ORIGIN_COUNTRY: 'В стране гражданства',
+    CURRENT_LEGAL_RESIDENCE: 'В стране законного проживания',
+    IN_COUNTRY: 'Внутри страны назначения',
+    THIRD_COUNTRY: 'В подтверждённой третьей стране',
+    ONLINE: 'Электронная подача или электронный этап процедуры',
+  });
+  assert.doesNotMatch(APPLICATION_METHOD_LABELS_RU.ONLINE, /полностью|без въезда|дистанционно/u);
+  const esRoutes = calculateActiveCountry(profile(), spain, context).routes;
+  assert.ok(esRoutes.flatMap(({ application }) => application).some(({ method, methodLabel }) => method === 'ORIGIN_COUNTRY' && methodLabel === APPLICATION_METHOD_LABELS_RU.ORIGIN_COUNTRY));
+  assert.ok(esRoutes.flatMap(({ application }) => application).some(({ method, methodLabel }) => method === 'CURRENT_LEGAL_RESIDENCE' && methodLabel === APPLICATION_METHOD_LABELS_RU.CURRENT_LEGAL_RESIDENCE));
+  assert.ok(esRoutes.flatMap(({ application }) => application).some(({ method, methodLabel }) => method === 'ONLINE' && methodLabel === APPLICATION_METHOD_LABELS_RU.ONLINE));
+  const arRoutes = calculateActiveCountry(profile(), argentina, context).routes;
+  assert.ok(arRoutes.flatMap(({ application }) => application).some(({ method, methodLabel }) => method === 'IN_COUNTRY' && methodLabel === APPLICATION_METHOD_LABELS_RU.IN_COUNTRY));
+  assert.ok(arRoutes.flatMap(({ application }) => application).some(({ method, methodLabel }) => method === 'ONLINE' && methodLabel === APPLICATION_METHOD_LABELS_RU.ONLINE));
+  assert.ok(arRoutes.flatMap(({ application }) => application).some(({ entryGuidance }) => entryGuidance?.trim()));
+});
+
+test('numeric financial kinds and first-permit duration survive generic presentation', () => {
+  const es = calculateActiveCountry(profile(), spain, context);
+  const visibleKinds = es.routes.flatMap(({ financialSummary }) => financialSummary?.alternatives || []).filter(({ threshold }) => threshold != null);
+  assert.ok(visibleKinds.some(({ kind, kindLabel }) => kind === 'INCOME' && kindLabel === 'Доход'));
+  assert.ok(visibleKinds.some(({ kind, kindLabel }) => kind === 'SAVINGS' && kindLabel === 'Накопления'));
+  const worker = calculateActiveCountry(profile(), argentina, context).routes.find(({ routeId }) => routeId === 'AR_WORKER');
+  assert.equal(worker.firstPermit.months, 12);
+  assert.match(worker.firstPermit.description, /Временная резиденция/u);
+});
+
+test('RP4 LGBT assessments are localized and friendly cities expose names only', () => {
+  assert.deepEqual(LGBT_LEGAL_LABELS_RU, {
+    FULL_RECOGNITION: 'Полное признание', PARTIAL_RECOGNITION: 'Частичное признание',
+    SIGNIFICANT_LEGAL_RESTRICTIONS: 'Существенные правовые ограничения', CRIMINALIZATION: 'Криминализация',
+    INSUFFICIENT_RELIABLE_DATA: 'Недостаточно надёжных данных',
+  });
+  assert.deepEqual(LGBT_PRACTICAL_LABELS_RU, {
+    OPEN: 'Открытая', HETEROGENEOUS: 'Неоднородная', RESTRICTED: 'Ограниченная',
+    STATE_PRESSURE: 'Государственное давление', INSUFFICIENT_RELIABLE_DATA: 'Недостаточно надёжных данных',
+  });
+  for (const pkg of [spain, argentina]) {
+    const visible = calculateActiveCountry({ ...profile(), lgbt: { enabled: true } }, pkg, context).lgbt;
+    assert.equal(visible.legalPosition, LGBT_LEGAL_LABELS_RU[pkg.lgbt.legal_assessment]);
+    assert.equal(visible.practicalEnvironment, LGBT_PRACTICAL_LABELS_RU[pkg.lgbt.practical_assessment]);
+    assert.deepEqual(visible.loyalCities, []);
+  }
+});
+
+test('city cost extrema require comparable baskets and Argentina receives both labels', () => {
+  const arCities = calculateActiveCountry(profile(), argentina, context).cities;
+  assert.ok(arCities.some(({ labels }) => labels.includes('Самый дорогой')));
+  assert.ok(arCities.some(({ labels }) => labels.includes('Самый недорогой')));
+  const esCities = calculateActiveCountry(profile(), spain, context).cities;
+  assert.equal(esCities.every(({ costComparable }) => costComparable === false), true);
+  assert.equal(esCities.some(({ labels }) => labels.includes('Самый дорогой') || labels.includes('Самый недорогой')), false);
 });
 
 test('SUITABLE_WITH_CONDITIONS always carries at least one condition', () => {

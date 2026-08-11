@@ -299,6 +299,28 @@ export function evaluateRoute(route, profile, context, countryId) {
 }
 
 const ROUTE_LABELS_RU = Object.freeze({ ES_DNV: 'Цифровой кочевник (DNV)' });
+export const FINANCIAL_KIND_LABELS_RU = Object.freeze({
+  INCOME: 'Доход', SAVINGS: 'Накопления', CAPITAL: 'Инвестиционный капитал',
+  SPONSOR: 'Спонсорское финансирование', SCHOLARSHIP: 'Стипендия',
+});
+export const APPLICATION_METHOD_LABELS_RU = Object.freeze({
+  ORIGIN_COUNTRY: 'В стране гражданства',
+  CURRENT_LEGAL_RESIDENCE: 'В стране законного проживания',
+  IN_COUNTRY: 'Внутри страны назначения',
+  THIRD_COUNTRY: 'В подтверждённой третьей стране',
+  ONLINE: 'Электронная подача или электронный этап процедуры',
+});
+export const LGBT_LEGAL_LABELS_RU = Object.freeze({
+  FULL_RECOGNITION: 'Полное признание',
+  PARTIAL_RECOGNITION: 'Частичное признание',
+  SIGNIFICANT_LEGAL_RESTRICTIONS: 'Существенные правовые ограничения',
+  CRIMINALIZATION: 'Криминализация',
+  INSUFFICIENT_RELIABLE_DATA: 'Недостаточно надёжных данных',
+});
+export const LGBT_PRACTICAL_LABELS_RU = Object.freeze({
+  OPEN: 'Открытая', HETEROGENEOUS: 'Неоднородная', RESTRICTED: 'Ограниченная',
+  STATE_PRESSURE: 'Государственное давление', INSUFFICIENT_RELIABLE_DATA: 'Недостаточно надёжных данных',
+});
 const roundedDisplayAmount = (amount) => amount < 1000 ? Math.round(amount)
   : amount < 100000 ? Math.round(amount / 10) * 10 : Math.round(amount / 100) * 100;
 
@@ -310,6 +332,7 @@ function presentFinancial(requirementResults, context) {
     state: evaluated.state,
     alternatives: (evaluated.alternatives || []).map((item) => ({
       kind: item.alternative.kind,
+      kindLabel: FINANCIAL_KIND_LABELS_RU[item.alternative.kind],
       state: item.state,
       amount: item.amount ?? null,
       threshold: item.threshold ?? null,
@@ -460,7 +483,8 @@ function presentRoute(route, evaluated, sources, context) {
     description: route.basis_ru,
     financialSummary: presentFinancial(evaluated.requirementResults, context),
     application: (route.application_methods || []).filter(({ availability }) => availability === 'AVAILABLE').map((item) => ({
-      method: item.method, guidance: item.condition_ru, entryGuidance: item.entry_condition_ru,
+      method: item.method, methodLabel: APPLICATION_METHOD_LABELS_RU[item.method],
+      guidance: item.condition_ru, entryGuidance: item.entry_condition_ru,
     })),
     processing: route.processing_time ? {
       officialDays: route.processing_time.official_days,
@@ -500,7 +524,7 @@ function presentCities(pkg, context) {
     a.climate.cold_min_c - b.climate.cold_min_c || a.climate.cold_max_c - b.climate.cold_max_c)[0]?.city_id;
   const hottest = raw.filter((city) => city.climate?.hot_max_c != null).sort((a, b) =>
     b.climate.hot_max_c - a.climate.hot_max_c || b.climate.hot_min_c - a.climate.hot_min_c)[0]?.city_id;
-  return raw.map((city) => {
+  const presented = raw.map((city) => {
     const numeric = city.cost_components.filter((item) => item.amount != null && item.period === 'MONTHLY');
     const currency = numeric.length && numeric.every((item) => item.currency === numeric[0].currency) ? numeric[0].currency : null;
     const cost = currency ? numeric.reduce((sum, item) => sum + item.amount, 0) : null;
@@ -518,15 +542,23 @@ function presentCities(pkg, context) {
       hotRange: city.climate ? [city.climate.hot_min_c, city.climate.hot_max_c] : null,
     };
   });
+  if (costComparable && presented.length > 1 && presented.every(({ costUsd }) => Number.isFinite(costUsd))) {
+    const mostExpensive = [...presented].sort((a, b) => b.costUsd - a.costUsd)[0];
+    const cheapest = [...presented].sort((a, b) => a.costUsd - b.costUsd)[0];
+    mostExpensive.labels.push('Самый дорогой');
+    cheapest.labels.push('Самый недорогой');
+  }
+  return presented;
 }
 
 function presentLgbt(pkg, profile) {
   if (!profile?.lgbt?.enabled || !pkg.lgbt) return null;
   const value = pkg.lgbt;
   return {
-    legalPosition: value.legal_assessment,
-    practicalEnvironment: value.practical_assessment,
+    legalPosition: LGBT_LEGAL_LABELS_RU[value.legal_assessment],
+    practicalEnvironment: LGBT_PRACTICAL_LABELS_RU[value.practical_assessment],
     practicalExplanation: value.assessment_basis_ru,
+    loyalCities: (value.friendly_cities || []).map((city) => city.city_ru),
     rows: [
       ['Однополый брак', value.same_sex_marriage_rule_ru],
       ['Партнёрство', value.registered_partnership_rule_ru],
