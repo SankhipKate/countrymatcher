@@ -812,13 +812,24 @@ test('RP4 LGBT assessments are localized and friendly cities expose names only',
   }
 });
 
-test('city cost extrema require comparable baskets and Argentina receives both labels', () => {
+test('city cost extrema require comparable baskets and real Argentina and Spain receive both labels', () => {
   const arCities = calculateActiveCountry(profile(), argentina, context).cities;
   assert.ok(arCities.some(({ labels }) => labels.includes('Самый дорогой')));
   assert.ok(arCities.some(({ labels }) => labels.includes('Самый недорогой')));
   const esCities = calculateActiveCountry(profile(), spain, context).cities;
-  assert.equal(esCities.every(({ costComparable }) => costComparable === false), true);
-  assert.equal(esCities.some(({ labels }) => labels.includes('Самый дорогой') || labels.includes('Самый недорогой')), false);
+  assert.equal(esCities.every(({ costComparable }) => costComparable === true), true);
+  assert.deepEqual(Object.fromEntries(esCities.map(({ cityId, costOriginal }) => [cityId, Number(costOriginal.amount.toFixed(2))])), {
+    ES_MADRID: 1546.79,
+    ES_SAN_SEBASTIAN: 1348.56,
+    ES_BURGOS: 801.89,
+    ES_JAEN: 668.39,
+  });
+  assert.ok(esCities.find(({ cityId }) => cityId === 'ES_MADRID').labels.includes('Самый дорогой'));
+  assert.ok(esCities.find(({ cityId }) => cityId === 'ES_JAEN').labels.includes('Самый недорогой'));
+  for (const cityId of ['ES_SAN_SEBASTIAN', 'ES_BURGOS']) {
+    const labels = esCities.find((city) => city.cityId === cityId).labels;
+    assert.equal(labels.includes('Самый дорогой') || labels.includes('Самый недорогой'), false);
+  }
 });
 
 test('SUITABLE_WITH_CONDITIONS always carries at least one condition', () => {

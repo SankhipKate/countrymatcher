@@ -3450,19 +3450,6 @@
           "confidence": "MEDIUM"
         },
         {
-          "component": "TRANSPORT",
-          "amount": 35,
-          "currency": "EUR",
-          "period": "MONTHLY",
-          "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Обычный месячный проездной.",
-          "price_date": "2026-06-14",
-          "source_ids": [
-            "ES_NUMBEO_MADRID"
-          ],
-          "confidence": "MEDIUM"
-        },
-        {
           "component": "UTILITIES",
           "amount": 168.39,
           "currency": "EUR",
@@ -3521,6 +3508,19 @@
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
           "condition_ru": "1 спальня в центре, ориентир Numbeo.",
+          "price_date": "2026-05-04",
+          "source_ids": [
+            "ES_NUMBEO_SANSE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 118.56,
+          "currency": "EUR",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Базовые коммунальные услуги для квартиры около 85 м².",
           "price_date": "2026-05-04",
           "source_ids": [
             "ES_NUMBEO_SANSE"
@@ -3816,8 +3816,8 @@
       "priority": "MEDIUM",
       "related_route_id": null,
       "blocks_publication": false,
-      "missing_ru": "Для четырёх городов нет одинаково полного набора прямых компонентов продуктов и базовой медицины; Numbeo хорошо покрывает аренду и часть транспорта/коммунальных услуг, но одинаковая месячная корзина не подтверждена.",
-      "handling_ru": "Показывать доступные прямые компоненты; медианную стоимость и критерий сортировки по цене пропускать до сопоставимой корзины."
+      "missing_ru": "Дополнительные компоненты стоимости жизни, включая продукты и базовую медицину, подтверждены не одинаково полно для всех четырёх городов.",
+      "handling_ru": "Для сопоставимого городского сравнения используется одинаковая подтверждённая корзина: аренда однокомнатной квартиры в центре плюс базовые коммунальные услуги для квартиры около 85 м². Неподтверждённые дополнительные компоненты не интерполируются и не заменяются нулями."
     },
     {
       "item_id": "ES_GAP_SCHOOL_FEES",
