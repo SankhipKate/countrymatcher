@@ -30,6 +30,7 @@ const arFixtureBytes = await readFile(new URL('./fixtures/AR_REGRESSION_EXPECTAT
 const arFixture = JSON.parse(arFixtureBytes);
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
+const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
 const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
@@ -126,6 +127,19 @@ test('active matcher calculates real Spain and Argentina packages through the sa
   assert.deepEqual(two.results.map(({ routes }) => routes.length), [14, 9]);
   assert.deepEqual(sortCountriesForDisplay(two.results).map(({ country }) => country.countryId), ['ES', 'AR']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
+});
+
+test('generic engine converts live RUB questionnaire income when the context supplies RUB', () => {
+  const rubContext = { fx: { ...context.fx, rates: { ...context.fx.rates, RUB: 90 } } };
+  const result = calculateActiveCountry(profile({ applicantAmount: 9000, applicantCurrency: 'RUB' }), spain, rubContext);
+  assert.deepEqual(result.applicantProvableIncome, { amount: 90, currency: 'EUR', conversions: [] });
+});
+
+test('generic engine consumes optional UYU without activating Uruguay in the matcher', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const result = calculateActiveCountry(profile({ applicantAmount: 100, applicantCurrency: 'USD' }), uruguay, uyuContext);
+  assert.deepEqual(result.applicantProvableIncome, { amount: 4000, currency: 'UYU', conversions: [] });
+  assert.equal(result.country.countryId, 'UY');
 });
 
 test('practical financial figures are presentation-only and cannot change matching', () => {
