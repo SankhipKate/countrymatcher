@@ -27,6 +27,7 @@ const radio = (name) => $(`input[name="${name}"]:checked`)?.value || '';
 const checkboxValues = (name) => $$(`input[name="${name}"]:checked`).map((input) => input.value);
 const html = (text) => String(text ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 const currency = formatCurrency;
+const officialFinancialPeriodSuffix = (period) => ({ MONTHLY: '/мес', ANNUAL: '/год' })[period] || '';
 const INCOME_FIELDS = (prefix, title) => `<h3>${title}</h3><div class="field-grid two-col">
   <label class="field"><span>Тип дохода *</span><select id="${prefix}Type"><option value="" disabled selected hidden>Выберите</option><option value="REMOTE_EMPLOYMENT">Удалённая работа по трудовому договору</option><option value="CONTRACTOR">Контракт с заказчиком (без трудовых отношений)</option><option value="FREELANCE_OR_SELF_EMPLOYED">Фриланс или самозанятость</option><option value="SOLE_PROPRIETOR">ИП</option><option value="COMPANY_OWNER">Владелец компании</option><option value="LOCAL_EMPLOYMENT">Работа в стране назначения</option><option value="PENSION">Пенсия</option><option value="PASSIVE_INCOME">Пассивный доход</option><option value="INVESTMENT_INCOME">Инвестиционный доход</option><option value="OTHER_REGULAR_INCOME">Другой регулярный доход</option><option value="NO_REGULAR_INCOME">Регулярного дохода сейчас нет</option></select><small id="${prefix}IncomeTypeHelp"></small></label>
   <label class="field"><span>География источников дохода *</span><select id="${prefix}SourceScope"><option value="" disabled selected hidden>Выберите</option><option value="SINGLE_COUNTRY">Одна страна</option><option value="MULTIPLE_COUNTRIES">Несколько стран</option><option value="NO_STABLE_PAYER">Нет постоянного плательщика</option></select></label>
@@ -301,7 +302,7 @@ function routeCard(route, countryName, main = false) {
   const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
   const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialItems = route.financialSummary?.alternatives?.filter((item) => item.threshold != null).map((item) => {
-    const official = `${currency(item.threshold, item.currency)}${item.period === "MONTHLY" ? "/мес" : ""}`;
+    const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (ок. ${currency(item.thresholdUsd, "USD")})` : "";
     return `${item.kindLabel}: ${official}${equivalent}`;
   }) || [];
@@ -386,7 +387,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
     || best?.financialSummary?.alternatives?.find((item) => item.threshold != null);
   const thresholdLabel = 'Финансовый порог';
   const thresholdValue = primaryFinancial?.threshold != null
-    ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${primaryFinancial.period === 'MONTHLY' ? '/мес' : ''}`
+    ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
     : 'Числовой порог не применяется';
   const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
   const entry = calculation.entryForRussianCitizen;

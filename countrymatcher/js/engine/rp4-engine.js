@@ -248,6 +248,19 @@ function statusEffect(requirement, state) {
   return requirement.unmet_effect === 'BLOCKS' ? 'BLOCKER' : 'CONDITION';
 }
 
+function presentUnaskedFinancialRequirement(requirement, profile) {
+  return {
+    state: 'UNKNOWN',
+    model: requirement.financial.model,
+    alternatives: requirement.financial.alternatives.map((alternative) => ({
+      state: 'UNKNOWN',
+      alternative,
+      threshold: calculateFamilyThreshold(alternative, profile),
+      currency: alternative.currency,
+    })),
+  };
+}
+
 export function evaluateRoute(route, profile, context, countryId) {
   const blockers = [];
   const conditions = [];
@@ -260,7 +273,8 @@ export function evaluateRoute(route, profile, context, countryId) {
       continue;
     }
     let evaluation;
-    if (requirement.evaluation_mode === 'UNASKED_CONDITION') evaluation = { state: 'UNKNOWN' };
+    if (requirement.evaluation_mode === 'UNASKED_CONDITION') evaluation = requirement.type === 'FINANCIAL'
+      ? presentUnaskedFinancialRequirement(requirement, profile) : { state: 'UNKNOWN' };
     else if (requirement.type === 'FINANCIAL') evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId);
     else evaluation = { state: evaluateEngineRule(requirement.engine_rule, getPath(profile, PROFILE_PATHS[requirement.profile_path] || requirement.profile_path)) };
     if (evaluation.unsupported || evaluation.state === 'UNSUPPORTED') {

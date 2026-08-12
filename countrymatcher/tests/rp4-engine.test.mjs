@@ -164,6 +164,31 @@ test('DISPLAY_ONLY, UNASKED_CONDITION, and ENGINE keep their distinct status eff
   assert.equal(evaluateRoute(route([requirement()]), profile(), context, 'ES').routeStatus, 'SUITABLE');
 });
 
+test('unasked financial requirements preserve family-adjusted presentation without evaluating user finance', () => {
+  const unasked = finance('INCOME_ONLY', [alternative('INCOME', false, {
+    amount: 1000,
+    family_formula_ordered: {
+      base_applicant_amount: 1000,
+      first_additional_member_amount: 500,
+      each_further_member_amount: 250,
+    },
+  })], {}, { evaluation_mode: 'UNASKED_CONDITION', unmet_effect: 'BECOMES_CONDITION' });
+  const evaluate = (applicantAmount) => evaluateRoute(route([unasked]), profile({ applicantAmount, adults: 2 }), context, 'ES');
+  for (const result of [evaluate(1), evaluate(999999)]) {
+    assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+    const financial = result.requirementResults[0];
+    assert.equal(financial.state, 'UNKNOWN');
+    assert.equal(financial.model, 'INCOME_ONLY');
+    assert.equal(financial.alternatives.length, 1);
+    assert.equal(financial.alternatives[0].state, 'UNKNOWN');
+    assert.equal(financial.alternatives[0].threshold, 1500);
+    assert.equal(financial.alternatives[0].currency, 'EUR');
+  }
+  const engine = finance('INCOME_ONLY', [alternative('INCOME', true, { amount: 1000 })]);
+  assert.equal(evaluateRoute(route([engine]), profile({ applicantAmount: 2000 }), context, 'ES').routeStatus, 'SUITABLE');
+  assert.equal(evaluateRoute(route([engine]), profile({ applicantAmount: 500 }), context, 'ES').routeStatus, 'UNSUITABLE');
+});
+
 test('ENGINE operators are generic and unknown is distinct from failure', () => {
   assert.equal(evaluateEngineRule({ operator: 'EQUALS', value: 'RU' }, 'RU'), 'PASS');
   assert.equal(evaluateEngineRule({ operator: 'IN', values: ['RU', 'AR'] }, 'RU'), 'PASS');
@@ -717,6 +742,59 @@ test('generic route presentation exposes DNV label, official name, details, sour
   assert.equal(income.threshold, 3663);
   assert.equal(income.currency, 'EUR');
   assert.equal(income.thresholdUsd, 4070);
+});
+
+test('real Blue Card keeps future salary unknown while exposing its annual threshold', () => {
+  const blue = calculateActiveCountry(profile({ applicantAmount: 99999 }), spain, context).routes
+    .find(({ routeId }) => routeId === 'ES_HQP_BLUE');
+  assert.equal(blue.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(blue.conditions.some((text) => /договор|firm.offer/iu.test(text)));
+  assert.ok(blue.conditions.some((text) => /зарплат|порог.*Голуб/iu.test(text)));
+  assert.equal(blue.financialSummary.state, 'UNKNOWN');
+  assert.equal(blue.financialSummary.model, 'INCOME_ONLY');
+  assert.equal(blue.financialSummary.alternatives.length, 1);
+  assert.deepEqual(blue.financialSummary.alternatives[0], {
+    kind: 'INCOME', kindLabel: 'Доход', state: 'UNKNOWN', amount: null,
+    threshold: 41356.36, currency: 'EUR', period: 'ANNUAL', practicalGuidance: null,
+    thresholdUsd: 45950, shortfall: null,
+  });
+});
+
+test('real unasked Study finance preserves four alternatives and ordered family thresholds', () => {
+  const getStudy = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_STUDY');
+  const solo = getStudy(profile());
+  assert.equal(solo.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(solo.financialSummary.state, 'UNKNOWN');
+  assert.equal(solo.financialSummary.model, 'SPONSOR_OR_SCHOLARSHIP');
+  assert.deepEqual(solo.financialSummary.alternatives.map(({ kind }) => kind), ['INCOME', 'SAVINGS', 'SPONSOR', 'SCHOLARSHIP']);
+  assert.ok(solo.financialSummary.alternatives.every(({ state }) => state === 'UNKNOWN'));
+  assert.deepEqual(solo.financialSummary.alternatives.map(({ threshold, currency, period }) => ({ threshold, currency, period })), [
+    { threshold: 600, currency: 'EUR', period: 'MONTHLY' },
+    { threshold: 7200, currency: 'EUR', period: 'ANNUAL' },
+    { threshold: null, currency: null, period: 'OTHER' },
+    { threshold: null, currency: null, period: 'ACADEMIC_YEAR' },
+  ]);
+  const couple = getStudy(profile({ adults: 2 }));
+  assert.deepEqual(couple.financialSummary.alternatives.slice(0, 2).map(({ threshold, currency, period }) => ({ threshold, currency, period })), [
+    { threshold: 1050, currency: 'EUR', period: 'MONTHLY' },
+    { threshold: 12600, currency: 'EUR', period: 'ANNUAL' },
+  ]);
+});
+
+test('real unasked family-reunification finance uses its ordered child increment', () => {
+  const getReun = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_REUN');
+  const solo = getReun(profile({ applicantAmount: 99999 }));
+  assert.equal(solo.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(solo.financialSummary.state, 'UNKNOWN');
+  assert.equal(solo.financialSummary.model, 'INCOME_ONLY');
+  assert.deepEqual(solo.financialSummary.alternatives.map(({ kind, state, threshold, currency, period }) => ({ kind, state, threshold, currency, period })), [
+    { kind: 'INCOME', state: 'UNKNOWN', threshold: 900, currency: 'EUR', period: 'MONTHLY' },
+  ]);
+  const family = getReun(profile({ applicantAmount: 99999, adults: 2, children: 1 }));
+  assert.equal(family.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.deepEqual(family.financialSummary.alternatives.map(({ state, threshold, currency, period }) => ({ state, threshold, currency, period })), [
+    { state: 'UNKNOWN', threshold: 1200, currency: 'EUR', period: 'MONTHLY' },
+  ]);
 });
 
 test('DISPLAY_ONLY is presentation-only and DNV remains suitable', () => {

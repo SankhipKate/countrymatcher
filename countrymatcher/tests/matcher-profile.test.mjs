@@ -539,6 +539,14 @@ test('result UI renders localized methods, entry guidance, duration, and dedupli
   assert.match(app, /return `\$\{item\.kindLabel\}:/);
 });
 
+test('official financial periods render consistently in route cards and the best-route KPI', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /const officialFinancialPeriodSuffix = \(period\) => \(\{ MONTHLY: '\/мес', ANNUAL: '\/год' \}\)\[period\] \|\| ''/);
+  assert.match(app, /currency\(item\.threshold, item\.currency\).*officialFinancialPeriodSuffix\(item\.period\)/);
+  assert.match(app, /currency\(primaryFinancial\.threshold, primaryFinancial\.currency\).*officialFinancialPeriodSuffix\(primaryFinancial\.period\)/);
+  assert.equal((app.match(/officialFinancialPeriodSuffix\(/g) || []).length, 2);
+});
+
 test('application presentation suppresses only normalized not-applicable sentinels', () => {
   const item = { methodLabel: 'Способ', guidance: 'Основное правило.' };
   assert.equal(applicationPresentationText(item), 'Способ: Основное правило.');
