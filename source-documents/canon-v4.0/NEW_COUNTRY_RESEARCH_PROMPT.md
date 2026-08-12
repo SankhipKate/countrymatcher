@@ -1,7 +1,7 @@
 # Country Matcher — промпт для исследования новой страны
 
 Версия: 4.0
-Дата: 2026-08-08
+Дата: 2026-08-12
 
 Этот файл не является отдельным нормативным стандартом. Единственные правила находятся в:
 
@@ -139,7 +139,17 @@ family_formula и family_formula_ordered не используются одно�
 
 ШКОЛЫ
 
-Исследуй государственные школы и международные школы по структуре схемы: доступ, язык, обязательный возраст, бесплатность/плата, числовая стоимость международной школы, период, дату цены и вступительный взнос отдельно.
+Для государственных школ исследуй по структуре схемы юрисдикцию, доступ иностранного ребёнка, язык обучения, обязательный школьный возраст, подтверждённую бесплатность либо плату, правило и источники.
+
+Для international/English-medium schools проведи целевой country-wide поиск. Цель — максимально полно определить города, где наличие такого образования подтверждено, а не каталогизировать все отдельные школы. Для каждого подтверждённого города сохрани в `international_school_cities[]` непустой `city_name_ru` и минимум один valid `source_id`, подтверждающий наличие как минимум одной реальной релевантной школы в этом городе. Не утверждай абсолютную полноту списка без основания.
+
+Не создавай `international_schools[]` для каждого найденного учреждения и не добавляй school-only city в основные `cities[]`. School city не требует исследования стоимости жизни, климата, населения или structural roles. `international_schools[]` остаётся только backward-compatible legacy container и не является acceptance criterion нового исследования.
+
+Используй `international_school_status = AVAILABLE`, если релевантные школы найдены; `RESEARCHED_NONE_FOUND` — только если целевой country-wide поиск завершён и релевантные школы не найдены. `NOT_RESEARCHED` допустим как техническое состояние незавершённой работы, но недопустим как финальный status завершённого исследования новой страны.
+
+Если при `AVAILABLE` coverage явно или вероятно неполное, создай non-blocking `open_item` блока `SCHOOLS` с `blocks_publication = false`, свяжи его с completeness block `SCHOOLS` через `open_item_ids` и установи `SCHOOLS = PARTIAL_NON_BLOCKING`.
+
+Не исследуй school prices только ради заполнения nullable fields. Отдельный поиск tuition или admission fees не обязателен; `tuition`, `paid_months_per_year` и `admission_fee` могут оставаться `null` согласно схеме. `tuition = null` означает подтверждённую школу без надёжно подтверждённой цены и сам по себе не создаёт `open_item`. Если надёжная цена встретилась и её решено сохранить, используй существующие поля схемы.
 
 ДЕТСКИЕ САДЫ НЕ ИССЛЕДУЙ. Их нет в Research Package 4.0, они не участвуют в расчёте и не выводятся пользователю.
 
@@ -188,6 +198,13 @@ completeness обязан содержать ровно 14 блоков из с�
 - каждый source_id существует в sources;
 - все linked_route_id/linked_route_ids существуют; `route_type` входит в `covers_categories[]`, а каждая связь `route_coverage` согласована с `covers_categories[]`;
 - все city_id международных школ существуют в cities;
+- `international_school_status` завершённой новой страны равен `AVAILABLE` либо `RESEARCHED_NONE_FOUND`, но не `NOT_RESEARCHED`;
+- при `AVAILABLE` новое исследование страны имеет минимум один элемент `international_school_cities[]`;
+- каждый элемент `international_school_cities[]` имеет непустой `city_name_ru` и минимум один valid `source_id`;
+- school city не обязан существовать в `cities[]`, и school-only city не добавляется туда только ради school research;
+- в `international_school_cities[]` нет повторяющихся `city_name_ru`;
+- `RESEARCHED_NONE_FOUND` используется только после целевого country-wide поиска без найденных релевантных школ;
+- если при `AVAILABLE` coverage нельзя считать исчерпывающим, существует non-blocking `SCHOOLS` open_item, его `item_id` включён в completeness `SCHOOLS`, а статус блока равен `PARTIAL_NON_BLOCKING`;
 - все open_item_ids существуют и относятся к тому же completeness-блоку;
 - READY отсутствует при BLOCKING_GAP или другом блокирующем open_item;
 - у каждого publishable маршрута ровно один существующий official_source_id;
@@ -209,7 +226,8 @@ completeness обязан содержать ровно 14 блоков из с�
 - отсутствие методологически пригодного `friendly_cities` после завершённого поиска не создаёт open_item;
 - `NOT_RESEARCHED` не требует выдуманного источника;
 - исследованное ограничение животных не имеет пустого source_ids;
-- существующая международная школа может иметь tuition = null, если цена не подтверждена;
+- отсутствие tuition само по себе не является research gap; подтверждённая международная школа может иметь `tuition = null`, если цена не подтверждена;
+- каталог отдельных international schools не является acceptance criterion нового исследования; legacy `international_schools[].city_id` по-прежнему должен существовать в `cities[]`;
 - THIRD_COUNTRY AVAILABLE/CONDITIONAL имеет country_id, city_ru и visa_required_for_ru;
 - каждый маршрут имеет минимум один family_scenario;
 - READY не используется при BLOCKING_GAP;

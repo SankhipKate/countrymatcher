@@ -2713,6 +2713,29 @@
         }
       }
     },
+    "internationalSchoolCity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "city_name_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "city_name_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "schools": {
       "type": "object",
       "additionalProperties": false,
@@ -2733,6 +2756,12 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/internationalSchool"
+          }
+        },
+        "international_school_cities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/internationalSchoolCity"
           }
         },
         "international_school_status": {
@@ -2756,15 +2785,30 @@
             ]
           },
           "then": {
-            "properties": {
-              "international_schools": {
-                "type": "array",
-                "minItems": 1,
-                "items": {
-                  "$ref": "#/$defs/internationalSchool"
-                }
+            "anyOf": [
+              {
+                "properties": {
+                  "international_schools": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "international_schools"
+                ]
+              },
+              {
+                "properties": {
+                  "international_school_cities": {
+                    "type": "array",
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "international_school_cities"
+                ]
               }
-            }
+            ]
           }
         }
       ]

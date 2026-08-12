@@ -443,6 +443,13 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
             )
 
     schools = data.get("schools") or {}
+    school_city_names = [
+        item.get("city_name_ru")
+        for item in (schools.get("international_school_cities") or [])
+        if isinstance(item, dict) and isinstance(item.get("city_name_ru"), str)
+    ]
+    for city_name in sorted(duplicates(school_city_names)):
+        fail(f"$.schools.international_school_cities: duplicate city_name_ru {city_name}", errors)
     for i, school in enumerate(schools.get("international_schools") or []):
         if not isinstance(school, dict):
             continue

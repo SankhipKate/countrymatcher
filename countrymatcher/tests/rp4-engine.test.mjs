@@ -502,6 +502,56 @@ test('synthetic profile helper follows production school-needed semantics', () =
   assert.equal(profile({ children: 0, schoolNeeded: true }).family.school_needed, false);
 });
 
+test('school presentation is mutually exclusive and preserves every public rule', () => {
+  assert.equal(calculateActiveCountry(profile(), spain, context).schoolPresentation, null);
+  const pkg = structuredClone(spain);
+  pkg.schools.public_school_rules.push({
+    ...structuredClone(pkg.schools.public_school_rules[0]),
+    jurisdiction_ru: 'Вторая применимая юрисдикция',
+    language_ru: 'Второй язык обучения',
+  });
+  const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: false }), pkg, context);
+  assert.equal(result.schoolPresentation.type, 'PUBLIC');
+  assert.equal(result.schoolPresentation.rules.length, 2);
+  assert.deepEqual(result.schoolPresentation.rules.map(({ jurisdiction }) => jurisdiction), [
+    'Испания (общегосударственные правила; администрирование — автономные сообщества)',
+    'Вторая применимая юрисдикция',
+  ]);
+});
+
+test('new country-wide school cities take priority over legacy school records', () => {
+  const pkg = structuredClone(spain);
+  pkg.schools.international_school_cities = [
+    { city_name_ru: 'Школьный город вне city cards', source_ids: ['ES_ICS'] },
+    { city_name_ru: 'Ещё один школьный город', source_ids: ['ES_STPATRICK'] },
+  ];
+  const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), pkg, context);
+  assert.deepEqual(result.schoolPresentation, {
+    type: 'INTERNATIONAL', status: 'AVAILABLE',
+    cities: ['Школьный город вне city cards', 'Ещё один школьный город'],
+  });
+  assert.equal(result.cities.some(({ cityName }) => cityName === 'Школьный город вне city cards'), false);
+});
+
+test('legacy and researched-none international school presentation remain supported', () => {
+  const legacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), spain, context);
+  assert.deepEqual(legacy.schoolPresentation, {
+    type: 'INTERNATIONAL', status: 'AVAILABLE', cities: ['Мадрид', 'Сан-Себастьян'],
+  });
+  const arLegacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), argentina, context);
+  assert.deepEqual(arLegacy.schoolPresentation.cities, ['Буэнос-Айрес']);
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const uyLegacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), uruguay, uyuContext);
+  assert.deepEqual(uyLegacy.schoolPresentation.cities, ['Монтевидео', 'Мальдонадо']);
+  const none = structuredClone(spain);
+  none.schools.international_school_status = 'RESEARCHED_NONE_FOUND';
+  none.schools.international_schools = [];
+  const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), none, context);
+  assert.deepEqual(result.schoolPresentation, {
+    type: 'INTERNATIONAL', status: 'RESEARCHED_NONE_FOUND', cities: [],
+  });
+});
+
 test('generic family evaluator checks every child and exact scenario IDs', () => {
   const family = profile({ adults: 2, childAges: [5, 17] });
   const scenarios = [

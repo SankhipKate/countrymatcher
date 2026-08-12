@@ -499,6 +499,15 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.equal(app.includes('items.push(rule.notes)'), false);
   assert.match(app, /route\.longTerm\.citizenship/);
   assert.match(app, /route\.longTerm\.language/);
+  assert.match(app, /renderSchoolPresentation\(calculation\)/);
+  assert.match(app, /Международные школы: найдены в/);
+  assert.match(app, /school\.rules\.map/);
+  assert.doesNotMatch(app, /internationalSchoolCost|internationalSchoolNames|schoolLine|needsInternationalSchool/);
+  assert.match(app, /ANNUAL: '\/год'/);
+  assert.match(app, /ACADEMIC_YEAR: '\/учебный год'/);
+  assert.match(app, /schoolTuitionPeriodLabel\(rule\.tuition\.period\)/);
+  assert.match(app, /Международные школы: наличие подтверждено\./);
+  assert.ok(app.indexOf("school.status === 'AVAILABLE'") < app.indexOf("school.status === 'RESEARCHED_NONE_FOUND'"));
 
   assert.equal(app.includes('Для выбранного размера города в пакете пока нет отдельной модели'), false);
   assert.match(styles, /\.country-workspace\{display:grid/);
@@ -513,6 +522,26 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.equal(app.includes('Сравнение стран'), false);
   assert.equal(app.includes('Страна расчёта'), false);
   assert.match(styles, /\.country-tab \.status-pill\{grid-column:2/);
+});
+
+test('school UI preserves tuition periods and handles AVAILABLE without city names', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const schoolSource = app.slice(app.indexOf('const publicSchoolAccessLabel'), app.indexOf('function longTermConditions'));
+  const renderSchool = Function('currency', 'html', `${schoolSource}; return renderSchoolPresentation;`)(
+    (amount, currencyCode) => `${amount} ${currencyCode}`,
+    (value) => String(value),
+  );
+  const publicRule = (period) => ({
+    jurisdiction: 'Тестовая юрисдикция', foreignChildAccess: 'AVAILABLE', language: 'Тестовый язык',
+    compulsoryAgeMin: 6, compulsoryAgeMax: 16, isFree: false,
+    tuition: { amount: 1200, currency: 'EUR', period },
+  });
+  assert.match(renderSchool({ schoolPresentation: { type: 'PUBLIC', rules: [publicRule('ANNUAL')] } }), /1200 EUR \/год/);
+  assert.match(renderSchool({ schoolPresentation: { type: 'PUBLIC', rules: [publicRule('ACADEMIC_YEAR')] } }), /1200 EUR \/учебный год/);
+
+  const available = renderSchool({ schoolPresentation: { type: 'INTERNATIONAL', status: 'AVAILABLE', cities: [] } });
+  assert.match(available, /Международные школы: наличие подтверждено\./);
+  assert.doesNotMatch(available, /не исследованы/);
 });
 
 test('country navigation omits route names and unsuitable cards are collapsed blocker-only details', async () => {

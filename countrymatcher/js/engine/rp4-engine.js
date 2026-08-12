@@ -565,6 +565,35 @@ function presentCities(pkg, context) {
   return presented;
 }
 
+function presentSchools(pkg, profile) {
+  if (!(profile?.family?.children?.length > 0)) return null;
+  const schools = pkg.schools || {};
+  if (profile.family.school_needed === true) {
+    const researchedCities = schools.international_school_cities || [];
+    const legacyCityNames = new Map((pkg.cities || []).map((city) => [city.city_id, city.name_ru]));
+    const cityNames = researchedCities.length
+      ? researchedCities.map((city) => city.city_name_ru)
+      : (schools.international_schools || []).map((school) => legacyCityNames.get(school.city_id)).filter(Boolean);
+    return {
+      type: 'INTERNATIONAL',
+      status: schools.international_school_status,
+      cities: [...new Set(cityNames)],
+    };
+  }
+  return {
+    type: 'PUBLIC',
+    rules: (schools.public_school_rules || []).map((rule) => ({
+      jurisdiction: rule.jurisdiction_ru,
+      foreignChildAccess: rule.foreign_child_access,
+      language: rule.language_ru,
+      compulsoryAgeMin: rule.compulsory_age_min,
+      compulsoryAgeMax: rule.compulsory_age_max,
+      isFree: rule.is_free,
+      tuition: rule.tuition,
+    })),
+  };
+}
+
 function presentLgbt(pkg, profile) {
   if (!profile?.lgbt?.enabled || !pkg.lgbt) return null;
   const value = pkg.lgbt;
@@ -623,7 +652,7 @@ export function calculateActiveCountry(profile, pkg, context) {
     applicantProvableIncome: { amount: applicantIncome, currency: pkg.country_currency, conversions: [] },
     cities: presentCities(pkg, context),
     lgbt: presentLgbt(pkg, profile),
-    schoolSummary: profile?.family?.school_needed ? pkg.schools?.public_school_rules?.[0]?.rule_ru || null : null,
+    schoolPresentation: presentSchools(pkg, profile),
     sources: [],
     practicalMissing: [],
   };

@@ -287,6 +287,53 @@ function renderLgbtResearch(calculation) {
   return `<section class="lgbt-research"><div class="section-title-row"><div><h3>ЛГБТ: права, семья и практическая среда</h3><p>Оценки описывают право и среду, но не являются гарантией личной безопасности.</p></div></div><div class="lgbt-assessment-grid"><div><span>Правовое положение</span><b>${html(legalPosition)}</b></div><div><span>Практическая среда</span><b>${html(practicalEnvironment)}</b></div></div><p class="research-caveat">${html(practicalExplanation)}</p><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${citiesBlock}${changesBlock}</div></section>`;
 }
 
+const publicSchoolAccessLabel = (value) => ({
+  AVAILABLE: 'доступна',
+  CONDITIONAL: 'доступна с условиями',
+  NOT_AVAILABLE: 'недоступна',
+  NOT_RESEARCHED: 'не исследована',
+})[value] || 'не исследована';
+
+const schoolTuitionPeriodLabel = (period) => ({
+  ONE_TIME: 'единовременно',
+  MONTHLY: '/мес',
+  ANNUAL: '/год',
+  ACADEMIC_YEAR: '/учебный год',
+  SEMESTER: '/семестр',
+  TERM: '/учебный период',
+  WEEKLY: '/неделю',
+  DAILY: '/день',
+})[period] || '';
+
+function renderSchoolPresentation(calculation) {
+  const school = calculation.schoolPresentation;
+  if (!school) return '';
+  if (school.type === 'INTERNATIONAL') {
+    if (school.status === 'AVAILABLE' && school.cities.length) {
+      return `<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: найдены в ${school.cities.map(html).join(', ')}.</p></section>`;
+    }
+    if (school.status === 'AVAILABLE') {
+      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: наличие подтверждено.</p></section>';
+    }
+    if (school.status === 'RESEARCHED_NONE_FOUND') {
+      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: в ходе исследования не найдены.</p></section>';
+    }
+    return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Сведения о международных школах пока не исследованы.</p></section>';
+  }
+  const rules = school.rules.map((rule) => {
+    const age = rule.compulsoryAgeMin == null || rule.compulsoryAgeMax == null
+      ? 'не подтверждён'
+      : `${rule.compulsoryAgeMin}–${rule.compulsoryAgeMax} лет`;
+    const fee = rule.isFree === true ? 'бесплатно'
+      : rule.isFree === false ? rule.tuition?.amount != null
+        ? `${currency(rule.tuition.amount, rule.tuition.currency)} ${schoolTuitionPeriodLabel(rule.tuition.period)}`.trim()
+        : 'платно'
+      : 'не подтверждено';
+    return `<div class="route-requirements"><h4>${html(rule.jurisdiction)}</h4><p><b>Доступ иностранному ребёнку:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательный школьный возраст:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
+  }).join('');
+  return rules ? `<section><div class="section-title-row"><div><h3>Школы</h3></div></div>${rules}</section>` : '';
+}
+
 function longTermConditions(route) {
   if (!route.longTerm) return "";
   const items = [route.longTerm.renewal, route.longTerm.permanentResidence, route.longTerm.citizenship, route.longTerm.presence, route.longTerm.language].filter(Boolean);
@@ -412,30 +459,17 @@ function renderCountryResult(calculation, changed = false, active = false) {
         avgTempColdestMonthC: city.avgTempColdestMonthC,
         avgTempHottestMonthC: city.avgTempHottestMonthC,
         climate: city.climate,
-        internationalSchoolStatus: city.internationalSchoolStatus,
-        internationalSchoolCost: city.internationalSchoolCost,
       }));
   const familyFactor = 1 + Math.max(0, calculation.profile.adults - 1) * 0.6 + children * 0.4;
   const budgetUsd = calculation.profile.monthlyBudgetUsd;
   const budgetSourceNote = calculation.profile.budgetDerivedFromIncome && budgetUsd != null
     ? `<p class="budget-source-note">Бюджет не указан отдельно, поэтому для сравнения использован общий регулярный доход: <b>${currency(budgetUsd)}</b> в месяц.</p>`
     : '';
-  const needsInternationalSchool = Boolean(currentProfile?.family?.school_needed);
   const cityCostSuffix = calculation.profile.adults === 1 && children === 0 ? '/мес' : '/мес на семью';
-  const schoolSummary = calculation.schoolSummary ? `<p class="research-caveat">${html(calculation.schoolSummary)}</p>` : '';
   const citySection = comparisonCities.length
     ? `<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
         const living = Number.isFinite(city.cost) ? (city.costIsFamilySpecific ? Math.round(city.cost) : Math.round(city.cost * familyFactor)) : null;
-        const numericSchoolCost = Number(city.internationalSchoolCost);
-        const knownSchoolCost = needsInternationalSchool
-          ? Number.isFinite(numericSchoolCost) ? numericSchoolCost : 0
-          : 0;
-        const total = living + knownSchoolCost;
-        const delta = budgetUsd == null || !Number.isFinite(total) ? null : budgetUsd - total;
-        const schoolLine = !needsInternationalSchool ? ''
-          : city.internationalSchoolStatus
-            ? `<span>Международная школа: <b>${html(city.internationalSchoolStatus)}</b></span>`
-            : knownSchoolCost ? `<span>Международная школа: ориентир <b>+${currency(knownSchoolCost)}/мес</b></span>` : '';
+        const delta = budgetUsd == null || !Number.isFinite(living) ? null : budgetUsd - living;
         const budgetLine = delta == null ? '' : Number.isFinite(delta) && delta >= 0
           ? '<span class="budget-ok">В бюджет укладывается</span>'
           : '<span class="budget-short">Выше бюджета</span>';
@@ -445,14 +479,15 @@ function renderCountryResult(calculation, changed = false, active = false) {
         const hotLine = hotValue != null ? `<span>Жаркий период: <b>${html(formatTemperatureRange(hotValue))}</b></span>` : '';
         const climateLine = city.climate ? `<span>Климат: <b>${html(city.climate)}</b></span>` : '';
         const costLine = living == null ? '<span>Стоимость: нет сопоставимого полного значения</span>' : `<strong>${currency(living)}${cityCostSuffix}</strong>`;
-        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4>${costLine}${schoolLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
-      }).join('')}</div>${schoolSummary}<p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
+        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4>${costLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
+      }).join('')}</div><p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     ${entryBlock}
     <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
+    ${renderSchoolPresentation(calculation)}
     ${renderLgbtResearch(calculation)}${petInfo}</div></article>`;
 }
 
