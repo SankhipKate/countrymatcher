@@ -594,6 +594,46 @@ function presentSchools(pkg, profile) {
   };
 }
 
+function presentEntry(pkg) {
+  const entry = pkg.entry_for_russian_citizen;
+  if (!entry) return null;
+  return {
+    visaRequired: entry.visa_required,
+    maximumStayDays: entry.maximum_stay_days,
+    processingTime: entry.processing_time_ru,
+    rule: entry.rule_ru,
+  };
+}
+
+function presentBudget(profile, context) {
+  const explicit = profile?.preferences?.monthly_budget;
+  if (explicit?.amount > 0) {
+    try {
+      return { monthlyBudgetUsd: convertAmount(explicit.amount, explicit.currency, 'USD', context), budgetDerivedFromIncome: false };
+    } catch {
+      return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
+    }
+  }
+  const householdSources = [
+    ...applicantSources(profile),
+    ...partnerSources(profile),
+  ].filter((source) => source?.monthly_total?.amount > 0);
+  if (!householdSources.length) return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
+  try {
+    const monthlyBudgetUsd = householdSources.reduce((sum, source) => sum + convertAmount(
+      source.monthly_total.amount,
+      source.monthly_total.currency,
+      'USD',
+      context,
+    ), 0);
+    return monthlyBudgetUsd > 0
+      ? { monthlyBudgetUsd, budgetDerivedFromIncome: true }
+      : { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
+  } catch {
+    return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
+  }
+}
+
 function presentLgbt(pkg, profile) {
   if (!profile?.lgbt?.enabled || !pkg.lgbt) return null;
   const value = pkg.lgbt;
@@ -641,15 +681,17 @@ export function calculateActiveCountry(profile, pkg, context) {
     pkg.country_currency,
     context,
   ), 0);
+  const budget = presentBudget(profile, context);
   return {
     calculatedAt: new Date().toISOString(),
-    profile: { ...profile, adults: profile.family?.adults_count || 1, children: profile.family?.children || [] },
+    profile: { ...profile, adults: profile.family?.adults_count || 1, children: profile.family?.children || [], ...budget },
     country: { countryId: pkg.country_id, name: pkg.country_name_ru, group: bestRoute?.routeStatus ?? null, resultCurrency: pkg.country_currency },
     evaluationState: routes.length ? 'EVALUATED' : 'NO_EVALUABLE_ROUTES',
     excludedRoutes,
     bestRoute,
     routes,
     applicantProvableIncome: { amount: applicantIncome, currency: pkg.country_currency, conversions: [] },
+    entryForRussianCitizen: presentEntry(pkg),
     cities: presentCities(pkg, context),
     lgbt: presentLgbt(pkg, profile),
     schoolPresentation: presentSchools(pkg, profile),

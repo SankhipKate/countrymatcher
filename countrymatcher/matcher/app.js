@@ -334,6 +334,21 @@ function renderSchoolPresentation(calculation) {
   return rules ? `<section><div class="section-title-row"><div><h3>Школы</h3></div></div>${rules}</section>` : '';
 }
 
+function renderEntryPresentation(calculation) {
+  const entry = calculation.entryForRussianCitizen;
+  const lines = entry ? [
+    entry.visaRequired === true ? 'Виза: требуется.' : entry.visaRequired === false ? 'Виза: не требуется.' : null,
+    entry.maximumStayDays != null ? `Максимальный срок пребывания: ${entry.maximumStayDays} дней.` : null,
+    String(entry.processingTime || '').trim() ? `Срок оформления: ${entry.processingTime}` : null,
+    entry.rule,
+  ].filter(Boolean) : [];
+  return lines.length ? `<div class="route-requirements practical-warning"><h4>Въезд для граждан РФ</h4>${lines.map((line) => `<p>${html(line)}</p>`).join('')}</div>` : '';
+}
+
+const cityBudgetVerdict = (budgetUsd, living) => budgetUsd == null || !Number.isFinite(living)
+  ? ''
+  : budgetUsd >= living ? 'В бюджет укладывается' : 'Выше бюджета';
+
 function longTermConditions(route) {
   if (!route.longTerm) return "";
   const items = [route.longTerm.renewal, route.longTerm.permanentResidence, route.longTerm.citizenship, route.longTerm.presence, route.longTerm.language].filter(Boolean);
@@ -437,14 +452,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
     ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
     : 'Числовой порог не применяется';
   const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
-  const entry = calculation.entryForRussianCitizen;
-  const entryCostAndTiming = entry
-    ? [entry.fee_local_ru, entry.processing_time_ru]
-      .map((text) => String(text || '').trim().replace(/[.;]+$/u, ''))
-      .filter(Boolean)
-      .join('; ')
-    : '';
-  const entryBlock = entry ? `<div class="route-requirements practical-warning"><h4>Как гражданину РФ законно въехать</h4><p>${html(entry.summary_ru)}</p><p><b>Самолётом:</b> ${html(entry.air_entry_ru)}</p><p><b>По суше или морю:</b> ${html(entry.land_sea_entry_ru)}</p><p><b>Стоимость и срок:</b> ${html(entryCostAndTiming)}.</p><p><b>Переход к ВНЖ:</b> ${html(entry.in_country_residence_application_ru)}</p></div>` : '';
+  const entryBlock = renderEntryPresentation(calculation);
   const petInfo = calculation.petSummary ? `<div class="route-requirements practical-warning"><h4>Домашние животные</h4><p>${html(calculation.petSummary)}</p></div>` : '';
   const comparisonCities = (calculation.cities || []).map((city) => ({
         name: city.cityName,
@@ -469,10 +477,10 @@ function renderCountryResult(calculation, changed = false, active = false) {
   const citySection = comparisonCities.length
     ? `<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
         const living = Number.isFinite(city.cost) ? (city.costIsFamilySpecific ? Math.round(city.cost) : Math.round(city.cost * familyFactor)) : null;
-        const delta = budgetUsd == null || !Number.isFinite(living) ? null : budgetUsd - living;
-        const budgetLine = delta == null ? '' : Number.isFinite(delta) && delta >= 0
-          ? '<span class="budget-ok">В бюджет укладывается</span>'
-          : '<span class="budget-short">Выше бюджета</span>';
+        const verdict = cityBudgetVerdict(budgetUsd, living);
+        const budgetLine = verdict === 'В бюджет укладывается'
+          ? `<span class="budget-ok">${verdict}</span>`
+          : verdict ? `<span class="budget-short">${verdict}</span>` : '';
         const coldValue = city.coldRange ?? city.avgTempColdestMonthC;
         const hotValue = city.hotRange ?? city.avgTempHottestMonthC;
         const coldLine = coldValue != null ? `<span>Холодный период: <b>${html(formatTemperatureRange(coldValue))}</b></span>` : '';

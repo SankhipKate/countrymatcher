@@ -544,6 +544,38 @@ test('school UI preserves tuition periods and handles AVAILABLE without city nam
   assert.doesNotMatch(available, /не исследованы/);
 });
 
+test('entry UI uses RP4 fields and budget verdict requires a real budget', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const entrySource = app.slice(app.indexOf('function renderEntryPresentation'), app.indexOf('const cityBudgetVerdict'));
+  const renderEntry = Function('html', `${entrySource}; return renderEntryPresentation;`)((value) => String(value));
+  const es = renderEntry({ entryForRussianCitizen: {
+    visaRequired: true, maximumStayDays: 90, processingTime: 'Официальный срок.', rule: 'Полное правило.',
+  } });
+  assert.match(es, /Въезд для граждан РФ/);
+  assert.match(es, /Виза: требуется\./);
+  assert.match(es, /Максимальный срок пребывания: 90 дней\./);
+  assert.match(es, /Срок оформления: Официальный срок\./);
+  assert.match(es, /Полное правило\./);
+
+  const noTiming = renderEntry({ entryForRussianCitizen: {
+    visaRequired: false, maximumStayDays: 90, processingTime: null, rule: 'Правило.',
+  } });
+  assert.match(noTiming, /Виза: не требуется\./);
+  assert.doesNotMatch(noTiming, /Срок оформления/);
+  const unknownVisa = renderEntry({ entryForRussianCitizen: {
+    visaRequired: null, maximumStayDays: null, processingTime: '', rule: 'Правило.',
+  } });
+  assert.doesNotMatch(unknownVisa, /Виза:/);
+
+  const budgetSource = app.slice(app.indexOf('const cityBudgetVerdict'), app.indexOf('function longTermConditions'));
+  const verdict = Function(`${budgetSource}; return cityBudgetVerdict;`)();
+  assert.equal(verdict(2000, 1500), 'В бюджет укладывается');
+  assert.equal(verdict(1000, 1500), 'Выше бюджета');
+  assert.equal(verdict(null, 1500), '');
+  assert.doesNotMatch(entrySource, /summary_ru|air_entry_ru|land_sea_entry_ru|fee_local_ru|in_country_residence_application_ru/);
+  assert.doesNotMatch(app, /internationalSchoolCost|knownSchoolCost|numericSchoolCost/);
+});
+
 test('country navigation omits route names and unsuitable cards are collapsed blocker-only details', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const tabSource = app.slice(app.indexOf('function renderCountryTab'), app.indexOf('function renderCountryResult'));

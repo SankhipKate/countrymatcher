@@ -45,6 +45,7 @@ const argentinaCase = (caseId) => {
 };
 const incomeSource = (owner, type, amount, currency = 'EUR', countryId = 'US', geography = 'SINGLE_COUNTRY') => ({
   owner, type, source_geography: geography, country_id: geography === 'SINGLE_COUNTRY' ? countryId : null,
+  monthly_total: { amount, currency },
   monthly_provable: { amount, currency },
 });
 const profile = ({ applicantAmount = 4000, applicantCurrency = 'EUR', applicantType = 'REMOTE_EMPLOYMENT',
@@ -127,6 +128,74 @@ test('active matcher calculates real Spain and Argentina packages through the sa
   assert.deepEqual(two.results.map(({ routes }) => routes.length), [14, 9]);
   assert.deepEqual(sortCountriesForDisplay(two.results).map(({ country }) => country.countryId), ['ES', 'AR']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
+});
+
+test('country entry facts reach calculation without changing route statuses', () => {
+  const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
+  const es = calculateActiveCountry(input, spain, context);
+  assert.deepEqual(es.entryForRussianCitizen, {
+    visaRequired: true,
+    maximumStayDays: 90,
+    processingTime: 'Срок зависит от вида визы и консульской процедуры; единый срок для всех оснований не используется.',
+    rule: spain.entry_for_russian_citizen.rule_ru,
+  });
+  const ar = calculateActiveCountry(input, argentina, context);
+  assert.deepEqual(ar.entryForRussianCitizen, {
+    visaRequired: false, maximumStayDays: 90, processingTime: null,
+    rule: argentina.entry_for_russian_citizen.rule_ru,
+  });
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const uy = calculateActiveCountry(input, uruguay, uyuContext);
+  assert.deepEqual(uy.entryForRussianCitizen, {
+    visaRequired: false, maximumStayDays: 90, processingTime: null,
+    rule: uruguay.entry_for_russian_citizen.rule_ru,
+  });
+  const unknownVisa = structuredClone(spain);
+  unknownVisa.entry_for_russian_citizen.visa_required = null;
+  const unknown = calculateActiveCountry(input, unknownVisa, context);
+  assert.equal(unknown.entryForRussianCitizen.visaRequired, null);
+  assert.deepEqual(unknown.routes.map(({ routeStatus }) => routeStatus), es.routes.map(({ routeStatus }) => routeStatus));
+});
+
+test('explicit budget is normalized to USD and remains outside legal matching', () => {
+  const input = profile({ applicantAmount: 6000 });
+  input.preferences = { monthly_budget: { amount: 900, currency: 'EUR' } };
+  const withBudget = calculateActiveCountry(input, spain, context);
+  const withoutBudgetInput = structuredClone(input);
+  withoutBudgetInput.preferences.monthly_budget = null;
+  const withoutBudget = calculateActiveCountry(withoutBudgetInput, spain, context);
+  assert.equal(withBudget.profile.monthlyBudgetUsd, 1000);
+  assert.equal(withBudget.profile.budgetDerivedFromIncome, false);
+  assert.deepEqual(withBudget.routes.map(({ routeStatus }) => routeStatus), withoutBudget.routes.map(({ routeStatus }) => routeStatus));
+});
+
+test('unknown budget uses household monthly_total including additional and partner income', () => {
+  const input = profile({ applicantAmount: 900, additionalSources: [incomeSource('APPLICANT', 'REMOTE_EMPLOYMENT', 450)], partnerAmount: 450, adults: 2 });
+  input.preferences = { monthly_budget: null };
+  const result = calculateActiveCountry(input, spain, context);
+  assert.equal(result.profile.monthlyBudgetUsd, 2000);
+  assert.equal(result.profile.budgetDerivedFromIncome, true);
+});
+
+test('budget fallback ignores monthly_provable and rejects zero or unconvertible household totals', () => {
+  const unprovable = profile({ applicantAmount: 900 });
+  unprovable.preferences = { monthly_budget: null };
+  unprovable.income.primary.monthly_provable.amount = 0;
+  assert.equal(calculateActiveCountry(unprovable, spain, context).profile.monthlyBudgetUsd, 1000);
+
+  const none = profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME' });
+  none.preferences = { monthly_budget: null };
+  assert.deepEqual(
+    (({ monthlyBudgetUsd, budgetDerivedFromIncome }) => ({ monthlyBudgetUsd, budgetDerivedFromIncome }))(
+      calculateActiveCountry(none, spain, context).profile,
+    ),
+    { monthlyBudgetUsd: null, budgetDerivedFromIncome: false },
+  );
+
+  const unknownCurrency = profile({ applicantAmount: 1000, applicantCurrency: 'ZZZ' });
+  unknownCurrency.preferences = { monthly_budget: null };
+  unknownCurrency.income.primary.monthly_provable = { amount: 0, currency: 'USD' };
+  assert.equal(calculateActiveCountry(unknownCurrency, spain, context).profile.monthlyBudgetUsd, null);
 });
 
 test('generic engine converts live RUB questionnaire income when the context supplies RUB', () => {
