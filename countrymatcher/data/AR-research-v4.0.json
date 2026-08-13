@@ -2402,27 +2402,18 @@
     ]
   },
   "pets": {
-    "dog_breed_restrictions": {
-      "status": "RESTRICTIONS_FOUND",
-      "explanation_ru": "На национальном уровне на странице ввоза не найден породный запрет, но в CABA действует специальный режим потенциально опасных собак с перечнем пород/типов и требованиями к содержанию.",
-      "source_ids": [
-        "AR_PETS_ENTRY",
-        "AR_DOG_CABA"
-      ]
-    },
-    "cat_breed_restrictions": {
+    "import_restrictions": {
       "status": "RESEARCHED_NONE_FOUND",
-      "explanation_ru": "В проверенных национальных правилах ввоза и выбранной локальной нормативной базе не найден сопоставимый перечень ограниченных пород кошек.",
+      "explanation_ru": "В проверенных национальных правилах ввоза не выявлены decision-relevant запреты или ограничения на допуск собак и кошек.",
       "source_ids": [
         "AR_PETS_ENTRY"
       ]
     },
-    "regional_restrictions": {
-      "status": "RESEARCHED_NO_RELIABLE_DATA",
-      "explanation_ru": "Не собрана единая актуальная матрица породных ограничений по всем провинциям и муниципалитетам.",
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "В Ciudad Autónoma de Buenos Aires (CABA) действует специальный режим потенциально опасных собак. Официальный список шире и включает, среди прочих, Pit Bull Terrier, Dogo Argentino, Rottweiler, Doberman, Ovejero Alemán и Cane Corso, а также соответствующие помеси и иные предусмотренные законом категории. Требуются регистрация и страхование гражданской ответственности; в общественных местах обязательны намордник и нерастягивающийся поводок длиной до 2 м. Это правило CABA, а не общенациональное правило Аргентины.",
       "source_ids": [
-        "AR_DOG_CABA",
-        "AR_PETS_ENTRY"
+        "AR_DOG_CABA"
       ]
     }
   },

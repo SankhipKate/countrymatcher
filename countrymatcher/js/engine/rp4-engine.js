@@ -605,6 +605,22 @@ function presentEntry(pkg) {
   };
 }
 
+function presentPets(pkg, profile) {
+  const petTypes = profile?.pets?.types || [];
+  if (!petTypes.some((type) => type !== 'NONE')) return null;
+  const pets = pkg.pets || {};
+  const importRestriction = pets.import_restrictions;
+  const afterEntryRestriction = pets.after_entry_restrictions;
+  return {
+    importText: importRestriction?.status === 'RESEARCHED_NONE_FOUND'
+      ? 'Ограничений на ввоз собак и кошек не выявлено.'
+      : importRestriction?.status === 'RESTRICTIONS_FOUND' ? importRestriction.explanation_ru : null,
+    afterEntryText: afterEntryRestriction?.status === 'RESTRICTIONS_FOUND'
+      ? afterEntryRestriction.explanation_ru
+      : null,
+  };
+}
+
 function presentBudget(profile, context) {
   const explicit = profile?.preferences?.monthly_budget;
   if (explicit?.amount > 0) {
@@ -695,6 +711,7 @@ export function calculateActiveCountry(profile, pkg, context) {
     cities: presentCities(pkg, context),
     lgbt: presentLgbt(pkg, profile),
     schoolPresentation: presentSchools(pkg, profile),
+    petPresentation: presentPets(pkg, profile),
     sources: [],
     practicalMissing: [],
   };

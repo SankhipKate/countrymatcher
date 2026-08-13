@@ -51,7 +51,8 @@ const incomeSource = (owner, type, amount, currency = 'EUR', countryId = 'US', g
 const profile = ({ applicantAmount = 4000, applicantCurrency = 'EUR', applicantType = 'REMOTE_EMPLOYMENT',
   applicantCountryId = 'US', applicantGeography = 'SINGLE_COUNTRY', additionalSources = [],
   partnerAmount = null, savings = null, capital = null, adults = 1, children = 0, childAges = null,
-  partnerIncluded = adults === 2, relationshipType = partnerIncluded ? 'MARRIED' : null, schoolNeeded = null } = {}) => ({
+  partnerIncluded = adults === 2, relationshipType = partnerIncluded ? 'MARRIED' : null, schoolNeeded = null,
+  pets = false } = {}) => ({
   residence: { current_country: 'RU', current_status: 'CITIZEN' },
   family: {
     adults_count: adults,
@@ -69,6 +70,7 @@ const profile = ({ applicantAmount = 4000, applicantCurrency = 'EUR', applicantT
   },
   investment_capital: capital,
   goal: { long_term: 'TEMPORARY_RESIDENCE_SUFFICIENT', keep_russian_citizenship: 'NOT_REQUIRED' },
+  pets: { types: pets ? ['DOG', 'CAT'] : ['NONE'], dogs: [], other_pet_notes: null },
 });
 const route = (requirements, extra = {}) => ({ route_id: 'TEST', name_ru: 'Test', publishable: true, requirements, ...extra });
 const familyScenario = (extra = {}) => ({
@@ -619,6 +621,45 @@ test('legacy and researched-none international school presentation remain suppor
   assert.deepEqual(result.schoolPresentation, {
     type: 'INTERNATIONAL', status: 'RESEARCHED_NONE_FOUND', cities: [],
   });
+});
+
+test('pets presentation distinguishes no pets, import findings, and unknown research', () => {
+  assert.equal(calculateActiveCountry(profile(), spain, context).petPresentation, null);
+  const pkg = structuredClone(spain);
+  const evaluate = () => calculateActiveCountry(profile({ pets: true }), pkg, context).petPresentation;
+  assert.equal(evaluate().importText, 'Ограничений на ввоз собак и кошек не выявлено.');
+  assert.match(evaluate().afterEntryText, /Pit Bull Terrier/);
+
+  pkg.pets.import_restrictions = {
+    status: 'RESTRICTIONS_FOUND', explanation_ru: 'Конкретное ограничение ввоза.', source_ids: ['ES_PET'],
+  };
+  assert.equal(evaluate().importText, 'Конкретное ограничение ввоза.');
+  for (const status of ['NOT_RESEARCHED', 'RESEARCHED_NO_RELIABLE_DATA']) {
+    pkg.pets.import_restrictions = { status, explanation_ru: 'Не превращать в отсутствие ограничений.', source_ids: status === 'NOT_RESEARCHED' ? [] : ['ES_PET'] };
+    assert.equal(evaluate().importText, null);
+  }
+});
+
+test('after-entry pets text appears only for restrictions found', () => {
+  const pkg = structuredClone(spain);
+  const evaluate = () => calculateActiveCountry(profile({ pets: true }), pkg, context).petPresentation;
+  for (const status of ['RESEARCHED_NONE_FOUND', 'NOT_RESEARCHED', 'RESEARCHED_NO_RELIABLE_DATA']) {
+    pkg.pets.after_entry_restrictions = { status, explanation_ru: 'Не показывать.', source_ids: status === 'NOT_RESEARCHED' ? [] : ['ES_DOG'] };
+    assert.equal(evaluate().afterEntryText, null);
+  }
+  pkg.pets.after_entry_restrictions = { status: 'RESTRICTIONS_FOUND', explanation_ru: 'Конкретное правило после въезда.', source_ids: ['ES_DOG'] };
+  assert.equal(evaluate().afterEntryText, 'Конкретное правило после въезда.');
+});
+
+test('real ES, AR, and UY pets use the generic presentation without changing route status', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  for (const [pkg, fx] of [[spain, context], [argentina, context], [uruguay, uyuContext]]) {
+    const withoutPets = calculateActiveCountry(profile(), pkg, fx);
+    const withPets = calculateActiveCountry(profile({ pets: true }), pkg, fx);
+    assert.equal(withPets.petPresentation.importText, 'Ограничений на ввоз собак и кошек не выявлено.');
+    assert.ok(withPets.petPresentation.afterEntryText);
+    assert.deepEqual(withPets.routes.map(({ routeStatus }) => routeStatus), withoutPets.routes.map(({ routeStatus }) => routeStatus));
+  }
 });
 
 test('generic family evaluator checks every child and exact scenario IDs', () => {

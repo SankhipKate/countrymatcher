@@ -345,6 +345,16 @@ function renderEntryPresentation(calculation) {
   return lines.length ? `<div class="route-requirements practical-warning"><h4>Въезд для граждан РФ</h4>${lines.map((line) => `<p>${html(line)}</p>`).join('')}</div>` : '';
 }
 
+function renderPetPresentation(calculation) {
+  const pets = calculation.petPresentation;
+  if (!pets) return '';
+  const lines = [
+    pets.importText ? `<p><b>Ввоз в страну:</b> ${html(pets.importText)}</p>` : '',
+    pets.afterEntryText ? `<p><b>После въезда:</b> ${html(pets.afterEntryText)}</p>` : '',
+  ].filter(Boolean).join('');
+  return lines ? `<section><div class="section-title-row"><div><h3>Домашние животные</h3></div></div>${lines}</section>` : '';
+}
+
 const cityBudgetVerdict = (budgetUsd, living) => budgetUsd == null || !Number.isFinite(living)
   ? ''
   : budgetUsd >= living ? 'В бюджет укладывается' : 'Выше бюджета';
@@ -453,7 +463,6 @@ function renderCountryResult(calculation, changed = false, active = false) {
     : 'Числовой порог не применяется';
   const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
   const entryBlock = renderEntryPresentation(calculation);
-  const petInfo = calculation.petSummary ? `<div class="route-requirements practical-warning"><h4>Домашние животные</h4><p>${html(calculation.petSummary)}</p></div>` : '';
   const comparisonCities = (calculation.cities || []).map((city) => ({
         name: city.cityName,
         size: city.populationCategory,
@@ -496,7 +505,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
     ${entryBlock}
     <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
     ${renderSchoolPresentation(calculation)}
-    ${renderLgbtResearch(calculation)}${petInfo}</div></article>`;
+    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}</div></article>`;
 }
 
 function calculateActiveCountries() {

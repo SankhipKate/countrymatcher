@@ -3729,25 +3729,17 @@
     ]
   },
   "pets": {
-    "dog_breed_restrictions": {
-      "status": "RESTRICTIONS_FOUND",
-      "explanation_ru": "Для некоторых пород/типов собак действует национальный режим потенциально опасных животных с дополнительными требованиями; общие ветеринарные процедуры в продукт не входят.",
-      "source_ids": [
-        "ES_DOG"
-      ]
-    },
-    "cat_breed_restrictions": {
+    "import_restrictions": {
       "status": "RESEARCHED_NONE_FOUND",
-      "explanation_ru": "В проверенных национальных правилах не найден сопоставимый список запрещённых пород кошек; обычные ветеринарные условия исключены из продукта.",
+      "explanation_ru": "В проверенных национальных правилах ввоза не выявлены decision-relevant запреты или ограничения на допуск собак и кошек.",
       "source_ids": [
         "ES_PET"
       ]
     },
-    "regional_restrictions": {
-      "status": "RESEARCHED_NO_RELIABLE_DATA",
-      "explanation_ru": "Единой подтверждённой матрицы региональных породных ограничений для всех автономных сообществ не собрано.",
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "На всей территории Испании для потенциально опасных собак действует специальный режим. Он включает Pit Bull Terrier, Staffordshire Bull Terrier, American Staffordshire Terrier, Rottweiler, Dogo Argentino, Fila Brasileiro, Tosa Inu и Akita Inu, а также может охватывать собак, подпадающих под дополнительные установленные законом критерии. Требуются лицензия и страхование гражданской ответственности; в общественных местах обязательны намордник и нерастягивающийся поводок длиной менее 2 м.",
       "source_ids": [
-        "ES_PET",
         "ES_DOG"
       ]
     }

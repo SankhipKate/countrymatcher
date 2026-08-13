@@ -576,6 +576,23 @@ test('entry UI uses RP4 fields and budget verdict requires a real budget', async
   assert.doesNotMatch(app, /internationalSchoolCost|knownSchoolCost|numericSchoolCost/);
 });
 
+test('pets UI consumes generic presentation after LGBT and never reads petSummary', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const petSource = app.slice(app.indexOf('function renderPetPresentation'), app.indexOf('const cityBudgetVerdict'));
+  const renderPets = Function('html', `${petSource}; return renderPetPresentation;`)((value) => String(value));
+  assert.equal(renderPets({ petPresentation: null }), '');
+  const block = renderPets({ petPresentation: {
+    importText: 'Ограничений на ввоз собак и кошек не выявлено.',
+    afterEntryText: 'Конкретное правило после въезда.',
+  } });
+  assert.match(block, /Домашние животные/);
+  assert.match(block, /Ввоз в страну:/);
+  assert.match(block, /После въезда:/);
+  assert.doesNotMatch(app, /calculation\.petSummary/);
+  assert.match(app, /calculation\.petPresentation/);
+  assert.ok(app.indexOf('renderLgbtResearch(calculation)') < app.lastIndexOf('renderPetPresentation(calculation)'));
+});
+
 test('country navigation omits route names and unsuitable cards are collapsed blocker-only details', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const tabSource = app.slice(app.indexOf('function renderCountryTab'), app.indexOf('function renderCountryResult'));

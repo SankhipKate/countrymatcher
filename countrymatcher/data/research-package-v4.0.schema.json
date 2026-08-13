@@ -2880,18 +2880,14 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "dog_breed_restrictions",
-        "cat_breed_restrictions",
-        "regional_restrictions"
+        "import_restrictions",
+        "after_entry_restrictions"
       ],
       "properties": {
-        "dog_breed_restrictions": {
+        "import_restrictions": {
           "$ref": "#/$defs/restrictionAssessment"
         },
-        "cat_breed_restrictions": {
-          "$ref": "#/$defs/restrictionAssessment"
-        },
-        "regional_restrictions": {
+        "after_entry_restrictions": {
           "$ref": "#/$defs/restrictionAssessment"
         }
       }

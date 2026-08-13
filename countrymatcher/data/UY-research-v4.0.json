@@ -2295,28 +2295,19 @@
     ]
   },
   "pets": {
-    "dog_breed_restrictions": {
-      "status": "RESTRICTIONS_FOUND",
-      "explanation_ru": "Национальный breed-specific import ban не подтверждён; в Montevideo и Maldonado действуют handling requirements для potentially dangerous dogs.",
-      "source_ids": [
-        "UY_SRC_43",
-        "UY_SRC_44",
-        "UY_SRC_45"
-      ]
-    },
-    "cat_breed_restrictions": {
+    "import_restrictions": {
       "status": "RESEARCHED_NONE_FOUND",
-      "explanation_ru": "В проверенных national entry rules породные ограничения кошек не найдены.",
+      "explanation_ru": "В проверенных национальных правилах ввоза не выявлены decision-relevant запреты или ограничения на допуск собак и кошек.",
       "source_ids": [
         "UY_SRC_43"
       ]
     },
-    "regional_restrictions": {
-      "status": "RESEARCHED_NO_RELIABLE_DATA",
-      "explanation_ru": "Текущая полная региональная матрица не подтверждена; известны правила Montevideo/Maldonado.",
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "На всей территории Уругвая для собак, относимых к потенциально опасным, действует специальный режим безопасности: в общественных местах требуются ошейник, безопасный поводок и намордник. Категория определяется не только породой и может учитывать массу более 25 кг, физические характеристики, агрессивное поведение, подтверждённые нападения и обучение защите или атаке; одновременное наличие всех признаков не требуется.",
       "source_ids": [
-        "UY_SRC_44",
-        "UY_SRC_45"
+        "UY_SRC_57",
+        "UY_SRC_58"
       ]
     }
   },
@@ -3159,6 +3150,30 @@
       "checked_at": "2026-08-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_57",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO — Centro de Información Oficial",
+      "title_ru": "Ley N.º 18.471 — статья 10, меры безопасности для потенциально опасных собак",
+      "url": "https://www.impo.com.uy/bases/leyes/18471-2009/10",
+      "supports_ru": "Общенациональное правило для владельцев и держателей собак потенциально опасных пород либо собак, обученных для защиты или нападения: при нахождении и перемещении в общественных местах обязательны намордник, ошейник и безопасный поводок.",
+      "checked_at": "2026-08-13",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2009-04-21",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_58",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Ganadería, Agricultura y Pesca",
+      "title_ru": "Resolución N.º 2/019 — определение потенциально опасной собаки",
+      "url": "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-2019-definicion-perro-potencialmente-peligroso",
+      "supports_ru": "Национальное определение потенциально опасной собаки: масса, физические характеристики, агрессивность, подтверждённые нападения и обучение атаке/защите; все признаки одновременно не обязательны.",
+      "checked_at": "2026-08-13",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2019-03-29",
       "language": "es"
     }
   ],
