@@ -19,7 +19,7 @@ import {
   recoverUrl,
   savePendingOrder,
   workerUrlFor,
-} from "../payment-config.js?v=7.1.1";
+} from "../payment-config.js?v=7.1.2";
 
 export {
   TOKEN_STORAGE_KEY,

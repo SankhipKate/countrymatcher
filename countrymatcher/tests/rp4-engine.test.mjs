@@ -120,16 +120,74 @@ test('active contract accepts only Final Lock Research Package 4.0 without fallb
   assert.throws(() => assertActiveResearchPackage({ ...spain, canon_revision: 'draft' }), /2026-08-08-final-lock/);
 });
 
-test('active matcher calculates real Spain and Argentina packages through the same country pipeline', () => {
+test('active matcher calculates real Spain, Argentina, and Uruguay packages through the same country pipeline', () => {
   const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
+  const threeCountryContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
   const one = calculateActiveMatcher(input, [spain], context);
   assert.equal(one.results.length, 1);
   assert.equal(one.results[0].country.countryId, 'ES');
-  const two = calculateActiveMatcher(input, [spain, argentina], context);
-  assert.deepEqual(two.results.map(({ country }) => country.countryId), ['ES', 'AR']);
-  assert.deepEqual(two.results.map(({ routes }) => routes.length), [14, 9]);
-  assert.deepEqual(sortCountriesForDisplay(two.results).map(({ country }) => country.countryId), ['ES', 'AR']);
+  const three = calculateActiveMatcher(input, [spain, argentina, uruguay], threeCountryContext);
+  assert.deepEqual(three.results.map(({ country }) => country.countryId), ['ES', 'AR', 'UY']);
+  assert.deepEqual(three.results.map(({ routes }) => routes.length), [11, 8, 7]);
+  assert.ok(three.results[2].routes.every(({ routeName }) => typeof routeName === 'string' && routeName.length > 0));
+  assert.deepEqual(sortCountriesForDisplay(three.results).map(({ country }) => country.countryId).sort(), ['AR', 'ES', 'UY']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
+});
+
+test('current public route policy hides narrow supporting routes without hiding broad specialist routes', () => {
+  const publication = (pkg, routeId) => pkg.routes.find(({ route_id }) => route_id === routeId)?.publishable;
+  for (const routeId of ['ES_FAM_SP', 'ES_REUN', 'ES_ICT']) assert.equal(publication(spain, routeId), false);
+  assert.equal(publication(argentina, 'AR_FAMILY'), false);
+  assert.equal(publication(uruguay, 'UY_PERMANENT_URUGUAYAN_LINK'), false);
+  assert.equal(publication(argentina, 'AR_SPECIALIST_TRANSFER'), true);
+  assert.equal(publication(uruguay, 'UY_TEMP_SPECIALIST'), true);
+});
+
+test('every active AFTER_APPROVAL display-only fact remains represented without preparation duplication', () => {
+  const audited = [spain, argentina, uruguay].flatMap((pkg) => pkg.routes.flatMap((item) =>
+    (item.requirements || []).filter(({ evaluation_mode, timing }) => evaluation_mode === 'DISPLAY_ONLY' && timing === 'AFTER_APPROVAL')
+      .map((requirement) => ({ pkg, route: item, requirement }))));
+  assert.deepEqual(audited.map(({ route, requirement }) => [route.route_id, requirement.requirement_id]), [['ES_NLV', 'ES_NLV_NOWORK']]);
+  const { route } = audited[0];
+  for (const subject of [route.applicant_work_rights, route.partner_work_rights]) {
+    assert.deepEqual(['employment', 'self_employment', 'remote_foreign_work'].map((key) => subject[key].status), ['NOT_ALLOWED', 'NOT_ALLOWED', 'NOT_ALLOWED']);
+  }
+  const pkg = structuredClone(spain);
+  const nlv = calculateActiveCountry(profile({ adults: 2 }), pkg, context).routes.find(({ routeId }) => routeId === 'ES_NLV');
+  assert.equal(nlv.displayOnlyRequirements.some(({ requirement_id }) => requirement_id === 'ES_NLV_NOWORK'), false);
+  assert.equal(nlv.workRights.applicant.length, 3);
+  assert.equal(nlv.workRights.partner.length, 3);
+});
+
+test('Argentina SMVM presentation is data-driven from the structured 5 SMVM threshold', () => {
+  const arContext = { fx: { ...context.fx, rates: { ...context.fx.rates, ARS: 1500 } } };
+  const result = calculateActiveCountry(profile({ applicantType: 'PASSIVE_INCOME', applicantAmount: 1000, applicantCurrency: 'USD' }), argentina, arContext);
+  for (const routeId of ['AR_RENTISTA', 'AR_PENSIONADO']) {
+    const source = argentina.routes.find(({ route_id }) => route_id === routeId);
+    assert.doesNotMatch(source.basis_ru, /1 SMVM\s*=\s*376.?600 ARS/);
+    const route = result.routes.find((item) => item.routeId === routeId);
+    const item = route.financialSummary.alternatives[0];
+    assert.equal(item.requirementLabel, '5 SMVM (МРОТ)');
+    assert.deepEqual({ threshold: item.threshold, currency: item.currency, period: item.period }, { threshold: 1883000, currency: 'ARS', period: 'MONTHLY' });
+    assert.ok(Number.isFinite(item.thresholdUsd));
+  }
+});
+
+test('real Uruguay runtime converts applicant income, Colonia costs, and future salary generically', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
+  const result = calculateActiveCountry(input, uruguay, uyuContext);
+  assert.deepEqual(result.applicantProvableIncome, { amount: 240000, currency: 'UYU', amountUsd: 6000, conversions: [] });
+
+  const colonia = result.cities.find(({ cityId }) => cityId === 'UY_COLONIA');
+  assert.deepEqual(colonia.costOriginal, { amount: 30919, currency: 'UYU' });
+  assert.ok(Number.isFinite(colonia.costUsd));
+
+  const work = result.routes.find(({ routeId }) => routeId === 'UY_TEMP_WORK');
+  const salary = work.financialSummary.alternatives[0];
+  assert.equal(work.requirementResults.find(({ requirement }) => requirement.requirement_id === 'UY_WORK_FUTURE_SALARY').requirement.evaluation_mode, 'UNASKED_CONDITION');
+  assert.deepEqual({ threshold: salary.threshold, currency: salary.currency, period: salary.period }, { threshold: 25383, currency: 'UYU', period: 'MONTHLY' });
+  assert.ok(Number.isFinite(salary.thresholdUsd));
 });
 
 test('country entry facts reach calculation without changing route statuses', () => {
@@ -138,7 +196,7 @@ test('country entry facts reach calculation without changing route statuses', ()
   assert.deepEqual(es.entryForRussianCitizen, {
     visaRequired: true,
     maximumStayDays: 90,
-    processingTime: 'Срок зависит от вида визы и консульской процедуры; единый срок для всех оснований не используется.',
+    processingTime: null,
     rule: spain.entry_for_russian_citizen.rule_ru,
   });
   const ar = calculateActiveCountry(input, argentina, context);
@@ -203,13 +261,13 @@ test('budget fallback ignores monthly_provable and rejects zero or unconvertible
 test('generic engine converts live RUB questionnaire income when the context supplies RUB', () => {
   const rubContext = { fx: { ...context.fx, rates: { ...context.fx.rates, RUB: 90 } } };
   const result = calculateActiveCountry(profile({ applicantAmount: 9000, applicantCurrency: 'RUB' }), spain, rubContext);
-  assert.deepEqual(result.applicantProvableIncome, { amount: 90, currency: 'EUR', conversions: [] });
+  assert.deepEqual(result.applicantProvableIncome, { amount: 90, currency: 'EUR', amountUsd: 100, conversions: [] });
 });
 
-test('generic engine consumes optional UYU without activating Uruguay in the matcher', () => {
+test('generic engine converts applicant income to UYU for active Uruguay', () => {
   const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
   const result = calculateActiveCountry(profile({ applicantAmount: 100, applicantCurrency: 'USD' }), uruguay, uyuContext);
-  assert.deepEqual(result.applicantProvableIncome, { amount: 4000, currency: 'UYU', conversions: [] });
+  assert.deepEqual(result.applicantProvableIncome, { amount: 4000, currency: 'UYU', amountUsd: 100, conversions: [] });
   assert.equal(result.country.countryId, 'UY');
 });
 
@@ -627,7 +685,7 @@ test('pets presentation distinguishes no pets, import findings, and unknown rese
   assert.equal(calculateActiveCountry(profile(), spain, context).petPresentation, null);
   const pkg = structuredClone(spain);
   const evaluate = () => calculateActiveCountry(profile({ pets: true }), pkg, context).petPresentation;
-  assert.equal(evaluate().importText, 'Ограничений на ввоз собак и кошек не выявлено.');
+  assert.equal(evaluate().importText, 'Ограничений на ввоз домашних животных не выявлено.');
   assert.match(evaluate().afterEntryText, /Pit Bull Terrier/);
 
   pkg.pets.import_restrictions = {
@@ -656,7 +714,7 @@ test('real ES, AR, and UY pets use the generic presentation without changing rou
   for (const [pkg, fx] of [[spain, context], [argentina, context], [uruguay, uyuContext]]) {
     const withoutPets = calculateActiveCountry(profile(), pkg, fx);
     const withPets = calculateActiveCountry(profile({ pets: true }), pkg, fx);
-    assert.equal(withPets.petPresentation.importText, 'Ограничений на ввоз собак и кошек не выявлено.');
+    assert.equal(withPets.petPresentation.importText, 'Ограничений на ввоз домашних животных не выявлено.');
     assert.ok(withPets.petPresentation.afterEntryText);
     assert.deepEqual(withPets.routes.map(({ routeStatus }) => routeStatus), withoutPets.routes.map(({ routeStatus }) => routeStatus));
   }
@@ -745,10 +803,10 @@ test('family conditions extend existing conditions and deduplicate identical tex
 test('Spain family acceptance matches Final Lock scenarios without family exclusions', () => {
   const familyResult = calculateActiveCountry(profile({ adults: 2, childAges: [13], applicantAmount: 6000 }), spain, context);
   const byState = (state) => familyResult.routes.filter(({ familyEvaluation }) => familyEvaluation.state === state).map(({ routeId }) => routeId).sort();
-  assert.equal(familyResult.routes.length, 14);
+  assert.equal(familyResult.routes.length, 11);
   assert.equal(familyResult.excludedRoutes.length, 0);
-  assert.deepEqual(byState('PASS'), ['ES_AUDIOVISUAL', 'ES_DNV', 'ES_ENT', 'ES_FAM_SP', 'ES_HQP_BLUE', 'ES_HQP_NATIONAL', 'ES_ICT', 'ES_NLV', 'ES_RESEARCHER'].sort());
-  assert.deepEqual(byState('CONDITION'), ['ES_EMP', 'ES_PROTECTION', 'ES_REUN', 'ES_SELF', 'ES_STUDY'].sort());
+  assert.deepEqual(byState('PASS'), ['ES_AUDIOVISUAL', 'ES_DNV', 'ES_ENT', 'ES_HQP_BLUE', 'ES_HQP_NATIONAL', 'ES_NLV', 'ES_RESEARCHER'].sort());
+  assert.deepEqual(byState('CONDITION'), ['ES_EMP', 'ES_PROTECTION', 'ES_SELF', 'ES_STUDY'].sort());
   assert.equal(familyResult.routes.some(({ routeStatus }) => !['SUITABLE', 'SUITABLE_WITH_CONDITIONS', 'UNSUITABLE'].includes(routeStatus)), false);
   assert.deepEqual(familyResult.routes.find(({ routeId }) => routeId === 'ES_EMP').familyEvaluation.linkedRouteIds, ['ES_REUN']);
   const dnvPresentation = familyResult.routes.find(({ routeId }) => routeId === 'ES_DNV');
@@ -760,12 +818,11 @@ test('Spain family acceptance matches Final Lock scenarios without family exclus
     assert.deepEqual(item.familyEvaluation.applicableScenarioIds, [scenarioId]);
     assert.equal(item.family.find((scenario) => scenario.scenarioId === scenarioId).simultaneousMove, 'CONDITIONAL');
   }
-  assert.ok(familyResult.routes.find(({ routeId }) => routeId === 'ES_REUN').familyEvaluation.joinStages.includes('AFTER_INITIAL_RESIDENCE'));
   assert.equal(dnvPresentation.routeStatus, 'SUITABLE');
   assert.deepEqual(dnvPresentation.conditions, []);
 
   const soloResult = calculateActiveCountry(profile({ applicantAmount: 6000 }), spain, context);
-  assert.equal(soloResult.routes.length, 14);
+  assert.equal(soloResult.routes.length, 11);
   assert.equal(soloResult.excludedRoutes.length, 0);
   assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.state === 'NOT_APPLICABLE'), true);
   assert.equal(soloResult.routes.every(({ familyEvaluation }) => familyEvaluation.conditions.length === 0), true);
@@ -857,7 +914,9 @@ test('canonical CASE 1 uses its own applicant-only profile and expected status',
 
 test('canonical CASE 2 gets its condition from the unasked ICT transfer basis', () => {
   const canonical = canonicalCase('ICT_EXISTING_WORK_NO_TRANSFER_DECISION');
-  const result = calculateActiveCountry(profile({ applicantAmount: 2500 }), spain, context).routes.find(({ routeId }) => routeId === 'ES_ICT');
+  const pkg = structuredClone(spain);
+  pkg.routes.find(({ route_id }) => route_id === 'ES_ICT').publishable = true;
+  const result = calculateActiveCountry(profile({ applicantAmount: 2500 }), pkg, context).routes.find(({ routeId }) => routeId === 'ES_ICT');
   assert.equal(result.routeStatus, canonical.expected.ES_ICT);
   assert.ok(result.conditions.some((text) => text.includes('внутрикорпоративном переводе')));
 });
@@ -928,6 +987,7 @@ test('real Blue Card keeps future salary unknown while exposing its annual thres
   assert.equal(blue.financialSummary.model, 'INCOME_ONLY');
   assert.equal(blue.financialSummary.alternatives.length, 1);
   assert.deepEqual(blue.financialSummary.alternatives[0], {
+    requirementLabel: 'Будущая зарплата по договору должна достигать действующего порога Голубой карты ЕС.',
     kind: 'INCOME', kindLabel: 'Доход', state: 'UNKNOWN', amount: null,
     threshold: 41356.36, currency: 'EUR', period: 'ANNUAL', practicalGuidance: null,
     thresholdUsd: 45950, shortfall: null,
@@ -956,7 +1016,9 @@ test('real unasked Study finance preserves four alternatives and ordered family 
 });
 
 test('real unasked family-reunification finance uses its ordered child increment', () => {
-  const getReun = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_REUN');
+  const pkg = structuredClone(spain);
+  pkg.routes.find(({ route_id }) => route_id === 'ES_REUN').publishable = true;
+  const getReun = (input) => calculateActiveCountry(input, pkg, context).routes.find(({ routeId }) => routeId === 'ES_REUN');
   const solo = getReun(profile({ applicantAmount: 99999 }));
   assert.equal(solo.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(solo.financialSummary.state, 'UNKNOWN');

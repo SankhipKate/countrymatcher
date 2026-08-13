@@ -33,9 +33,10 @@ button,input,select{font:inherit}
 button,a,label,input,select{touch-action:manipulation}
 a{color:var(--blue-700)}
 [hidden]{display:none!important}
-.site-header{height:66px;background:var(--navy-950);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+.site-header{height:66px;background:linear-gradient(125deg,#061a36,#031632);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
 .nav-shell{max-width:1380px;height:100%;margin:auto;padding:0 34px;display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.brand-logo{display:block;width:auto;height:54px;max-width:min(360px,55vw);object-fit:contain}
 .brand em{color:#f3c667;font-style:normal}
 .brand-mark{width:24px;height:30px;display:grid;place-items:center;transform:rotate(45deg);border:3px solid #f3c667;border-radius:3px}
 .brand-mark span{width:8px;height:8px;background:#fff;border-radius:1px}

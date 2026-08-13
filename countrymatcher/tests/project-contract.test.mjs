@@ -62,10 +62,10 @@ test('root index is the application and matcher has no user page or redirect', a
 
   const assets = [
     './matcher/access-gate.css?v=4.0.1',
-    './pilot/styles.css?v=7.1.1',
-    './matcher/styles.css?v=7.1.1',
+    './pilot/styles.css?v=7.1.2',
+    './matcher/styles.css?v=7.1.2',
     './matcher/access-gate.js?v=5.0.0',
-    './matcher/app.js?v=7.1.1',
+    './matcher/app.js?v=7.1.2',
   ];
   for (const asset of assets) {
     assert.ok(html.includes(`"${asset}"`), asset);
@@ -153,7 +153,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
   assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
   const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.ok(filenames.length > 0);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json']);
   for (const filename of filenames) {
     assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));

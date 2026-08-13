@@ -170,10 +170,10 @@
   "entry_for_russian_citizen": {
     "entry_type": "CONSULAR_VISA",
     "visa_required": true,
-    "rule_ru": "Для обычного краткосрочного въезда гражданину РФ требуется шенгенская виза; для долгосрочного проживания обычно используется соответствующая национальная виза или разрешение, если маршрут допускает подачу внутри Испании.",
+    "rule_ru": "Для обычного краткосрочного въезда гражданину РФ требуется шенгенская виза.",
     "authorization_validity_days": null,
     "maximum_stay_days": 90,
-    "processing_time_ru": "Срок зависит от вида визы и консульской процедуры; единый срок для всех оснований не используется.",
+    "processing_time_ru": null,
     "source_ids": [
       "ES_ENTRY_SHORT",
       "ES_ENTRY_LONG"
@@ -190,7 +190,7 @@
         "RETIREMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах.",
+      "basis_ru": "Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах. IPREM — испанский государственный расчётный показатель дохода: 1 IPREM составляет 600 EUR в месяц; заявителю требуется 400% IPREM — 2 400 EUR в месяц, плюс 600 EUR в месяц на каждого сопровождающего.",
       "publishable": true,
       "requirements": [
         {
@@ -431,7 +431,7 @@
     },
     {
       "route_id": "ES_DNV",
-      "name_ru": "Резиденция международного телеработника",
+      "name_ru": "Цифровой кочевник (DNV)",
       "official_term_ru": "Autorización de residencia para teletrabajadores de carácter internacional",
       "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
       "covers_categories": [
@@ -564,9 +564,9 @@
           },
           "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
           "visa_required_for_ru": false,
-          "entry_condition_ru": "Для въезда после консульского этапа используется национальная виза.",
+          "entry_condition_ru": "Не применимо.",
           "rule_checked_at": "2026-08-07",
-          "condition_ru": "Можно начинать через визу международного телеработника.",
+          "condition_ru": "Подать через консульство Испании по маршруту цифрового кочевника.",
           "source_ids": [
             "ES_LAW14",
             "ES_ENTRY_LONG"
@@ -1096,7 +1096,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Резиденция для иностранного члена семьи гражданина Испании при сохранении предусмотренной законом семейной связи.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "ES_FAMSP_BASIS",
@@ -2199,7 +2199,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Перевод в Испанию внутри компании или группы компаний для работы, профессиональной деятельности или обучения.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "ES_ICT_WORK_HISTORY",
@@ -2411,7 +2411,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Законный резидент Испании после выполнения требований может воссоединить предусмотренных членов семьи.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "ES_REUN_BASIS",
@@ -3775,7 +3775,7 @@
       ]
     },
     "systemic_practical_restrictions_ru": "Профильные отчёты фиксируют сохраняющиеся случаи дискриминации и насилия, но не системный запрет открытой жизни со стороны государства.",
-    "regional_differences_ru": "Практическая среда и региональные законы/институциональные механизмы различаются между автономными сообществами; национальные гарантии действуют по всей стране.",
+    "regional_differences_ru": "Практическая среда и региональные законы и институциональные механизмы различаются между автономными сообществами; национальные гарантии действуют по всей стране.",
     "friendly_cities": [],
     "legal_assessment": "FULL_RECOGNITION",
     "practical_assessment": "HETEROGENEOUS",

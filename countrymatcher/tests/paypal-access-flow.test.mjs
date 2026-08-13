@@ -517,8 +517,8 @@ test("landing and access gate are wired to dual sandbox and live payment runtime
   assert.match(checkout, /isAllowedPaymentHost\(window\.location\)/);
   assert.match(checkout, /recoverPendingOrder/);
   assert.match(checkout, /markPendingOrderApproved/);
-  assert.match(checkout, /payment-config\.js\?v=7\.1\.1/);
-  assert.match(gateSource, /payment-config\.js\?v=7\.1\.1/);
+  assert.match(checkout, /payment-config\.js\?v=7\.1\.2/);
+  assert.match(gateSource, /payment-config\.js\?v=7\.1\.2/);
   assert.ok(paymentConfig.includes(SANDBOX_WORKER_URL));
   assert.ok(paymentConfig.includes(LIVE_WORKER_URL));
   assert.ok(paymentConfig.includes("sankhipkate.github.io"));

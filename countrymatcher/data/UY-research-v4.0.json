@@ -15,7 +15,7 @@
     "climate_next_review": "2027-08-10"
   },
   "country_currency": "UYU",
-  "country_summary_ru": "Уругвай предлагает общую постоянную резиденцию, временные основания, цифрового кочевника, семейный маршрут и международную защиту; пакет PARTIAL только из-за не блокирующих school/pets gaps.",
+  "country_summary_ru": "Уругвай предлагает общую постоянную резиденцию, временные основания, цифрового кочевника, семейный маршрут и международную защиту; пакет PARTIAL только из-за неблокирующих gaps по school tuition и protection PR path.",
   "route_coverage": [
     {
       "category": "DIGITAL_NOMAD_REMOTE_WORK",
@@ -296,7 +296,7 @@
                           "evidence_type": "REPORTED_PRACTICE"
                         }
                       ],
-                      "note_ru": "Отдельное опубликованное практическое значение для пары; не объединяется с 2 000 USD в machine range."
+                      "note_ru": "Отдельное опубликованное практическое значение для пары."
                     },
                     {
                       "amount": 500,
@@ -313,7 +313,7 @@
                       "note_ru": "Единичная профессиональная рекомендация, не официальная семейная формула."
                     }
                   ],
-              "disclaimer_ru": "Это не обязательный минимум и не официальный порог маршрута; достаточность средств оценивается индивидуально, а practical figures не участвуют в matching."
+              "disclaimer_ru": "Это не обязательный минимум и не официальный порог маршрута; достаточность средств оценивается индивидуально."
                 }
               }
             ]
@@ -345,7 +345,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_01",
             "UY_SRC_07"
@@ -471,9 +471,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Legal citizenship возможна после 3 лет habitual residence при familia constituida в Уругвае либо после 5 лет без неё, при выполнении требований arraigo и поведения.",
+        "citizenship_path_ru": "Гражданство возможно после 3 лет фактического проживания при наличии семьи в Уругвае либо после 5 лет без неё, при подтверждении устойчивой связи со страной и надлежащего поведения.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Заявитель с иным родным языком должен понимать и выражаться по-испански; стандартизированный уровень не опубликован.",
         "source_ids": [
           "UY_SRC_01",
@@ -573,7 +573,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_02",
             "UY_SRC_07"
@@ -699,9 +699,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Применяется правило 3 лет при familia constituida в Уругвае либо 5 лет без неё.",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
         "source_ids": [
           "UY_SRC_02",
@@ -816,7 +816,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_02",
             "UY_SRC_07"
@@ -942,9 +942,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Применяется правило 3 лет при familia constituida в Уругвае либо 5 лет без неё.",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
         "source_ids": [
           "UY_SRC_02",
@@ -1006,7 +1006,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_02",
             "UY_SRC_06",
@@ -1135,9 +1135,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Применяется правило 3 лет при familia constituida в Уругвае либо 5 лет без неё.",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
         "source_ids": [
           "UY_SRC_02",
@@ -1231,7 +1231,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_04",
             "UY_SRC_05"
@@ -1359,7 +1359,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Постоянная резиденция при подтверждённой связи с гражданином Уругвая через ребёнка, супруга, judicially recognized concubinato либо брата/сестру.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "UY_URUGUAYAN_LINK_BASIS",
@@ -1395,7 +1395,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_09",
             "UY_SRC_07"
@@ -1521,9 +1521,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Legal citizenship возможна после 3 лет habitual residence при familia constituida в Уругвае либо после 5 лет без неё, при выполнении требований arraigo и поведения.",
+        "citizenship_path_ru": "Гражданство возможно после 3 лет фактического проживания при наличии семьи в Уругвае либо после 5 лет без неё, при подтверждении устойчивой связи со страной и надлежащего поведения.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Заявитель с иным родным языком должен понимать и выражаться по-испански; стандартизированный уровень не опубликован.",
         "source_ids": [
           "UY_SRC_09",
@@ -1580,7 +1580,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_11"
           ]
@@ -1618,7 +1618,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-      "condition_ru": "После признания protection status семейное единство распространяется по запросу и при индивидуальной проверке семейной связи и exclusion/cessation rules.",
+      "condition_ru": "После признания статуса защиты семейное единство распространяется по запросу и при индивидуальной проверке семейной связи, оснований исключения из защиты и прекращения статуса.",
           "source_ids": [
             "UY_SRC_11"
           ]
@@ -1692,7 +1692,7 @@
       },
       "long_term_path": {
         "first_permit_months": null,
-        "initial_status_ru": "Во время рассмотрения действует provisional identity и право оставаться в стране; после признания предоставляются удостоверение личности резидента и refugee travel document по процедуре Ley 18.076.",
+        "initial_status_ru": "Во время рассмотрения действует временное удостоверение личности и право оставаться в стране; после признания предоставляются удостоверение личности резидента и проездной документ беженца по процедуре Ley 18.076.",
         "renewal_status": "NOT_RESEARCHED",
         "renewal_months": null,
         "renewal_ru": "Отдельный обычный цикл продления protection status исследованием не установлен; применяется специальная процедура Ley 18.076.",
@@ -1703,9 +1703,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Применяется правило 3 лет при familia constituida в Уругвае либо 5 лет без неё.",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
         "source_ids": [
           "UY_SRC_11",
@@ -1719,7 +1719,7 @@
         "individual_risk_rule_ru": "Одного гражданства недостаточно; требуется индивидуальная связь с предусмотренными основаниями.",
         "protected_ground_link_ru": "Классические основания включают расу, религию, национальность, политические убеждения и принадлежность к социальной группе, включая gender в формулировке закона.",
         "evidence_rule_ru": "Заявитель представляет доступные документы, объяснения и иные доказательства; проводится индивидуальное интервью и проверка.",
-        "admissibility_ru": "Заявление принимается уполномоченным органом и передаётся Secretariat CORE; применяются индивидуальные exclusion/cessation rules.",
+        "admissibility_ru": "Заявление принимается уполномоченным органом и передаётся в секретариат CORE; индивидуально проверяются основания исключения из защиты и прекращения статуса.",
         "safe_third_country_ru": "Автоматическое универсальное исключение только из-за транзита в исследованной норме не установлено.",
         "previous_applications_ru": "Предыдущие заявления и ранее предоставленная защита оцениваются индивидуально.",
         "right_to_remain_during_processing_ru": "Действует non-refoulement до окончательного отрицательного решения и право на provisional identity document.",
@@ -1727,7 +1727,7 @@
         "assistance_ru": "Предусмотрены interpreter, legal assistance и процессуальные гарантии.",
         "healthcare_ru": "Applicants/refugees пользуются гражданскими, экономическими, социальными и культурными правами жителей в установленном объёме.",
         "appeal_ru": "Решение CORE обжалуется административными средствами; appeal приостанавливает expulsion.",
-        "status_after_positive_decision_ru": "После признания выдаются resident identity document и refugee travel document.",
+        "status_after_positive_decision_ru": "После признания выдаются удостоверение личности резидента и проездной документ беженца.",
         "source_ids": [
           "UY_SRC_11"
         ]
@@ -1781,7 +1781,7 @@
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
           "rule_checked_at": "2026-08-10",
-          "condition_ru": "Заявление начинается через DNM/gub.uy и завершается в предусмотренном процедурой месте.",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
           "source_ids": [
             "UY_SRC_07",
             "UY_SRC_08"
@@ -1907,9 +1907,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
-        "citizenship_path_ru": "Применяется правило 3 лет при familia constituida в Уругвае либо 5 лет без неё.",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
-        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт habitual residence для citizenship.",
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
         "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
         "source_ids": [
           "UY_SRC_07",
@@ -2317,9 +2317,9 @@
     "same_sex_relations_rule_ru": "Однополые отношения законны.",
     "state_restrictions_ru": "Государственный запрет однополых отношений отсутствует; действует развитая правовая защита.",
     "same_sex_marriage_recognized": "YES",
-    "same_sex_marriage_rule_ru": "Equal marriage действует с 2013 года.",
+    "same_sex_marriage_rule_ru": "Однополый брак разрешён с 2013 года.",
     "registered_partnership_recognized": "YES",
-    "registered_partnership_rule_ru": "Признанный concubinato является юридически значимой семейной формой.",
+    "registered_partnership_rule_ru": "Признанное фактическое партнёрство (concubinato) является юридически значимой семейной формой.",
     "family_route_available": "YES",
     "foreign_documents_recognized": "CONDITIONAL",
     "foreign_document_rule_ru": "Иностранные документы требуют применимой легализации/апостиля и признания.",
@@ -2333,7 +2333,7 @@
       ],
       "applies_to_foreigners": "YES",
       "complaint_mechanisms_ru": "Доступны судебные, административные и муниципальные механизмы.",
-      "rule_ru": "Национальное право защищает от дискриминации по sexual orientation и gender identity.",
+      "rule_ru": "Национальное право защищает от дискриминации по сексуальной ориентации и гендерной идентичности.",
       "source_ids": [
         "UY_SRC_46",
         "UY_SRC_47",
@@ -2341,12 +2341,12 @@
         "UY_SRC_49"
       ]
     },
-    "systemic_practical_restrictions_ru": "Сильная правовая и институциональная среда не исключает отдельных случаев дискриминации.",
-    "regional_differences_ru": "Наиболее документированная инфраструктура сосредоточена в Montevideo; сопоставимый национальный city ranking не найден.",
+    "systemic_practical_restrictions_ru": "Отдельные случаи дискриминации не меняют общей правовой оценки.",
+    "regional_differences_ru": "Наиболее документированная инфраструктура сосредоточена в Монтевидео.",
     "friendly_cities": [],
     "legal_assessment": "FULL_RECOGNITION",
     "practical_assessment": "OPEN",
-    "assessment_basis_ru": "Equal marriage, adoption, gender recognition, anti-discrimination protection и действующие public programs подтверждают FULL_RECOGNITION и OPEN.",
+    "assessment_basis_ru": "Однополый брак, усыновление, признание гендерной идентичности, защита от дискриминации и действующие государственные программы подтверждают полное правовое признание и открытую практическую среду.",
     "source_ids": [
       "UY_SRC_46",
       "UY_SRC_47",
@@ -2378,15 +2378,6 @@
       "blocks_publication": false,
       "missing_ru": "Не подтверждён current primary-source regular international-school tuition schedule для каждого displayed city.",
       "handling_ru": "Показывать только подтверждённую доступность и датированные verified fees; неизвестные цены не экстраполировать."
-    },
-    {
-      "item_id": "UY_GAP_PETS_REGIONAL",
-      "block": "PETS",
-      "priority": "LOW",
-      "related_route_id": null,
-      "blocks_publication": false,
-      "missing_ru": "Не подтверждена единая current regional matrix breed restrictions для всех displayed jurisdictions.",
-      "handling_ru": "Показывать подтверждённые Montevideo/Maldonado rules и не придумывать ограничения для остальных регионов."
     },
     {
       "item_id": "UY_GAP_PROTECTION_PR_PATH",
@@ -2462,10 +2453,8 @@
       },
       {
         "block": "PETS",
-        "status": "PARTIAL_NON_BLOCKING",
-        "open_item_ids": [
-          "UY_GAP_PETS_REGIONAL"
-        ]
+        "status": "COMPLETE",
+        "open_item_ids": []
       },
       {
         "block": "LGBT",

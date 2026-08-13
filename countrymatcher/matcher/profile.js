@@ -354,11 +354,10 @@ export function russianMonths(value) {
 }
 
 export function deduplicatedWorkRights(workRights = {}) {
-  const lines = [
-    ...(workRights.applicant || []).map(({ rule }) => ({ subject: 'Заявитель', rule })),
-    ...(workRights.partner || []).map(({ rule }) => ({ subject: 'Партнёр', rule })),
-  ].filter(({ rule }) => rule);
-  return [...new Map(lines.map((item) => [`${item.subject}\u0000${item.rule}`, `${item.subject}: ${item.rule}`])).values()];
+  return [['Заявитель', workRights.applicant], ['Партнёр', workRights.partner]].flatMap(([subject, rights]) => {
+    const rules = [...new Set((rights || []).map(({ rule }) => String(rule || '').trim()).filter(Boolean))];
+    return rules.length ? [`${subject}: ${rules.join('; ')}`] : [];
+  });
 }
 
 const normalizedApplicationSentinel = (value) => String(value || '').trim()
@@ -380,7 +379,7 @@ const temperatureNumbers = (value) => String(value ?? '')
   .filter(Number.isFinite) || [];
 
 export function formatTemperatureRange(value) {
-  const numbers = temperatureNumbers(value);
+  const numbers = Array.isArray(value) ? value.map(Number).filter(Number.isFinite) : temperatureNumbers(value);
   if (numbers.length >= 2) return `примерно ${numbers[0].toLocaleString('ru-RU')}–${numbers[1].toLocaleString('ru-RU')} °C`;
   if (numbers.length === 1) return `около ${numbers[0].toLocaleString('ru-RU')} °C`;
   return value ? String(value) : '';

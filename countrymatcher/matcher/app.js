@@ -1,9 +1,9 @@
-import { STATUS_LABELS_RU } from '../js/engine/status-contract.js?v=7.1.1';
-import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.1.1';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.1';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.1';
-import { formatCurrency } from './format.js?v=7.1.1';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.1';
+import { STATUS_LABELS_RU } from '../js/engine/status-contract.js?v=7.1.2';
+import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.1.2';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.2';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.2';
+import { formatCurrency } from './format.js?v=7.1.2';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.2';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -14,6 +14,7 @@ const DRAFT_KEY = 'immigration-matcher-universal-draft-v3';
 const ACTIVE_RP4_PACKAGES = [
   'ES-research-v4.0.json',
   'AR-research-v4.0.json',
+  'UY-research-v4.0.json',
 ];
 let currentStep = 1;
 let activeResearchPackages = [];
@@ -281,9 +282,8 @@ function renderLgbtResearch(calculation) {
   const changesBlock = pendingChanges.length
     ? `<div class="lgbt-row"><h4>Что меняется</h4>${pendingChanges.map((change) => `<p>${html(change.summary_ru || change)}</p>`).join('')}</div>`
     : '';
-  const citiesBlock = practicalEnvironment === 'Неоднородная'
-    ? `<div class="lgbt-row"><h4>Наиболее лояльные города</h4><p>${loyalCities.length ? html(loyalCities.join(', ')) : 'Методологически надёжная оценка городов пока не найдена.'}</p></div>`
-    : '';
+  const citiesBlock = practicalEnvironment === 'Неоднородная' && loyalCities.length
+    ? `<div class="lgbt-row"><h4>Наиболее лояльные города</h4><p>${html(loyalCities.join(', '))}</p></div>` : '';
   return `<section class="lgbt-research"><div class="section-title-row"><div><h3>ЛГБТ: права, семья и практическая среда</h3><p>Оценки описывают право и среду, но не являются гарантией личной безопасности.</p></div></div><div class="lgbt-assessment-grid"><div><span>Правовое положение</span><b>${html(legalPosition)}</b></div><div><span>Практическая среда</span><b>${html(practicalEnvironment)}</b></div></div><p class="research-caveat">${html(practicalExplanation)}</p><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${citiesBlock}${changesBlock}</div></section>`;
 }
 
@@ -310,10 +310,10 @@ function renderSchoolPresentation(calculation) {
   if (!school) return '';
   if (school.type === 'INTERNATIONAL') {
     if (school.status === 'AVAILABLE' && school.cities.length) {
-      return `<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: найдены в ${school.cities.map(html).join(', ')}.</p></section>`;
+      return `<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы в стране есть. Из показанных городов подтверждены: ${school.cities.map(html).join(', ')}.</p></section>`;
     }
     if (school.status === 'AVAILABLE') {
-      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: наличие подтверждено.</p></section>';
+      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы в стране есть.</p></section>';
     }
     if (school.status === 'RESEARCHED_NONE_FOUND') {
       return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: в ходе исследования не найдены.</p></section>';
@@ -375,8 +375,8 @@ function routeCard(route, countryName, main = false) {
   const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialItems = route.financialSummary?.alternatives?.filter((item) => item.threshold != null).map((item) => {
     const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
-    const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (ок. ${currency(item.thresholdUsd, "USD")})` : "";
-    return `${item.kindLabel}: ${official}${equivalent}`;
+    const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
+    return `${item.requirementLabel || item.kindLabel} — ${official}${equivalent}`;
   }) || [];
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ONE_TIME: 'единовременно', OTHER: '' };
@@ -419,12 +419,10 @@ function routeCard(route, countryName, main = false) {
   const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
   const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${unsuitable ? `<span class="route-expand-label">Показать подробности</span>` : main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : `<span class="route-expand-label">Показать подробности</span>`}</div>`;
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : ''}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
   const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
-  if (unsuitable) return `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${blockersBlock}</div></details></article>`;
-  return main ? `<article class="route-result best">${header}<div class="route-card-body">${body}</div></article>`
-    : `<article class="route-result compact"><details><summary>${header}</summary><div class="route-card-body">${body}</div></details></article>`;
+  return `<article class="route-result ${main ? 'best' : 'compact'}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
 }
 
 function countryPresentation(calculation) {
@@ -455,13 +453,14 @@ function renderCountryResult(calculation, changed = false, active = false) {
   if (!sortedRoutes.length || !best) return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${html(routeLabel)}</p></div></div></article>`;
   const incomeCurrency = calculation.country.resultCurrency || 'USD';
   const incomeAmount = calculation.applicantProvableIncome?.amount;
+  const incomeUsd = calculation.applicantProvableIncome?.amountUsd;
   const primaryFinancial = best?.financialSummary?.alternatives?.find((item) => item.kind === 'INCOME')
     || best?.financialSummary?.alternatives?.find((item) => item.threshold != null);
   const thresholdLabel = 'Финансовый порог';
   const thresholdValue = primaryFinancial?.threshold != null
     ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
     : 'Числовой порог не применяется';
-  const incomeValue = incomeAmount == null ? 'Не указан' : currency(incomeAmount, incomeCurrency);
+  const incomeValue = incomeAmount == null ? 'Не указан' : `${currency(incomeAmount, incomeCurrency)}${incomeCurrency !== 'USD' && Number.isFinite(incomeUsd) ? ` (≈ ${currency(incomeUsd, 'USD')})` : ''}`;
   const entryBlock = renderEntryPresentation(calculation);
   const comparisonCities = (calculation.cities || []).map((city) => ({
         name: city.cityName,
@@ -592,13 +591,13 @@ async function init() {
   try {
     const [packages, schemaResponse, context] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(`../data/${filename}?v=7.1.1`);
+        const response = await fetch(`../data/${filename}?v=7.1.2`);
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
         const pkg = await response.json();
         assertActiveResearchPackage(pkg);
         return pkg;
       })),
-      fetch('../data/schemas/user-profile-v1.schema.json?v=7.1.1'),
+      fetch('../data/schemas/user-profile-v1.schema.json?v=7.1.2'),
       loadCalculationContext(),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);

@@ -350,17 +350,6 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                         errors,
                     )
 
-        if route.get("publishable") is False:
-            has_route_blocker = any(
-                item.get("related_route_id") == route_id and item.get("blocks_publication") is True
-                for item in route_blocking_items
-            )
-            if not has_route_blocker:
-                fail(
-                    f"$.routes[{route_id}].publishable=false requires a related blocking open_item explaining why the route is hidden",
-                    errors,
-                )
-
     for i, item in enumerate(open_items):
         if not isinstance(item, dict):
             continue

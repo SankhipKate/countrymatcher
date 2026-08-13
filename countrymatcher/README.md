@@ -12,7 +12,7 @@
 
 - `https://sankhipkate.github.io/countrymatcher/landing/`
 
-Версия интерфейса: **7.1.1**.
+Версия интерфейса: **7.1.2**.
 
 Нормативные правила присвоения и публикации версии находятся в [`DEPLOYMENT.md`](DEPLOYMENT.md). После публикации в `main` номер версии повторно не используется.
 
@@ -21,10 +21,10 @@
 ## Что уже работает
 
 - универсальная анкета формирует профиль `user-profile-v1`;
-- активный matcher загружает только `data/ES-research-v4.0.json`;
+- активный matcher загружает RP4-пакеты Испании, Аргентины и Уругвая;
 - generic Canon 4.0 engine проверяет `requirements[]`, включая семь финансовых моделей;
 - маршруты с `publishable: false` исключаются до evaluation;
-- активная страна — только Испания; прежние RP3.0-файлы других стран хранятся как инертные исследования для будущей миграции.
+- активные страны — Испания, Аргентина и Уругвай; прежние RP3.0-файлы других стран хранятся как инертные исследования для будущей миграции.
 
 ## Контракт активного runtime
 
@@ -50,7 +50,7 @@
 - `matcher/` — стили и JavaScript публичного приложения без собственной HTML-страницы;
 - `matcher/profile.js` — формирование и проверка `user-profile-v1`;
 - `js/engine/rp4-engine.js` — единственный активный generic evaluator Research Package 4.0;
-- `data/ES-research-v4.0.json` — единственный активный Research Package;
+- `data/{ES,AR,UY}-research-v4.0.json` — активные Research Package;
 - `data/*-research-v3.0.json` — инертные сохранённые исследования, не входящие в runtime;
 - `data/research-package-v4.0.schema.json` — текущий контракт новых и пересобранных Research Package;
 - `data/research-package-v3.0.schema.json` — прежний формат ещё не мигрированных исследований стран и их тестов;

@@ -1,4 +1,4 @@
-import { ROUTE_STATUSES } from './status-contract.js?v=7.1.1';
+import { ROUTE_STATUSES } from './status-contract.js?v=7.1.2';
 
 export const ACTIVE_RESEARCH_SCHEMA_VERSION = '4.0';
 export const ACTIVE_CANON_REVISION = '2026-08-08-final-lock';
@@ -301,8 +301,8 @@ export function evaluateRoute(route, profile, context, countryId) {
     blockers,
     conditions,
     conditionsCount: conditions.length,
-    requirements: displayOnlyRequirements.map((item) => item.condition_ru),
-    displayOnlyRequirements,
+    requirements: displayOnlyRequirements.filter((item) => item.timing !== 'AFTER_APPROVAL').map((item) => item.condition_ru),
+    displayOnlyRequirements: displayOnlyRequirements.filter((item) => item.timing !== 'AFTER_APPROVAL'),
     requirementResults,
     familyFit: 'NOT_APPLICABLE',
     goalFit: 'NOT_APPLICABLE',
@@ -345,6 +345,7 @@ function presentFinancial(requirementResults, context) {
     model: evaluated.model,
     state: evaluated.state,
     alternatives: (evaluated.alternatives || []).map((item) => ({
+      requirementLabel: evaluated.requirement.condition_ru,
       kind: item.alternative.kind,
       kindLabel: FINANCIAL_KIND_LABELS_RU[item.alternative.kind],
       state: item.state,
@@ -613,7 +614,7 @@ function presentPets(pkg, profile) {
   const afterEntryRestriction = pets.after_entry_restrictions;
   return {
     importText: importRestriction?.status === 'RESEARCHED_NONE_FOUND'
-      ? 'Ограничений на ввоз собак и кошек не выявлено.'
+      ? 'Ограничений на ввоз домашних животных не выявлено.'
       : importRestriction?.status === 'RESTRICTIONS_FOUND' ? importRestriction.explanation_ru : null,
     afterEntryText: afterEntryRestriction?.status === 'RESTRICTIONS_FOUND'
       ? afterEntryRestriction.explanation_ru
@@ -664,8 +665,6 @@ function presentLgbt(pkg, profile) {
       ['Иностранные документы', value.foreign_document_rule_ru],
       ['Семейная иммиграция', value.family_route_available === 'YES' ? 'Семейные маршруты доступны на общих основаниях при выполнении требований конкретной процедуры.' : null],
       ['Защита от дискриминации', value.anti_discrimination?.rule_ru],
-      ['Практическая среда', value.systemic_practical_restrictions_ru],
-      ['Региональные различия', value.regional_differences_ru],
     ].filter(([, text]) => text),
   };
 }
@@ -706,7 +705,12 @@ export function calculateActiveCountry(profile, pkg, context) {
     excludedRoutes,
     bestRoute,
     routes,
-    applicantProvableIncome: { amount: applicantIncome, currency: pkg.country_currency, conversions: [] },
+    applicantProvableIncome: {
+      amount: applicantIncome,
+      currency: pkg.country_currency,
+      amountUsd: pkg.country_currency === 'USD' ? null : convertAmount(applicantIncome, pkg.country_currency, 'USD', context),
+      conversions: [],
+    },
     entryForRussianCitizen: presentEntry(pkg),
     cities: presentCities(pkg, context),
     lgbt: presentLgbt(pkg, profile),
