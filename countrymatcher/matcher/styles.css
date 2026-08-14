@@ -42,8 +42,8 @@ html,body{max-width:100%;overflow-x:clip}
 .money-combo{display:grid;grid-template-columns:1fr 92px;border:1px solid var(--line-strong);border-radius:var(--control-radius);overflow:hidden;background:#fff}
 .money-combo input,.money-combo select{border:0!important;border-radius:0!important;box-shadow:none!important}
 .money-combo select{border-left:1px solid var(--line)!important}
-.income-block .field-grid{align-items:start}.money-combo{height:48px}.money-combo-fixed-currency{grid-template-columns:1fr 132px}.money-combo-fixed-currency>span{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--line);color:var(--muted);font-size:13px}.budget-entry{display:grid;gap:12px;max-width:650px}.compact-toggle{padding:11px 14px;min-height:0}
-.city-role-list{display:flex;flex-wrap:wrap;gap:6px}.city-role-list span{padding:4px 8px;border-radius:999px;background:#eaf2ff;color:#174f9b;font-size:12px;font-weight:700}.budget-ok{color:#137333}.budget-short{color:#a53a2a}
+.income-block .field-grid{align-items:start}.money-combo{height:48px}.money-combo-fixed-currency{grid-template-columns:1fr 132px}.money-combo-fixed-currency>span{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--line);color:var(--muted);font-size:13px}
+.city-role-list{display:flex;flex-wrap:wrap;gap:6px}.city-role-list span{padding:4px 8px;border-radius:999px;background:#eaf2ff;color:#174f9b;font-size:12px;font-weight:700}
 .field textarea{width:100%;min-height:100px;padding:12px 14px;border:1px solid var(--line-strong);border-radius:var(--control-radius);resize:vertical}
 .route-result{margin-top:14px;padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}
 .route-result.best{border-color:var(--blue-600);background:#f7fbff}
@@ -82,6 +82,7 @@ html,body{max-width:100%;overflow-x:clip}
 .climate-grid .city-card span{display:block;margin-top:7px;color:#46596e}
 .climate-grid .city-card a{display:inline-block;margin-top:10px;color:var(--navy);font-weight:700;text-underline-offset:3px}
 .lgbt-research{padding:20px;border:1px solid #cabbea;border-radius:16px;background:#fbf9ff}
+.school-research{padding:20px;border:1px solid #cabbea;border-radius:16px;background:#fbf9ff}.school-subsection+.school-subsection{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}.school-subsection>h4{margin:0 0 10px}.school-rule+.school-rule{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}.school-rule h5{margin:0 0 8px;font-size:1rem}.school-rule p{margin:6px 0}
 .lgbt-list{overflow:hidden;border:1px solid #ded5ef;border-radius:var(--control-radius);background:#fff}
 .lgbt-row{display:grid;grid-template-columns:minmax(190px,30%) minmax(0,1fr);gap:20px;padding:15px 16px;border-top:1px solid #eee8f6;align-items:start}
 .lgbt-row:first-child{border-top:0}
@@ -104,7 +105,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-comparison-body{padding:22px}
 .country-comparison-body>section{margin-top:22px}
 @media(max-width:1100px){.matcher-layout{grid-template-columns:1fr}}
-@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.lgbt-research{padding:15px}}
+@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.lgbt-research,.school-research{padding:15px}}
 @media(max-width:600px){.secure-note{display:none}}
 @media(max-width:430px){.two-choice,.segmented.four{grid-template-columns:1fr}.money-combo{grid-template-columns:minmax(0,1fr) 82px}}
 
@@ -128,7 +129,6 @@ html,body{max-width:100%;overflow-x:clip}
 .country-detail-panel{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff}
 .country-detail-panel[hidden]{display:none!important}
 .country-result-banner{cursor:default;border-radius:0}
-.budget-source-note{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:#eef6ff;color:#334a62;line-height:1.5}
 @media(max-width:900px){.country-workspace{grid-template-columns:1fr}.country-tabs{position:sticky;z-index:5;top:0;display:flex;max-height:none;padding:8px 0;overflow-x:auto;background:#fff}.country-tab{flex:0 0 min(280px,82vw)}.country-detail-pane{min-width:0}}
 
 @media(max-width:760px){.hero-content-row{display:block}.result-edit-button{width:auto;margin-top:18px}}

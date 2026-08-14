@@ -49,6 +49,20 @@ test('repository has one application folder, one backlog, and one source-documen
   assert.match(manifest, /Только эти два документа являются normative standards Canon 4\.0\./);
 });
 
+test('current Canon never requires a school-type preference for international school presentation', async () => {
+  const sourceDocumentsRoot = new URL('../../source-documents/canon-v4.0/', import.meta.url);
+  const documents = await Promise.all([
+    'COUNTRY_RESEARCH_STANDARD.md',
+    'MATCHING_AND_RESULT_STANDARD.md',
+    'NEW_COUNTRY_RESEARCH_PROMPT.md',
+  ].map((path) => readFile(new URL(path, sourceDocumentsRoot), 'utf8')));
+  const canon = documents.join('\n');
+  assert.doesNotMatch(canon, /Международная школа учитывается отдельно и только когда пользователь указал необходимость международной школы/u);
+  assert.match(canon, /Анкета не спрашивает тип школы/u);
+  assert.match(canon, /Международные школы с обучением на английском/u);
+  assert.match(canon, /school_needed[^\n]+не выбирает/u);
+});
+
 test('root index is the application and matcher has no user page or redirect', async () => {
   const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
   assert.match(html, /<form id="matcherForm"/);
@@ -185,7 +199,7 @@ test('matcher renders practical financial guidance separately from official nume
   assert.match(matcher, /Это не официальный минимальный порог\./);
   assert.match(matcher, /надёжную практическую сумму найти не удалось/);
   assert.doesNotMatch(matcher, /thresholdUsd[^\n]+practicalGuidance|practicalGuidance[^\n]+thresholdUsd/);
-  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?\}\) \|\| \[\];/);
+  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?summary\.alternatives[\s\S]*?\);/);
   assert.ok(numericFinancialItems);
   assert.doesNotMatch(numericFinancialItems[0], /practicalGuidance/);
 });

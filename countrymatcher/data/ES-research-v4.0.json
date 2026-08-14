@@ -190,7 +190,7 @@
         "RETIREMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах. IPREM — испанский государственный расчётный показатель дохода: 1 IPREM составляет 600 EUR в месяц; заявителю требуется 400% IPREM — 2 400 EUR в месяц, плюс 600 EUR в месяц на каждого сопровождающего.",
+      "basis_ru": "Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах.",
       "publishable": true,
       "requirements": [
         {
@@ -3442,7 +3442,7 @@
           "currency": "EUR",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "1 спальня в центре, ориентир Numbeo.",
+          "condition_ru": "1 спальня в центре.",
           "price_date": "2026-06-14",
           "source_ids": [
             "ES_NUMBEO_MADRID"
@@ -3507,7 +3507,7 @@
           "currency": "EUR",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "1 спальня в центре, ориентир Numbeo.",
+          "condition_ru": "1 спальня в центре.",
           "price_date": "2026-05-04",
           "source_ids": [
             "ES_NUMBEO_SANSE"

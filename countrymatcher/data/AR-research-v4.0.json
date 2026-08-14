@@ -2092,7 +2092,7 @@
           "amount": 54742,
           "currency": "ARS",
           "period": "MONTHLY",
-          "household_basis": "PER_HOUSEHOLD",
+          "household_basis": "PER_PERSON",
           "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
           "price_date": "2026-08-09",
           "source_ids": [
@@ -2170,7 +2170,7 @@
           "amount": 59440,
           "currency": "ARS",
           "period": "MONTHLY",
-          "household_basis": "PER_HOUSEHOLD",
+          "household_basis": "PER_PERSON",
           "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
           "price_date": "2026-08-09",
           "source_ids": [
@@ -2248,7 +2248,7 @@
           "amount": 45878,
           "currency": "ARS",
           "period": "MONTHLY",
-          "household_basis": "PER_HOUSEHOLD",
+          "household_basis": "PER_PERSON",
           "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
           "price_date": "2026-06-21",
           "source_ids": [
@@ -2326,7 +2326,7 @@
           "amount": 32000,
           "currency": "ARS",
           "period": "MONTHLY",
-          "household_basis": "PER_HOUSEHOLD",
+          "household_basis": "PER_PERSON",
           "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
           "price_date": "2026-08-09",
           "source_ids": [
@@ -2512,6 +2512,15 @@
       "blocks_publication": false,
       "missing_ru": "Страница постоянной резиденции подтверждает путь признанного беженца через arraigo, но не задаёт отдельный универсальный числовой срок именно для этой категории.",
       "handling_ru": "Оставить years_to_pr=null для AR_PROTECTION и показывать текстовое правило."
+    },
+    {
+      "item_id": "AR_GAP_CITY_BASE_BASKET",
+      "block": "CITIES_COST",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для отображаемых городов не подтверждена полная базовая корзина RENT_STANDARD, GROCERIES, UTILITIES и TRANSPORT: отсутствует сопоставимый компонент GROCERIES.",
+      "handling_ru": "Считать отсутствующий компонент непрепятствующим публикации исследовательским пробелом. Сравнивать все отображаемые города по единому пересечению сопоставимых компонентов: если компонент отсутствует хотя бы в одном городе, исключать его из общего сравнения без подстановки нуля или интерполяции."
     }
   ],
   "completeness": {
@@ -2563,8 +2572,10 @@
       },
       {
         "block": "CITIES_COST",
-        "status": "COMPLETE",
-        "open_item_ids": []
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_CITY_BASE_BASKET"
+        ]
       },
       {
         "block": "CLIMATE",

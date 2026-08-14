@@ -1940,7 +1940,7 @@
           "currency": "USD",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Однокомнатная квартира в центре, city-direct Livingcost.",
+          "condition_ru": "Однокомнатная квартира в центре.",
           "price_date": "2026-06-21",
           "source_ids": [
             "UY_SRC_26"
@@ -2021,7 +2021,7 @@
           "currency": "USD",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Однокомнатная квартира в центре; дата — research observation, exact source update date не опубликована.",
+          "condition_ru": "Однокомнатная квартира в центре.",
           "price_date": "2026-08-10",
           "source_ids": [
             "UY_SRC_27"
@@ -2047,7 +2047,7 @@
           "currency": "USD",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Месячный transport component; research observation date.",
+          "condition_ru": "Месячный транспортный компонент для одного человека; research observation date.",
           "price_date": "2026-08-10",
           "source_ids": [
             "UY_SRC_27"
@@ -2102,7 +2102,7 @@
           "currency": "USD",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Однокомнатная квартира в центре; дата — research observation.",
+          "condition_ru": "Однокомнатная квартира в центре.",
           "price_date": "2026-08-10",
           "source_ids": [
             "UY_SRC_28"
@@ -2128,7 +2128,7 @@
           "currency": "USD",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Месячный transport component; research observation date.",
+          "condition_ru": "Месячный транспортный компонент для одного человека; research observation date.",
           "price_date": "2026-08-10",
           "source_ids": [
             "UY_SRC_28"
@@ -2183,7 +2183,7 @@
           "currency": "UYU",
           "period": "MONTHLY",
           "household_basis": "PER_HOUSEHOLD",
-          "condition_ru": "Однокомнатная квартира в центре; Numbeo показывает last update September 2025 без точного дня, price_date — research observation.",
+          "condition_ru": "Однокомнатная квартира в центре.",
           "price_date": "2026-08-10",
           "source_ids": [
             "UY_SRC_29"
@@ -2252,14 +2252,14 @@
   "schools": {
     "public_school_rules": [
       {
-        "jurisdiction_ru": "Уругвай: национальная система public education",
+        "jurisdiction_ru": "Уругвай: национальная система государственного образования",
         "foreign_child_access": "AVAILABLE",
-        "language_ru": "Испанский; ANEP предоставляет поддержку migrant students.",
+        "language_ru": "Испанский; для детей-мигрантов, не говорящих по-испански, доступна языковая поддержка Национальной администрации государственного образования Уругвая (ANEP).",
         "compulsory_age_min": 4,
         "compulsory_age_max": 17,
         "is_free": true,
         "tuition": null,
-        "rule_ru": "Public primary and secondary education is free and migrant children have access.",
+        "rule_ru": "Государственное начальное и среднее образование бесплатно; дети-мигранты имеют доступ к обучению.",
         "source_ids": [
           "UY_SRC_37",
           "UY_SRC_38",
@@ -2387,6 +2387,15 @@
       "blocks_publication": false,
       "missing_ru": "Точный механизм перехода признанного protection status к permanent residence и универсальный срок такого перехода не подтверждены.",
       "handling_ru": "Показывать подтверждённую правовую связь с постоянным статусом, но не показывать выдуманный fixed PR timeline или конкретный механизм перехода."
+    },
+    {
+      "item_id": "UY_GAP_CITY_BASE_BASKET",
+      "block": "CITIES_COST",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для отображаемых городов не подтверждена единая полная базовая корзина RENT_STANDARD, GROCERIES, UTILITIES и TRANSPORT.",
+      "handling_ru": "Считать отсутствующие компоненты непрепятствующими публикации исследовательскими пробелами. Сравнивать все отображаемые города по единому пересечению сопоставимых компонентов: если компонент отсутствует хотя бы в одном городе, исключать его из общего сравнения без подстановки нуля или интерполяции."
     }
   ],
   "completeness": {
@@ -2436,8 +2445,10 @@
       },
       {
         "block": "CITIES_COST",
-        "status": "COMPLETE",
-        "open_item_ids": []
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "UY_GAP_CITY_BASE_BASKET"
+        ]
       },
       {
         "block": "CLIMATE",

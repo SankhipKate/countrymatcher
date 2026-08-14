@@ -264,6 +264,7 @@ function presentUnaskedFinancialRequirement(requirement, profile) {
 export function evaluateRoute(route, profile, context, countryId) {
   const blockers = [];
   const conditions = [];
+  const conditionActions = [];
   const displayOnlyRequirements = [];
   const requirementResults = [];
   for (const requirement of route.requirements || []) {
@@ -288,6 +289,13 @@ export function evaluateRoute(route, profile, context, countryId) {
     if (effect === 'CONDITION') {
       for (const text of [requirement.condition_ru, evaluation.condition]) {
         if (text && !conditions.includes(text)) conditions.push(text);
+        if (text && !conditionActions.some((action) => action.requirementId === requirement.requirement_id && action.text === text)) {
+          conditionActions.push({
+            requirementId: requirement.requirement_id,
+            requirementType: requirement.type,
+            text,
+          });
+        }
       }
     }
     requirementResults.push({ requirement, ...evaluation, effect });
@@ -300,6 +308,7 @@ export function evaluateRoute(route, profile, context, countryId) {
     routeStatus,
     blockers,
     conditions,
+    conditionActions,
     conditionsCount: conditions.length,
     requirements: displayOnlyRequirements.filter((item) => item.timing !== 'AFTER_APPROVAL').map((item) => item.condition_ru),
     displayOnlyRequirements: displayOnlyRequirements.filter((item) => item.timing !== 'AFTER_APPROVAL'),
@@ -338,9 +347,7 @@ export const LGBT_PRACTICAL_LABELS_RU = Object.freeze({
 const roundedDisplayAmount = (amount) => amount < 1000 ? Math.round(amount)
   : amount < 100000 ? Math.round(amount / 10) * 10 : Math.round(amount / 100) * 100;
 
-function presentFinancial(requirementResults, context) {
-  const evaluated = requirementResults.find(({ requirement }) => requirement.type === 'FINANCIAL');
-  if (!evaluated) return null;
+function presentEvaluatedFinancial(evaluated, context) {
   return {
     model: evaluated.model,
     state: evaluated.state,
@@ -359,6 +366,19 @@ function presentFinancial(requirementResults, context) {
       shortfall: item.shortfall ?? null,
     })),
   };
+}
+
+function presentFinancial(requirementResults, context) {
+  const evaluated = requirementResults.find(({ requirement }) => requirement.type === 'FINANCIAL');
+  return evaluated ? presentEvaluatedFinancial(evaluated, context) : null;
+}
+
+function presentFinancialRequirements(requirementResults, context) {
+  return requirementResults.filter(({ requirement }) => requirement.type === 'FINANCIAL').map((evaluated) => ({
+    requirementId: evaluated.requirement.requirement_id,
+    effect: evaluated.effect,
+    summary: presentEvaluatedFinancial(evaluated, context),
+  }));
 }
 
 function presentWorkRights(block) {
@@ -490,6 +510,18 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
 
 function presentRoute(route, evaluated, sources, context) {
   const source = sources.get(route.official_source_id) || null;
+  const financialRequirements = presentFinancialRequirements(evaluated.requirementResults, context);
+  const conditionActions = (evaluated.conditionActions || []).map((action) => ({
+    ...action,
+    financialSummary: action.requirementType === 'FINANCIAL'
+      ? financialRequirements.find(({ requirementId }) => requirementId === action.requirementId)?.summary || null
+      : null,
+  }));
+  for (const text of evaluated.conditions) {
+    if (!conditionActions.some((action) => action.text === text)) conditionActions.push({
+      requirementId: null, requirementType: null, text, financialSummary: null,
+    });
+  }
   return {
     ...evaluated,
     routeName: ROUTE_LABELS_RU[route.route_id] || route.name_ru,
@@ -497,6 +529,8 @@ function presentRoute(route, evaluated, sources, context) {
     routeType: route.route_type,
     description: route.basis_ru,
     financialSummary: presentFinancial(evaluated.requirementResults, context),
+    financialRequirements,
+    conditionActions,
     application: (route.application_methods || []).filter(({ availability }) => availability === 'AVAILABLE').map((item) => ({
       method: item.method, methodLabel: APPLICATION_METHOD_LABELS_RU[item.method],
       guidance: item.condition_ru, entryGuidance: item.entry_condition_ru,
@@ -530,19 +564,56 @@ function presentRoute(route, evaluated, sources, context) {
   };
 }
 
+const CITY_COMPARISON_COMPONENTS = ['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'];
+const RECURRING_COST_PERIODS = new Set(['MONTHLY', 'ANNUAL']);
+
+const normalizedCostScenario = (value) => String(value || '')
+  .trim()
+  .replace(/\s+/g, ' ')
+  .replace(/[.!?;:]+$/u, '');
+
 function presentCities(pkg, context) {
   const raw = pkg.cities || [];
-  const signatures = raw.map((city) => city.cost_components.map((item) =>
-    `${item.component}:${item.currency}:${item.period}:${item.household_basis}`).sort().join('|'));
-  const costComparable = signatures.length > 0 && signatures.every((value) => value === signatures[0]);
+  const usableByCity = raw.map((city) => new Map(city.cost_components
+    .filter((item) => CITY_COMPARISON_COMPONENTS.includes(item.component) && RECURRING_COST_PERIODS.has(item.period))
+    .map((item) => {
+      const monthlyAmount = Number.isFinite(item.amount) ? item.amount / (item.period === 'ANNUAL' ? 12 : 1) : null;
+      let amountUsd = null;
+      if (monthlyAmount != null) {
+        try {
+          amountUsd = convertAmount(monthlyAmount, item.currency, 'USD', context);
+        } catch {
+          amountUsd = null;
+        }
+      }
+      return [item.component, { item, monthlyAmount, amountUsd }];
+    }).filter(([, value]) => Number.isFinite(value.monthlyAmount) && Number.isFinite(value.amountUsd))));
+  const comparisonComponents = CITY_COMPARISON_COMPONENTS.filter((component) => {
+    const values = usableByCity.map((items) => items.get(component));
+    if (!values.length || values.some((value) => !value)) return false;
+    const first = values[0].item;
+    return values.every(({ item }) => item.household_basis === first.household_basis
+      && normalizedCostScenario(item.condition_ru) === normalizedCostScenario(first.condition_ru));
+  });
+  const comparisonAvailable = comparisonComponents.includes('RENT_STANDARD');
+  const comparisonScenarios = comparisonComponents.map((component) => ({
+    component,
+    householdBasis: usableByCity[0].get(component).item.household_basis,
+    condition: usableByCity[0].get(component).item.condition_ru,
+  }));
   const coolest = raw.filter((city) => city.climate?.cold_min_c != null).sort((a, b) =>
     a.climate.cold_min_c - b.climate.cold_min_c || a.climate.cold_max_c - b.climate.cold_max_c)[0]?.city_id;
   const hottest = raw.filter((city) => city.climate?.hot_max_c != null).sort((a, b) =>
     b.climate.hot_max_c - a.climate.hot_max_c || b.climate.hot_min_c - a.climate.hot_min_c)[0]?.city_id;
-  const presented = raw.map((city) => {
-    const numeric = city.cost_components.filter((item) => item.amount != null && item.period === 'MONTHLY');
-    const currency = numeric.length && numeric.every((item) => item.currency === numeric[0].currency) ? numeric[0].currency : null;
-    const cost = currency ? numeric.reduce((sum, item) => sum + item.amount, 0) : null;
+  const presented = raw.map((city, cityIndex) => {
+    const recurring = city.cost_components.filter((item) => RECURRING_COST_PERIODS.has(item.period));
+    const numeric = recurring.filter((item) => Number.isFinite(item.amount));
+    const currency = numeric.length === recurring.length && numeric.length > 0
+      && numeric.every((item) => item.currency === numeric[0].currency) ? numeric[0].currency : null;
+    const cost = currency ? numeric.reduce((sum, item) => sum + item.amount / (item.period === 'ANNUAL' ? 12 : 1), 0) : null;
+    const comparisonCostUsd = comparisonAvailable
+      ? comparisonComponents.reduce((sum, component) => sum + usableByCity[cityIndex].get(component).amountUsd, 0)
+      : null;
     return {
       cityId: city.city_id,
       cityName: city.name_ru,
@@ -550,16 +621,17 @@ function presentCities(pkg, context) {
       roles: city.structural_roles,
       labels: [city.city_id === coolest ? 'Самый прохладный' : null, city.city_id === hottest ? 'Самый жаркий' : null].filter(Boolean),
       costOriginal: cost == null ? null : { amount: cost, currency },
-      costUsd: cost == null ? null : convertAmount(cost, currency, 'USD', context),
-      costComparable,
+      comparisonComponents,
+      comparisonScenarios,
+      comparisonCostUsd,
       climate: city.climate?.category_ru || null,
       coldRange: city.climate ? [city.climate.cold_min_c, city.climate.cold_max_c] : null,
       hotRange: city.climate ? [city.climate.hot_min_c, city.climate.hot_max_c] : null,
     };
   });
-  if (costComparable && presented.length > 1 && presented.every(({ costUsd }) => Number.isFinite(costUsd))) {
-    const mostExpensive = [...presented].sort((a, b) => b.costUsd - a.costUsd)[0];
-    const cheapest = [...presented].sort((a, b) => a.costUsd - b.costUsd)[0];
+  if (comparisonAvailable && presented.length > 1 && presented.every(({ comparisonCostUsd }) => Number.isFinite(comparisonCostUsd))) {
+    const mostExpensive = [...presented].sort((a, b) => b.comparisonCostUsd - a.comparisonCostUsd)[0];
+    const cheapest = [...presented].sort((a, b) => a.comparisonCostUsd - b.comparisonCostUsd)[0];
     mostExpensive.labels.push('Самый дорогой');
     cheapest.labels.push('Самый недорогой');
   }
@@ -569,29 +641,27 @@ function presentCities(pkg, context) {
 function presentSchools(pkg, profile) {
   if (!(profile?.family?.children?.length > 0)) return null;
   const schools = pkg.schools || {};
-  if (profile.family.school_needed === true) {
-    const researchedCities = schools.international_school_cities || [];
-    const legacyCityNames = new Map((pkg.cities || []).map((city) => [city.city_id, city.name_ru]));
-    const cityNames = researchedCities.length
-      ? researchedCities.map((city) => city.city_name_ru)
-      : (schools.international_schools || []).map((school) => legacyCityNames.get(school.city_id)).filter(Boolean);
-    return {
-      type: 'INTERNATIONAL',
+  const researchedCities = schools.international_school_cities || [];
+  const legacyCityNames = new Map((pkg.cities || []).map((city) => [city.city_id, city.name_ru]));
+  const cityNames = researchedCities.length
+    ? researchedCities.map((city) => city.city_name_ru)
+    : (schools.international_schools || []).map((school) => legacyCityNames.get(school.city_id)).filter(Boolean);
+  return {
+    public: {
+      rules: (schools.public_school_rules || []).map((rule) => ({
+        jurisdiction: rule.jurisdiction_ru,
+        foreignChildAccess: rule.foreign_child_access,
+        language: rule.language_ru,
+        compulsoryAgeMin: rule.compulsory_age_min,
+        compulsoryAgeMax: rule.compulsory_age_max,
+        isFree: rule.is_free,
+        tuition: rule.tuition,
+      })),
+    },
+    international: {
       status: schools.international_school_status,
       cities: [...new Set(cityNames)],
-    };
-  }
-  return {
-    type: 'PUBLIC',
-    rules: (schools.public_school_rules || []).map((rule) => ({
-      jurisdiction: rule.jurisdiction_ru,
-      foreignChildAccess: rule.foreign_child_access,
-      language: rule.language_ru,
-      compulsoryAgeMin: rule.compulsory_age_min,
-      compulsoryAgeMax: rule.compulsory_age_max,
-      isFree: rule.is_free,
-      tuition: rule.tuition,
-    })),
+    },
   };
 }
 
@@ -620,35 +690,6 @@ function presentPets(pkg, profile) {
       ? afterEntryRestriction.explanation_ru
       : null,
   };
-}
-
-function presentBudget(profile, context) {
-  const explicit = profile?.preferences?.monthly_budget;
-  if (explicit?.amount > 0) {
-    try {
-      return { monthlyBudgetUsd: convertAmount(explicit.amount, explicit.currency, 'USD', context), budgetDerivedFromIncome: false };
-    } catch {
-      return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
-    }
-  }
-  const householdSources = [
-    ...applicantSources(profile),
-    ...partnerSources(profile),
-  ].filter((source) => source?.monthly_total?.amount > 0);
-  if (!householdSources.length) return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
-  try {
-    const monthlyBudgetUsd = householdSources.reduce((sum, source) => sum + convertAmount(
-      source.monthly_total.amount,
-      source.monthly_total.currency,
-      'USD',
-      context,
-    ), 0);
-    return monthlyBudgetUsd > 0
-      ? { monthlyBudgetUsd, budgetDerivedFromIncome: true }
-      : { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
-  } catch {
-    return { monthlyBudgetUsd: null, budgetDerivedFromIncome: false };
-  }
 }
 
 function presentLgbt(pkg, profile) {
@@ -696,10 +737,9 @@ export function calculateActiveCountry(profile, pkg, context) {
     pkg.country_currency,
     context,
   ), 0);
-  const budget = presentBudget(profile, context);
   return {
     calculatedAt: new Date().toISOString(),
-    profile: { ...profile, adults: profile.family?.adults_count || 1, children: profile.family?.children || [], ...budget },
+    profile: { ...profile, adults: profile.family?.adults_count || 1, children: profile.family?.children || [] },
     country: { countryId: pkg.country_id, name: pkg.country_name_ru, group: bestRoute?.routeStatus ?? null, resultCurrency: pkg.country_currency },
     evaluationState: routes.length ? 'EVALUATED' : 'NO_EVALUABLE_ROUTES',
     excludedRoutes,

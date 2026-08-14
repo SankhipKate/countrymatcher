@@ -77,7 +77,7 @@ export function buildUserProfile(answers) {
       partner_included: partnerIncluded,
       relationship_type: partnerIncluded ? answers.relationshipType : null,
       children,
-      school_needed: children.length > 0 && Boolean(answers.schoolNeeded),
+      school_needed: false,
     },
     lgbt: {
       enabled: Boolean(answers.lgbtEnabled),
@@ -97,7 +97,7 @@ export function buildUserProfile(answers) {
       keep_russian_citizenship: answers.keepRuCitizenship,
     },
     preferences: {
-      monthly_budget: answers.budgetUnknown ? null : money(answers.monthlyBudget, answers.budgetCurrency),
+      monthly_budget: null,
       city_size: 'ANY',
       climate: ['ANY'],
     },
@@ -141,7 +141,6 @@ export function validateUserProfile(profile) {
   }
   if (!profile?.goal?.long_term) add('longTermGoal', 'Выберите долгосрочную цель.');
   if (!profile?.goal?.keep_russian_citizenship) add('keepRuCitizenship', 'Укажите важность сохранения гражданства РФ.');
-  if (profile?.preferences?.monthly_budget !== null && (!positiveMoney(profile?.preferences?.monthly_budget) || profile.preferences.monthly_budget.amount <= 0)) add('monthlyBudget', 'Укажите положительный семейный бюджет или выберите «Пока не знаю».');
   if (!profile?.pets?.types?.length) add('petTypes', 'Укажите домашних животных.');
   if (!profile?.special_circumstances?.length) add('specialCircumstances', 'Ответьте на вопрос об особых обстоятельствах.');
   return { valid: errors.length === 0, errors };
@@ -305,6 +304,32 @@ export function sortCountriesForDisplay(countries = []) {
     .map(({ country }) => country);
 }
 
+const CITY_COST_COMPONENT_LABELS = {
+  RENT_STANDARD: 'аренда',
+  UTILITIES: 'коммунальные расходы',
+  GROCERIES: 'продукты',
+  TRANSPORT: 'транспорт',
+};
+
+const conciseRentScenario = (condition) => {
+  const normalized = String(condition || '').trim().replace(/[.!?;:]+$/u, '');
+  if (/^1 спальня в центре$/iu.test(normalized)) return 'аренда квартиры с 1 спальней в центре';
+  if (/^однокомнатная квартира в центре$/iu.test(normalized)) return 'аренда однокомнатной квартиры в центре';
+  return null;
+};
+
+export function describeCityCostBasket(components = [], scenarios = []) {
+  if (!components.includes('RENT_STANDARD')) return 'Сопоставимый сценарий аренды для всех городов пока не подтверждён.';
+  const labels = components.map((component) => {
+    if (component === 'RENT_STANDARD') {
+      const scenario = scenarios.find((item) => item.component === component);
+      return conciseRentScenario(scenario?.condition) || CITY_COST_COMPONENT_LABELS[component];
+    }
+    return CITY_COST_COMPONENT_LABELS[component] || component;
+  });
+  return `${components.length === 1 ? 'В расчёт входит' : 'В расчёт входят'}: ${labels.join(' + ')}.`;
+}
+
 const CITY_SIZE_LABELS = new Map([
   ['SMALL', 'Небольшой город'],
   ['MEDIUM', 'Средний город'],
@@ -389,11 +414,11 @@ export function enrichCityCategories(cities = []) {
   if (!cities.length) return [];
   const researchedCategories = new Set(cities.flatMap((city) =>
     cityCategories(city.size ?? city.populationCategory, city.roles)));
-  const cost = (city) => Number(city.cost ?? city.costUsd);
+  const cost = (city) => city.comparisonCostUsd == null ? Number.NaN : Number(city.comparisonCostUsd);
   const cold = (city) => temperatureNumbers(city.coldRange)[0] ?? Number(city.avgTempColdestMonthC);
   const hot = (city) => temperatureNumbers(city.hotRange).at(-1) ?? Number(city.avgTempHottestMonthC);
   const finite = (selector) => cities.filter((city) => Number.isFinite(selector(city)));
-  const comparableCosts = cities.length > 1 && cities.every((city) => city.costComparable !== false);
+  const comparableCosts = cities.length > 1 && cities.every((city) => Number.isFinite(cost(city)));
   const mostExpensive = comparableCosts ? finite(cost).sort((a, b) => cost(b) - cost(a))[0] : null;
   const cheapest = comparableCosts ? finite(cost).sort((a, b) => cost(a) - cost(b))[0] : null;
   const coolest = finite(cold).sort((a, b) => cold(a) - cold(b))[0];

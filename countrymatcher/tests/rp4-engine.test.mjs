@@ -181,7 +181,7 @@ test('real Uruguay runtime converts applicant income, Colonia costs, and future 
 
   const colonia = result.cities.find(({ cityId }) => cityId === 'UY_COLONIA');
   assert.deepEqual(colonia.costOriginal, { amount: 30919, currency: 'UYU' });
-  assert.ok(Number.isFinite(colonia.costUsd));
+  assert.ok(Number.isFinite(colonia.comparisonCostUsd));
 
   const work = result.routes.find(({ routeId }) => routeId === 'UY_TEMP_WORK');
   const salary = work.financialSummary.alternatives[0];
@@ -217,45 +217,14 @@ test('country entry facts reach calculation without changing route statuses', ()
   assert.deepEqual(unknown.routes.map(({ routeStatus }) => routeStatus), es.routes.map(({ routeStatus }) => routeStatus));
 });
 
-test('explicit budget is normalized to USD and remains outside legal matching', () => {
+test('living-cost budget fields are ignored while legal income matching remains unchanged', () => {
   const input = profile({ applicantAmount: 6000 });
   input.preferences = { monthly_budget: { amount: 900, currency: 'EUR' } };
-  const withBudget = calculateActiveCountry(input, spain, context);
-  const withoutBudgetInput = structuredClone(input);
-  withoutBudgetInput.preferences.monthly_budget = null;
-  const withoutBudget = calculateActiveCountry(withoutBudgetInput, spain, context);
-  assert.equal(withBudget.profile.monthlyBudgetUsd, 1000);
-  assert.equal(withBudget.profile.budgetDerivedFromIncome, false);
-  assert.deepEqual(withBudget.routes.map(({ routeStatus }) => routeStatus), withoutBudget.routes.map(({ routeStatus }) => routeStatus));
-});
-
-test('unknown budget uses household monthly_total including additional and partner income', () => {
-  const input = profile({ applicantAmount: 900, additionalSources: [incomeSource('APPLICANT', 'REMOTE_EMPLOYMENT', 450)], partnerAmount: 450, adults: 2 });
-  input.preferences = { monthly_budget: null };
-  const result = calculateActiveCountry(input, spain, context);
-  assert.equal(result.profile.monthlyBudgetUsd, 2000);
-  assert.equal(result.profile.budgetDerivedFromIncome, true);
-});
-
-test('budget fallback ignores monthly_provable and rejects zero or unconvertible household totals', () => {
-  const unprovable = profile({ applicantAmount: 900 });
-  unprovable.preferences = { monthly_budget: null };
-  unprovable.income.primary.monthly_provable.amount = 0;
-  assert.equal(calculateActiveCountry(unprovable, spain, context).profile.monthlyBudgetUsd, 1000);
-
-  const none = profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME' });
-  none.preferences = { monthly_budget: null };
-  assert.deepEqual(
-    (({ monthlyBudgetUsd, budgetDerivedFromIncome }) => ({ monthlyBudgetUsd, budgetDerivedFromIncome }))(
-      calculateActiveCountry(none, spain, context).profile,
-    ),
-    { monthlyBudgetUsd: null, budgetDerivedFromIncome: false },
-  );
-
-  const unknownCurrency = profile({ applicantAmount: 1000, applicantCurrency: 'ZZZ' });
-  unknownCurrency.preferences = { monthly_budget: null };
-  unknownCurrency.income.primary.monthly_provable = { amount: 0, currency: 'USD' };
-  assert.equal(calculateActiveCountry(unknownCurrency, spain, context).profile.monthlyBudgetUsd, null);
+  const withLegacyBudget = calculateActiveCountry(input, spain, context);
+  const withoutBudget = calculateActiveCountry({ ...input, preferences: { monthly_budget: null } }, spain, context);
+  assert.equal('monthlyBudgetUsd' in withLegacyBudget.profile, false);
+  assert.equal('budgetDerivedFromIncome' in withLegacyBudget.profile, false);
+  assert.deepEqual(withLegacyBudget.routes.map(({ routeStatus }) => routeStatus), withoutBudget.routes.map(({ routeStatus }) => routeStatus));
 });
 
 test('generic engine converts live RUB questionnaire income when the context supplies RUB', () => {
@@ -624,14 +593,14 @@ test('relationship mismatch creates only canonical formalization conditions', ()
   assert.equal(operational.classification, 'CONDITIONAL_SIMULTANEOUS');
 });
 
-test('synthetic profile helper follows production school-needed semantics', () => {
+test('synthetic profile helper can exercise legacy school-needed values', () => {
   assert.equal(profile({ children: 1 }).family.school_needed, false);
   assert.equal(profile({ children: 1, schoolNeeded: false }).family.school_needed, false);
   assert.equal(profile({ children: 1, schoolNeeded: true }).family.school_needed, true);
   assert.equal(profile({ children: 0, schoolNeeded: true }).family.school_needed, false);
 });
 
-test('school presentation is mutually exclusive and preserves every public rule', () => {
+test('school presentation is absent without children and combines both blocks with every public rule', () => {
   assert.equal(calculateActiveCountry(profile(), spain, context).schoolPresentation, null);
   const pkg = structuredClone(spain);
   pkg.schools.public_school_rules.push({
@@ -640,12 +609,15 @@ test('school presentation is mutually exclusive and preserves every public rule'
     language_ru: 'Второй язык обучения',
   });
   const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: false }), pkg, context);
-  assert.equal(result.schoolPresentation.type, 'PUBLIC');
-  assert.equal(result.schoolPresentation.rules.length, 2);
-  assert.deepEqual(result.schoolPresentation.rules.map(({ jurisdiction }) => jurisdiction), [
+  assert.equal(result.schoolPresentation.public.rules.length, 2);
+  assert.deepEqual(result.schoolPresentation.public.rules.map(({ jurisdiction }) => jurisdiction), [
     'Испания (общегосударственные правила; администрирование — автономные сообщества)',
     'Вторая применимая юрисдикция',
   ]);
+  assert.equal(result.schoolPresentation.international.status, 'AVAILABLE');
+  assert.deepEqual(result.schoolPresentation.international.cities, ['Мадрид', 'Сан-Себастьян']);
+  const legacyToggle = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), pkg, context);
+  assert.deepEqual(legacyToggle.schoolPresentation, result.schoolPresentation);
 });
 
 test('new country-wide school cities take priority over legacy school records', () => {
@@ -655,30 +627,37 @@ test('new country-wide school cities take priority over legacy school records', 
     { city_name_ru: 'Ещё один школьный город', source_ids: ['ES_STPATRICK'] },
   ];
   const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), pkg, context);
-  assert.deepEqual(result.schoolPresentation, {
-    type: 'INTERNATIONAL', status: 'AVAILABLE',
-    cities: ['Школьный город вне city cards', 'Ещё один школьный город'],
+  assert.deepEqual(result.schoolPresentation.international, {
+    status: 'AVAILABLE', cities: ['Школьный город вне city cards', 'Ещё один школьный город'],
   });
   assert.equal(result.cities.some(({ cityName }) => cityName === 'Школьный город вне city cards'), false);
 });
 
 test('legacy and researched-none international school presentation remain supported', () => {
   const legacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), spain, context);
-  assert.deepEqual(legacy.schoolPresentation, {
-    type: 'INTERNATIONAL', status: 'AVAILABLE', cities: ['Мадрид', 'Сан-Себастьян'],
+  assert.deepEqual(legacy.schoolPresentation.international, {
+    status: 'AVAILABLE', cities: ['Мадрид', 'Сан-Себастьян'],
   });
   const arLegacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), argentina, context);
-  assert.deepEqual(arLegacy.schoolPresentation.cities, ['Буэнос-Айрес']);
+  assert.deepEqual(arLegacy.schoolPresentation.international.cities, ['Буэнос-Айрес']);
   const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
   const uyLegacy = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), uruguay, uyuContext);
-  assert.deepEqual(uyLegacy.schoolPresentation.cities, ['Монтевидео', 'Мальдонадо']);
+  assert.deepEqual(uyLegacy.schoolPresentation.international.cities, ['Монтевидео', 'Мальдонадо']);
   const none = structuredClone(spain);
   none.schools.international_school_status = 'RESEARCHED_NONE_FOUND';
   none.schools.international_schools = [];
   const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), none, context);
-  assert.deepEqual(result.schoolPresentation, {
-    type: 'INTERNATIONAL', status: 'RESEARCHED_NONE_FOUND', cities: [],
+  assert.deepEqual(result.schoolPresentation.international, {
+    status: 'RESEARCHED_NONE_FOUND', cities: [],
   });
+});
+
+test('school presentation is isolated from routes, city costs, extrema, and country ordering', () => {
+  const withoutChildren = calculateActiveCountry(profile(), spain, context);
+  const withChildren = calculateActiveCountry(profile({ children: 1 }), spain, context);
+  assert.deepEqual(withChildren.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]), withoutChildren.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]));
+  assert.equal(withChildren.bestRoute.routeId, withoutChildren.bestRoute.routeId);
+  assert.deepEqual(withChildren.cities.map(({ comparisonCostUsd, labels }) => [comparisonCostUsd, labels]), withoutChildren.cities.map(({ comparisonCostUsd, labels }) => [comparisonCostUsd, labels]));
 });
 
 test('pets presentation distinguishes no pets, import findings, and unknown research', () => {
@@ -1053,6 +1032,95 @@ test('NLV presentation preserves the same 43200 EUR original family threshold fo
   assert.equal(savings.thresholdUsd, 48000);
 });
 
+test('NLV route description excludes financial glossary while requirement identity reaches presentation', () => {
+  const nlv = calculateActiveCountry(profile({ adults: 2, applicantType: 'REMOTE_EMPLOYMENT' }), spain, context).routes
+    .find(({ routeId }) => routeId === 'ES_NLV');
+  assert.equal(nlv.description, 'Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах.');
+  assert.doesNotMatch(nlv.description, /IPREM|600 EUR|2 400 EUR/u);
+  assert.equal(nlv.financialRequirements.length, 1);
+  assert.equal(nlv.financialRequirements[0].requirementId, 'ES_NLV_FIN');
+  assert.equal(nlv.financialRequirements[0].effect, 'CONDITION');
+  const action = nlv.conditionActions.find(({ requirementId }) => requirementId === 'ES_NLV_FIN');
+  assert.ok(action);
+  assert.equal(action.requirementType, 'FINANCIAL');
+  assert.deepEqual(action.financialSummary.alternatives.map(({ threshold, thresholdUsd }) => ({ threshold, thresholdUsd })),
+    nlv.financialSummary.alternatives.map(({ threshold, thresholdUsd }) => ({ threshold, thresholdUsd })));
+});
+
+test('financial presentation identity supports one conditional and one satisfied requirement', () => {
+  const pkg = structuredClone(spain);
+  const route = pkg.routes.find(({ route_id }) => route_id === 'ES_DNV');
+  const satisfied = route.requirements.find(({ requirement_id }) => requirement_id === 'ES_DNV_FIN');
+  const conditional = structuredClone(satisfied);
+  conditional.requirement_id = 'ES_DNV_SECOND_FIN';
+  conditional.evaluation_mode = 'UNASKED_CONDITION';
+  conditional.unmet_effect = 'BECOMES_CONDITION';
+  conditional.condition_ru = 'Подтвердить второе финансовое требование.';
+  route.requirements.push(conditional);
+  const result = calculateActiveCountry(profile({ applicantAmount: 6000 }), pkg, context).routes.find(({ routeId }) => routeId === 'ES_DNV');
+  assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.deepEqual(result.financialRequirements.map(({ requirementId, effect }) => ({ requirementId, effect })), [
+    { requirementId: 'ES_DNV_FIN', effect: 'NONE' },
+    { requirementId: 'ES_DNV_SECOND_FIN', effect: 'CONDITION' },
+  ]);
+  assert.equal(result.conditionActions.some(({ requirementId }) => requirementId === 'ES_DNV_FIN'), false);
+  assert.ok(result.conditionActions.some(({ requirementId, financialSummary }) => requirementId === 'ES_DNV_SECOND_FIN' && financialSummary.alternatives.length));
+});
+
+test('identical financial condition text preserves every requirement identity and summary', () => {
+  const pkg = structuredClone(spain);
+  const route = pkg.routes.find(({ route_id }) => route_id === 'ES_DNV');
+  const original = route.requirements.find(({ requirement_id }) => requirement_id === 'ES_DNV_FIN');
+  const sharedText = 'Подтвердить одинаково сформулированное финансовое условие.';
+  const conditional = (id, amount) => ({
+    ...structuredClone(original),
+    requirement_id: id,
+    evaluation_mode: 'UNASKED_CONDITION',
+    unmet_effect: 'BECOMES_CONDITION',
+    condition_ru: sharedText,
+    financial: {
+      ...structuredClone(original.financial),
+      alternatives: original.financial.alternatives.map((item) => ({
+        ...structuredClone(item), amount, family_formula: null, family_formula_ordered: null,
+      })),
+    },
+  });
+  route.requirements = [conditional('FIN_A', 1000), conditional('FIN_B', 2000)];
+  const result = calculateActiveCountry(profile(), pkg, context).routes.find(({ routeId }) => routeId === 'ES_DNV');
+  assert.deepEqual(result.conditions, [sharedText]);
+  assert.deepEqual(result.conditionActions.map(({ requirementId }) => requirementId), ['FIN_A', 'FIN_B']);
+  assert.deepEqual(result.financialRequirements.map(({ requirementId, effect }) => ({ requirementId, effect })), [
+    { requirementId: 'FIN_A', effect: 'CONDITION' },
+    { requirementId: 'FIN_B', effect: 'CONDITION' },
+  ]);
+  assert.deepEqual(result.conditionActions.map(({ financialSummary }) => financialSummary.alternatives[0].threshold), [1000, 2000]);
+});
+
+test('identical financial and non-financial condition text preserves both identities', () => {
+  const pkg = structuredClone(spain);
+  const route = pkg.routes.find(({ route_id }) => route_id === 'ES_DNV');
+  const financial = structuredClone(route.requirements.find(({ requirement_id }) => requirement_id === 'ES_DNV_FIN'));
+  const nonFinancial = structuredClone(route.requirements.find(({ type }) => type !== 'FINANCIAL' && type !== 'DISPLAY_ONLY'));
+  const sharedText = 'Выполнить одинаково сформулированное условие.';
+  Object.assign(financial, {
+    requirement_id: 'FIN_SHARED', evaluation_mode: 'UNASKED_CONDITION',
+    unmet_effect: 'BECOMES_CONDITION', condition_ru: sharedText,
+  });
+  Object.assign(nonFinancial, {
+    requirement_id: 'NON_FIN_SHARED', evaluation_mode: 'UNASKED_CONDITION',
+    unmet_effect: 'BECOMES_CONDITION', condition_ru: sharedText,
+  });
+  route.requirements = [financial, nonFinancial];
+  const result = calculateActiveCountry(profile(), pkg, context).routes.find(({ routeId }) => routeId === 'ES_DNV');
+  assert.deepEqual(result.conditions, [sharedText]);
+  assert.deepEqual(result.conditionActions.map(({ requirementId, requirementType }) => ({ requirementId, requirementType })), [
+    { requirementId: 'FIN_SHARED', requirementType: 'FINANCIAL' },
+    { requirementId: 'NON_FIN_SHARED', requirementType: nonFinancial.type },
+  ]);
+  assert.ok(result.conditionActions.find(({ requirementId }) => requirementId === 'FIN_SHARED').financialSummary.alternatives.length);
+  assert.equal(result.conditionActions.find(({ requirementId }) => requirementId === 'NON_FIN_SHARED').financialSummary, null);
+});
+
 test('Spain cities come from RP4 with deterministic climate labels and no invented zero cost', () => {
   const pkg = { ...spain, cities: [...spain.cities, {
     city_id: 'ES_UNKNOWN', name_ru: 'Неизвестный город', structural_roles: ['SMALL'],
@@ -1063,8 +1131,8 @@ test('Spain cities come from RP4 with deterministic climate labels and no invent
   assert.ok(cities.length > 0);
   assert.ok(cities.find(({ cityId }) => cityId === 'ES_BURGOS').labels.includes('Самый прохладный'));
   assert.ok(cities.find(({ cityId }) => cityId === 'ES_JAEN').labels.includes('Самый жаркий'));
-  assert.equal(cities.find(({ cityId }) => cityId === 'ES_UNKNOWN').costUsd, null);
-  assert.equal(cities.every(({ costComparable }) => costComparable === false), true);
+  assert.equal(cities.find(({ cityId }) => cityId === 'ES_UNKNOWN').comparisonCostUsd, null);
+  assert.equal(cities.every(({ comparisonCostUsd }) => comparisonCostUsd === null), true);
 });
 
 test('LGBT presentation follows the profile toggle and contains only RP4 fields', () => {
@@ -1126,23 +1194,169 @@ test('RP4 LGBT assessments are localized and friendly cities expose names only',
   }
 });
 
-test('city cost extrema require comparable baskets and real Argentina and Spain receive both labels', () => {
+test('current common baskets drive only valid within-country extrema', () => {
   const arCities = calculateActiveCountry(profile(), argentina, context).cities;
+  assert.deepEqual(arCities[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES', 'TRANSPORT']);
   assert.ok(arCities.some(({ labels }) => labels.includes('Самый дорогой')));
   assert.ok(arCities.some(({ labels }) => labels.includes('Самый недорогой')));
   const esCities = calculateActiveCountry(profile(), spain, context).cities;
-  assert.equal(esCities.every(({ costComparable }) => costComparable === true), true);
-  assert.deepEqual(Object.fromEntries(esCities.map(({ cityId, costOriginal }) => [cityId, Number(costOriginal.amount.toFixed(2))])), {
-    ES_MADRID: 1546.79,
-    ES_SAN_SEBASTIAN: 1348.56,
-    ES_BURGOS: 801.89,
-    ES_JAEN: 668.39,
+  assert.deepEqual(esCities[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES']);
+  assert.equal(esCities.every(({ comparisonCostUsd }) => Number.isFinite(comparisonCostUsd)), true);
+  assert.ok(esCities.some(({ labels }) => labels.includes('Самый дорогой')));
+  assert.ok(esCities.some(({ labels }) => labels.includes('Самый недорогой')));
+  const uyCities = calculateActiveCountry(profile(), uruguay, { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } }).cities;
+  assert.deepEqual(uyCities[0].comparisonComponents, ['RENT_STANDARD']);
+  assert.ok(uyCities.find(({ cityId }) => cityId === 'UY_MONTEVIDEO').labels.includes('Самый дорогой'));
+  assert.ok(uyCities.find(({ cityId }) => cityId === 'UY_MALDONADO').labels.includes('Самый недорогой'));
+});
+
+test('city baskets normalize recurring periods and mixed FX without household scaling', () => {
+  const city = (cityId, costs) => ({
+    city_id: cityId, name_ru: cityId, structural_roles: ['SMALL'], climate: null,
+    cost_components: costs,
   });
-  assert.ok(esCities.find(({ cityId }) => cityId === 'ES_MADRID').labels.includes('Самый дорогой'));
-  assert.ok(esCities.find(({ cityId }) => cityId === 'ES_JAEN').labels.includes('Самый недорогой'));
-  for (const cityId of ['ES_SAN_SEBASTIAN', 'ES_BURGOS']) {
-    const labels = esCities.find((city) => city.cityId === cityId).labels;
-    assert.equal(labels.includes('Самый дорогой') || labels.includes('Самый недорогой'), false);
+  const cost = (component, amount, currency, period, householdBasis) => ({
+    component, amount, currency, period, household_basis: householdBasis,
+    condition_ru: component === 'RENT_STANDARD' ? 'Одна спальня в центре.' : 'Условие.',
+  });
+  const recurring = [
+    cost('RENT_STANDARD', 100, 'USD', 'MONTHLY', 'PER_HOUSEHOLD'),
+    cost('GROCERIES', 10, 'USD', 'MONTHLY', 'PER_ADULT'),
+    cost('UTILITIES', 1200, 'EUR', 'ANNUAL', 'PER_HOUSEHOLD'),
+    cost('TRANSPORT', 5, 'USD', 'MONTHLY', 'PER_PERSON'),
+    cost('HEALTHCARE', 7, 'USD', 'MONTHLY', 'PER_CHILD'),
+    cost('OTHER_CORE', 999, 'USD', 'ONE_TIME', 'PER_HOUSEHOLD'),
+  ];
+  const pkg = { ...spain, cities: [city('A', recurring), city('B', recurring.map((item) => ({
+    ...item, currency: item.currency === 'USD' ? 'EUR' : 'USD', amount: item.currency === 'USD' ? item.amount * 0.9 : item.amount / 0.9,
+  })))] };
+  const cities = calculateActiveCountry(profile({ adults: 2, children: 1 }), pkg, context).cities;
+  const expected = 100 + 10 + (1200 / 0.9 / 12) + 5;
+  assert.ok(Math.abs(cities[0].comparisonCostUsd - expected) < 0.001);
+  assert.equal(cities[0].costOriginal, null);
+  assert.deepEqual(cities[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT']);
+  assert.equal('costUsd' in cities[0], false);
+  assert.equal('baseCostUsd' in cities[0], false);
+  assert.ok(cities.some(({ labels }) => labels.includes('Самый дорогой')));
+  assert.ok(cities.some(({ labels }) => labels.includes('Самый недорогой')));
+});
+
+test('common basket is the ordered intersection of compatible recurring scenarios', () => {
+  const component = (name, basis = 'PER_HOUSEHOLD') => ({
+    component: name, amount: 10, currency: 'USD', period: 'MONTHLY', household_basis: basis, condition_ru: 'Условие.',
+  });
+  const city = (id, components) => ({ city_id: id, name_ru: id, structural_roles: ['SMALL'], climate: null, cost_components: components });
+  const base = ['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'].map((name) => component(name));
+  const calculate = (cities) => calculateActiveCountry(profile(), { ...spain, cities }, context).cities;
+  const intersection = calculate([city('A', base), city('B', base.slice(0, 3))]);
+  assert.deepEqual(intersection[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES', 'GROCERIES']);
+  assert.deepEqual(intersection[1].comparisonComponents, intersection[0].comparisonComponents);
+  assert.ok(intersection.every(({ comparisonCostUsd }) => Number.isFinite(comparisonCostUsd)));
+  assert.ok(intersection.some(({ labels }) => labels.includes('Самый дорогой')));
+
+  const basisMismatch = calculate([city('A', base), city('B', base.map((item) => item.component === 'TRANSPORT' ? { ...item, household_basis: 'PER_PERSON' } : item))]);
+  assert.deepEqual(basisMismatch[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES', 'GROCERIES']);
+
+  const scenarioMismatch = calculate([city('A', base), city('B', base.map((item) => item.component === 'RENT_STANDARD' ? { ...item, condition_ru: 'Другой сценарий аренды.' } : item))]);
+  assert.equal(scenarioMismatch[0].comparisonComponents.includes('RENT_STANDARD'), false);
+  assert.equal(scenarioMismatch.every(({ comparisonCostUsd }) => comparisonCostUsd === null), true);
+});
+
+test('rent-only comparison renders extrema while missing rent suppresses numeric comparison', () => {
+  const component = (name, amount, currency = 'USD') => ({
+    component: name, amount, currency, period: 'MONTHLY', household_basis: 'PER_HOUSEHOLD', condition_ru: 'Одинаковый сценарий.',
+  });
+  const city = (id, components) => ({ city_id: id, name_ru: id, structural_roles: ['SMALL'], climate: null, cost_components: components });
+  const calculate = (cities, fx = context) => calculateActiveCountry(profile(), { ...spain, cities }, fx).cities;
+  const rentOnly = calculate([city('A', [component('RENT_STANDARD', 100)]), city('B', [component('RENT_STANDARD', 90, 'EUR')])]);
+  assert.deepEqual(rentOnly[0].comparisonComponents, ['RENT_STANDARD']);
+  assert.ok(rentOnly.every(({ comparisonCostUsd }) => Number.isFinite(comparisonCostUsd)));
+  assert.ok(rentOnly.some(({ labels }) => labels.includes('Самый дорогой')));
+
+  const noRent = calculate([city('A', [component('UTILITIES', 100)]), city('B', [component('UTILITIES', 90)])]);
+  assert.deepEqual(noRent[0].comparisonComponents, ['UTILITIES']);
+  assert.equal(noRent.every(({ comparisonCostUsd }) => comparisonCostUsd === null), true);
+  assert.equal(noRent.some(({ labels }) => labels.includes('Самый дорогой') || labels.includes('Самый недорогой')), false);
+});
+
+test('one unusable optional component is excluded country-wide without blocking rent comparison', () => {
+  const component = (name, amount, currency = 'USD') => ({
+    component: name, amount, currency, period: 'MONTHLY', household_basis: 'PER_HOUSEHOLD', condition_ru: 'Одинаковый сценарий.',
+  });
+  const city = (id, transport) => ({
+    city_id: id, name_ru: id, structural_roles: ['SMALL'], climate: null,
+    cost_components: [component('RENT_STANDARD', 100), component('UTILITIES', 10), transport],
+  });
+  const cities = calculateActiveCountry(profile(), { ...spain, cities: [
+    city('A', component('TRANSPORT', 5)),
+    city('B', component('TRANSPORT', 5, 'ZZZ')),
+  ] }, context).cities;
+  assert.deepEqual(cities[0].comparisonComponents, ['RENT_STANDARD', 'UTILITIES']);
+  assert.ok(cities.every(({ comparisonCostUsd }) => Number.isFinite(comparisonCostUsd)));
+});
+
+test('HEALTHCARE and OTHER_CORE never affect comparison totals or extrema', () => {
+  const component = (name, amount) => ({
+    component: name, amount, currency: 'USD', period: 'MONTHLY', household_basis: 'PER_HOUSEHOLD', condition_ru: 'Условие.',
+  });
+  const city = (id, baseAmount, healthcare) => ({
+    city_id: id, name_ru: id, structural_roles: ['SMALL'], climate: null,
+    cost_components: [
+      component('RENT_STANDARD', baseAmount),
+      component('GROCERIES', baseAmount),
+      component('UTILITIES', baseAmount),
+      component('TRANSPORT', baseAmount),
+      component('HEALTHCARE', healthcare),
+    ],
+  });
+  const withoutOptional = calculateActiveCountry(profile(), {
+    ...spain,
+    cities: [city('HIGH_BASE', 100, 0), city('LOW_BASE', 50, 0)].map((item) => ({ ...item, cost_components: item.cost_components.slice(0, 4) })),
+  }, context).cities;
+  const cities = calculateActiveCountry(profile(), {
+    ...spain,
+    cities: [city('HIGH_BASE', 100, 1), {
+      ...city('LOW_BASE', 50, 1000),
+      cost_components: [...city('LOW_BASE', 50, 1000).cost_components, component('OTHER_CORE', 5000)],
+    }],
+  }, context).cities;
+  const highBase = cities.find(({ cityId }) => cityId === 'HIGH_BASE');
+  const lowBase = cities.find(({ cityId }) => cityId === 'LOW_BASE');
+  assert.equal(highBase.comparisonCostUsd, 400);
+  assert.equal(lowBase.comparisonCostUsd, 200);
+  assert.deepEqual(cities.map(({ comparisonCostUsd }) => comparisonCostUsd), withoutOptional.map(({ comparisonCostUsd }) => comparisonCostUsd));
+  assert.ok(highBase.labels.includes('Самый дорогой'));
+  assert.ok(lowBase.labels.includes('Самый недорогой'));
+});
+
+test('city comparison is identical for solo and family profiles', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const soloUy = calculateActiveCountry(profile(), uruguay, uyuContext).cities;
+  const familyUy = calculateActiveCountry(profile({ adults: 2, children: 1 }), uruguay, uyuContext).cities;
+  assert.deepEqual(familyUy.map(({ comparisonCostUsd }) => comparisonCostUsd), soloUy.map(({ comparisonCostUsd }) => comparisonCostUsd));
+  const soloAr = calculateActiveCountry(profile(), argentina, context).cities;
+  const familyAr = calculateActiveCountry(profile({ adults: 2, children: 1 }), argentina, context).cities;
+  assert.deepEqual(familyAr.map(({ comparisonCostUsd }) => comparisonCostUsd), soloAr.map(({ comparisonCostUsd }) => comparisonCostUsd));
+});
+
+test('UY user-facing rent conditions omit source-maintenance metadata', () => {
+  for (const cityId of ['UY_MONTEVIDEO', 'UY_SALTO', 'UY_MALDONADO', 'UY_COLONIA']) {
+    const city = calculateActiveCountry(profile(), uruguay, { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } })
+      .cities.find(({ cityId: id }) => id === cityId);
+    const rent = city.comparisonScenarios.find(({ component }) => component === 'RENT_STANDARD');
+    assert.equal(rent.condition, 'Однокомнатная квартира в центре.');
+    assert.doesNotMatch(rent.condition, /research observation|price_date|exact source update date|Livingcost/i);
+  }
+});
+
+test('ES rent scenarios expose one compatible user-facing scenario without source metadata', () => {
+  const cities = calculateActiveCountry(profile(), spain, context).cities;
+  for (const city of cities) {
+    assert.deepEqual(city.comparisonComponents, ['RENT_STANDARD', 'UTILITIES']);
+    assert.ok(Number.isFinite(city.comparisonCostUsd));
+    const rent = city.comparisonScenarios.find(({ component }) => component === 'RENT_STANDARD');
+    assert.equal(rent.condition, '1 спальня в центре.');
+    assert.doesNotMatch(rent.condition, /Numbeo/u);
   }
 });
 

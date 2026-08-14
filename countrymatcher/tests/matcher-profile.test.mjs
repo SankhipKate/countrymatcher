@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
 import { formatCurrency } from '../matcher/format.js';
 import { APPLICATION_METHOD_LABELS_RU } from '../js/engine/rp4-engine.js';
 import { STATUS_LABELS_RU } from '../js/engine/status-contract.js';
@@ -11,6 +11,7 @@ import { DOG_BREEDS, isKnownDogBreed, searchDogBreeds } from '../matcher/dog-bre
 const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
 const universalProfiles = JSON.parse(await readFile(new URL('./fixtures/universal-profile-samples-v1.json', import.meta.url), 'utf8'));
 const spainResearch = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
+const uruguayResearch = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
 
 test('visible matcher version matches package version', async () => {
   const [matcherHtml, packageJson, fxContext] = await Promise.all([
@@ -91,7 +92,13 @@ test('partner and child remain separate family members', () => {
   const profile = buildUserProfile(answers({ hasPartner: true, partnerIncluded: true, relationshipType: 'MARRIED', childAges: ['7'], schoolNeeded: true }));
   assert.equal(profile.family.adults_count, 2);
   assert.deepEqual(profile.family.children, [{ age_years: 7 }]);
-  assert.equal(profile.family.school_needed, true);
+  assert.equal(profile.family.school_needed, false);
+});
+
+test('school_needed is schema-only compatibility and always false in public profiles', () => {
+  assert.equal(buildUserProfile(answers({ childAges: [] })).family.school_needed, false);
+  assert.equal(buildUserProfile(answers({ childAges: ['7'], schoolNeeded: true })).family.school_needed, false);
+  assert.deepEqual(validateAgainstSchema(buildUserProfile(answers({ childAges: ['7'] })), profileSchema), []);
 });
 
 test('registered and unregistered partnerships are preserved', () => {
@@ -163,10 +170,10 @@ test('public matcher evaluates all researched filing methods without asking will
   assert.equal(html.includes('Готовы вернуться в Россию'), false);
 });
 
-test('income and budget retain their own currencies', () => {
+test('public profile retains legal income and always nulls living-cost budget', () => {
   const profile = buildUserProfile(answers({ primaryTotalAmount: '300000', primaryAmount: '300000', primaryCurrency: 'RUB', monthlyBudget: '2200', budgetCurrency: 'EUR' }));
   assert.deepEqual(profile.income.primary.monthly_provable, { amount: 300000, currency: 'RUB' });
-  assert.deepEqual(profile.preferences.monthly_budget, { amount: 2200, currency: 'EUR' });
+  assert.equal(profile.preferences.monthly_budget, null);
 });
 
 test('profile builder derives provable income from evidence level', () => {
@@ -239,8 +246,22 @@ test('removed city and climate questions use neutral profile defaults', () => {
   assert.deepEqual(validateAgainstSchema(profile, profileSchema), []);
 });
 
-test('unknown budget is null and does not become zero', () => {
-  assert.equal(buildUserProfile(answers({ budgetUnknown: true, monthlyBudget: '' })).preferences.monthly_budget, null);
+test('living-cost budget is null regardless of obsolete answer-shaped input', () => {
+  assert.equal(buildUserProfile(answers({ budgetUnknown: false, monthlyBudget: '9999' })).preferences.monthly_budget, null);
+});
+
+test('public questionnaire has no living-cost budget controls or summary plumbing', async () => {
+  const [app, html] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
+  ]);
+  for (const text of ['monthlyBudget', 'budgetCurrency', 'budgetUnknown', 'Комфортный семейный бюджет', 'Не знаю бюджет', 'Семейный бюджет']) {
+    assert.equal(html.includes(text), false);
+    assert.equal(app.includes(text), false);
+  }
+  const built = buildUserProfile(answers());
+  assert.equal(built.preferences.monthly_budget, null);
+  assert.deepEqual(validateAgainstSchema(built, profileSchema), []);
 });
 
 test('profile does not invent language-readiness or physical-presence answers', () => {
@@ -339,13 +360,47 @@ test('countries are stably ordered by the status of their best route', () => {
   assert.deepEqual(countries.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY', 'PT']);
 });
 
-test('countries with equal legal, family, and goal fit keep stable input order', () => {
-  const country = (countryId, costs) => ({
+test('comparisonCostUsd never changes cross-country ordering', () => {
+  const country = (countryId, comparisonComponents, costs) => ({
     country: { countryId, group: 'SUITABLE' },
     bestRoute: { routeStatus: 'SUITABLE', familyFit: 'MEETS', goalFit: 'MEETS' },
-    cities: costs.map((costUsd) => ({ costUsd })),
+    cities: costs.map((comparisonCostUsd) => ({ comparisonCostUsd, comparisonComponents })),
   });
-  assert.deepEqual(sortCountriesForDisplay([country('FIRST', [3000, 4000, 5000]), country('SECOND', [1000, 1500, 2000])]).map(({ country }) => country.countryId), ['FIRST', 'SECOND']);
+  assert.deepEqual(sortCountriesForDisplay([
+    country('FIRST', ['RENT_STANDARD'], [99999, 99998]),
+    country('SECOND', ['RENT_STANDARD', 'UTILITIES'], [1, 2]),
+  ]).map(({ country }) => country.countryId), ['FIRST', 'SECOND']);
+});
+
+test('city-cost presentation describes the shared basket once without source metadata', async () => {
+  const scenarios = [{ component: 'RENT_STANDARD', condition: '1 спальня в центре.' }];
+  assert.equal(
+    describeCityCostBasket(['RENT_STANDARD', 'UTILITIES'], scenarios),
+    'В расчёт входят: аренда квартиры с 1 спальней в центре + коммунальные расходы.',
+  );
+  assert.equal(
+    describeCityCostBasket(['RENT_STANDARD'], [{ component: 'RENT_STANDARD', condition: 'Однокомнатная квартира в центре.' }]),
+    'В расчёт входит: аренда однокомнатной квартиры в центре.',
+  );
+  assert.equal(
+    describeCityCostBasket(['RENT_STANDARD', 'TRANSPORT'], [{ component: 'RENT_STANDARD', condition: 'Сценарий Expatistan.' }]),
+    'В расчёт входят: аренда + транспорт.',
+  );
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const citySection = app.slice(app.indexOf('function renderCountryResult'), app.indexOf('function calculateActiveCountries'));
+  assert.match(citySection, /describeCityCostBasket\(comparisonComponents, comparisonCities\[0\]\?\.comparisonScenarios\)/u);
+  assert.equal((citySection.match(/describeCityCostBasket/g) || []).length, 1);
+  assert.doesNotMatch(citySection, /research observation|price_date|Numbeo|Livingcost|Expatistan/u);
+});
+
+test('AR and UY city gap handling uses one common intersection without affordability wording', async () => {
+  for (const code of ['AR', 'UY']) {
+    const pkg = JSON.parse(await readFile(new URL(`../data/${code}-research-v4.0.json`, import.meta.url), 'utf8'));
+    const gap = pkg.open_items.find(({ block }) => block === 'CITIES_COST');
+    assert.match(gap.handling_ru, /единому пересечению сопоставимых компонентов/u);
+    assert.match(gap.handling_ru, /без подстановки нуля или интерполяции/u);
+    assert.doesNotMatch(gap.handling_ru, /budget-fit|бюджет|affordability|каждого города/u);
+  }
 });
 
 test('route actions are deduplicated and omit actions already present in mandatory requirements', () => {
@@ -393,9 +448,9 @@ test('city size is the first approved category and uses the complete city label'
 
 test('city comparison derives expensive, cool and hot categories from displayed data', () => {
   const cities = enrichCityCategories([
-    { name: 'A', size: 'LARGE', cost: 2000, coldRange: 'примерно 8–16 °C', hotRange: 'примерно 20–30 °C' },
-    { name: 'B', size: 'MEDIUM', cost: 1500, coldRange: 'примерно 12–20 °C', hotRange: 'примерно 24–36 °C' },
-    { name: 'C', size: 'SMALL', cost: 1000, coldRange: 'примерно −1–5 °C', hotRange: 'примерно 5–15 °C' },
+    { name: 'A', size: 'LARGE', comparisonCostUsd: 2000, coldRange: 'примерно 8–16 °C', hotRange: 'примерно 20–30 °C' },
+    { name: 'B', size: 'MEDIUM', comparisonCostUsd: 1500, coldRange: 'примерно 12–20 °C', hotRange: 'примерно 24–36 °C' },
+    { name: 'C', size: 'SMALL', comparisonCostUsd: 1000, coldRange: 'примерно −1–5 °C', hotRange: 'примерно 5–15 °C' },
   ]);
   assert.ok(cities.find(({ name }) => name === 'A').categories.includes('Самый дорогой'));
   assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый недорогой'));
@@ -403,10 +458,10 @@ test('city comparison derives expensive, cool and hot categories from displayed 
   assert.ok(cities.find(({ name }) => name === 'C').categories.includes('Самый прохладный'));
 });
 
-test('non-comparable city baskets are never ranked by finite partial totals', () => {
+test('cities without comparisonCostUsd are never price-ranked', () => {
   const cities = enrichCityCategories([
-    { name: 'Partial A', size: 'LARGE', cost: 2000, costComparable: false },
-    { name: 'Partial B', size: 'SMALL', cost: 500, costComparable: false },
+    { name: 'Partial A', size: 'LARGE', comparisonCostUsd: null },
+    { name: 'Partial B', size: 'SMALL', comparisonCostUsd: null },
   ]);
   assert.equal(cities.some(({ categories }) => categories.includes('Самый дорогой') || categories.includes('Самый недорогой')), false);
 });
@@ -463,7 +518,12 @@ test('main matcher has no Spain-specific social-security question', async () => 
   assert.equal(source.includes('id="citySize"'), false);
   assert.equal(source.includes('name="climate"'), false);
   assert.doesNotMatch(`${source}\n${app}`, /kindergarten|daycare|preschool|детский сад|детсад/i);
-  assert.match(source, /name="schoolType"/);
+  assert.doesNotMatch(source, /name="schoolType"|Какую школу планируете\?|educationBlock/u);
+  assert.doesNotMatch(app, /schoolType|schoolNeeded|educationBlock/u);
+  assert.equal((source.match(/class="wizard-step(?: is-active)?"/g) || []).length, 4);
+  assert.deepEqual([...source.matchAll(/data-step="(\d+)"/g)].map((match) => Number(match[1])), [1, 2, 3, 4]);
+  assert.match(app, /const TOTAL_STEPS = steps\.length/u);
+  assert.doesNotMatch(app, /step === 5/u);
 });
 
 test('root is the public matcher and does not link to a pilot page', async () => {
@@ -507,21 +567,23 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.match(app, /route\.longTerm\.citizenship/);
   assert.match(app, /route\.longTerm\.language/);
   assert.match(app, /renderSchoolPresentation\(calculation\)/);
-  assert.match(app, /Международные школы в стране есть\. Из показанных городов подтверждены:/);
-  assert.match(app, /school\.rules\.map/);
+  assert.match(app, /Государственные школы/);
+  assert.match(app, /Международные школы с обучением на английском/);
+  assert.match(app, /school\.public\.rules\.map/);
   assert.doesNotMatch(app, /internationalSchoolCost|internationalSchoolNames|schoolLine|needsInternationalSchool/);
   assert.match(app, /ANNUAL: '\/год'/);
   assert.match(app, /ACADEMIC_YEAR: '\/учебный год'/);
   assert.match(app, /schoolTuitionPeriodLabel\(rule\.tuition\.period\)/);
-  assert.match(app, /Международные школы в стране есть\./);
-  assert.ok(app.indexOf("school.status === 'AVAILABLE'") < app.indexOf("school.status === 'RESEARCHED_NONE_FOUND'"));
+  assert.match(app, /Подтверждены в:/);
+  assert.match(app, /В ходе исследования международные школы с обучением на английском не найдены\./);
+  assert.match(app, /Данных о международных школах с обучением на английском пока недостаточно\./);
 
   assert.equal(app.includes('Для выбранного размера города в пакете пока нет отдельной модели'), false);
   assert.match(styles, /\.country-workspace\{display:grid/);
   assert.match(styles, /\.country-tabs\{position:sticky/);
   assert.match(styles, /@media\(max-width:900px\)[\s\S]*overflow-x:auto/);
   assert.equal(app.includes('Ваш бюджет не указан'), false);
-  assert.match(app, /budgetDerivedFromIncome/);
+  assert.doesNotMatch(app, /budgetDerivedFromIncome|monthlyBudgetUsd|cityBudgetVerdict/);
   assert.match(app, /data-country-tab/);
   assert.doesNotMatch(app, /enrichCityCategories/);
   assert.match(app, /cityCategories\(city\.populationCategory/);
@@ -531,7 +593,7 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.match(styles, /\.country-tab \.status-pill\{grid-column:2/);
 });
 
-test('school UI preserves tuition periods and handles AVAILABLE without city names', async () => {
+test('school UI renders public and international subsections together without international tuition', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const schoolSource = app.slice(app.indexOf('const publicSchoolAccessLabel'), app.indexOf('function longTermConditions'));
   const renderSchool = Function('currency', 'html', `${schoolSource}; return renderSchoolPresentation;`)(
@@ -543,17 +605,134 @@ test('school UI preserves tuition periods and handles AVAILABLE without city nam
     compulsoryAgeMin: 6, compulsoryAgeMax: 16, isFree: false,
     tuition: { amount: 1200, currency: 'EUR', period },
   });
-  assert.match(renderSchool({ schoolPresentation: { type: 'PUBLIC', rules: [publicRule('ANNUAL')] } }), /1200 EUR \/год/);
-  assert.match(renderSchool({ schoolPresentation: { type: 'PUBLIC', rules: [publicRule('ACADEMIC_YEAR')] } }), /1200 EUR \/учебный год/);
+  const presentation = (period, international = {}) => ({ schoolPresentation: {
+    public: { rules: [publicRule(period)] },
+    international: { status: 'AVAILABLE', cities: ['Тестовый город'], ...international },
+  } });
+  const annual = renderSchool(presentation('ANNUAL'));
+  assert.match(annual, /Государственные школы/);
+  assert.match(annual, /1200 EUR \/год/);
+  assert.match(annual, /Международные школы с обучением на английском/);
+  assert.match(annual, /Подтверждены в: Тестовый город\./);
+  assert.match(renderSchool(presentation('ACADEMIC_YEAR')), /1200 EUR \/учебный год/);
 
-  const available = renderSchool({ schoolPresentation: { type: 'INTERNATIONAL', status: 'AVAILABLE', cities: [] } });
-  assert.match(available, /Международные школы в стране есть\./);
-  assert.doesNotMatch(available, /не исследованы/);
+  const available = renderSchool(presentation('ANNUAL', { cities: [] }));
+  assert.match(available, /Наличие подтверждено\./);
+  const none = renderSchool(presentation('ANNUAL', { status: 'RESEARCHED_NONE_FOUND', cities: [] }));
+  assert.match(none, /В ходе исследования международные школы с обучением на английском не найдены\./);
+  const unknown = renderSchool(presentation('ANNUAL', { status: 'NOT_RESEARCHED', cities: [] }));
+  assert.match(unknown, /Данных о международных школах с обучением на английском пока недостаточно\./);
+  assert.doesNotMatch(unknown, /не найдены/u);
+  assert.doesNotMatch(app, /school\.international.*tuition|admissionFee|admission_fee/u);
+  assert.match(annual, /<section class="school-research">[\s\S]*Государственные школы[\s\S]*Международные школы с обучением на английском[\s\S]*<\/section>/u);
+  assert.equal((annual.match(/class="school-research"/g) || []).length, 1);
+  assert.equal((annual.match(/class="school-subsection"/g) || []).length, 2);
+  assert.equal(renderSchool({ schoolPresentation: null }), '');
 });
 
-test('entry UI uses RP4 fields and budget verdict requires a real budget', async () => {
+test('UY public-school Russian data renders without mixed-language residues', async () => {
+  const rule = uruguayResearch.schools.public_school_rules[0];
+  const russianFields = [rule.jurisdiction_ru, rule.language_ru, rule.rule_ru].join(' ');
+  assert.doesNotMatch(russianFields, /public education|migrant students/i);
+  assert.match(rule.language_ru, /Национальной администрации государственного образования Уругвая \(ANEP\)/u);
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const entrySource = app.slice(app.indexOf('function renderEntryPresentation'), app.indexOf('const cityBudgetVerdict'));
+  const schoolSource = app.slice(app.indexOf('const publicSchoolAccessLabel'), app.indexOf('function renderEntryPresentation'));
+  const renderSchool = Function('currency', 'html', `${schoolSource}; return renderSchoolPresentation;`)(
+    (amount, currencyCode) => `${amount} ${currencyCode}`,
+    (value) => String(value),
+  );
+  const output = renderSchool({ schoolPresentation: {
+    public: { rules: [{
+      jurisdiction: rule.jurisdiction_ru, foreignChildAccess: rule.foreign_child_access,
+      language: rule.language_ru, compulsoryAgeMin: rule.compulsory_age_min,
+      compulsoryAgeMax: rule.compulsory_age_max, isFree: rule.is_free, tuition: rule.tuition,
+    }] },
+    international: { status: uruguayResearch.schools.international_school_status, cities: ['Монтевидео', 'Мальдонадо'] },
+  } });
+  assert.doesNotMatch(output, /public education|migrant students/i);
+  assert.match(output, /Национальной администрации государственного образования Уругвая \(ANEP\)/u);
+});
+
+test('route cards deduplicate financial actions by requirement identity', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const routeSource = app.slice(app.indexOf('function longTermConditions'), app.indexOf('function countryPresentation'));
+  const renderRoute = Function(
+    'STATUS_LABELS_RU', 'statusClass', 'html', 'currency', 'officialFinancialPeriodSuffix',
+    'applicationPresentationText', 'russianMonths', 'deduplicatedWorkRights',
+    `${routeSource}; return routeCard;`,
+  )(
+    STATUS_LABELS_RU, () => 'status', (value) => String(value),
+    (amount, code = 'USD') => `${amount} ${code}`, (period) => ({ MONTHLY: '/мес', ANNUAL: '/год' })[period] || '',
+    () => '', () => '', () => [],
+  );
+  const alternative = (label, threshold, thresholdUsd) => ({
+    requirementLabel: label, kind: 'INCOME', kindLabel: 'Доход', threshold, thresholdUsd,
+    currency: 'EUR', period: 'MONTHLY', state: 'UNKNOWN', practicalGuidance: null,
+  });
+  const base = {
+    routeName: 'Маршрут', routeOfficialName: null, description: 'Описание маршрута.',
+    blockers: [], conditions: [], displayOnlyRequirements: [], application: [], family: [],
+    familyEvaluation: { state: 'NOT_APPLICABLE' }, workRights: {}, longTerm: null,
+    processing: null, firstPermit: null, officialSource: null,
+  };
+  const satisfied = { requirementId: 'FIN_OK', effect: 'NONE', summary: {
+    alternatives: [alternative('Удовлетворённое требование', 1000, 1110)],
+  } };
+  const conditional = { requirementId: 'FIN_FIX', effect: 'CONDITION', summary: {
+    alternatives: [alternative('Условное требование', 2000, 2220)],
+  } };
+
+  const suitable = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: satisfied.summary, financialRequirements: [satisfied], conditionActions: [] }, 'Страна');
+  assert.match(suitable, /Финансовое требование/u);
+  assert.match(suitable, /Удовлетворённое требование/u);
+
+  const mixed = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Исправить финансы.'],
+    financialSummary: conditional.summary, financialRequirements: [conditional, satisfied],
+    conditionActions: [{ requirementId: 'FIN_FIX', requirementType: 'FINANCIAL', text: 'Исправить финансы.', financialSummary: conditional.summary }],
+  }, 'Страна');
+  assert.match(mixed, /Что нужно выполнить, чтобы маршрут подходил[\s\S]*Исправить финансы — доход 2000 EUR\/мес \(≈ 2220 USD\/мес\)/u);
+  assert.equal((mixed.match(/Исправить финансы/g) || []).length, 1);
+  assert.match(mixed, /Финансовое требование[\s\S]*Удовлетворённое требование/u);
+  assert.doesNotMatch(mixed.slice(mixed.indexOf('Финансовое требование')), /Условное требование/u);
+
+  const nonFinancial = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Получить документ.'],
+    financialSummary: satisfied.summary, financialRequirements: [satisfied],
+    conditionActions: [{ requirementId: 'DOC', requirementType: 'OTHER_BASIS', text: 'Получить документ.', financialSummary: null }],
+  }, 'Страна');
+  assert.match(nonFinancial, /Что нужно выполнить[\s\S]*Получить документ/u);
+  assert.match(nonFinancial, /Финансовое требование[\s\S]*Удовлетворённое требование/u);
+
+  const sameTextA = { requirementId: 'FIN_A', effect: 'CONDITION', summary: {
+    alternatives: [alternative('Одинаковый текст', 1200, 1330)],
+  } };
+  const sameTextB = { requirementId: 'FIN_B', effect: 'CONDITION', summary: {
+    alternatives: [alternative('Одинаковый текст', 2400, 2670)],
+  } };
+  const identicalText = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Одинаковое действие.'],
+    financialSummary: sameTextA.summary, financialRequirements: [sameTextA, sameTextB],
+    conditionActions: [
+      { requirementId: 'FIN_A', requirementType: 'FINANCIAL', text: 'Одинаковое действие.', financialSummary: sameTextA.summary },
+      { requirementId: 'FIN_B', requirementType: 'FINANCIAL', text: 'Одинаковое действие.', financialSummary: sameTextB.summary },
+    ],
+  }, 'Страна');
+  assert.equal((identicalText.match(/Одинаковое действие/g) || []).length, 2);
+  assert.match(identicalText, /Одинаковое действие — доход 1200 EUR\/мес \(≈ 1330 USD\/мес\)/u);
+  assert.match(identicalText, /Одинаковое действие — доход 2400 EUR\/мес \(≈ 2670 USD\/мес\)/u);
+  assert.doesNotMatch(identicalText, /Финансовое требование/u);
+});
+
+test('ES NLV route description stays concise in researched data and UI input', () => {
+  const route = spainResearch.routes.find(({ route_id }) => route_id === 'ES_NLV');
+  assert.equal(route.basis_ru, 'Проживание в Испании без трудовой или профессиональной деятельности при достаточных средствах.');
+  assert.doesNotMatch(route.basis_ru, /IPREM|600 EUR|2 400 EUR/u);
+});
+
+test('entry UI uses RP4 fields and city UI has no affordability matching', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const entrySource = app.slice(app.indexOf('function renderEntryPresentation'), app.indexOf('function renderPetPresentation'));
   const renderEntry = Function('html', `${entrySource}; return renderEntryPresentation;`)((value) => String(value));
   const es = renderEntry({ entryForRussianCitizen: {
     visaRequired: true, maximumStayDays: 90, processingTime: 'Официальный срок.', rule: 'Полное правило.',
@@ -574,18 +753,22 @@ test('entry UI uses RP4 fields and budget verdict requires a real budget', async
   } });
   assert.doesNotMatch(unknownVisa, /Виза:/);
 
-  const budgetSource = app.slice(app.indexOf('const cityBudgetVerdict'), app.indexOf('function longTermConditions'));
-  const verdict = Function(`${budgetSource}; return cityBudgetVerdict;`)();
-  assert.equal(verdict(2000, 1500), 'В бюджет укладывается');
-  assert.equal(verdict(1000, 1500), 'Выше бюджета');
-  assert.equal(verdict(null, 1500), '');
+  assert.doesNotMatch(app, /cityBudgetVerdict|budgetDerivedFromIncome|monthlyBudgetUsd|familyFactor|costIsFamilySpecific|\/мес на семью/);
+  assert.doesNotMatch(app, /В бюджет укладывается|выше бюджета|Стоимость жизни — ориентировочная/);
+  assert.match(app, /Города, климат и расходы/);
+  assert.match(app, /Расходы по городам/);
+  assert.match(app, /comparisonCost: city\.comparisonCostUsd/);
+  assert.match(app, /≈ \$\{currency\(comparisonCost\)\}\/мес/);
+  assert.equal((app.match(/Расходы по городам/g) || []).length, 1);
+  assert.match(app, /\$\{basketDescription\}<div class="city-budget-grid/);
+  assert.doesNotMatch(app, /city-direct Livingcost/);
   assert.doesNotMatch(entrySource, /summary_ru|air_entry_ru|land_sea_entry_ru|fee_local_ru|in_country_residence_application_ru/);
   assert.doesNotMatch(app, /internationalSchoolCost|knownSchoolCost|numericSchoolCost/);
 });
 
 test('pets UI consumes generic presentation after LGBT and never reads petSummary', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const petSource = app.slice(app.indexOf('function renderPetPresentation'), app.indexOf('const cityBudgetVerdict'));
+  const petSource = app.slice(app.indexOf('function renderPetPresentation'), app.indexOf('function longTermConditions'));
   const renderPets = Function('html', `${petSource}; return renderPetPresentation;`)((value) => String(value));
   assert.equal(renderPets({ petPresentation: null }), '');
   const block = renderPets({ petPresentation: {
@@ -623,7 +806,7 @@ test('result UI renders localized methods, entry guidance, duration, and dedupli
   assert.match(app, /russianMonths\(route\.firstPermit\.months\)/);
   assert.match(app, /deduplicatedWorkRights\(route\.workRights\)/);
   assert.doesNotMatch(app, /return `\$\{item\.kind\}:/);
-  assert.match(app, /return `\$\{item\.requirementLabel \|\| item\.kindLabel\} —/);
+  assert.match(app, /item\.requirementLabel \|\| item\.kindLabel/);
 });
 
 test('official financial periods render consistently in route cards and the best-route KPI', async () => {
@@ -701,7 +884,6 @@ test('every questionnaire answer enforced by step validation is visibly marked r
     'Переезжаете с детьми? *',
     'Переезжают домашние животные? *',
     'Какой результат вам нужен? *',
-    'Комфортный семейный бюджет в месяц *',
     'Сохранить гражданство РФ? *',
   ]) assert.ok(matcher.includes(label), label);
   for (const label of [

@@ -3,7 +3,7 @@ import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engin
 import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.2';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.2';
 import { formatCurrency } from './format.js?v=7.1.2';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.2';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.2';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -114,12 +114,11 @@ function collectAnswers() {
   return {
     inRussia, currentCountry: inRussia ? 'RU' : value('currentCountry'), currentStatus: inRussia ? 'CITIZENSHIP' : value('currentStatus'), applicationMethods,
     hasPartner: radio('partnerIncluded') === 'YES', partnerIncluded: radio('partnerIncluded') === 'YES', relationshipType: value('relationshipType'), applicantAge: value('applicantAge'), partnerAge: value('partnerAge'), lgbtEnabled: checked('lgbtEnabled'),
-    childAges: radio('hasChildren') === 'YES' ? childAges : [], schoolNeeded: radio('schoolType') === 'INTERNATIONAL', schoolType: radio('schoolType'),
+    childAges: radio('hasChildren') === 'YES' ? childAges : [],
     primaryType: value('primaryType'), primarySourceScope: value('primarySourceScope'), primarySourceCountry: value('primarySourceCountry'), primaryTotalAmount: value('primaryTotalAmount'), primaryAmount: resolvedIncomeAmount('primary'), primaryCurrency: value('primaryCurrency'), primaryEvidence: value('primaryEvidence'),
     hasAdditionalIncome: checked('hasAdditionalIncome'), additionalType: value('additionalType'), additionalSourceScope: value('additionalSourceScope'), additionalSourceCountry: value('additionalSourceCountry'), additionalTotalAmount: value('additionalTotalAmount'), additionalAmount: resolvedIncomeAmount('additional'), additionalCurrency: value('additionalCurrency'), additionalEvidence: value('additionalEvidence'),
     partnerHasIncome: checked('partnerHasIncome'), partnerType: value('partnerType'), partnerSourceScope: value('partnerSourceScope'), partnerSourceCountry: value('partnerSourceCountry'), partnerTotalAmount: value('partnerTotalAmount'), partnerAmount: resolvedIncomeAmount('partner'), partnerCurrency: value('partnerCurrency'), partnerEvidence: value('partnerEvidence'),
     longTermGoal: value('longTermGoal'), keepRuCitizenship: value('longTermGoal') === 'TEMPORARY_RESIDENCE_SUFFICIENT' ? 'NOT_REQUIRED' : (radio('keepRuCitizenship') || 'NOT_REQUIRED'),
-    budgetUnknown: checked('budgetUnknown'), monthlyBudget: value('monthlyBudget'), budgetCurrency: value('budgetCurrency'),
     petTypes: radio('hasPets') === 'YES' ? ['DOG', 'CAT'] : ['NONE'], dogBreedChoice: null, dogBreed: null, otherPetNotes: null,
     specialCircumstances: ['NONE'], medicalEnabled: false, specificMedicineRequired: false, regularCareRequired: false, medicalDetails: '',
     routeSpecificAnswers: currentProfile?.route_specific_answers || {},
@@ -133,7 +132,6 @@ function syncChildren() {
   const count = hasChildren ? Number(value('childrenCount') || 0) : 0;
   const existing = $$('#childAges input').map((input) => input.value);
   $('#childrenQuestionBlock').hidden = !hasChildren;
-  $('#educationBlock').hidden = !hasChildren;
   $('#childAges').innerHTML = Array.from({ length: count }, (_, index) => `<label class="field"><span>Возраст ребёнка ${index + 1} *</span><input data-child-age type="number" min="0" max="25" value="${html(existing[index] || '')}" placeholder="Лет"></label>`).join('');
 }
 
@@ -168,7 +166,6 @@ function syncConditional() {
     if (partialInput) partialInput.disabled = !showPartial;
     syncIncomeTypeHelp(prefix);
   }
-  $('#monthlyBudget').disabled = checked('budgetUnknown');
 }
 
 function fieldError(ids, message) {
@@ -228,8 +225,6 @@ function validateStep(step) {
   if (step === 3) error = incomeError('primary') || (checked('hasAdditionalIncome') ? incomeError('additional') : null) || (radio('partnerIncluded') === 'YES' && checked('partnerHasIncome') ? incomeError('partner') : null);
   if (step === 4 && !value('longTermGoal')) error = fieldError(['longTermGoal'], 'Выберите долгосрочную цель.');
   else if (step === 4 && value('longTermGoal') !== 'TEMPORARY_RESIDENCE_SUFFICIENT' && !radio('keepRuCitizenship')) error = fieldError(['keepRuCitizenship'], 'Укажите, обязательно ли сохранить гражданство РФ.');
-  if (step === 5 && !checked('budgetUnknown') && Number(value('monthlyBudget')) <= 0) error = fieldError(['monthlyBudget'], 'Укажите комфортный бюджет или выберите «Пока не знаю».');
-  else if (step === 5 && radio('hasChildren') === 'YES' && !radio('schoolType')) error = fieldError(['schoolType'], 'Выберите планируемый тип школы или вариант «Не нужна».');
   const root = $('#formError');
   root.hidden = true;
   root.textContent = '';
@@ -263,7 +258,6 @@ function renderProfileSummary(p) {
     ['Гражданство', 'РФ'], ['Семья', familyLabel(p, true)],
     ['Доход', p.income.primary.monthly_provable?.amount ? `${p.income.primary.monthly_provable.amount} ${p.income.primary.monthly_provable.currency}/мес` : 'Не указан'],
     ['Цель', value('longTermGoal') ? $('#longTermGoal').selectedOptions[0].textContent : 'Не указана'],
-    ['Семейный бюджет', p.preferences.monthly_budget ? `${p.preferences.monthly_budget.amount} ${p.preferences.monthly_budget.currency}/мес` : checked('budgetUnknown') ? 'Автоматически равен общему доходу' : 'Не указан'],
   ];
   $('#profileSummary').innerHTML = rows.map(([label, val]) => `<div class="summary-row"><span>${html(label)}</span><b>${html(val)}</b></div>`).join('');
 }
@@ -288,11 +282,11 @@ function renderLgbtResearch(calculation) {
 }
 
 const publicSchoolAccessLabel = (value) => ({
-  AVAILABLE: 'доступна',
-  CONDITIONAL: 'доступна с условиями',
-  NOT_AVAILABLE: 'недоступна',
-  NOT_RESEARCHED: 'не исследована',
-})[value] || 'не исследована';
+  AVAILABLE: 'доступно',
+  CONDITIONAL: 'доступно с условиями',
+  NOT_AVAILABLE: 'недоступно',
+  NOT_RESEARCHED: 'не исследовано',
+})[value] || 'не исследовано';
 
 const schoolTuitionPeriodLabel = (period) => ({
   ONE_TIME: 'единовременно',
@@ -308,19 +302,7 @@ const schoolTuitionPeriodLabel = (period) => ({
 function renderSchoolPresentation(calculation) {
   const school = calculation.schoolPresentation;
   if (!school) return '';
-  if (school.type === 'INTERNATIONAL') {
-    if (school.status === 'AVAILABLE' && school.cities.length) {
-      return `<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы в стране есть. Из показанных городов подтверждены: ${school.cities.map(html).join(', ')}.</p></section>`;
-    }
-    if (school.status === 'AVAILABLE') {
-      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы в стране есть.</p></section>';
-    }
-    if (school.status === 'RESEARCHED_NONE_FOUND') {
-      return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Международные школы: в ходе исследования не найдены.</p></section>';
-    }
-    return '<section><div class="section-title-row"><div><h3>Школы</h3></div></div><p>Сведения о международных школах пока не исследованы.</p></section>';
-  }
-  const rules = school.rules.map((rule) => {
+  const rules = school.public.rules.map((rule) => {
     const age = rule.compulsoryAgeMin == null || rule.compulsoryAgeMax == null
       ? 'не подтверждён'
       : `${rule.compulsoryAgeMin}–${rule.compulsoryAgeMax} лет`;
@@ -329,9 +311,16 @@ function renderSchoolPresentation(calculation) {
         ? `${currency(rule.tuition.amount, rule.tuition.currency)} ${schoolTuitionPeriodLabel(rule.tuition.period)}`.trim()
         : 'платно'
       : 'не подтверждено';
-    return `<div class="route-requirements"><h4>${html(rule.jurisdiction)}</h4><p><b>Доступ иностранному ребёнку:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательный школьный возраст:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
+    return `<div class="school-rule"><h5>${html(rule.jurisdiction)}</h5><p><b>Доступ иностранным детям:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательное обучение:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
   }).join('');
-  return rules ? `<section><div class="section-title-row"><div><h3>Школы</h3></div></div>${rules}</section>` : '';
+  const international = school.international.status === 'AVAILABLE'
+    ? school.international.cities.length
+      ? `Подтверждены в: ${school.international.cities.map(html).join(', ')}.`
+      : 'Наличие подтверждено.'
+    : school.international.status === 'RESEARCHED_NONE_FOUND'
+      ? 'В ходе исследования международные школы с обучением на английском не найдены.'
+      : 'Данных о международных школах с обучением на английском пока недостаточно.';
+  return `<section class="school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p></div></section>`;
 }
 
 function renderEntryPresentation(calculation) {
@@ -355,10 +344,6 @@ function renderPetPresentation(calculation) {
   return lines ? `<section><div class="section-title-row"><div><h3>Домашние животные</h3></div></div>${lines}</section>` : '';
 }
 
-const cityBudgetVerdict = (budgetUsd, living) => budgetUsd == null || !Number.isFinite(living)
-  ? ''
-  : budgetUsd >= living ? 'В бюджет укладывается' : 'Выше бюджета';
-
 function longTermConditions(route) {
   if (!route.longTerm) return "";
   const items = [route.longTerm.renewal, route.longTerm.permanentResidence, route.longTerm.citizenship, route.longTerm.presence, route.longTerm.language].filter(Boolean);
@@ -369,15 +354,30 @@ function routeCard(route, countryName, main = false) {
   const unsuitable = route.routeStatus === "UNSUITABLE";
   const list = (items = []) => `<ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul>`;
   const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4>Почему не подходит</h4>${list(route.blockers)}</div>` : "";
-  const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && route.conditions?.length
-    ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(route.conditions)}</div>` : "";
-  const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
-  const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
-  const financialItems = route.financialSummary?.alternatives?.filter((item) => item.threshold != null).map((item) => {
+  const formatFinancialAlternative = (item) => {
     const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
-    return `${item.requirementLabel || item.kindLabel} — ${official}${equivalent}`;
-  }) || [];
+    return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${official}${equivalent}`.trim();
+  };
+  const conditionActions = route.conditionActions?.length
+    ? route.conditionActions
+    : (route.conditions || []).map((text) => ({ text, requirementId: null, financialSummary: null }));
+  const financialActionSeen = new Set();
+  const actionItems = conditionActions.map((action) => {
+    const alternatives = action.requirementId && !financialActionSeen.has(action.requirementId)
+      ? action.financialSummary?.alternatives?.filter((item) => item.threshold != null) || [] : [];
+    if (alternatives.length) financialActionSeen.add(action.requirementId);
+    return alternatives.length
+      ? `${String(action.text).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`
+      : action.text;
+  });
+  const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && actionItems.length
+    ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
+  const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
+  const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
+  const financialRequirements = route.financialRequirements || (route.financialSummary ? [{ requirementId: null, effect: 'NONE', summary: route.financialSummary }] : []);
+  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) =>
+    summary.alternatives?.filter((item) => item.threshold != null).map((item) => `${item.requirementLabel || item.kindLabel} — ${formatFinancialAlternative(item)}`) || []);
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ONE_TIME: 'единовременно', OTHER: '' };
   const practicalEvidenceLabel = {
@@ -467,42 +467,34 @@ function renderCountryResult(calculation, changed = false, active = false) {
         size: city.populationCategory,
         roles: [...(city.roles || []), ...(city.labels || [])],
         categories: cityCategories(city.populationCategory, [...(city.roles || []), ...(city.labels || [])]),
-        cost: city.costUsd,
-        costComparable: city.costComparable,
-        costIsFamilySpecific: true,
+        comparisonCost: city.comparisonCostUsd,
+        comparisonComponents: city.comparisonComponents,
+        comparisonScenarios: city.comparisonScenarios,
         coldRange: city.coldRange,
         hotRange: city.hotRange,
         avgTempColdestMonthC: city.avgTempColdestMonthC,
         avgTempHottestMonthC: city.avgTempHottestMonthC,
         climate: city.climate,
       }));
-  const familyFactor = 1 + Math.max(0, calculation.profile.adults - 1) * 0.6 + children * 0.4;
-  const budgetUsd = calculation.profile.monthlyBudgetUsd;
-  const budgetSourceNote = calculation.profile.budgetDerivedFromIncome && budgetUsd != null
-    ? `<p class="budget-source-note">Бюджет не указан отдельно, поэтому для сравнения использован общий регулярный доход: <b>${currency(budgetUsd)}</b> в месяц.</p>`
-    : '';
-  const cityCostSuffix = calculation.profile.adults === 1 && children === 0 ? '/мес' : '/мес на семью';
+  const comparisonComponents = comparisonCities[0]?.comparisonComponents || [];
+  const basketDescription = `<p class="research-caveat">${html(describeCityCostBasket(comparisonComponents, comparisonCities[0]?.comparisonScenarios))}</p>`;
   const citySection = comparisonCities.length
-    ? `<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
-        const living = Number.isFinite(city.cost) ? (city.costIsFamilySpecific ? Math.round(city.cost) : Math.round(city.cost * familyFactor)) : null;
-        const verdict = cityBudgetVerdict(budgetUsd, living);
-        const budgetLine = verdict === 'В бюджет укладывается'
-          ? `<span class="budget-ok">${verdict}</span>`
-          : verdict ? `<span class="budget-short">${verdict}</span>` : '';
+    ? `<h4>Расходы по городам</h4>${basketDescription}<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
+        const comparisonCost = Number.isFinite(city.comparisonCost) ? Math.round(city.comparisonCost) : null;
         const coldValue = city.coldRange ?? city.avgTempColdestMonthC;
         const hotValue = city.hotRange ?? city.avgTempHottestMonthC;
         const coldLine = coldValue != null ? `<span>Холодный период: <b>${html(formatTemperatureRange(coldValue))}</b></span>` : '';
         const hotLine = hotValue != null ? `<span>Жаркий период: <b>${html(formatTemperatureRange(hotValue))}</b></span>` : '';
         const climateLine = city.climate ? `<span>Климат: <b>${html(city.climate)}</b></span>` : '';
-        const costLine = living == null ? '<span>Стоимость: нет сопоставимого полного значения</span>' : `<strong>${currency(living)}${cityCostSuffix}</strong>`;
-        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4>${costLine}${budgetLine}${climateLine}${coldLine}${hotLine}</article>`;
-      }).join('')}</div><p class="research-caveat">Стоимость жизни — текущий сравнительный ориентир в USD. Она оценивает комфорт и не меняет юридическую пригодность ВНЖ.</p>`
+        const costLine = comparisonCost == null ? '' : `<strong>≈ ${currency(comparisonCost)}/мес</strong>`;
+        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4>${costLine}${climateLine}${coldLine}${hotLine}</article>`;
+      }).join('')}</div>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     ${entryBlock}
-    <section><div class="section-title-row"><div><h3>Города, климат и бюджет</h3></div></div>${budgetSourceNote}${citySection}</section>
+    <section><div class="section-title-row"><div><h3>Города, климат и расходы</h3></div></div>${citySection}</section>
     ${renderSchoolPresentation(calculation)}
     ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}</div></article>`;
 }
@@ -514,7 +506,7 @@ function calculateActiveCountries() {
 function renderResult(calculation, changed = false) {
   const countries = sortCountriesForDisplay(calculation.results || []);
   const calculatedAt = countries[0]?.calculatedAt?.slice(0, 10) || calculationContext.calculation_date?.slice(0, 10);
-  const calculationNote = `<p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Стоимость жизни — ориентировочная практическая оценка. Расчёт: ${html(calculatedAt)}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат предварительный и не является юридическим обещанием.</p>`;
+  const calculationNote = `<p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Расчёт: ${html(calculatedAt)}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат предварительный и не является юридическим обещанием.</p>`;
   $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${calculationNote}`;
   const activateCountry = (countryId) => {
     $$('[data-country-tab]', $('#result')).forEach((tab) => {
@@ -552,10 +544,10 @@ function restoreDraft() {
     const stored = JSON.parse(localStorage.getItem(DRAFT_KEY));
     if (stored?.version !== 3 || !stored.answers) return false;
     const a = stored.answers;
-    const simple = ['currentCountry','currentStatus','relationshipType','applicantAge','partnerAge','primaryType','primarySourceScope','primarySourceCountry','primaryTotalAmount','primaryAmount','primaryCurrency','primaryEvidence','additionalType','additionalSourceScope','additionalSourceCountry','additionalTotalAmount','additionalAmount','additionalCurrency','additionalEvidence','partnerType','partnerSourceScope','partnerSourceCountry','partnerTotalAmount','partnerAmount','partnerCurrency','partnerEvidence','longTermGoal','monthlyBudget','budgetCurrency'];
+    const simple = ['currentCountry','currentStatus','relationshipType','applicantAge','partnerAge','primaryType','primarySourceScope','primarySourceCountry','primaryTotalAmount','primaryAmount','primaryCurrency','primaryEvidence','additionalType','additionalSourceScope','additionalSourceCountry','additionalTotalAmount','additionalAmount','additionalCurrency','additionalEvidence','partnerType','partnerSourceScope','partnerSourceCountry','partnerTotalAmount','partnerAmount','partnerCurrency','partnerEvidence','longTermGoal'];
     simple.forEach((id) => { if ($(`#${id}`) && a[id] != null) $(`#${id}`).value = a[id]; });
-    setRadio('inRussia', a.inRussia || parseCountryCode(a.currentCountry) === 'RU' ? 'YES' : 'NO'); setRadio('partnerIncluded', a.partnerIncluded ? 'YES' : 'NO'); setRadio('hasChildren', a.childAges?.length ? 'YES' : 'NO'); setRadio('hasPets', a.petTypes?.[0] && a.petTypes[0] !== 'NONE' ? 'YES' : 'NO'); setRadio('keepRuCitizenship', a.keepRuCitizenship); setRadio('schoolType', a.schoolType);
-    ['lgbtEnabled','hasAdditionalIncome','partnerHasIncome','budgetUnknown'].forEach((id) => { if ($(`#${id}`)) $(`#${id}`).checked = Boolean(a[id]); });
+    setRadio('inRussia', a.inRussia || parseCountryCode(a.currentCountry) === 'RU' ? 'YES' : 'NO'); setRadio('partnerIncluded', a.partnerIncluded ? 'YES' : 'NO'); setRadio('hasChildren', a.childAges?.length ? 'YES' : 'NO'); setRadio('hasPets', a.petTypes?.[0] && a.petTypes[0] !== 'NONE' ? 'YES' : 'NO'); setRadio('keepRuCitizenship', a.keepRuCitizenship);
+    ['lgbtEnabled','hasAdditionalIncome','partnerHasIncome'].forEach((id) => { if ($(`#${id}`)) $(`#${id}`).checked = Boolean(a[id]); });
     $('#childrenCount').value = a.childAges?.length ? String(a.childAges.length) : ''; syncChildren(); $$('#childAges input').forEach((input, index) => { input.value = a.childAges[index] ?? ''; });
     currentProfile = a.routeSpecificAnswers ? { route_specific_answers: a.routeSpecificAnswers } : null;
     syncConditional(); return true;
