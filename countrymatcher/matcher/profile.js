@@ -1,4 +1,5 @@
 import { parseCountryCode } from './countries.js';
+import { ROUTE_PRESENTATION_RANK, routePresentationGroup } from '../js/engine/route-presentation-contract.js';
 
 const money = (amount, currency) => amount === '' || amount == null ? null : ({ amount: Number(amount), currency });
 
@@ -252,12 +253,6 @@ export function describeResultIntro(routes, changed = false) {
   };
 }
 
-const ROUTE_DISPLAY_RANK = Object.freeze({
-  SUITABLE: 0,
-  SUITABLE_WITH_CONDITIONS: 1,
-  UNSUITABLE: 2,
-});
-
 export function sortRoutesForDisplay(routes = []) {
   const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
   const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
@@ -266,13 +261,14 @@ export function sortRoutesForDisplay(routes = []) {
     .sort((left, right) => {
       const a = left.route;
       const b = right.route;
-      const statusDifference = (ROUTE_DISPLAY_RANK[a.routeStatus] ?? 99) - (ROUTE_DISPLAY_RANK[b.routeStatus] ?? 99);
+      const statusDifference = (ROUTE_PRESENTATION_RANK[routePresentationGroup(a)] ?? 99)
+        - (ROUTE_PRESENTATION_RANK[routePresentationGroup(b)] ?? 99);
       if (statusDifference) return statusDifference;
       const familyDifference = (familyRank[a.familyFit] ?? 1) - (familyRank[b.familyFit] ?? 1);
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[a.goalFit] ?? 1) - (goalRank[b.goalFit] ?? 1);
       if (goalDifference) return goalDifference;
-      if (a.routeStatus === 'UNSUITABLE') {
+      if (routePresentationGroup(a) === 'UNSUITABLE') {
         const blockerDifference = (a.blockers?.length || 0) - (b.blockers?.length || 0);
         if (blockerDifference) return blockerDifference;
       }
@@ -288,10 +284,10 @@ export function sortCountriesForDisplay(countries = []) {
   return countries
     .map((country, originalIndex) => ({ country, originalIndex }))
     .sort((left, right) => {
-      const leftStatus = left.country?.bestRoute?.routeStatus ?? left.country?.country?.group;
-      const rightStatus = right.country?.bestRoute?.routeStatus ?? right.country?.country?.group;
-      const leftRank = ROUTE_DISPLAY_RANK[leftStatus] ?? 99;
-      const rightRank = ROUTE_DISPLAY_RANK[rightStatus] ?? 99;
+      const leftStatus = routePresentationGroup(left.country?.bestRoute) ?? left.country?.country?.group;
+      const rightStatus = routePresentationGroup(right.country?.bestRoute) ?? right.country?.country?.group;
+      const leftRank = ROUTE_PRESENTATION_RANK[leftStatus] ?? 99;
+      const rightRank = ROUTE_PRESENTATION_RANK[rightStatus] ?? 99;
       if (leftRank !== rightRank) return leftRank - rightRank;
       const leftBest = left.country?.bestRoute;
       const rightBest = right.country?.bestRoute;

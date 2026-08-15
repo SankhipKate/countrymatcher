@@ -980,6 +980,9 @@
             "NONE"
           ]
         },
+        "requires_separate_basis": {
+          "const": true
+        },
         "condition_ru": {
           "type": "string",
           "minLength": 1
@@ -1029,6 +1032,20 @@
         }
       },
       "allOf": [
+        {
+          "if": {
+            "required": [
+              "requires_separate_basis"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "UNASKED_CONDITION"
+              }
+            }
+          }
+        },
         {
           "if": {
             "properties": {
@@ -2105,6 +2122,9 @@
             "INTERNATIONAL_PROTECTION",
             "OTHER"
           ]
+        },
+        "is_humanitarian": {
+          "const": true
         },
         "route_subtype_ru": {
           "type": [

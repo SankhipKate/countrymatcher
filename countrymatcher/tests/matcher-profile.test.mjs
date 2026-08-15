@@ -5,6 +5,7 @@ import { applicationPresentationText, buildUserProfile, cityCategories, countryF
 import { formatCurrency } from '../matcher/format.js';
 import { APPLICATION_METHOD_LABELS_RU } from '../js/engine/rp4-engine.js';
 import { STATUS_LABELS_RU } from '../js/engine/status-contract.js';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js';
 import { countryOptions, parseCountryCode, searchCountries } from '../matcher/countries.js';
 import { DOG_BREEDS, isKnownDogBreed, searchDogBreeds } from '../matcher/dog-breeds.js';
 
@@ -326,13 +327,15 @@ test('empty route result uses neutral wording', () => {
   assert.doesNotMatch(`${intro.heading} ${intro.routeLabel}`, /Подходит|Не подходит|Наиболее подходящий/);
 });
 
-test('result routes are ordered through the three-status contract', () => {
+test('result routes use five presentation groups without changing the three-status contract', () => {
   const routes = [
     { routeId: 'no', routeStatus: 'UNSUITABLE' },
+    { routeId: 'protection', routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'INTERNATIONAL_PROTECTION' },
     { routeId: 'yes', routeStatus: 'SUITABLE' },
+    { routeId: 'basis', routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
     { routeId: 'conditions', routeStatus: 'SUITABLE_WITH_CONDITIONS' },
   ];
-  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['yes', 'conditions', 'no']);
+  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['yes', 'conditions', 'basis', 'protection', 'no']);
   assert.equal(routes[0].routeId, 'no');
 });
 
@@ -358,6 +361,20 @@ test('countries are stably ordered by the status of their best route', () => {
     ['UY', 'PY', 'AR', 'PT', 'ES'],
   );
   assert.deepEqual(countries.map(({ country }) => country.countryId), ['ES', 'UY', 'AR', 'PY', 'PT']);
+});
+
+test('countries follow the same five-level presentation order as routes', () => {
+  const country = (countryId, presentationGroup, routeStatus = 'SUITABLE_WITH_CONDITIONS') => ({
+    country: { countryId, group: routeStatus }, bestRoute: { routeStatus, presentationGroup },
+  });
+  const countries = [
+    country('NO', 'UNSUITABLE', 'UNSUITABLE'),
+    country('PROT', 'INTERNATIONAL_PROTECTION'),
+    country('BASIS', 'REQUIRES_SEPARATE_BASIS'),
+    country('COND', 'SUITABLE_WITH_CONDITIONS'),
+    country('YES', 'SUITABLE', 'SUITABLE'),
+  ];
+  assert.deepEqual(sortCountriesForDisplay(countries).map(({ country: item }) => item.countryId), ['YES', 'COND', 'BASIS', 'PROT', 'NO']);
 });
 
 test('comparisonCostUsd never changes cross-country ordering', () => {
@@ -664,11 +681,11 @@ test('route cards deduplicate financial actions by requirement identity', async 
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const routeSource = app.slice(app.indexOf('function longTermConditions'), app.indexOf('function countryPresentation'));
   const renderRoute = Function(
-    'STATUS_LABELS_RU', 'statusClass', 'html', 'currency', 'officialFinancialPeriodSuffix',
+    'ROUTE_PRESENTATION_LABELS_RU', 'routePresentationGroup', 'statusClass', 'html', 'currency', 'officialFinancialPeriodSuffix',
     'applicationPresentationText', 'russianMonths', 'deduplicatedWorkRights',
     `${routeSource}; return routeCard;`,
   )(
-    STATUS_LABELS_RU, () => 'status', (value) => String(value),
+    ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup, () => 'status', (value) => String(value),
     (amount, code = 'USD') => `${amount} ${code}`, (period) => ({ MONTHLY: '/мес', ANNUAL: '/год' })[period] || '',
     () => '', () => '', () => [],
   );
@@ -729,6 +746,27 @@ test('route cards deduplicate financial actions by requirement identity', async 
   assert.match(identicalText, /Одинаковое действие — доход 1200 EUR\/мес \(≈ 1330 USD\/мес\)/u);
   assert.match(identicalText, /Одинаковое действие — доход 2400 EUR\/мес \(≈ 2670 USD\/мес\)/u);
   assert.doesNotMatch(identicalText, /Финансовое требование/u);
+
+  const separate = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS',
+    conditions: ['Получить основание.'], conditionActions: [{ text: 'Получить основание.', requirementId: 'BASIS', financialSummary: null }],
+  }, 'Страна', true);
+  assert.match(separate, /Требует отдельного основания/u);
+  assert.match(separate, /Получить основание/u);
+  assert.doesNotMatch(separate, /Лучший маршрут исходя из ваших ответов/u);
+
+  const protection = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'INTERNATIONAL_PROTECTION',
+    conditions: ['Подтвердить обстоятельства.'], conditionActions: [{ text: 'Подтвердить обстоятельства.', requirementId: 'PROT', financialSummary: null }],
+  }, 'Страна', true);
+  assert.match(protection, /Международная защита/u);
+  assert.doesNotMatch(protection, /Лучший маршрут исходя из ваших ответов/u);
+  assert.match(mixed, /Подходит с условиями/u);
+  const ordinaryConditional = renderRoute({
+    ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Обычное условие.'],
+    conditionActions: [{ text: 'Обычное условие.', requirementId: 'COND', financialSummary: null }],
+  }, 'Страна', true);
+  assert.match(ordinaryConditional, /Лучший маршрут исходя из ваших ответов/u);
 });
 
 test('ES NLV route description stays concise in researched data and UI input', () => {
@@ -794,11 +832,11 @@ test('country navigation omits route names and every route uses native collapsib
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const tabSource = app.slice(app.indexOf('function renderCountryTab'), app.indexOf('function renderCountryResult'));
   assert.match(tabSource, /html\(countryName\)/);
-  assert.match(tabSource, /STATUS_LABELS_RU\[best\.routeStatus\]/);
+  assert.match(tabSource, /ROUTE_PRESENTATION_LABELS_RU\[routePresentationGroup\(best\)\]/);
   assert.equal(tabSource.includes('best.routeName'), false);
   const cardSource = app.slice(app.indexOf('function routeCard'), app.indexOf('function countryPresentation'));
   assert.match(cardSource, /<details\$\{main \? ' open' : ''\}>/);
-  assert.match(cardSource, /main \? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов/);
+  assert.match(cardSource, /\['SUITABLE', 'SUITABLE_WITH_CONDITIONS'\]\.includes\(presentationGroup\)/);
   assert.match(cardSource, /when-closed">Показать подробности/);
   assert.match(cardSource, /when-open">Скрыть подробности/);
   assert.match(cardSource, /Почему не подходит/);

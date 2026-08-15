@@ -837,6 +837,7 @@
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить подходящий местный трудовой договор/предконтракт с работодателем, выполняющим требования DNM/RENURE.",
           "source_ids": [
@@ -1019,6 +1020,7 @@
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить контракт с соответствующей организацией либо документированный внутрикорпоративный перевод на подходящую должность.",
           "source_ids": [
@@ -1212,6 +1214,7 @@
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить зачисление/электронную регистрацию в признанном учебном заведении по подходящей программе.",
           "source_ids": [
@@ -1392,6 +1395,7 @@
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Подтвердить предусмотренную законом семейную связь: супруг/зарегистрированный партнёр, родитель или соответствующий ребёнок аргентинца либо постоянного/временного резидента.",
           "source_ids": [
@@ -1559,6 +1563,7 @@
       "name_ru": "Временная резиденция по гуманитарным основаниям",
       "official_term_ru": "Residencia temporaria por razones humanitarias",
       "route_type": "OTHER",
+      "is_humanitarian": true,
       "covers_categories": [
         "OTHER"
       ],

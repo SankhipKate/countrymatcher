@@ -1,5 +1,5 @@
-import { STATUS_LABELS_RU } from '../js/engine/status-contract.js?v=7.1.2';
 import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.1.2';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.1.2';
 import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.2';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.2';
 import { formatCurrency } from './format.js?v=7.1.2';
@@ -358,6 +358,9 @@ function longTermConditions(route) {
 
 function routeCard(route, countryName, main = false) {
   const unsuitable = route.routeStatus === "UNSUITABLE";
+  const presentationGroup = routePresentationGroup(route);
+  const bestRouteLabel = main && ['SUITABLE', 'SUITABLE_WITH_CONDITIONS'].includes(presentationGroup)
+    ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : '';
   const list = (items = []) => `<ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul>`;
   const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4>Почему не подходит</h4>${list(route.blockers)}</div>` : "";
   const formatFinancialAlternative = (item) => {
@@ -425,7 +428,7 @@ function routeCard(route, countryName, main = false) {
   const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
   const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(STATUS_LABELS_RU[route.routeStatus])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${main ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : ''}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(route.routeStatus)}">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${bestRouteLabel}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
   const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
   return `<article class="route-result ${main ? 'best' : 'compact'}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
@@ -447,7 +450,7 @@ function countryPresentation(calculation) {
 function renderCountryTab(calculation, active = false) {
   const { best, countryId, countryName, flag } = countryPresentation(calculation);
   const summary = best ? '' : '<small>Нет маршрутов для надёжной оценки</small>';
-  const status = best ? `<span class="status-pill ${statusClass(best.routeStatus)}">${html(STATUS_LABELS_RU[best.routeStatus])}</span>` : '';
+  const status = best ? `<span class="status-pill ${statusClass(best.routeStatus)}">${html(ROUTE_PRESENTATION_LABELS_RU[routePresentationGroup(best)])}</span>` : '';
   return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong>${summary}</span>${status}</button>`;
 }
 

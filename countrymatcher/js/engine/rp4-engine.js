@@ -1,4 +1,5 @@
 import { ROUTE_STATUSES } from './status-contract.js?v=7.1.2';
+import { ROUTE_PRESENTATION_GROUPS, ROUTE_PRESENTATION_RANK } from './route-presentation-contract.js';
 
 export const ACTIVE_RESEARCH_SCHEMA_VERSION = '4.0';
 export const ACTIVE_CANON_REVISION = '2026-08-08-final-lock';
@@ -545,6 +546,18 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
   };
 }
 
+export function deriveRoutePresentationGroup(route, evaluated) {
+  if (route.route_type === 'INTERNATIONAL_PROTECTION' || route.is_humanitarian === true) {
+    return ROUTE_PRESENTATION_GROUPS.INTERNATIONAL_PROTECTION;
+  }
+  if (evaluated.routeStatus === ROUTE_STATUSES.UNSUITABLE) return ROUTE_PRESENTATION_GROUPS.UNSUITABLE;
+  const hasSeparateBasisCondition = evaluated.requirementResults.some(({ requirement, effect }) =>
+    effect === 'CONDITION'
+    && requirement.evaluation_mode === 'UNASKED_CONDITION'
+    && requirement.requires_separate_basis === true);
+  return hasSeparateBasisCondition ? ROUTE_PRESENTATION_GROUPS.REQUIRES_SEPARATE_BASIS : evaluated.routeStatus;
+}
+
 function presentRoute(route, evaluated, sources, context) {
   const source = sources.get(route.official_source_id) || null;
   const financialRequirements = presentFinancialRequirements(evaluated.requirementResults, context);
@@ -559,11 +572,13 @@ function presentRoute(route, evaluated, sources, context) {
       requirementId: null, requirementType: null, text, financialSummary: null,
     });
   }
+  const presentationGroup = deriveRoutePresentationGroup(route, evaluated);
   return {
     ...evaluated,
     routeName: ROUTE_LABELS_RU[route.route_id] || route.name_ru,
     routeOfficialName: route.official_term_ru || null,
     routeType: route.route_type,
+    presentationGroup,
     description: route.basis_ru,
     financialSummary: presentFinancial(evaluated.requirementResults, context),
     financialRequirements,
@@ -766,8 +781,6 @@ function presentLgbt(pkg, profile) {
   };
 }
 
-const statusRank = { SUITABLE: 0, SUITABLE_WITH_CONDITIONS: 1, UNSUITABLE: 2 };
-
 export function calculateActiveCountry(profile, pkg, context) {
   assertActiveResearchPackage(pkg);
   const sourceIndex = new Map((pkg.sources || []).map((source) => [source.source_id, source]));
@@ -786,7 +799,8 @@ export function calculateActiveCountry(profile, pkg, context) {
     .map(({ route, familyEvaluation }) => ({ routeId: route.route_id, reason: 'FAMILY_DATA_CONTRACT_PROBLEM', problems: familyEvaluation.dataContractProblems }));
   const routes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state !== FAMILY_STATES.DATA_CONTRACT_PROBLEM)
     .map(({ route, calculated, familyEvaluation }) => ({ ...presentRoute(route, calculated, sourceIndex, context), familyEvaluation }));
-  const bestRoute = [...routes].sort((a, b) => statusRank[a.routeStatus] - statusRank[b.routeStatus])[0] || null;
+  const bestRoute = [...routes].sort((a, b) =>
+    (ROUTE_PRESENTATION_RANK[a.presentationGroup] ?? 99) - (ROUTE_PRESENTATION_RANK[b.presentationGroup] ?? 99))[0] || null;
   const applicantIncome = applicantSources(profile).reduce((sum, item) => sum + convertAmount(
     item.monthly_provable?.amount || 0,
     item.monthly_provable?.currency || pkg.country_currency,

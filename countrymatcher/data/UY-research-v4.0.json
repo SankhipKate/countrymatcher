@@ -521,6 +521,7 @@
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить допустимый местный трудовой договор или иное подтверждённое рабочее основание.",
           "source_ids": [
@@ -767,6 +768,7 @@
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить и подтвердить зачисление в признанную образовательную организацию.",
           "source_ids": [
@@ -1029,6 +1031,7 @@
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Получить подтверждённое профессиональное назначение, трудовое основание или внутрикорпоративный перевод.",
           "source_ids": [
@@ -1440,6 +1443,7 @@
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Подтвердить применимую семейную связь с гражданином Уругвая.",
           "source_ids": [
@@ -1812,6 +1816,7 @@
       "name_ru": "Временная резиденция по гуманитарным основаниям",
       "official_term_ru": "Residencia temporaria por razones humanitarias",
       "route_type": "OTHER",
+      "is_humanitarian": true,
       "covers_categories": [
         "OTHER"
       ],
