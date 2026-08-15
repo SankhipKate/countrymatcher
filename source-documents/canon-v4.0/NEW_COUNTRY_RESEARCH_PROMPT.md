@@ -155,7 +155,9 @@ family_formula и family_formula_ordered не используются одно�
 
 Если при `AVAILABLE` coverage явно или вероятно неполное, создай non-blocking `open_item` блока `SCHOOLS` с `blocks_publication = false`, свяжи его с completeness block `SCHOOLS` через `open_item_ids` и установи `SCHOOLS = PARTIAL_NON_BLOCKING`.
 
-В текущем контракте не выводи individual legacy tuition/admission values и не создавай из неполных значений диапазон. Следующий school contract/data pass потребует диапазон только по непосредственно подтверждённым tuition values релевантных international/English-medium schools и grade tariffs: минимум–максимум среди найденных значений без интерполяции отсутствующих классов и без заявления абсолютных границ рынка. Admission, enrollment, registration, capital и иные one-time fees в tuition range не входят. Сейчас новую schema representation и новые цены не придумывай; существующие nullable поля оставь без миграции.
+Не используй individual legacy tuition/admission values из `international_schools[]` и не мигрируй существующие пакеты ES/AR/UY. Для новой страны во время country-wide school research ищи надёжно опубликованную annual tuition только для двух точек релевантных international/English-medium schools. `FIRST_GRADE` — первый школьный класс / Grade 1 или прямой национальный эквивалент; это не kindergarten/preschool и не просто самый ранний уровень конкретной школы. `FINAL_GRADE` — последний класс среднего школьного образования перед университетом или прямой национальный эквивалент. Промежуточные классы и полный каталог школ не требуются. Каждое найденное значение сохрани отдельно в `international_school_tuition_observations[]`: `school_name_ru`, `grade_stage`, положительная `tuition.amount`, `currency`, период `ANNUAL` либо `ACADEMIC_YEAR`, `price_date` и непустые `source_ids`.
+
+Не интерполируй отсутствующую grade point и не превращай неполные наблюдения в диапазон. Пользовательский range использует minimum подтверждённой `FIRST_GRADE` tuition и maximum подтверждённой `FINAL_GRADE` tuition только при наличии обеих точек. Это observed range по найденным школам, не абсолютный national minimum/maximum. Не включай admission, enrollment, registration, capital assessments, deposits, transport, books, meals и другие one-time/ancillary fees. Отсутствие опубликованной tuition не блокирует публикацию; значение не придумывай.
 
 ДЕТСКИЕ САДЫ НЕ ИССЛЕДУЙ. Их нет в Research Package 4.0, они не участвуют в расчёте и не выводятся пользователю.
 
@@ -236,6 +238,7 @@ completeness обязан содержать ровно 14 блоков из с�
 - исследованное ограничение животных не имеет пустого source_ids;
 - отсутствие tuition само по себе не является research gap; подтверждённая международная школа может иметь `tuition = null`, если цена не подтверждена;
 - каталог отдельных international schools не является acceptance criterion нового исследования; legacy `international_schools[].city_id` по-прежнему должен существовать в `cities[]`;
+- optional `international_school_tuition_observations[]` содержит только `FIRST_GRADE`/`FINAL_GRADE`, annual/academic-year prices и valid `source_ids`; отсутствие одной точки означает отсутствие range, а не интерполяцию;
 - THIRD_COUNTRY AVAILABLE/CONDITIONAL имеет country_id, city_ru и visa_required_for_ru;
 - каждый маршрут имеет минимум один family_scenario;
 - READY не используется при BLOCKING_GAP;

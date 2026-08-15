@@ -700,7 +700,9 @@ Research Package хранит только исходную сумму, валю
 
 Если новый массив отсутствует, legacy package может использовать backward-compatible fallback: `international_schools[].city_id` сопоставляется с `cities[].city_id`, чтобы получить название города. Если присутствуют оба контейнера, presentation предпочитает новый `international_school_cities[]` как current source of truth для school-city coverage.
 
-Список отдельных школ и school cost внутри city cards не показываются. В текущем pass individual legacy tuition/admission values международных школ также не показываются и не агрегируются в диапазон.
+Список отдельных школ и school cost внутри city cards не показываются. Individual legacy tuition/admission values из `international_schools[]` также не показываются и не агрегируются.
+
+Optional `international_school_tuition_observations[]` используется только для нового country-level presentation. `FIRST_GRADE` — первый школьный класс / Grade 1 или прямой национальный эквивалент, но не kindergarten/preschool и не просто самый ранний уровень конкретной школы. `FINAL_GRADE` — последний класс среднего школьного образования перед университетом или прямой национальный эквивалент. Диапазон показывается лишь при наличии обеих независимо подтверждённых точек: минимум конвертируемой annual tuition среди `FIRST_GRADE` и максимум среди `FINAL_GRADE`. При равных границах показывается одна сумма. Если одна точка отсутствует, не конвертируется или нижняя граница превышает верхнюю, диапазон не показывается; status и города продолжают показываться как обычно. Пользовательский текст явно говорит, что это стоимость по найденным школам и что вступительные и регистрационные взносы исключены. Имена школ, отдельные тарифы и источники в результате не перечисляются.
 
 Отсутствие `city_id` города в `international_schools[]` не позволяет утверждать, что в этом городе школ нет или что данные по нему не собирались. Никаких выводов о неперечисленных городах не делается.
 
@@ -708,7 +710,7 @@ Research Package хранит только исходную сумму, валю
 
 Если `international_school_status = NOT_RESEARCHED`, пользовательский смысл: «Данных о международных школах с обучением на английском пока недостаточно.» Значение не превращается ни в «школы есть», ни в «школы не найдены». Это research gap, который обрабатывается по общим правилам research gaps; для готового исследования новой страны CRS запрещает такой финальный school status.
 
-`is_free = true` и неизвестная цена государственной школы — разные состояния. Неизвестное не превращается в `0`. Следующий school contract/data pass должен представить диапазон international tuition только из непосредственно подтверждённых school/grade tuition values, без интерполяции и без one-time admission/registration/enrollment/capital fees. Пока такого representation нет, диапазон не изобретается.
+`is_free = true` и неизвестная цена государственной школы — разные состояния. Неизвестное не превращается в `0`. International tuition range не интерполирует отсутствующие grade stages и не включает admission/registration/enrollment/capital или другие ancillary fees.
 
 Schools не меняют legal route status, не фильтруют города, не меняют city labels, city comparison/ranking или country ranking.
 

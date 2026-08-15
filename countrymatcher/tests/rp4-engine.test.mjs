@@ -23,7 +23,7 @@ import {
 import { sortCountriesForDisplay } from '../matcher/profile.js';
 
 const FIXTURE_SHA256 = '7b07859dfd5bd88c6ff92446ece8f1d90f75fd8846f0a17c94a7de6bc02b23ae';
-const AR_FIXTURE_SHA256 = 'dc6e173f3497ccb45c2c4d4ca1e358be9153d793a020dcfef1f3b0f5b3b79cda';
+const AR_FIXTURE_SHA256 = 'd7f3d31b218e0e904f8a452182fd2eddb0eef858c24153ccfcc9bfbeef516e90';
 const fixtureBytes = await readFile(new URL('./fixtures/ES_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url));
 const fixture = JSON.parse(fixtureBytes);
 const arFixtureBytes = await readFile(new URL('./fixtures/AR_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url));
@@ -173,6 +173,43 @@ test('Argentina SMVM presentation is data-driven from the structured 5 SMVM thre
   }
 });
 
+test('Argentina rentista geography and pensionado substantive basis preserve distinct 5 SMVM semantics', () => {
+  const routeById = (result, routeId) => result.routes.find((route) => route.routeId === routeId);
+  const threshold = 1883000;
+  const at = (applicantType, applicantAmount, applicantCountryId = 'US', adults = 1, children = 0) =>
+    calculateActiveCountry(profile({ applicantType, applicantAmount, applicantCurrency: 'ARS', applicantCountryId, adults, children }), argentina, context);
+
+  const rentistaRequirement = argentina.routes.find(({ route_id }) => route_id === 'AR_RENTISTA').requirements[0];
+  const pensionadoRoute = argentina.routes.find(({ route_id }) => route_id === 'AR_PENSIONADO');
+  const pensionadoRequirement = pensionadoRoute.requirements[0];
+  assert.equal(rentistaRequirement.financial.alternatives[0].source_geography, 'FOREIGN');
+  assert.equal(pensionadoRequirement.financial.alternatives[0].source_geography, 'ANY');
+  assert.equal(pensionadoRoute.requirements[1].evaluation_mode, 'UNASKED_CONDITION');
+  assert.equal(pensionadoRoute.requirements[1].unmet_effect, 'BECOMES_CONDITION');
+
+  assert.equal(routeById(at('PASSIVE_INCOME', threshold), 'AR_RENTISTA').routeStatus, 'SUITABLE');
+  assert.equal(routeById(at('PASSIVE_INCOME', threshold - 1), 'AR_RENTISTA').routeStatus, 'UNSUITABLE');
+  assert.equal(routeById(at('PASSIVE_INCOME', threshold, 'AR'), 'AR_RENTISTA').routeStatus, 'UNSUITABLE');
+
+  for (const payerCountry of ['AR', 'US']) {
+    const pensionado = routeById(at('PENSION', threshold, payerCountry), 'AR_PENSIONADO');
+    assert.equal(pensionado.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+    assert.equal(pensionado.financialSummary.state, 'PASS');
+    assert.ok(pensionado.conditions.some((text) => text.includes('за услуги, оказанные за рубежом')));
+  }
+  assert.equal(routeById(at('PENSION', threshold - 1), 'AR_PENSIONADO').routeStatus, 'UNSUITABLE');
+  assert.equal(routeById(at('PASSIVE_INCOME', threshold), 'AR_PENSIONADO').routeStatus, 'UNSUITABLE');
+
+  const solo = routeById(at('PENSION', threshold), 'AR_PENSIONADO').financialSummary.alternatives[0];
+  const family = routeById(at('PENSION', threshold, 'US', 2, 2), 'AR_PENSIONADO').financialSummary.alternatives[0];
+  for (const item of [solo, family]) {
+    assert.equal(item.requirementLabel, '5 SMVM (МРОТ)');
+    assert.deepEqual({ threshold: item.threshold, currency: item.currency, period: item.period }, { threshold, currency: 'ARS', period: 'MONTHLY' });
+    assert.ok(Number.isFinite(item.thresholdUsd));
+  }
+  assert.doesNotMatch(pensionadoRoute.basis_ru, /1 SMVM\s*=\s*376.?600 ARS/);
+});
+
 test('real Uruguay runtime converts applicant income, Colonia costs, and future salary generically', () => {
   const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
   const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
@@ -188,6 +225,85 @@ test('real Uruguay runtime converts applicant income, Colonia costs, and future 
   assert.equal(work.requirementResults.find(({ requirement }) => requirement.requirement_id === 'UY_WORK_FUTURE_SALARY').requirement.evaluation_mode, 'UNASKED_CONDITION');
   assert.deepEqual({ threshold: salary.threshold, currency: salary.currency, period: salary.period }, { threshold: 25383, currency: 'UYU', period: 'MONTHLY' });
   assert.ok(Number.isFinite(salary.thresholdUsd));
+});
+
+test('Uruguay general residence family paths stay separate from applicant-only finance', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const routeIds = ['UY_PERMANENT_COMMON', 'UY_TEMP_WORK', 'UY_TEMP_STUDY', 'UY_TEMP_SPECIALIST'];
+  const routeById = (result, routeId) => result.routes.find((route) => route.routeId === routeId);
+  const member = (route, memberId) => route.familyEvaluation.memberResults.find((item) => item.memberId === memberId);
+
+  const married = calculateActiveCountry(profile({ adults: 2, childAges: [7], relationshipType: 'MARRIED' }), uruguay, uyuContext);
+  for (const routeId of routeIds) {
+    const route = routeById(married, routeId);
+    assert.ok(route, routeId);
+    assert.notEqual(route.familyEvaluation.state, 'DATA_CONTRACT_PROBLEM');
+    assert.deepEqual(member(route, 'PARTNER').applicableScenarioIds, [`${routeId}_PARTNER`]);
+    assert.deepEqual(member(route, 'CHILD_1').applicableScenarioIds, [`${routeId}_CHILD`]);
+    assert.equal(member(route, 'CHILD_1').conditions.some((text) => /брак|партн[её]рств/u.test(text)), false);
+  }
+
+  const unregistered = calculateActiveCountry(profile({ adults: 2, childAges: [7], relationshipType: 'UNREGISTERED_PARTNERSHIP' }), uruguay, uyuContext);
+  for (const routeId of routeIds) {
+    const route = routeById(unregistered, routeId);
+    const partner = member(route, 'PARTNER');
+    const child = member(route, 'CHILD_1');
+    assert.notEqual(route.familyEvaluation.state, 'DATA_CONTRACT_PROBLEM');
+    assert.ok(partner.conditions.some((text) => text.includes('брак или зарегистрированное партнёрство')));
+    assert.equal(child.conditions.some((text) => text.includes('брак или зарегистрированное партнёрство')), false);
+    assert.deepEqual(child.applicableScenarioIds, [`${routeId}_CHILD`]);
+  }
+
+  const registered = calculateActiveCountry(profile({ adults: 2, relationshipType: 'REGISTERED_PARTNERSHIP' }), uruguay, uyuContext);
+  for (const routeId of routeIds) {
+    const partner = member(routeById(registered, routeId), 'PARTNER');
+    assert.ok(partner.conditions.some((text) => text.includes('документальное и правовое признание проверяется')));
+  }
+
+  const permanentData = uruguay.routes.find(({ route_id }) => route_id === 'UY_PERMANENT_COMMON');
+  const permanentAlternative = permanentData.requirements[0].financial.alternatives[0];
+  assert.equal(permanentAlternative.comparison, 'NO_FIXED_THRESHOLD');
+  assert.equal(permanentAlternative.amount, null);
+  assert.equal(permanentAlternative.currency, null);
+  assert.equal(permanentAlternative.family_formula_ru, null);
+  assert.equal('family_formula' in permanentAlternative, false);
+  assert.deepEqual(permanentAlternative.income_owners, ['APPLICANT']);
+
+  const soloPermanent = routeById(calculateActiveCountry(profile(), uruguay, uyuContext), 'UY_PERMANENT_COMMON').financialSummary.alternatives[0];
+  const familyPermanent = routeById(married, 'UY_PERMANENT_COMMON').financialSummary.alternatives[0];
+  assert.deepEqual({ threshold: soloPermanent.threshold, currency: soloPermanent.currency }, { threshold: null, currency: null });
+  assert.deepEqual({ threshold: familyPermanent.threshold, currency: familyPermanent.currency }, { threshold: null, currency: null });
+
+  const guidanceOnly = structuredClone(uruguay);
+  guidanceOnly.routes.find(({ route_id }) => route_id === 'UY_PERMANENT_COMMON').requirements[0]
+    .financial.alternatives[0].practical_financial_guidance.figures.forEach((figure) => { figure.amount *= 1000; });
+  const originalPermanent = routeById(calculateActiveCountry(profile(), uruguay, uyuContext), 'UY_PERMANENT_COMMON');
+  const changedGuidancePermanent = routeById(calculateActiveCountry(profile(), guidanceOnly, uyuContext), 'UY_PERMANENT_COMMON');
+  assert.equal(changedGuidancePermanent.routeStatus, originalPermanent.routeStatus);
+  assert.equal(changedGuidancePermanent.financialSummary.state, originalPermanent.financialSummary.state);
+
+  const workData = uruguay.routes.find(({ route_id }) => route_id === 'UY_TEMP_WORK');
+  const workAlternative = workData.requirements.find(({ requirement_id }) => requirement_id === 'UY_WORK_FUTURE_SALARY').financial.alternatives[0];
+  assert.deepEqual({ amount: workAlternative.amount, currency: workAlternative.currency, familyFormula: workAlternative.family_formula_ru, owners: workAlternative.income_owners }, {
+    amount: 25383, currency: 'UYU', familyFormula: null, owners: ['APPLICANT'],
+  });
+  const soloWork = routeById(calculateActiveCountry(profile(), uruguay, uyuContext), 'UY_TEMP_WORK').financialSummary.alternatives[0];
+  const familyWork = routeById(married, 'UY_TEMP_WORK').financialSummary.alternatives[0];
+  assert.equal(soloWork.threshold, 25383);
+  assert.equal(familyWork.threshold, 25383);
+
+  const partnerOnlyIncome = calculateActiveCountry(profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', adults: 2, partnerAmount: 10000 }), uruguay, uyuContext);
+  assert.equal(routeById(partnerOnlyIncome, 'UY_PERMANENT_COMMON').financialSummary.state, 'FAIL');
+
+  const untouchedRoutes = ['UY_DIGITAL_NOMAD', 'UY_PROTECTION', 'UY_HUMANITARIAN'];
+  assert.deepEqual(untouchedRoutes.map((routeId) => {
+    const item = uruguay.routes.find(({ route_id }) => route_id === routeId).family_scenarios[0];
+    return [routeId, item.scenario_id, item.applies_to, item.relationship_types];
+  }), [
+    ['UY_DIGITAL_NOMAD', 'UY_DIGITAL_NOMAD_FAM', 'PARTNER_AND_CHILDREN', ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP']],
+    ['UY_PROTECTION', 'UY_PROTECTION_FAM', 'PARTNER_AND_CHILDREN', ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP']],
+    ['UY_HUMANITARIAN', 'UY_HUMANITARIAN_FAM', 'PARTNER_AND_CHILDREN', ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP']],
+  ]);
 });
 
 test('country entry facts reach calculation without changing route statuses', () => {
@@ -650,6 +766,67 @@ test('legacy and researched-none international school presentation remain suppor
   assert.deepEqual(result.schoolPresentation.international, {
     status: 'RESEARCHED_NONE_FOUND', cities: [],
   });
+});
+
+test('international tuition range uses minimum first grade and maximum final grade only when complete', () => {
+  const pkg = structuredClone(spain);
+  pkg.schools.international_school_tuition_observations = [
+    { school_name_ru: 'A', grade_stage: 'FIRST_GRADE', tuition: { amount: 12000, currency: 'USD', period: 'ANNUAL', price_date: '2026-08-14' }, source_ids: ['ES_ICS'] },
+    { school_name_ru: 'B', grade_stage: 'FIRST_GRADE', tuition: { amount: 9000, currency: 'USD', period: 'ACADEMIC_YEAR', price_date: '2026-08-14' }, source_ids: ['ES_STPATRICK'] },
+    { school_name_ru: 'C', grade_stage: 'FINAL_GRADE', tuition: { amount: 18000, currency: 'USD', period: 'ANNUAL', price_date: '2026-08-14' }, source_ids: ['ES_ICS'] },
+    { school_name_ru: 'D', grade_stage: 'FINAL_GRADE', tuition: { amount: 20000, currency: 'USD', period: 'ACADEMIC_YEAR', price_date: '2026-08-14' }, source_ids: ['ES_STPATRICK'] },
+  ];
+  const baseline = calculateActiveCountry(profile({ children: 1 }), spain, context);
+  const result = calculateActiveCountry(profile({ children: 1, schoolNeeded: false }), pkg, context);
+  assert.deepEqual(result.schoolPresentation.international.tuitionRangeUsd, { minimum: 9000, maximum: 20000 });
+  assert.deepEqual(calculateActiveCountry(profile({ children: 1, schoolNeeded: true }), pkg, context).schoolPresentation, result.schoolPresentation);
+  assert.deepEqual(result.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]), baseline.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]));
+  assert.equal(result.bestRoute.routeId, baseline.bestRoute.routeId);
+  assert.deepEqual(result.cities, baseline.cities);
+  const argentinaResult = calculateActiveCountry(profile({ children: 1 }), argentina, context);
+  assert.deepEqual(
+    sortCountriesForDisplay([result, argentinaResult]).map(({ country }) => country.countryId),
+    sortCountriesForDisplay([baseline, argentinaResult]).map(({ country }) => country.countryId),
+  );
+
+  const missingFirst = structuredClone(pkg);
+  missingFirst.schools.international_school_tuition_observations = missingFirst.schools.international_school_tuition_observations.filter(({ grade_stage }) => grade_stage !== 'FIRST_GRADE');
+  assert.equal(calculateActiveCountry(profile({ children: 1 }), missingFirst, context).schoolPresentation.international.tuitionRangeUsd, undefined);
+  const missingFinal = structuredClone(pkg);
+  missingFinal.schools.international_school_tuition_observations = missingFinal.schools.international_school_tuition_observations.filter(({ grade_stage }) => grade_stage !== 'FINAL_GRADE');
+  assert.equal(calculateActiveCountry(profile({ children: 1 }), missingFinal, context).schoolPresentation.international.tuitionRangeUsd, undefined);
+  assert.equal(calculateActiveCountry(profile(), pkg, context).schoolPresentation, null);
+});
+
+test('international tuition range is status-gated, coherent, and converted through real FX', () => {
+  const pkg = structuredClone(spain);
+  pkg.schools.international_school_tuition_observations = [
+    { school_name_ru: 'A', grade_stage: 'FIRST_GRADE', tuition: { amount: 50000, currency: 'BRL', period: 'ANNUAL', price_date: '2026-08-14' }, source_ids: ['ES_ICS'] },
+    { school_name_ru: 'B', grade_stage: 'FINAL_GRADE', tuition: { amount: 100000, currency: 'BRL', period: 'ACADEMIC_YEAR', price_date: '2026-08-14' }, source_ids: ['ES_STPATRICK'] },
+  ];
+  const brlContext = { fx: { ...context.fx, rates: { ...context.fx.rates, BRL: 5 } } };
+  const available = calculateActiveCountry(profile({ children: 1 }), pkg, brlContext).schoolPresentation.international;
+  assert.deepEqual(available.tuitionRangeUsd, { minimum: 10000, maximum: 20000 });
+
+  const missingFx = calculateActiveCountry(profile({ children: 1 }), pkg, context).schoolPresentation.international;
+  assert.equal(missingFx.tuitionRangeUsd, undefined);
+  assert.equal(missingFx.status, available.status);
+  assert.deepEqual(missingFx.cities, available.cities);
+
+  for (const status of ['RESEARCHED_NONE_FOUND', 'NOT_RESEARCHED']) {
+    const contradictory = structuredClone(pkg);
+    contradictory.schools.international_school_status = status;
+    const presentation = calculateActiveCountry(profile({ children: 1 }), contradictory, brlContext).schoolPresentation.international;
+    assert.equal(presentation.status, status);
+    assert.equal(presentation.tuitionRangeUsd, undefined);
+  }
+
+  const inverted = structuredClone(pkg);
+  inverted.schools.international_school_tuition_observations[0].tuition.amount = 150000;
+  const invertedPresentation = calculateActiveCountry(profile({ children: 1 }), inverted, brlContext).schoolPresentation.international;
+  assert.equal(invertedPresentation.tuitionRangeUsd, undefined);
+  assert.equal(invertedPresentation.status, 'AVAILABLE');
+  assert.deepEqual(invertedPresentation.cities, available.cities);
 });
 
 test('school presentation is isolated from routes, city costs, extrema, and country ordering', () => {

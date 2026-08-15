@@ -369,15 +369,14 @@
       ],
       "family_scenarios": [
         {
-      "scenario_id": "UY_PERMANENT_COMMON_FAM",
-          "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": [
-            "MARRIED",
-            "REGISTERED_PARTNERSHIP",
-            "UNREGISTERED_PARTNERSHIP"
-          ],
-          "child_age_min": 0,
-          "child_age_max": 17,
+        "scenario_id": "UY_PERMANENT_COMMON_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -385,12 +384,31 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-      "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
-          "source_ids": [
-            "UY_SRC_01",
-            "UY_SRC_07"
-          ]
-        }
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_PERMANENT_COMMON_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний оформляет отдельное заявление на резиденцию; средства к существованию подтверждаются через законных представителей и выполняются документальные требования процедуры.",
+        "source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07"
+        ]
+      }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -597,15 +615,14 @@
       ],
       "family_scenarios": [
         {
-          "scenario_id": "UY_TEMP_WORK_FAM",
-          "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": [
-            "MARRIED",
-            "REGISTERED_PARTNERSHIP",
-            "UNREGISTERED_PARTNERSHIP"
-          ],
-          "child_age_min": 0,
-          "child_age_max": 17,
+        "scenario_id": "UY_TEMP_WORK_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -613,12 +630,31 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
-          "source_ids": [
-            "UY_SRC_02",
-            "UY_SRC_07"
-          ]
-        }
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_WORK_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -840,15 +876,14 @@
       ],
       "family_scenarios": [
         {
-          "scenario_id": "UY_TEMP_STUDY_FAM",
-          "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": [
-            "MARRIED",
-            "REGISTERED_PARTNERSHIP",
-            "UNREGISTERED_PARTNERSHIP"
-          ],
-          "child_age_min": 0,
-          "child_age_max": 17,
+        "scenario_id": "UY_TEMP_STUDY_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -856,12 +891,31 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
-          "source_ids": [
-            "UY_SRC_02",
-            "UY_SRC_07"
-          ]
-        }
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_STUDY_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -1032,15 +1086,14 @@
       ],
       "family_scenarios": [
         {
-          "scenario_id": "UY_TEMP_SPECIALIST_FAM",
-          "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": [
-            "MARRIED",
-            "REGISTERED_PARTNERSHIP",
-            "UNREGISTERED_PARTNERSHIP"
-          ],
-          "child_age_min": 0,
-          "child_age_max": 17,
+        "scenario_id": "UY_TEMP_SPECIALIST_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -1048,13 +1101,33 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
-          "source_ids": [
-            "UY_SRC_02",
-            "UY_SRC_06",
-            "UY_SRC_07"
-          ]
-        }
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_SPECIALIST_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07"
+        ]
+      }
       ],
       "applicant_work_rights": {
         "employment": {

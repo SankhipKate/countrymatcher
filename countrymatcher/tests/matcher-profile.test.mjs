@@ -593,7 +593,7 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
   assert.match(styles, /\.country-tab \.status-pill\{grid-column:2/);
 });
 
-test('school UI renders public and international subsections together without international tuition', async () => {
+test('school UI renders international tuition range without exposing legacy tariff rows', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const schoolSource = app.slice(app.indexOf('const publicSchoolAccessLabel'), app.indexOf('function longTermConditions'));
   const renderSchool = Function('currency', 'html', `${schoolSource}; return renderSchoolPresentation;`)(
@@ -616,6 +616,13 @@ test('school UI renders public and international subsections together without in
   assert.match(annual, /Подтверждены в: Тестовый город\./);
   assert.match(renderSchool(presentation('ACADEMIC_YEAR')), /1200 EUR \/учебный год/);
 
+  const ranged = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 10000, maximum: 20000 } }));
+  assert.match(ranged, /Стоимость по найденным школам: 10000 USD–20000 USD в год\./);
+  assert.match(ranged, /Вступительные и регистрационные взносы не включены\./);
+  const equal = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 15000, maximum: 15000 } }));
+  assert.match(equal, /Стоимость по найденным школам: 15000 USD в год\./);
+  assert.doesNotMatch(equal, /15000 USD–15000 USD/);
+
   const available = renderSchool(presentation('ANNUAL', { cities: [] }));
   assert.match(available, /Наличие подтверждено\./);
   const none = renderSchool(presentation('ANNUAL', { status: 'RESEARCHED_NONE_FOUND', cities: [] }));
@@ -623,7 +630,7 @@ test('school UI renders public and international subsections together without in
   const unknown = renderSchool(presentation('ANNUAL', { status: 'NOT_RESEARCHED', cities: [] }));
   assert.match(unknown, /Данных о международных школах с обучением на английском пока недостаточно\./);
   assert.doesNotMatch(unknown, /не найдены/u);
-  assert.doesNotMatch(app, /school\.international.*tuition|admissionFee|admission_fee/u);
+  assert.doesNotMatch(app, /admissionFee|admission_fee/u);
   assert.match(annual, /<section class="school-research">[\s\S]*Государственные школы[\s\S]*Международные школы с обучением на английском[\s\S]*<\/section>/u);
   assert.equal((annual.match(/class="school-research"/g) || []).length, 1);
   assert.equal((annual.match(/class="school-subsection"/g) || []).length, 2);

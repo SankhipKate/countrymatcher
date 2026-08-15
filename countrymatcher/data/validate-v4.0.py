@@ -13,12 +13,48 @@ Exit code 0 = both stages passed; 1 = validation errors; 2 = usage/read/dependen
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Iterable
 
 REQUIRED_CITY_ROLES = {"CAPITAL", "LARGE", "MEDIUM", "SMALL"}
 FINAL_CANON_REVISION = "2026-08-08-final-lock"
+
+
+def load_active_engine_financial_capabilities() -> dict[str, list[str]]:
+    engine_path = Path(__file__).resolve().parents[1] / "js" / "engine" / "rp4-engine.js"
+    script = """
+import { pathToFileURL } from 'node:url';
+const engine = await import(pathToFileURL(process.argv[1]).href);
+process.stdout.write(JSON.stringify(engine.ACTIVE_ENGINE_FINANCIAL_CAPABILITIES));
+"""
+    try:
+        result = subprocess.run(
+            ["node", "--input-type=module", "--eval", script, str(engine_path)],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError as exc:
+        raise RuntimeError(f"Cannot load active ENGINE financial capabilities from {engine_path}: {exc}") from exc
+    if result.returncode != 0:
+        detail = result.stderr.strip() or f"Node exited with status {result.returncode}"
+        raise RuntimeError(f"Cannot load active ENGINE financial capabilities from {engine_path}: {detail}")
+    try:
+        capabilities = json.loads(result.stdout)
+    except Exception as exc:
+        raise RuntimeError(f"Invalid active ENGINE financial capability export from {engine_path}: {exc}") from exc
+    if not isinstance(capabilities, dict) or any(
+        not isinstance(capabilities.get(key), list)
+        or not all(isinstance(value, str) for value in capabilities[key])
+        for key in ("models", "alternativeKinds", "comparisons")
+    ):
+        raise RuntimeError(f"Invalid active ENGINE financial capability shape from {engine_path}")
+    return capabilities
+
+
+ACTIVE_ENGINE_FINANCIAL_CAPABILITIES = load_active_engine_financial_capabilities()
 
 
 def fail(message: str, errors: list[str]) -> None:
@@ -240,6 +276,35 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                     continue
                 mode = requirement.get("evaluation_mode")
                 rtype = requirement.get("type")
+                if mode == "ENGINE" and rtype == "FINANCIAL":
+                    requirement_id = requirement.get("requirement_id")
+                    financial = requirement.get("financial") or {}
+                    model = financial.get("model")
+                    if model not in ACTIVE_ENGINE_FINANCIAL_CAPABILITIES["models"]:
+                        fail(
+                            f"$.routes[{route_id}].requirements[{requirement_id}].financial.model: "
+                            f"unsupported active ENGINE financial model {model}",
+                            errors,
+                        )
+                    for alternative_index, alternative in enumerate(financial.get("alternatives") or []):
+                        if not isinstance(alternative, dict):
+                            continue
+                        kind = alternative.get("kind")
+                        comparison = alternative.get("comparison")
+                        alternative_path = (
+                            f"$.routes[{route_id}].requirements[{requirement_id}].financial."
+                            f"alternatives[{alternative_index}]"
+                        )
+                        if kind not in ACTIVE_ENGINE_FINANCIAL_CAPABILITIES["alternativeKinds"]:
+                            fail(
+                                f"{alternative_path}.kind: unsupported active ENGINE alternative kind {kind}",
+                                errors,
+                            )
+                        if comparison not in ACTIVE_ENGINE_FINANCIAL_CAPABILITIES["comparisons"]:
+                            fail(
+                                f"{alternative_path}.comparison: unsupported active ENGINE comparison {comparison}",
+                                errors,
+                            )
                 if mode == "ENGINE" and rtype != "FINANCIAL" and not isinstance(requirement.get("engine_rule"), dict):
                     fail(
                         f"$.routes[{route_id}].requirements[{k}].engine_rule: non-financial ENGINE requires engine_rule",

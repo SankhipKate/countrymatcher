@@ -53,7 +53,7 @@
         "currency": "ARS"
       },
       "expected_at_threshold": {
-        "AR_PENSIONADO": "SUITABLE"
+        "AR_PENSIONADO": "SUITABLE_WITH_CONDITIONS"
       },
       "expected_below_threshold": {
         "AR_PENSIONADO": "UNSUITABLE"

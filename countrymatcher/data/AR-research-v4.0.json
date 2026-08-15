@@ -633,7 +633,7 @@
                 "allowed_income_types": [
                   "PENSION"
                 ],
-                "source_geography": "FOREIGN",
+                "source_geography": "ANY",
                 "family_formula_ru": null,
                 "source_ids": [
                   "AR_PENSIONADO",
@@ -656,9 +656,9 @@
           "type": "RETIREMENT_BASIS",
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
-          "evaluation_mode": "DISPLAY_ONLY",
-          "unmet_effect": "NONE",
-          "condition_ru": "Пенсия должна быть регулярной и постоянной и соответствовать официально описанному источнику выплаты.",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить, что пенсия является регулярной и постоянной выплатой от государства, международной организации или частной компании за услуги, оказанные за рубежом.",
           "source_ids": [
             "AR_PENSIONADO"
           ],

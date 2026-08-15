@@ -209,12 +209,12 @@ test('research order marks only migrated RP4 countries connected and ignores arc
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  for (const country of ['Испания', 'Аргентина']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
-  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай']) {
+  for (const country of ['Испания', 'Аргентина', 'Уругвай']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
+  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия']) {
     assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
   }
   const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
   assert.ok(archivedV3.length > 0);
   const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
-  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина']);
+  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина', 'Уругвай']);
 });

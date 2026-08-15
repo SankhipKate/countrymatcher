@@ -20,6 +20,40 @@ export class Rp4EvaluationUnsupportedError extends Error {
   }
 }
 
+export const ACTIVE_ENGINE_FINANCIAL_CAPABILITIES = Object.freeze({
+  models: Object.freeze([
+    'INCOME_ONLY',
+    'SAVINGS_ONLY',
+    'INCOME_OR_SAVINGS',
+    'INCOME_AND_SAVINGS',
+    'INCOME_WITH_SAVINGS_SHORTFALL',
+    'INVESTMENT_CAPITAL',
+    'SPONSOR_OR_SCHOLARSHIP',
+  ]),
+  alternativeKinds: Object.freeze(['INCOME', 'SAVINGS', 'CAPITAL']),
+  comparisons: Object.freeze(['AT_LEAST', 'MORE_THAN', 'EXACT', 'NO_FIXED_THRESHOLD']),
+});
+
+function assertActiveEngineFinancialCapabilities(route, requirement) {
+  const financial = requirement.financial || {};
+  const unsupported = [];
+  if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.models.includes(financial.model)) {
+    unsupported.push({ semantic: 'financial.model', value: financial.model });
+  }
+  (financial.alternatives || []).forEach((alternative, index) => {
+    if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.alternativeKinds.includes(alternative.kind)) {
+      unsupported.push({ semantic: 'alternative.kind', value: alternative.kind, alternativeIndex: index });
+    }
+    if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.comparisons.includes(alternative.comparison)) {
+      unsupported.push({ semantic: 'alternative.comparison', value: alternative.comparison, alternativeIndex: index });
+    }
+  });
+  if (unsupported.length) throw new Rp4EvaluationUnsupportedError(
+    `Unsupported evaluation semantics for ${requirement.requirement_id}.`,
+    { routeId: route.route_id, requirementId: requirement.requirement_id, unsupported },
+  );
+}
+
 export function assertActiveResearchPackage(pkg) {
   if (pkg?.schema_version !== ACTIVE_RESEARCH_SCHEMA_VERSION) {
     throw new ActiveResearchContractError(`Active Research Package must use schema_version ${ACTIVE_RESEARCH_SCHEMA_VERSION}.`);
@@ -276,7 +310,10 @@ export function evaluateRoute(route, profile, context, countryId) {
     let evaluation;
     if (requirement.evaluation_mode === 'UNASKED_CONDITION') evaluation = requirement.type === 'FINANCIAL'
       ? presentUnaskedFinancialRequirement(requirement, profile) : { state: 'UNKNOWN' };
-    else if (requirement.type === 'FINANCIAL') evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId);
+    else if (requirement.type === 'FINANCIAL') {
+      assertActiveEngineFinancialCapabilities(route, requirement);
+      evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId);
+    }
     else evaluation = { state: evaluateEngineRule(requirement.engine_rule, getPath(profile, PROFILE_PATHS[requirement.profile_path] || requirement.profile_path)) };
     if (evaluation.unsupported || evaluation.state === 'UNSUPPORTED') {
       throw new Rp4EvaluationUnsupportedError(`Unsupported evaluation semantics for ${requirement.requirement_id}.`, {
@@ -638,7 +675,7 @@ function presentCities(pkg, context) {
   return presented;
 }
 
-function presentSchools(pkg, profile) {
+function presentSchools(pkg, profile, context) {
   if (!(profile?.family?.children?.length > 0)) return null;
   const schools = pkg.schools || {};
   const researchedCities = schools.international_school_cities || [];
@@ -646,6 +683,24 @@ function presentSchools(pkg, profile) {
   const cityNames = researchedCities.length
     ? researchedCities.map((city) => city.city_name_ru)
     : (schools.international_schools || []).map((school) => legacyCityNames.get(school.city_id)).filter(Boolean);
+  const tuitionObservations = schools.international_school_status === 'AVAILABLE'
+    ? schools.international_school_tuition_observations || [] : [];
+  const tuitionByStage = tuitionObservations.reduce((result, observation) => {
+    try {
+      const amountUsd = convertAmount(observation?.tuition?.amount, observation?.tuition?.currency, 'USD', context);
+      if (Number.isFinite(amountUsd) && amountUsd > 0 && ['FIRST_GRADE', 'FINAL_GRADE'].includes(observation?.grade_stage)) {
+        result[observation.grade_stage].push(amountUsd);
+      }
+    } catch {
+      // An unavailable FX rate suppresses the incomplete display-only range.
+    }
+    return result;
+  }, { FIRST_GRADE: [], FINAL_GRADE: [] });
+  const minimumTuitionUsd = tuitionByStage.FIRST_GRADE.length ? Math.min(...tuitionByStage.FIRST_GRADE) : null;
+  const maximumTuitionUsd = tuitionByStage.FINAL_GRADE.length ? Math.max(...tuitionByStage.FINAL_GRADE) : null;
+  const tuitionRangeUsd = minimumTuitionUsd != null && maximumTuitionUsd != null
+    && minimumTuitionUsd <= maximumTuitionUsd
+    ? { minimum: minimumTuitionUsd, maximum: maximumTuitionUsd } : null;
   return {
     public: {
       rules: (schools.public_school_rules || []).map((rule) => ({
@@ -661,6 +716,7 @@ function presentSchools(pkg, profile) {
     international: {
       status: schools.international_school_status,
       cities: [...new Set(cityNames)],
+      ...(tuitionRangeUsd ? { tuitionRangeUsd } : {}),
     },
   };
 }
@@ -754,7 +810,7 @@ export function calculateActiveCountry(profile, pkg, context) {
     entryForRussianCitizen: presentEntry(pkg),
     cities: presentCities(pkg, context),
     lgbt: presentLgbt(pkg, profile),
-    schoolPresentation: presentSchools(pkg, profile),
+    schoolPresentation: presentSchools(pkg, profile, context),
     petPresentation: presentPets(pkg, profile),
     sources: [],
     practicalMissing: [],

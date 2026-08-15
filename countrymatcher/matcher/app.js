@@ -320,7 +320,13 @@ function renderSchoolPresentation(calculation) {
     : school.international.status === 'RESEARCHED_NONE_FOUND'
       ? 'В ходе исследования международные школы с обучением на английском не найдены.'
       : 'Данных о международных школах с обучением на английском пока недостаточно.';
-  return `<section class="school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p></div></section>`;
+  const tuition = school.international.tuitionRangeUsd;
+  const tuitionAmount = tuition ? tuition.minimum === tuition.maximum
+    ? currency(tuition.minimum, 'USD')
+    : `${currency(tuition.minimum, 'USD')}–${currency(tuition.maximum, 'USD')}` : null;
+  const tuitionLines = tuitionAmount
+    ? `<p>Стоимость по найденным школам: ${html(tuitionAmount)} в год.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
+  return `<section class="school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p>${tuitionLines}</div></section>`;
 }
 
 function renderEntryPresentation(calculation) {

@@ -2736,6 +2736,57 @@
         }
       }
     },
+    "internationalSchoolTuitionObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "school_name_ru",
+        "grade_stage",
+        "tuition",
+        "source_ids"
+      ],
+      "properties": {
+        "school_name_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grade_stage": {
+          "enum": [
+            "FIRST_GRADE",
+            "FINAL_GRADE"
+          ]
+        },
+        "tuition": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/money"
+            },
+            {
+              "properties": {
+                "amount": {
+                  "exclusiveMinimum": 0
+                },
+                "period": {
+                  "enum": [
+                    "ANNUAL",
+                    "ACADEMIC_YEAR"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
     "schools": {
       "type": "object",
       "additionalProperties": false,
@@ -2762,6 +2813,12 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/internationalSchoolCity"
+          }
+        },
+        "international_school_tuition_observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/internationalSchoolTuitionObservation"
           }
         },
         "international_school_status": {
@@ -2809,6 +2866,13 @@
                 ]
               }
             ]
+          },
+          "else": {
+            "properties": {
+              "international_school_tuition_observations": {
+                "maxItems": 0
+              }
+            }
           }
         }
       ]
