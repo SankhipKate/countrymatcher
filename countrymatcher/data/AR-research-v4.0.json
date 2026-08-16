@@ -213,17 +213,55 @@
                 "source_geography": "FOREIGN",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "AR_DNV"
+                  "AR_DNV",
+                  "AR_DNV_DISPOSITION"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального числового минимума нет. Практические источники называют около 2 000–2 500 USD в месяц для заявителя с зарубежной удалённой деятельностью.",
+                  "figures": [
+                    {
+                      "amount_min": 2000,
+                      "amount_max": 2500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "AR_DNV_CITIZEN_REMOTE", "source_date": "2026-02-26", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Опубликованный практический диапазон, не официальный государственный минимум."
+                    },
+                    {
+                      "amount": 2000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "AR_DNV_REWIRE_2026", "source_date": "2026-07-16", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Отдельный опубликованный ориентир, использованный в утверждённом screening rule."
+                    }
+                  ],
+                  "disclaimer_ru": "Это практические ориентиры, а не официальный порог DNM. Для предварительного подбора Country Matcher использует 2 000 USD в месяц; решение по документам принимает миграционный орган."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 2000,
+                  "source_ids": ["AR_DNV_CITIZEN_REMOTE", "AR_DNV_REWIRE_2026"]
+                }
               }
             ]
           },
           "source_ids": [
-            "AR_DNV"
+            "AR_DNV",
+            "AR_DNV_DISPOSITION"
           ],
           "confidence": "HIGH"
         }
@@ -2471,7 +2509,7 @@
     "tax_residency_rule_ru": "Для иностранца налоговое резидентство может возникать при постоянной резиденции либо после 12 месяцев непрерывного пребывания по временным разрешениям; краткие отсутствия до установленного предела не обязательно прерывают отсчёт.",
     "typical_day_threshold": null,
     "other_residency_triggers_ru": "Налоговый статус зависит от юридической категории и продолжительности пребывания; единый универсальный порог 183 дня для всех иностранцев в исследованной норме не используется.",
-    "personal_income_tax_ru": "Налоговые резиденты Аргентины в общем случае облагаются налогом на доходы по правилам Ley de Impuesto a las Ganancias; точная ставка зависит от вида и размера дохода и не используется для ранжирования Country Matcher.",
+    "personal_income_tax_ru": "Налоговые резиденты Аргентины в общем случае облагаются налогом на доходы по правилам Ley de Impuesto a las Ganancias; точная ставка зависит от вида и размера дохода.",
     "personal_income_tax_rates": [],
     "social_contributions_ru": "Социальные взносы зависят от формы занятости и режима регистрации; единая персональная ставка для всех маршрутов не моделируется.",
     "foreign_income_ru": "Для резидентов предусмотрено налогообложение доходов иностранного источника с применением правил зачёта/соглашений.",
@@ -2649,6 +2687,42 @@
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"
+    },
+    {
+      "source_id": "AR_DNV_DISPOSITION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Disposición 758/2022 — резиденция цифрового кочевника",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-758-2022-364601/texto",
+      "supports_ru": "Официальное основание временной резиденции для удалённых услуг лицам или организациям за пределами Аргентины и перечень подтверждающих документов; универсальный числовой минимум дохода не установлен.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2022-05-20",
+      "language": "es"
+    },
+    {
+      "source_id": "AR_DNV_CITIZEN_REMOTE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Citizen Remote",
+      "title_ru": "Argentina Digital Nomad Visa — практический диапазон дохода",
+      "url": "https://citizenremote.com/visas/argentina-digital-nomad-visa/",
+      "supports_ru": "Сообщает практический ориентир стабильного зарубежного дохода около 2 000–2 500 USD в месяц; не используется как официальный порог DNM.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-02-26",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_DNV_REWIRE_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Rewire Abroad",
+      "title_ru": "Argentina Digital Nomad Visa 2026 — практический ориентир",
+      "url": "https://rewireabroad.com/visas/argentina-digital-nomad-visa",
+      "supports_ru": "Публикует ориентир 2 000 USD в месяц для зарубежной удалённой деятельности; сумма рассматривается только как practical evidence, а не официальный минимум.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-16",
+      "language": "en"
     },
     {
       "source_id": "AR_DNV_ABROAD",

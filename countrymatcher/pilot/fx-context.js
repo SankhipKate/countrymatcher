@@ -2,6 +2,7 @@ export const REQUESTED_CURRENCIES = Object.freeze(['EUR', 'ARS', 'MXN', 'BRL', '
 export const REQUIRED_CURRENCIES = Object.freeze(['EUR', 'ARS', 'RUB', 'UYU']);
 export const FX_ENDPOINT = `https://api.frankfurter.dev/v2/rates?base=USD&quotes=${REQUESTED_CURRENCIES.join(',')}`;
 export const FX_CACHE_KEY = 'country-matcher-last-fx-context-v1';
+export const FX_FALLBACK_URL = new URL('../data/fx-fallback.json', import.meta.url);
 
 export class CalculationContextLoadError extends Error {
   constructor(message, details = {}) {
@@ -55,7 +56,22 @@ function readSavedContext(storage, now) {
   } catch { return null; }
 }
 
-export async function loadCalculationContext({ fetchImpl = globalThis.fetch, now = new Date(), maxAgeHours = 96, storage } = {}) {
+function contextFromBundled(payload, now) {
+  if (payload?.base_currency !== 'USD') throw new CalculationContextLoadError('Резервный валютный контекст имеет неверную базовую валюту.');
+  const { rates, asOf } = parseRates(payload);
+  for (const currency of REQUESTED_CURRENCIES) {
+    if (!(Number.isFinite(rates[currency]) && rates[currency] > 0)) {
+      throw new CalculationContextLoadError(`Резервный валютный контекст не содержит корректный курс ${currency}.`, { currency });
+    }
+  }
+  return {
+    calculation_date: now.toISOString(),
+    engine_version: '7.1.2',
+    fx: { base_currency: 'USD', rates, source: payload.source || 'Frankfurter — резервный курс', as_of: asOf, max_age_hours: null, is_bundled_fallback: true },
+  };
+}
+
+export async function loadCalculationContext({ fetchImpl = globalThis.fetch, fallbackFetchImpl = globalThis.fetch, fallbackUrl = FX_FALLBACK_URL, bundledFallback, now = new Date(), maxAgeHours = 96, storage } = {}) {
   const cache = availableStorage(storage);
   try {
     const response = await fetchImpl(FX_ENDPOINT, { headers: { Accept: 'application/json' } });
@@ -80,7 +96,20 @@ export async function loadCalculationContext({ fetchImpl = globalThis.fetch, now
   } catch (error) {
     const saved = readSavedContext(cache, now);
     if (saved) return saved;
-    if (error?.code === 'CALCULATION_CONTEXT_INCOMPLETE') throw error;
-    throw new CalculationContextLoadError('Не удалось загрузить расчётный контекст и последний сохранённый курс отсутствует.', { cause: error?.message });
+    try {
+      let payload = bundledFallback;
+      if (!payload) {
+        const fallbackResponse = await fallbackFetchImpl(fallbackUrl, { headers: { Accept: 'application/json' } });
+        if (!fallbackResponse?.ok) throw new Error(`HTTP ${fallbackResponse?.status ?? 'unknown'}`);
+        payload = await fallbackResponse.json();
+      }
+      return contextFromBundled(payload, now);
+    } catch (fallbackError) {
+      throw new CalculationContextLoadError(`${error?.message || 'Live-курс недоступен'} Резервный курс также недоступен.`, {
+        currency: fallbackError?.details?.currency || error?.details?.currency,
+        cause: error?.message,
+        fallbackCause: fallbackError?.message,
+      });
+    }
   }
 }

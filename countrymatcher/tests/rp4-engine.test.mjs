@@ -31,7 +31,7 @@ const arFixture = JSON.parse(arFixtureBytes);
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
-const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
+const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, UYU: 40, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
   const value = fixture.cases.find(({ case_id }) => case_id === caseId);
@@ -255,7 +255,8 @@ test('Uruguay general residence family paths stay separate from applicant-only f
   }
 
   const registered = calculateActiveCountry(profile({ adults: 2, relationshipType: 'REGISTERED_PARTNERSHIP' }), uruguay, uyuContext);
-  for (const routeId of routeIds) {
+  assert.equal(member(routeById(registered, 'UY_PERMANENT_COMMON'), 'PARTNER').state, 'PASS');
+  for (const routeId of routeIds.filter((routeId) => routeId !== 'UY_PERMANENT_COMMON')) {
     const partner = member(routeById(registered, routeId), 'PARTNER');
     assert.ok(partner.conditions.some((text) => text.includes('документальное и правовое признание проверяется')));
   }
@@ -379,7 +380,117 @@ test('practical financial figures are presentation-only and cannot change matchi
   }));
   assert.deepEqual(outcomes.map((x) => x.practicalGuidance.figures[0].amount), [500, 1500, 10000]);
   const unchanged = calculateActiveCountry(input, argentina, context).routes.find(({ routeId }) => routeId === 'AR_NOMAD');
-  assert.equal(unchanged.financialSummary.alternatives.find(({ kind }) => kind === 'INCOME').practicalGuidance, null);
+  assert.equal(unchanged.financialSummary.alternatives.find(({ kind }) => kind === 'INCOME').practicalGuidance.evaluation_mode, 'DISPLAY_ONLY');
+});
+
+test('UY practical screening uses approved 1500 + 500 adult + 500 child formula independently of guidance', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const permanent = (input, pkg = uruguay) => calculateActiveCountry(input, pkg, uyuContext).routes.find(({ routeId }) => routeId === 'UY_PERMANENT_COMMON');
+  for (const [input, expectedStatus, expectedThreshold] of [
+    [profile({ applicantAmount: 200, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED' }), 'UNSUITABLE', 1500],
+    [profile({ applicantAmount: 1499, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED' }), 'UNSUITABLE', 1500],
+    [profile({ applicantAmount: 1500, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED' }), 'SUITABLE', 1500],
+    [profile({ applicantAmount: 1800, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED' }), 'SUITABLE', 1500],
+    [profile({ applicantAmount: 1999, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', children: 1 }), 'UNSUITABLE', 2000],
+    [profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', children: 1 }), 'SUITABLE', 2000],
+    [profile({ applicantAmount: 1999, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2 }), 'UNSUITABLE', 2000],
+    [profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2 }), 'SUITABLE', 2000],
+    [profile({ applicantAmount: 2499, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2, children: 1 }), 'UNSUITABLE', 2500],
+    [profile({ applicantAmount: 2500, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2, children: 1 }), 'SUITABLE', 2500],
+  ]) {
+    const result = permanent(input);
+    assert.equal(result.routeStatus, expectedStatus);
+    const income = result.financialSummary.alternatives[0];
+    assert.equal(income.practicalScreeningThreshold, expectedThreshold);
+    assert.equal(income.threshold, null);
+    assert.equal(income.currency, null);
+  }
+  const noIncome = permanent(profile({ applicantAmount: 0, applicantCurrency: 'USD', applicantType: 'NO_REGULAR_INCOME' }));
+  assert.equal(noIncome.routeStatus, 'UNSUITABLE');
+  assert.match(noIncome.blockers[0], /регулярного дохода сейчас нет/u);
+
+  const changedGuidance = structuredClone(uruguay);
+  const alternative = changedGuidance.routes.find(({ route_id }) => route_id === 'UY_PERMANENT_COMMON')
+    .requirements.find(({ requirement_id }) => requirement_id === 'UY_PERM_MEANS').financial.alternatives[0];
+  alternative.practical_financial_guidance.figures.find(({ family_context_ru }) => family_context_ru === 'Пара').amount = 999999;
+  const couple = permanent(profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2 }), changedGuidance);
+  assert.notEqual(couple.routeStatus, 'UNSUITABLE');
+  assert.equal(couple.financialSummary.alternatives[0].practicalScreeningThreshold, 2000);
+  assert.deepEqual(alternative.practical_financial_guidance.figures.map(({ amount }) => amount), [1500, 999999, 2500, 500]);
+});
+
+test('savings cannot replace a structurally required DNV income source', () => {
+  const dnv = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_DNV');
+  for (const savings of [0, 50000, 500000]) {
+    const result = dnv(profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: savings, currency: 'USD' } }));
+    assert.equal(result.routeStatus, 'UNSUITABLE');
+    assert.match(result.blockers[0], /Накопления не заменяют требуемый источник дохода/u);
+  }
+  const incompatible = dnv(profile({ applicantAmount: 10000, applicantType: 'PENSION', savings: { amount: 500000, currency: 'USD' } }));
+  assert.equal(incompatible.routeStatus, 'UNSUITABLE');
+  assert.match(incompatible.blockers[0], /тип дохода не принимается/u);
+  const insufficient = dnv(profile({ applicantAmount: 200, applicantCurrency: 'USD', applicantCountryId: 'US', savings: { amount: 0, currency: 'EUR' } }));
+  assert.equal(insufficient.routeStatus, 'UNSUITABLE');
+  assert.equal(insufficient.financialSummary.state, 'FAIL');
+  assert.match(insufficient.blockers[0], /финансовое требование DNV не выполнено/u);
+
+  const threshold = dnv(profile({ applicantAmount: 2442, savings: { amount: 0, currency: 'EUR' } }));
+  assert.equal(threshold.financialSummary.state, 'PASS');
+  const genuineShortfall = dnv(profile({ applicantAmount: 2200, savings: { amount: 8712, currency: 'EUR' } }));
+  assert.equal(genuineShortfall.financialSummary.state, 'PASS');
+  assert.equal(genuineShortfall.financialSummary.alternatives[0].shortfall, 8712);
+});
+
+test('AR and UY digital nomads use separate practical screening while official thresholds remain null', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const nomad = (pkg, routeId, amount, calculationContext = context) => calculateActiveCountry(profile({
+    applicantAmount: amount, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US',
+  }), pkg, calculationContext).routes.find((route) => route.routeId === routeId);
+  for (const [amount, expected] of [[200, 'UNSUITABLE'], [1499, 'UNSUITABLE'], [1500, 'SUITABLE'], [1800, 'SUITABLE']]) {
+    const route = nomad(uruguay, 'UY_DIGITAL_NOMAD', amount, uyuContext);
+    assert.equal(route.routeStatus, expected);
+    const income = route.financialSummary.alternatives[0];
+    assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 1500 });
+    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 1 500 USD в месяц. Вы указали 200 USD в месяц.');
+  }
+  for (const [amount, expected] of [[200, 'UNSUITABLE'], [1999, 'UNSUITABLE'], [2000, 'SUITABLE'], [2500, 'SUITABLE']]) {
+    const route = nomad(argentina, 'AR_NOMAD', amount);
+    assert.equal(route.routeStatus, expected);
+    const income = route.financialSummary.alternatives[0];
+    assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 2000 });
+    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 2 000 USD в месяц. Вы указали 200 USD в месяц.');
+  }
+  for (const [pkg, routeId] of [[uruguay, 'UY_DIGITAL_NOMAD'], [argentina, 'AR_NOMAD']]) {
+    const route = nomad(pkg, routeId, 2500, pkg === uruguay ? uyuContext : context);
+    const guidance = route.financialSummary.alternatives[0].practicalGuidance;
+    assert.equal(guidance.evaluation_mode, 'DISPLAY_ONLY');
+    assert.ok(guidance.figures.flatMap(({ evidence }) => evidence).every(({ sourceUrl }) => /^https:\/\//u.test(sourceUrl)));
+  }
+  assert.deepEqual(nomad(argentina, 'AR_NOMAD', 2500).financialSummary.alternatives[0].practicalGuidance.figures.map((figure) => [figure.amount ?? null, figure.amount_min ?? null, figure.amount_max ?? null]), [[null, 2000, 2500], [2000, null, null]]);
+});
+
+test('known NLV savings below threshold produce a concrete savings blocker', () => {
+  const nlv = calculateActiveCountry(profile({ adults: 2, savings: { amount: 34600, currency: 'EUR' } }), spain, context)
+    .routes.find(({ routeId }) => routeId === 'ES_NLV');
+  assert.equal(nlv.routeStatus, 'UNSUITABLE');
+  assert.equal(nlv.blockers[0], 'Для вашего состава семьи требуется 36 000 EUR подтверждаемых средств. Ваши подтверждаемые накопления — около 34 600 EUR.');
+  assert.doesNotMatch(nlv.blockers.join(' '), /если накопления не подтверждены|доход/u);
+});
+
+test('administrative family filing alone does not downgrade UY permanent residence', () => {
+  const uyuContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
+  const permanent = (input) => calculateActiveCountry(input, uruguay, uyuContext).routes.find(({ routeId }) => routeId === 'UY_PERMANENT_COMMON');
+  for (const input of [
+    profile({ applicantAmount: 1500, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED' }),
+    profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2 }),
+    profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', children: 1 }),
+  ]) assert.equal(permanent(input).routeStatus, 'SUITABLE');
+  const couple = permanent(profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2 }));
+  assert.equal(couple.familyEvaluation.conditions.length, 0);
+  assert.ok(couple.family.some(({ description }) => description === 'Каждый взрослый оформляет отдельное заявление.'));
+  const unregistered = permanent(profile({ applicantAmount: 2000, applicantCurrency: 'USD', applicantType: 'FREELANCE_OR_SELF_EMPLOYED', adults: 2, relationshipType: 'UNREGISTERED_PARTNERSHIP' }));
+  assert.equal(unregistered.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.match(unregistered.conditions.join(' '), /брак или зарегистрированное партнёрство/u);
 });
 
 test('DISPLAY_ONLY, UNASKED_CONDITION, and ENGINE keep their distinct status effects', () => {
@@ -440,6 +551,10 @@ test('unmet_effect maps final FAIL to blocker, condition, or no effect', () => {
   assert.equal(evaluateRoute(route([requirement({ engine_rule: failing, unmet_effect: 'BLOCKS' })]), profile(), context, 'ES').routeStatus, 'UNSUITABLE');
   assert.equal(evaluateRoute(route([requirement({ engine_rule: failing, unmet_effect: 'BECOMES_CONDITION' })]), profile(), context, 'ES').routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(evaluateRoute(route([requirement({ engine_rule: failing, unmet_effect: 'NONE' })]), profile(), context, 'ES').routeStatus, 'SUITABLE');
+  const missingIncome = finance('INCOME_WITH_SAVINGS_SHORTFALL', [alternative('INCOME', true, { amount: 5000 })], { shortfall_coverage: { coverage_months: 6 } }, { unmet_effect: 'BECOMES_CONDITION' });
+  const missingIncomeResult = evaluateRoute(route([missingIncome]), profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 100000, currency: 'EUR' } }), context, 'ES');
+  assert.equal(missingIncomeResult.requirementResults[0].state, 'FAIL');
+  assert.equal(missingIncomeResult.routeStatus, 'SUITABLE_WITH_CONDITIONS');
 });
 
 test('comparison semantics are explicit and never silently default to AT_LEAST', () => {
@@ -596,6 +711,12 @@ test('unknown geography continues savings-shortfall evaluation with a numeric ra
   const rangeB = result(3000, 1000, 8000).alternatives[0];
   assert.equal(rangeB.minimumShortfall, 6000);
   assert.equal(rangeB.maximumShortfall, 12000);
+  const unknownOnly = financialState('INCOME_WITH_SAVINGS_SHORTFALL', [alternative('INCOME', true, { amount: 5000 })], profile({
+    applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 100000, currency: 'EUR' },
+    additionalSources: [incomeSource('APPLICANT', 'REMOTE_EMPLOYMENT', 6000, 'EUR', null, 'MULTIPLE_COUNTRIES')],
+  }), { shortfall_coverage: { coverage_months: 6 } });
+  assert.equal(unknownOnly.state, 'UNKNOWN');
+  assert.equal('minimumShortfall' in unknownOnly.alternatives[0], false);
   const otherUnknown = financialState('INCOME_WITH_SAVINGS_SHORTFALL', [alternative('INCOME', false, { amount: 5000 })], profile(), { shortfall_coverage: { coverage_months: 6 } });
   assert.equal(otherUnknown.state, 'UNKNOWN');
   assert.equal('minimumShortfall' in otherUnknown.alternatives[0], false);
@@ -623,7 +744,9 @@ test('route preserves requirement and evaluation conditions in order without dup
 test('Spain DNV distinguishes known and unknown income geography', () => {
   const dnv = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_DNV');
   assert.equal(dnv(profile({ applicantAmount: 6000, applicantCountryId: 'US' })).routeStatus, 'SUITABLE');
-  assert.equal(dnv(profile({ applicantAmount: 6000, applicantCountryId: 'ES' })).routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  const spanishSource = dnv(profile({ applicantAmount: 10000, applicantCountryId: 'ES', savings: { amount: 1000000, currency: 'EUR' } }));
+  assert.equal(spanishSource.routeStatus, 'UNSUITABLE');
+  assert.match(spanishSource.blockers[0], /нужен допустимый удалённый доход от источников вне Испании/u);
   for (const geography of ['MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER']) {
     const result = dnv(profile({ applicantAmount: 6000, applicantGeography: geography, applicantCountryId: null }));
     assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
@@ -645,6 +768,36 @@ test('Spain DNV distinguishes known and unknown income geography', () => {
   }));
   assert.equal(sufficient.routeStatus, 'SUITABLE');
   assert.equal(sufficient.conditions.some((text) => text.includes('поступают из-за пределов')), false);
+});
+
+test('Spain NLV uses the asked general savings fact at exact data-driven thresholds', () => {
+  const nlv = (input) => calculateActiveCountry(input, spain, context).routes.find(({ routeId }) => routeId === 'ES_NLV');
+  const noIncome = { applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', applicantCountryId: null, applicantGeography: 'NO_STABLE_PAYER' };
+  const exact = nlv(profile({ ...noIncome, savings: { amount: 28800, currency: 'EUR' } }));
+  assert.equal(exact.routeStatus, 'SUITABLE');
+  assert.equal(exact.requirementResults.find(({ requirement }) => requirement.requirement_id === 'ES_NLV_FIN').state, 'PASS');
+  const below = nlv(profile({ ...noIncome, savings: { amount: 28799, currency: 'EUR' } }));
+  assert.equal(below.routeStatus, 'UNSUITABLE');
+  assert.equal(below.requirementResults.find(({ requirement }) => requirement.requirement_id === 'ES_NLV_FIN').state, 'FAIL');
+  const family = nlv(profile({ ...noIncome, adults: 2, children: 1, savings: { amount: 43200, currency: 'EUR' } }));
+  assert.equal(family.requirementResults.find(({ requirement }) => requirement.requirement_id === 'ES_NLV_FIN').state, 'PASS');
+  const unknown = nlv(profile({ ...noIncome, savings: null }));
+  assert.equal(unknown.requirementResults.find(({ requirement }) => requirement.requirement_id === 'ES_NLV_FIN').state, 'UNKNOWN');
+  const nlvSavings = spain.routes.find(({ route_id }) => route_id === 'ES_NLV').requirements.find(({ requirement_id }) => requirement_id === 'ES_NLV_FIN').financial.alternatives.find(({ kind }) => kind === 'SAVINGS');
+  const studySavings = spain.routes.find(({ route_id }) => route_id === 'ES_STUDY').requirements.find(({ requirement_id }) => requirement_id === 'ES_STUDY_FIN').financial.alternatives.find(({ kind }) => kind === 'SAVINGS');
+  assert.equal(nlvSavings.asked_in_questionnaire, true);
+  assert.equal(studySavings.asked_in_questionnaire, false);
+});
+
+test('tax presentation is package-specific information and cannot affect routes or ordering', () => {
+  for (const pkg of [spain, argentina, uruguay]) {
+    const withTaxes = calculateActiveCountry(profile(), pkg, context);
+    const withoutTaxes = calculateActiveCountry(profile(), { ...pkg, taxes: { ...pkg.taxes, tax_residency_rule_ru: 'Изменённый справочный текст.' } }, context);
+    assert.equal(withTaxes.taxPresentation.checkedAt, pkg.taxes.checked_at);
+    assert.equal(withTaxes.taxPresentation.taxResidencyRule, pkg.taxes.tax_residency_rule_ru);
+    assert.deepEqual(withTaxes.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]), withoutTaxes.routes.map(({ routeId, routeStatus }) => [routeId, routeStatus]));
+    assert.equal(withTaxes.bestRoute.routeId, withoutTaxes.bestRoute.routeId);
+  }
 });
 
 test('generic family evaluator covers solo, partner paths, timing, and linked routes', () => {
@@ -672,6 +825,17 @@ test('generic family evaluator covers solo, partner paths, timing, and linked ro
   assert.equal(linked.state, 'CONDITION');
   assert.equal(linked.classification, 'SEPARATE_LINKED_ROUTE');
   assert.deepEqual(linked.linkedRouteIds, ['LINKED']);
+
+  const administrativeLater = evaluateFamilyScenarios({ family_scenarios: [familyScenario({
+    applies_to: 'PARTNER',
+    relationship_types: ['MARRIED'],
+    simultaneous_move: 'CONDITIONAL',
+    administrative_separate_filing: true,
+    join_stage: 'AFTER_PR',
+    condition_ru: 'Присоединение возможно после ПМЖ.',
+  })] }, profile({ adults: 2, relationshipType: 'MARRIED' }), []);
+  assert.equal(administrativeLater.state, 'CONDITION');
+  assert.match(administrativeLater.conditions.join(' '), /после ПМЖ/u);
 });
 
 test('reliable alternative family paths outrank damaged scenarios', () => {
@@ -1097,7 +1261,7 @@ test('canonical CASE 5 excludes the non-publishable internship route', () => {
   assert.equal(calculateActiveCountry(profile(), spain, context).routes.some(({ routeId }) => routeId === 'ES_INTERNSHIP'), false);
 });
 
-test('canonical CASE 6 treats failing active income plus unasked savings as condition', () => {
+test('canonical CASE 6 treats failing income plus missing asked savings as condition', () => {
   const canonical = canonicalCase('NLV_ACTIVE_REMOTE_INCOME_WITH_UNASKED_SAVINGS');
   const result = calculateActiveCountry(profile({ applicantAmount: 5000, applicantType: 'REMOTE_EMPLOYMENT' }), spain, context).routes.find(({ routeId }) => routeId === 'ES_NLV');
   assert.equal(result.routeStatus, canonical.expected.ES_NLV);

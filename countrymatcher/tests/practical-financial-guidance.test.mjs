@@ -75,6 +75,29 @@ test('RP4 schema rejects malformed practical figures and guidance on an official
   }
 });
 
+test('practical screening is separate, requires DISPLAY_ONLY guidance, and rejects malformed contracts', () => {
+  const screened = structuredClone(alternative);
+  screened.practical_screening_threshold = {
+    comparison: 'AT_LEAST', currency: 'USD', period: 'MONTHLY',
+    family_formula: { base_applicant_amount: 1500, additional_adult_amount: 500, child_amount: 500 },
+    source_ids: ['SRC_1'],
+  };
+  assert.equal(validate(screened), true, JSON.stringify(validate.errors));
+  const flatScreened = structuredClone(screened);
+  flatScreened.practical_screening_threshold = { comparison: 'AT_LEAST', currency: 'USD', period: 'MONTHLY', amount: 1500, source_ids: ['SRC_1'] };
+  assert.equal(validate(flatScreened), true, JSON.stringify(validate.errors));
+  for (const mutate of [
+    (x) => { x.practical_screening_threshold.comparison = 'MORE_THAN'; },
+    (x) => { x.practical_screening_threshold.family_formula.child_amount = -1; },
+    (x) => { delete x.practical_screening_threshold.family_formula; },
+    (x) => { delete x.practical_financial_guidance; },
+    (x) => { x.comparison = 'AT_LEAST'; x.amount = 1500; x.currency = 'USD'; },
+  ]) {
+    const invalid = structuredClone(screened); mutate(invalid);
+    assert.equal(validate(invalid), false);
+  }
+});
+
 test('RP4 integrity validator rejects descending ranges and unresolved practical source IDs', async () => {
   const pkg = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
   const item = pkg.routes.find(({ route_id }) => route_id === 'AR_NOMAD').requirements
@@ -101,4 +124,22 @@ test('RP4 integrity validator rejects descending ranges and unresolved practical
   assert.match(result.stdout, /amount_max must be >= amount_min/);
   assert.match(result.stdout, /unknown source_id MISSING_SOURCE/);
   assert.match(result.stdout, /duplicate source_id MISSING_SOURCE/);
+});
+
+test('RP4 integrity validator rejects unresolved and non-positive practical screening data', async () => {
+  const pkg = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
+  const screening = pkg.routes.find(({ route_id }) => route_id === 'UY_PERMANENT_COMMON').requirements
+    .find(({ requirement_id }) => requirement_id === 'UY_PERM_MEANS').financial.alternatives[0].practical_screening_threshold;
+  screening.source_ids = ['MISSING_SCREENING_SOURCE'];
+  screening.family_formula.child_amount = -1;
+  const script = [
+    "import importlib.util,json,sys",
+    "spec=importlib.util.spec_from_file_location('validator','data/validate-v4.0.py')",
+    "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)",
+    "print('\\n'.join(module.validate_integrity(json.load(sys.stdin))))",
+  ].join(';');
+  const result = spawnSync('python3', ['-c', script], { cwd: new URL('..', import.meta.url), input: JSON.stringify(pkg), encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /unknown source_id MISSING_SCREENING_SOURCE/);
+  assert.match(result.stdout, /child_amount: must be >= 0/);
 });

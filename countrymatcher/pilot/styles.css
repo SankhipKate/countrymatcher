@@ -172,6 +172,8 @@ a{color:var(--blue-700)}
 .status-pill{display:inline-flex;align-items:center;justify-content:center;max-width:240px;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:900;text-align:center}
 .status-pill.positive{background:var(--green-50);color:var(--green-600)}
 .status-pill.conditional{background:var(--sand-100);color:var(--sand-700)}
+.status-pill.separate-basis{background:#f0e7ff;color:#5b2c83}
+.status-pill.protection{background:#e7f0ff;color:#1d4f91}
 .status-pill.negative{background:var(--red-50);color:var(--red-600)}
 .status-pill.review{background:#eef2f6;color:#566779}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0}

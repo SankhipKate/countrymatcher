@@ -208,7 +208,7 @@
           "subject": "APPLICANT",
           "timing": "NOW",
           "evaluation_mode": "ENGINE",
-          "unmet_effect": "BECOMES_CONDITION",
+          "unmet_effect": "BLOCKS",
           "condition_ru": "Подтвердить законный источник средств к существованию; универсального официального числового минимума нет.",
           "met_ru": "Текущий источник соответствует официальным критериям маршрута.",
           "unmet_ru": "Текущий источник не соответствует официальным критериям маршрута.",
@@ -313,7 +313,18 @@
                       "note_ru": "Единичная профессиональная рекомендация, не официальная семейная формула."
                     }
                   ],
-              "disclaimer_ru": "Это не обязательный минимум и не официальный порог маршрута; достаточность средств оценивается индивидуально."
+                  "disclaimer_ru": "Официального фиксированного минимума нет. Для предварительного подбора Country Matcher использует нижний подтверждённый практический ориентир: 1 500 USD для одного заявителя, 2 000 USD для пары и +500 USD на ребёнка. Это не официальный порог и не гарантирует одобрение; миграционный орган оценивает достаточность средств индивидуально."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "family_formula": {
+                    "base_applicant_amount": 1500,
+                    "additional_adult_amount": 500,
+                    "child_amount": 500
+                  },
+                  "source_ids": ["UY_SRC_52", "UY_SRC_54"]
                 }
               }
             ]
@@ -384,7 +395,8 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "condition_ru": "Каждый взрослый оформляет отдельное заявление.",
+        "administrative_separate_filing": true,
         "source_ids": [
           "UY_SRC_01",
           "UY_SRC_07"
@@ -403,7 +415,8 @@
         "separation_months_min": null,
         "separation_months_max": null,
         "member_long_term_path": null,
-        "condition_ru": "Несовершеннолетний оформляет отдельное заявление на резиденцию; средства к существованию подтверждаются через законных представителей и выполняются документальные требования процедуры.",
+        "condition_ru": "Для ребёнка оформляется отдельное дело.",
+        "administrative_separate_filing": true,
         "source_ids": [
           "UY_SRC_01",
           "UY_SRC_07"
@@ -1271,12 +1284,50 @@
                 "family_formula_ru": null,
                 "source_ids": [
                   "UY_SRC_04",
-                  "UY_SRC_05"
+                  "UY_SRC_05",
+                  "UY_SRC_59"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального числового минимума нет. Практические источники называют диапазоны около 1 300–1 500 и 1 500–2 000 USD в месяц.",
+                  "figures": [
+                    {
+                      "amount_min": 1300,
+                      "amount_max": 1500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "UY_SRC_60", "source_date": "2026-08-16", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Опубликованный практический диапазон, не официальный минимум."
+                    },
+                    {
+                      "amount_min": 1500,
+                      "amount_max": 2000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "UY_SRC_61", "source_date": "2026-07-02", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Отдельный опубликованный рекомендуемый диапазон."
+                    }
+                  ],
+                  "disclaimer_ru": "Это практические ориентиры, а не официальный порог Уругвая. Для предварительного подбора Country Matcher использует 1 500 USD в месяц; решение принимается по индивидуальным документам."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1500,
+                  "source_ids": ["UY_SRC_60", "UY_SRC_61"]
+                }
               }
             ]
           },
@@ -2434,14 +2485,14 @@
   },
   "taxes": {
     "checked_at": "2026-08-10",
-    "tax_residency_rule_ru": "Tax residence возникает, в частности, при присутствии более 183 дней в календарном году либо по независимым критериям центра интересов, деятельности и инвестиций.",
+    "tax_residency_rule_ru": "Налоговое резидентство возникает, в частности, при присутствии более 183 дней в календарном году либо по независимым критериям центра интересов, деятельности и инвестиций.",
     "typical_day_threshold": 183,
-    "other_residency_triggers_ru": "Центр vital interests, principal activity/income и установленные investment tests являются независимыми основаниями.",
-    "personal_income_tax_ru": "IRPF зависит от вида и размера дохода; точная персональная нагрузка не используется для ranking.",
+    "other_residency_triggers_ru": "Центр жизненных интересов, основная деятельность или доход и установленные инвестиционные критерии являются независимыми основаниями.",
+    "personal_income_tax_ru": "IRPF зависит от вида и размера дохода.",
     "personal_income_tax_rates": [],
     "social_contributions_ru": "Social contributions зависят от формы занятости и регистрации.",
-    "foreign_income_ru": "Для новых tax residents доступна специальная опция для qualifying foreign movable-capital income: 10+1 years IRNR либо 7% IRPF без ограничения срока.",
-    "double_taxation_with_russia_ru": "Действующее соглашение об избежании двойного налогообложения с РФ в research bundle не подтверждено; применимость требует индивидуальной проверки.",
+    "foreign_income_ru": "Для новых налоговых резидентов доступна специальная опция для соответствующего требованиям иностранного дохода от движимого капитала: режим IRNR на 10 лет плюс год возникновения резидентства либо IRPF по ставке 7% без ограничения срока.",
+    "double_taxation_with_russia_ru": "Действующее соглашение об избежании двойного налогообложения с Россией в исследованных источниках не подтверждено; применимость требует индивидуальной проверки.",
     "source_ids": [
       "UY_SRC_50",
       "UY_SRC_51"
@@ -3253,6 +3304,42 @@
       "confidence": "HIGH",
       "published_or_updated_at": "2019-03-29",
       "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_59",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Chambers and Partners — Corporate Immigration 2026",
+      "title_ru": "Corporate Immigration 2026 — Uruguay, digital nomad permit",
+      "url": "https://practiceguides.chambers.com/practice-guides/corporate-immigration-2026/uruguay",
+      "supports_ru": "Профессиональное подтверждение, что digital nomad permit предназначен для удалённых работников, выдаётся на шесть месяцев с продлением и не имеет установленного минимального дохода.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-23",
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_60",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "IMI Daily",
+      "title_ru": "Uruguay Digital Nomad Visa — практический диапазон средств",
+      "url": "https://www.imidaily.com/uruguay-digital-nomad-visa/",
+      "supports_ru": "Сообщает практический диапазон стабильного удалённого дохода около 1 300–1 500 USD в месяц при отсутствии опубликованного официального фиксированного минимума.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_61",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Stamped Nomad",
+      "title_ru": "Explaining Uruguay's Digital Nomad Permit — practical guidance 2026",
+      "url": "https://www.stampednomad.com/updates/explaining-uruguays-digital-nomad-permit",
+      "supports_ru": "Публикует рекомендуемый практический диапазон 1 500–2 000 USD в месяц и отдельно указывает отсутствие официального минимального дохода.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-02",
+      "language": "en"
     }
   ],
   "pending_changes": []

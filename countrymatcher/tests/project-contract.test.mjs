@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readdir, readFile } from 'node:fs/promises';
+import { access, mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+const execFileAsync = promisify(execFile);
 
 const repositoryRoot = new URL('../../', import.meta.url);
 const appRoot = new URL('../', import.meta.url);
@@ -105,12 +110,34 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
   assert.match(workflow, /contents: read/);
   assert.match(workflow, /pages: write/);
   assert.match(workflow, /id-token: write/);
-  assert.match(workflow, /path: countrymatcher/);
+  assert.match(workflow, /build-pages-artifact\.mjs pages-artifact/);
+  assert.match(workflow, /refresh-fx-fallback\.mjs pages-artifact \|\| echo/);
+  assert.match(workflow, /path: pages-artifact/);
+  assert.doesNotMatch(workflow, /^\s+path: countrymatcher\s*$/m);
   assert.equal(workflow.includes('path: .'), false);
   const testPosition = workflow.indexOf('run: npm test');
   const uploadPosition = workflow.indexOf('actions/upload-pages-artifact@v3');
   const deployPosition = workflow.indexOf('actions/deploy-pages@v4');
   assert.ok(testPosition > -1 && testPosition < uploadPosition && uploadPosition < deployPosition);
+});
+
+test('Pages artifact is a positive runtime allowlist', async () => {
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-pages-'));
+  const output = join(temporaryRoot, 'artifact');
+  try {
+    await execFileAsync(process.execPath, [new URL('../scripts/build-pages-artifact.mjs', import.meta.url).pathname, output]);
+    for (const required of [
+      'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
+      'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json',
+      'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
+    ]) await access(join(output, required));
+    for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
+      await assert.rejects(access(join(output, excluded)), excluded);
+    }
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test('CI and Pages validate every RP4 package before completion or deploy', async () => {
@@ -181,12 +208,32 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
 });
 
+test('runtime data URLs are module-relative and remain valid under a project subpath', async () => {
+  const [matcher, fx] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
+  ]);
+  assert.match(matcher, /const DATA_BASE = new URL\('\.\.\/data\/', import\.meta\.url\)/);
+  assert.doesNotMatch(matcher, /fetch\(['"]\.\.\/data/);
+  assert.match(matcher, /new URL\(`\$\{filename\}\?v=7\.1\.2`, DATA_BASE\)/);
+  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=7\.1\.2', DATA_BASE\)/);
+  assert.match(fx, /new URL\('\.\.\/data\/fx-fallback\.json', import\.meta\.url\)/);
+  const deploymentRoot = new URL('https://example.test/future/project-subpath/');
+  const matcherModule = new URL('matcher/app.js', deploymentRoot);
+  const pilotModule = new URL('pilot/fx-context.js', deploymentRoot);
+  const dataBase = new URL('../data/', matcherModule);
+  assert.equal(new URL('ES-research-v4.0.json?v=7.1.2', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=7.1.2');
+  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=7.1.2', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=7.1.2');
+  assert.equal(new URL('../data/fx-fallback.json', pilotModule).href, 'https://example.test/future/project-subpath/data/fx-fallback.json');
+  assert.doesNotMatch(`${matcher}\n${fx}`, /sankhipkate\.github\.io|github\.io\/countrymatcher/);
+});
+
 test('matcher renders practical financial guidance separately from official numeric thresholds', async () => {
   const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.match(matcher, /\.filter\(\(item\) => item\.threshold != null\)/);
   assert.match(matcher, /const practicalGuidanceBlock =/);
   assert.match(matcher, /item\.practicalGuidance/);
-  assert.match(matcher, /practicalGuidanceItems[\s\S]*?\.filter\(\(item\) => item\.state !== 'FAIL' && item\.practicalGuidance\)[\s\S]*?\.map\(\(item\) => item\.practicalGuidance\)/);
+  assert.match(matcher, /practicalGuidanceItems = financialRequirements\.flatMap[\s\S]*?\.filter\(\(item\) => item\.practicalGuidance\)[\s\S]*?\.map\(\(item\) => item\.practicalGuidance\)/);
   assert.match(matcher, /const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems\.length/);
   assert.match(matcher, /PRACTITIONER_GUIDANCE:\s*'Практическая рекомендация специалиста'/);
   assert.match(matcher, /REPORTED_PRACTICE:\s*'Опубликованная практика'/);

@@ -91,7 +91,7 @@ export function buildUserProfile(answers) {
       has_additional_sources: Boolean(answers.hasAdditionalIncome),
       additional_sources: additional,
       partner: { has_income: partnerSources.length > 0, sources: partnerSources },
-      savings: null,
+      savings: money(answers.savingsAmount, answers.savingsCurrency),
     },
     goal: {
       long_term: answers.longTermGoal,
@@ -140,6 +140,7 @@ export function validateUserProfile(profile) {
     if (!provableValid || source.monthly_provable.amount < 0 || (!noIncome && totalValid && source.monthly_provable.amount > source.monthly_total.amount)) add('primaryAmount', 'Подтверждаемая сумма должна быть от 0 до общего дохода.');
     if (!source?.evidence_level) add('primaryEvidence', 'Укажите полноту подтверждения дохода.');
   }
+  if (!positiveMoney(profile?.income?.savings)) add('savingsAmount', 'Укажите подтверждаемые сбережения; если их нет, укажите 0.');
   if (!profile?.goal?.long_term) add('longTermGoal', 'Выберите долгосрочную цель.');
   if (!profile?.goal?.keep_russian_citizenship) add('keepRuCitizenship', 'Укажите важность сохранения гражданства РФ.');
   if (!profile?.pets?.types?.length) add('petTypes', 'Укажите домашних животных.');
@@ -323,6 +324,8 @@ export function describeCityCostBasket(components = [], scenarios = []) {
     }
     return CITY_COST_COMPONENT_LABELS[component] || component;
   });
+  const fullOnePersonBasket = ['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'].every((component) => components.includes(component));
+  if (fullOnePersonBasket) return `Ориентировочная стоимость жизни для 1 человека: ${labels.join(' + ')}.`;
   return `${components.length === 1 ? 'В расчёт входит' : 'В расчёт входят'}: ${labels.join(' + ')}.`;
 }
 

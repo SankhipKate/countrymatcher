@@ -36,6 +36,7 @@
       <form id="matcherForm" class="surface wizard-card" novalidate>
         <div class="wizard-head"><div class="step-label"><b id="stepLabel">Шаг 1 из 5</b></div><div class="progress-track"><span id="progressBar"></span></div><div class="duration">◷ 5–8 минут</div></div>
         <p class="field-help form-requirement-note">Поля со звёздочкой обязательны. Остальные вопросы можно пропустить.</p>
+        <div id="calculationAvailabilityError" class="form-error calculation-availability-error" role="alert" hidden></div>
         <div id="formError" class="form-error" role="alert" hidden></div>
 
         <section class="wizard-step is-active" data-step="1">
@@ -68,6 +69,7 @@
           </div></div>
           <label class="toggle-row"><span><b>Есть ещё один источник дохода</b><small>Проверим его отдельно</small></span><input id="hasAdditionalIncome" type="checkbox"><i></i></label><div id="additionalIncomeBlock" class="conditional-card income-block" hidden></div>
           <div id="partnerIncomeQuestion" hidden><label class="toggle-row"><span><b>У партнёра есть подтверждаемый доход</b><small>Проверим, можно ли учитывать его в семейном пороге</small></span><input id="partnerHasIncome" type="checkbox"><i></i></label><div id="partnerIncomeBlock" class="conditional-card income-block" hidden></div></div>
+          <div class="income-block"><h3>Подтверждаемые сбережения</h3><label class="field"><span>Сумма сбережений *</span><div class="money-combo"><input id="savingsAmount" type="number" min="0" value="0"><select id="savingsCurrency"><option>USD</option><option>EUR</option><option>RUB</option></select></div><small>Укажите общую сумму сбережений, которую сможете документально подтвердить и использовать для подачи. Если часть средств находится у партнёра, включайте её только если сможете подтвердить доступность этих средств для подачи. Если сбережений нет, укажите 0.</small></label></div>
         </section>
 
         <section class="wizard-step" data-step="4" hidden>

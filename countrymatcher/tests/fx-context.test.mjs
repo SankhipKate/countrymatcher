@@ -4,6 +4,7 @@ import {
   CalculationContextLoadError,
   FX_CACHE_KEY,
   FX_ENDPOINT,
+  FX_FALLBACK_URL,
   REQUESTED_CURRENCIES,
   REQUIRED_CURRENCIES,
   loadCalculationContext,
@@ -17,6 +18,9 @@ const requiredRows = (date = '2026-08-11') => [
   row('RUB', 79, date),
   row('UYU', 40.1, date),
 ];
+const bundled = (rates = { EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, UYU: 40.1 }) => ({
+  base_currency: 'USD', source: 'Frankfurter — резервный курс', as_of: '2026-08-01', rates,
+});
 const response = (rows) => ({ ok: true, json: async () => rows });
 const network = (rows, extra = {}) => loadCalculationContext({
   fetchImpl: async () => response(rows),
@@ -39,6 +43,7 @@ test('FX endpoint is generated from the single requested-currency list', () => {
   assert.deepEqual(REQUESTED_CURRENCIES, ['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU']);
   assert.deepEqual(REQUIRED_CURRENCIES, ['EUR', 'ARS', 'RUB', 'UYU']);
   assert.equal(FX_ENDPOINT, `https://api.frankfurter.dev/v2/rates?base=USD&quotes=${REQUESTED_CURRENCIES.join(',')}`);
+  assert.equal(FX_FALLBACK_URL.href, new URL('../data/fx-fallback.json', new URL('../pilot/fx-context.js', import.meta.url)).href);
 });
 
 test('complete network response retains all valid requested currencies', async () => {
@@ -108,4 +113,49 @@ test('saved fallback with required UYU is accepted without adding cache freshnes
   assert.equal(context.fx.is_saved_fallback, true);
   assert.equal(context.fx.as_of, '2020-01-01');
   assert.deepEqual(context.fx.rates, { EUR: 0.86, ARS: 1320, RUB: 79, UYU: 40.1 });
+});
+
+test('healthy live and saved cache precede the bundled fallback', async () => {
+  const live = await loadCalculationContext({ fetchImpl: async () => response(requiredRows()), bundledFallback: bundled(), now: NOW });
+  assert.equal(live.fx.source, 'Frankfurter');
+  const saved = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: storageWith(requiredRows('2020-01-01')), bundledFallback: bundled(), now: NOW });
+  assert.equal(saved.fx.is_saved_fallback, true);
+});
+
+test('valid bundled fallback is the dated final calculation source and retains requested currencies', async () => {
+  const context = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: bundled(), now: NOW });
+  assert.equal(context.fx.is_bundled_fallback, true);
+  assert.equal(context.fx.source, 'Frankfurter — резервный курс');
+  assert.equal(context.fx.as_of, '2026-08-01');
+  assert.deepEqual(Object.keys(context.fx.rates), REQUESTED_CURRENCIES);
+});
+
+test('malformed bundled fallback and a required currency missing everywhere fail explicitly', async () => {
+  await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: { nope: true }, now: NOW }));
+  await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => response(requiredRows().filter(({ quote }) => quote !== 'UYU')), storage: null, bundledFallback: bundled({ EUR: 0.86, ARS: 1320, RUB: 79 }), now: NOW }), (error) => {
+    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
+    assert.equal(error.details.currency, 'UYU');
+    return true;
+  });
+});
+
+test('bundled fallback requires every requested optional currency without changing live/cache semantics', async () => {
+  for (const currency of ['BRL', 'MXN']) {
+    const missing = bundled();
+    delete missing.rates[currency];
+    await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: missing, now: NOW }), (error) => {
+      assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
+      assert.equal(error.details.currency, currency);
+      return true;
+    });
+    const malformed = bundled({ ...bundled().rates, [currency]: 0 });
+    await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: malformed, now: NOW }), (error) => {
+      assert.equal(error.details.currency, currency);
+      return true;
+    });
+  }
+  const liveWithoutOptional = await network(requiredRows());
+  assert.equal(liveWithoutOptional.fx.source, 'Frankfurter');
+  const savedWithoutOptional = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: storageWith(requiredRows('2020-01-01')), bundledFallback: bundled(), now: NOW });
+  assert.equal(savedWithoutOptional.fx.is_saved_fallback, true);
 });

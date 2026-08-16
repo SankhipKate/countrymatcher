@@ -583,6 +583,28 @@
         }
       }
     },
+    "practicalScreeningThreshold": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comparison", "currency", "period", "source_ids"],
+      "properties": {
+        "comparison": { "const": "AT_LEAST" },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "period": { "enum": ["MONTHLY", "ANNUAL"] },
+        "amount": { "type": "number", "exclusiveMinimum": 0 },
+        "family_formula": { "$ref": "#/$defs/familyFormula" },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      },
+      "oneOf": [
+        { "required": ["amount"], "not": { "required": ["family_formula"] } },
+        { "required": ["family_formula"], "not": { "required": ["amount"] } }
+      ]
+    },
     "orderedFamilyFormula": {
       "type": "object",
       "additionalProperties": false,
@@ -814,6 +836,9 @@
         },
         "practical_financial_guidance": {
           "$ref": "#/$defs/practicalFinancialGuidance"
+        },
+        "practical_screening_threshold": {
+          "$ref": "#/$defs/practicalScreeningThreshold"
         }
       },
       "allOf": [
@@ -853,6 +878,18 @@
           "if": { "required": ["practical_financial_guidance"] },
           "then": {
             "properties": {
+              "comparison": { "const": "NO_FIXED_THRESHOLD" },
+              "amount": { "type": "null" },
+              "currency": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "required": ["practical_screening_threshold"] },
+          "then": {
+            "required": ["practical_financial_guidance"],
+            "properties": {
+              "kind": { "const": "INCOME" },
               "comparison": { "const": "NO_FIXED_THRESHOLD" },
               "amount": { "type": "null" },
               "currency": { "type": "null" }
@@ -1666,6 +1703,9 @@
             "CONDITIONAL",
             "NOT_RESEARCHED"
           ]
+        },
+        "administrative_separate_filing": {
+          "const": true
         },
         "separate_route_required": {
           "type": [

@@ -50,10 +50,15 @@ jobs:
             echo "Validating $package"
             python3 countrymatcher/data/validate-v4.0.py "$package"
           done
+      - name: Build allowlisted Pages artifact
+        run: node countrymatcher/scripts/build-pages-artifact.mjs pages-artifact
+      - name: Refresh artifact FX fallback when Frankfurter is available
+        shell: bash
+        run: node countrymatcher/scripts/refresh-fx-fallback.mjs pages-artifact || echo "Using committed FX fallback"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: countrymatcher
+          path: pages-artifact
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

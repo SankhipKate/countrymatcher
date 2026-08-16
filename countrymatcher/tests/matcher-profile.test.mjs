@@ -74,6 +74,7 @@ const answers = (overrides = {}) => ({
   currentCountry: 'PH', currentStatus: 'TOURIST_OR_VISA_FREE', applicationMethods: ['ANY'],
   hasPartner: false, partnerIncluded: false, relationshipType: '', lgbtEnabled: false, childAges: [], schoolNeeded: false,
   primaryType: 'REMOTE_EMPLOYMENT', primarySourceCountry: 'US', primaryBankCountry: 'GE', primaryTotalAmount: '4000', primaryAmount: '4000', primaryCurrency: 'USD', primaryEvidence: 'FULL',
+  savingsAmount: '0', savingsCurrency: 'USD',
   hasAdditionalIncome: false, partnerHasIncome: false,
   longTermGoal: 'TEMPORARY_RESIDENCE_SUFFICIENT', keepRuCitizenship: 'REQUIRED',
   budgetUnknown: false, monthlyBudget: '2500', budgetCurrency: 'USD', citySize: 'ANY', climate: 'ANY', petTypes: ['NONE'],
@@ -87,6 +88,92 @@ test('new matcher creates a valid user-profile-v1 for one Russian citizen', () =
   assert.equal(profile.schema_version, 'user-profile-v1');
   assert.equal(validateUserProfile(profile).valid, true);
   assert.deepEqual(validateAgainstSchema(profile, profileSchema), []);
+});
+
+test('questionnaire maps documented savings separately from investment capital', () => {
+  const withSavings = buildUserProfile(answers({ savingsAmount: '28800', savingsCurrency: 'EUR' }));
+  assert.deepEqual(withSavings.income.savings, { amount: 28800, currency: 'EUR' });
+  assert.equal(withSavings.investment_capital, undefined);
+  assert.deepEqual(buildUserProfile(answers({ savingsAmount: '0', savingsCurrency: 'USD' })).income.savings, { amount: 0, currency: 'USD' });
+  assert.equal(validateUserProfile(buildUserProfile(answers({ savingsAmount: '', savingsCurrency: 'EUR' }))).valid, false);
+});
+
+test('savings helper describes one documented family-application total without automatic partner acceptance', async () => {
+  const htmlSource = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(htmlSource, /Укажите общую сумму сбережений, которую сможете документально подтвердить и использовать для подачи\./);
+  assert.match(htmlSource, /Если часть средств находится у партнёра, включайте её только если сможете подтвердить доступность этих средств для подачи\./);
+  assert.match(htmlSource, /<input id="savingsAmount"[^>]*\bvalue="0"/);
+  assert.doesNotMatch(htmlSource, /средства партнёра[^<]*(?:автоматически|всегда) принимаются/i);
+});
+
+test('persistent calculation availability error is separate from step validation and submit is never silent', async () => {
+  const [htmlSource, appSource] = await Promise.all([
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+  ]);
+  assert.match(htmlSource, /id="calculationAvailabilityError"/);
+  const validateStepSource = appSource.slice(appSource.indexOf('function validateStep'), appSource.indexOf('function showStep'));
+  const showStepSource = appSource.slice(appSource.indexOf('function showStep'), appSource.indexOf('function familyLabel'));
+  assert.doesNotMatch(validateStepSource, /calculationAvailabilityError/);
+  assert.doesNotMatch(showStepSource, /calculationAvailabilityError/);
+  assert.match(appSource, /if \(!activeResearchPackages\.length \|\| !calculationContext\) \{[\s\S]*?calculationAvailabilityError[\s\S]*?return;/);
+  assert.doesNotMatch(appSource, /!calculationContext\) return;/);
+});
+
+test('five presentation groups have distinct semantic UI classes and stable responsive badges', async () => {
+  const [appSource, matcherCss, pilotCss] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
+    readFile(new URL('../pilot/styles.css', import.meta.url), 'utf8'),
+  ]);
+  for (const [group, cssClass] of Object.entries({ SUITABLE: 'positive', SUITABLE_WITH_CONDITIONS: 'conditional', REQUIRES_SEPARATE_BASIS: 'separate-basis', INTERNATIONAL_PROTECTION: 'protection', UNSUITABLE: 'negative' })) {
+    assert.match(appSource, new RegExp(`${group}: '${cssClass}'`));
+  }
+  assert.match(appSource, /statusClass\(presentationGroup\)/);
+  assert.match(appSource, /statusClass\(routePresentationGroup\(best\)\)/);
+  assert.match(pilotCss, /\.status-pill\.separate-basis\{background:#f0e7ff;color:#5b2c83\}/);
+  assert.match(pilotCss, /\.status-pill\.protection\{background:#e7f0ff;color:#1d4f91\}/);
+  assert.match(matcherCss, /\.route-card-heading>\.status-pill\{flex:0 0 220px;width:220px\}/);
+  assert.match(matcherCss, /@media\(max-width:760px\)[\s\S]*?\.route-card-heading>\.status-pill\{flex:0 0 auto;width:auto\}/);
+});
+
+test('tax block renders four factual headings and no internal research commentary', async () => {
+  const appSource = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  for (const heading of ['Налоговое резидентство', 'Подоходный налог', 'Доходы из-за рубежа', 'Россия и двойное налогообложение']) assert.ok(appSource.includes(heading));
+  assert.match(appSource, /<h3>Налоги<\/h3>/);
+  assert.match(appSource, /Проверено:/);
+  for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch]) {
+    const taxText = Object.entries(pkg.taxes).filter(([key, value]) => key.endsWith('_ru') && typeof value === 'string').map(([, value]) => value).join(' ');
+    assert.doesNotMatch(taxText, /v3\.0|ranking|Country Matcher/i);
+    const renderedTaxText = [pkg.taxes.tax_residency_rule_ru, pkg.taxes.personal_income_tax_ru, pkg.taxes.foreign_income_ru, pkg.taxes.double_taxation_with_russia_ru].join(' ');
+    assert.doesNotMatch(renderedTaxText, /research bundle|Tax residence|tax residents|vital interests|qualifying foreign|years IRNR/i);
+  }
+  const uyTaxText = Object.entries(uruguayResearch.taxes).filter(([key, value]) => key.endsWith('_ru') && typeof value === 'string').map(([, value]) => value).join(' ');
+  assert.doesNotMatch(uyTaxText, /research bundle|Tax residence|tax residents|vital interests|qualifying foreign|years IRNR/i);
+  const taxSource = appSource.slice(appSource.indexOf('function renderTaxPresentation'), appSource.indexOf('function longTermConditions'));
+  assert.doesNotMatch(taxSource, /socialContributions|social_contributions/);
+});
+
+test('five country-information sections share one card system with distinct pastel modifiers', async () => {
+  const [appSource, styles] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
+  ]);
+  const classes = {
+    cities: 'country-info-card country-info-cities',
+    schools: 'country-info-card country-info-schools school-research',
+    lgbt: 'country-info-card country-info-lgbt lgbt-research',
+    pets: 'country-info-card country-info-pets',
+    taxes: 'country-info-card country-info-taxes tax-research',
+  };
+  for (const value of Object.values(classes)) assert.ok(appSource.includes(value), value);
+  assert.match(styles, /\.country-info-card\{[^}]*box-sizing:border-box[^}]*width:100%[^}]*padding:20px[^}]*border:1px solid[^}]*border-radius:16px/);
+  const backgrounds = [...styles.matchAll(/\.country-info-(cities|schools|lgbt|pets|taxes)\{background:(#[0-9a-f]{6});border-color:(#[0-9a-f]{6})\}/g)];
+  assert.equal(backgrounds.length, 5);
+  assert.equal(new Set(backgrounds.map((match) => match[2])).size, 5);
+  assert.match(styles, /@media\(max-width:760px\)[\s\S]*?\.country-info-card\{padding:15px\}/);
+  assert.doesNotMatch(appSource, /Расходы по городам/);
+  assert.match(appSource, /Города, климат и расходы/);
 });
 
 test('partner and child remain separate family members', () => {
@@ -403,6 +490,10 @@ test('city-cost presentation describes the shared basket once without source met
     describeCityCostBasket(['RENT_STANDARD', 'TRANSPORT'], [{ component: 'RENT_STANDARD', condition: 'Сценарий Expatistan.' }]),
     'В расчёт входят: аренда + транспорт.',
   );
+  assert.equal(
+    describeCityCostBasket(['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'], [{ component: 'RENT_STANDARD', condition: 'Однокомнатная квартира в центре.' }]),
+    'Ориентировочная стоимость жизни для 1 человека: аренда однокомнатной квартиры в центре + коммунальные расходы + продукты + транспорт.',
+  );
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const citySection = app.slice(app.indexOf('function renderCountryResult'), app.indexOf('function calculateActiveCountries'));
   assert.match(citySection, /describeCityCostBasket\(comparisonComponents, comparisonCities\[0\]\?\.comparisonScenarios\)/u);
@@ -648,8 +739,8 @@ test('school UI renders international tuition range without exposing legacy tari
   assert.match(unknown, /Данных о международных школах с обучением на английском пока недостаточно\./);
   assert.doesNotMatch(unknown, /не найдены/u);
   assert.doesNotMatch(app, /admissionFee|admission_fee/u);
-  assert.match(annual, /<section class="school-research">[\s\S]*Государственные школы[\s\S]*Международные школы с обучением на английском[\s\S]*<\/section>/u);
-  assert.equal((annual.match(/class="school-research"/g) || []).length, 1);
+  assert.match(annual, /<section class="country-info-card country-info-schools school-research">[\s\S]*Государственные школы[\s\S]*Международные школы с обучением на английском[\s\S]*<\/section>/u);
+  assert.equal((annual.match(/school-research/g) || []).length, 1);
   assert.equal((annual.match(/class="school-subsection"/g) || []).length, 2);
   assert.equal(renderSchool({ schoolPresentation: null }), '');
 });
@@ -709,6 +800,25 @@ test('route cards deduplicate financial actions by requirement identity', async 
   const suitable = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: satisfied.summary, financialRequirements: [satisfied], conditionActions: [] }, 'Страна');
   assert.match(suitable, /Финансовое требование/u);
   assert.match(suitable, /Удовлетворённое требование/u);
+
+  const guidance = {
+    status: 'FOUND', summary_ru: 'Практические значения.', disclaimer_ru: 'Не официальный порог.',
+    figures: [{ amount: 2500, currency: 'USD', period: 'MONTHLY', family_context_ru: 'Пара', note_ru: 'Отдельное значение.', evidence: [{ evidence_type: 'REPORTED_PRACTICE', source_date: '2026-08-10', sourceTitle: 'Практический источник', sourceUrl: 'https://example.test/practice' }] }],
+  };
+  const laterGuidance = { requirementId: 'FIN_LATER', effect: 'NONE', summary: { alternatives: [{ ...alternative('Позднее требование', null, null), state: 'PASS', practicalGuidance: guidance }] } };
+  const guidanceAcrossRequirements = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: satisfied.summary, financialRequirements: [satisfied, laterGuidance], conditionActions: [] }, 'Страна');
+  assert.match(guidanceAcrossRequirements, /Практический финансовый ориентир[\s\S]*2 500 USD/u);
+  assert.match(guidanceAcrossRequirements, /href="https:\/\/example\.test\/practice"[\s\S]*Практический источник/u);
+  const duplicateGuidance = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: laterGuidance.summary, financialRequirements: [laterGuidance, structuredClone(laterGuidance)], conditionActions: [] }, 'Страна');
+  assert.equal((duplicateGuidance.match(/Практические значения\./gu) || []).length, 1);
+  const distinctSameSummary = structuredClone(laterGuidance);
+  distinctSameSummary.requirementId = 'FIN_DISTINCT';
+  distinctSameSummary.summary.alternatives[0].practicalGuidance.figures[0].amount = 2000;
+  const structurallyDistinctGuidance = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: laterGuidance.summary, financialRequirements: [laterGuidance, distinctSameSummary], conditionActions: [] }, 'Страна');
+  assert.equal((structurallyDistinctGuidance.match(/Практические значения\./gu) || []).length, 2);
+  const unsuitableGuidance = renderRoute({ ...base, routeStatus: 'UNSUITABLE', blockers: ['Конкретная причина.'], financialSummary: laterGuidance.summary, financialRequirements: [laterGuidance], conditionActions: [] }, 'Страна');
+  assert.match(unsuitableGuidance, /Почему не подходит[\s\S]*Конкретная причина/u);
+  assert.doesNotMatch(unsuitableGuidance, /Практический финансовый ориентир|Что это за маршрут/u);
 
   const mixed = renderRoute({
     ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Исправить финансы.'],
@@ -801,10 +911,10 @@ test('entry UI uses RP4 fields and city UI has no affordability matching', async
   assert.doesNotMatch(app, /cityBudgetVerdict|budgetDerivedFromIncome|monthlyBudgetUsd|familyFactor|costIsFamilySpecific|\/мес на семью/);
   assert.doesNotMatch(app, /В бюджет укладывается|выше бюджета|Стоимость жизни — ориентировочная/);
   assert.match(app, /Города, климат и расходы/);
-  assert.match(app, /Расходы по городам/);
+  assert.doesNotMatch(app, /Расходы по городам/);
   assert.match(app, /comparisonCost: city\.comparisonCostUsd/);
   assert.match(app, /≈ \$\{currency\(comparisonCost\)\}\/мес/);
-  assert.equal((app.match(/Расходы по городам/g) || []).length, 1);
+  assert.match(app, /country-info-card country-info-cities/);
   assert.match(app, /\$\{basketDescription\}<div class="city-budget-grid/);
   assert.doesNotMatch(app, /city-direct Livingcost/);
   assert.doesNotMatch(entrySource, /summary_ru|air_entry_ru|land_sea_entry_ru|fee_local_ru|in_country_residence_application_ru/);
@@ -823,6 +933,7 @@ test('pets UI consumes generic presentation after LGBT and never reads petSummar
   assert.match(block, /Домашние животные/);
   assert.match(block, /Ввоз в страну:/);
   assert.match(block, /После въезда:/);
+  assert.match(block, /country-info-card country-info-pets/);
   assert.doesNotMatch(app, /calculation\.petSummary/);
   assert.match(app, /calculation\.petPresentation/);
   assert.ok(app.indexOf('renderLgbtResearch(calculation)') < app.lastIndexOf('renderPetPresentation(calculation)'));
@@ -1012,7 +1123,7 @@ test('matcher cache keys include the current release for code and country data',
   assert.match(matcher, new RegExp(`styles\\.css\\?v=${version}`));
   assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
   assert.match(app, /'ES-research-v4\.0\.json'/);
-  assert.match(app, new RegExp(`fetch\\(\`\\.\\.\\/data\\/\\$\\{filename\\}\\?v=${version}\``));
+  assert.match(app, new RegExp(`fetch\\(new URL\\(\`\\$\\{filename\\}\\?v=${version}\`, DATA_BASE\\)\\)`));
   assert.equal(app.includes("-research-v3.0.json"), false);
   assert.equal(app.includes("-adapter.js"), false);
 });

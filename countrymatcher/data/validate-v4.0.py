@@ -341,6 +341,34 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                                 errors,
                             )
                         guidance = alternative.get("practical_financial_guidance")
+                        screening = alternative.get("practical_screening_threshold")
+                        if screening is not None:
+                            alternative_path = f"$.routes[{route_id}].requirements[{k}].financial.alternatives[{a}]"
+                            if mode != "ENGINE" or alternative.get("kind") != "INCOME":
+                                fail(f"{alternative_path}.practical_screening_threshold: allowed only on active ENGINE INCOME alternatives", errors)
+                            if alternative.get("comparison") != "NO_FIXED_THRESHOLD" or alternative.get("amount") is not None or alternative.get("currency") is not None:
+                                fail(f"{alternative_path}.practical_screening_threshold: requires NO_FIXED_THRESHOLD and null legal amount/currency", errors)
+                            if guidance is None:
+                                fail(f"{alternative_path}.practical_screening_threshold: requires practical_financial_guidance", errors)
+                            if isinstance(screening, dict):
+                                if screening.get("comparison") != "AT_LEAST":
+                                    fail(f"{alternative_path}.practical_screening_threshold.comparison: expected AT_LEAST", errors)
+                                if not isinstance(screening.get("currency"), str) or len(screening.get("currency", "")) != 3:
+                                    fail(f"{alternative_path}.practical_screening_threshold.currency: invalid or missing", errors)
+                                if screening.get("period") not in {"MONTHLY", "ANNUAL"}:
+                                    fail(f"{alternative_path}.practical_screening_threshold.period: invalid or missing", errors)
+                                amount = screening.get("amount")
+                                formula = screening.get("family_formula")
+                                if (amount is None) == (formula is None):
+                                    fail(f"{alternative_path}.practical_screening_threshold: requires exactly one of amount or family_formula", errors)
+                                if amount is not None and (not isinstance(amount, (int, float)) or isinstance(amount, bool) or amount <= 0):
+                                    fail(f"{alternative_path}.practical_screening_threshold.amount: must be > 0", errors)
+                                if isinstance(formula, dict):
+                                    for field in ("base_applicant_amount", "additional_adult_amount", "child_amount"):
+                                        value = formula.get(field)
+                                        minimum = 0 if field != "base_applicant_amount" else 1
+                                        if not isinstance(value, (int, float)) or isinstance(value, bool) or value < minimum:
+                                            fail(f"{alternative_path}.practical_screening_threshold.family_formula.{field}: must be {'> 0' if minimum else '>= 0'}", errors)
                         if guidance is not None:
                             alternative_path = f"$.routes[{route_id}].requirements[{k}].financial.alternatives[{a}]"
                             if alternative.get("comparison") != "NO_FIXED_THRESHOLD" or alternative.get("amount") is not None or alternative.get("currency") is not None:

@@ -49,7 +49,7 @@ html,body{max-width:100%;overflow-x:clip}
 .route-result.best{border-color:var(--blue-600);background:#f7fbff}
 .route-result h3{margin:9px 0 3px}
 .route-result summary{cursor:pointer;list-style:none}.route-result summary::-webkit-details-marker{display:none}
-.route-card-heading{display:flex;align-items:flex-start;gap:12px}.route-card-heading h3{margin:0}.route-title-content{display:grid;gap:4px;min-width:0}.route-official-name{margin:0}.best-route-label,.route-expand-label{display:block}.when-open{display:none}.route-result details[open] .when-open{display:inline}.route-result details[open] .when-closed{display:none}
+.route-card-heading{display:flex;align-items:flex-start;gap:12px}.route-card-heading>.status-pill{flex:0 0 220px;width:220px}.route-card-heading h3{margin:0}.route-title-content{display:grid;gap:4px;min-width:0}.route-official-name{margin:0}.best-route-label,.route-expand-label{display:block}.when-open{display:none}.route-result details[open] .when-open{display:inline}.route-result details[open] .when-closed{display:none}
 .best-route-label{color:var(--blue-600);font-size:13px;font-weight:700}.route-expand-label{color:var(--blue-600);font-size:13px;font-weight:700}
 .route-card-body{padding-top:12px}
 .lgbt-assessment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}.lgbt-assessment-grid>div{padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.lgbt-assessment-grid span{display:block;color:#607286;font-size:13px}.lgbt-assessment-grid b{display:block;margin-top:5px}
@@ -81,8 +81,13 @@ html,body{max-width:100%;overflow-x:clip}
 .city-budget-grid .city-card>*{max-width:100%}
 .climate-grid .city-card span{display:block;margin-top:7px;color:#46596e}
 .climate-grid .city-card a{display:inline-block;margin-top:10px;color:var(--navy);font-weight:700;text-underline-offset:3px}
-.lgbt-research{padding:20px;border:1px solid #cabbea;border-radius:16px;background:#fbf9ff}
-.school-research{padding:20px;border:1px solid #cabbea;border-radius:16px;background:#fbf9ff}.school-subsection+.school-subsection{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}.school-subsection>h4{margin:0 0 10px}.school-rule+.school-rule{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}.school-rule h5{margin:0 0 8px;font-size:1rem}.school-rule p{margin:6px 0}
+.country-info-card{box-sizing:border-box;width:100%;padding:20px;border:1px solid;border-radius:16px}
+.country-info-cities{background:#f3f7fd;border-color:#c9d9ee}
+.country-info-schools{background:#f8f4ff;border-color:#d8c9ef}
+.country-info-lgbt{background:#fff5fa;border-color:#e8cbdd}
+.country-info-pets{background:#f3faf6;border-color:#c9e2d3}
+.country-info-taxes{background:#fff9ee;border-color:#e8d7ae}
+.school-subsection+.school-subsection{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}.school-subsection>h4{margin:0 0 10px}.school-rule+.school-rule{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}.school-rule h5{margin:0 0 8px;font-size:1rem}.school-rule p{margin:6px 0}
 .lgbt-list{overflow:hidden;border:1px solid #ded5ef;border-radius:var(--control-radius);background:#fff}
 .lgbt-row{display:grid;grid-template-columns:minmax(190px,30%) minmax(0,1fr);gap:20px;padding:15px 16px;border-top:1px solid #eee8f6;align-items:start}
 .lgbt-row:first-child{border-top:0}
@@ -105,7 +110,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-comparison-body{padding:22px}
 .country-comparison-body>section{margin-top:22px}
 @media(max-width:1100px){.matcher-layout{grid-template-columns:1fr}}
-@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.lgbt-research,.school-research{padding:15px}}
+@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.route-card-heading>.status-pill{flex:0 0 auto;width:auto}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.country-info-card{padding:15px}}
 @media(max-width:600px){.secure-note{display:none}}
 @media(max-width:430px){.two-choice,.segmented.four{grid-template-columns:1fr}.money-combo{grid-template-columns:minmax(0,1fr) 82px}}
 
