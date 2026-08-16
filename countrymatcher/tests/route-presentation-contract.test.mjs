@@ -11,13 +11,14 @@ const schema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
+const brazil = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
 const portugal = JSON.parse(await readFile(new URL('../data/PT-research-v4.0.json', import.meta.url), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 ajv.addSchema(schema);
 const validateRequirement = ajv.getSchema(`${schema.$id}#/$defs/routeRequirement`);
 const validateRoute = ajv.getSchema(`${schema.$id}#/$defs/route`);
-const context = { fx: { base_currency: 'USD', rates: { USD: 1, EUR: 0.9, ARS: 1500, UYU: 40 }, as_of: '2026-08-15', source: 'test' } };
+const context = { fx: { base_currency: 'USD', rates: { USD: 1, EUR: 0.9, ARS: 1500, BRL: 5.4, UYU: 40 }, as_of: '2026-08-15', source: 'test' } };
 
 const incomeSource = (type, amount, currency = 'USD', countryId = 'US') => ({
   owner: 'APPLICANT', type, source_geography: 'SINGLE_COUNTRY', country_id: countryId,
@@ -100,7 +101,7 @@ test('Argentina Pensionado remains ordinary conditional at the valid 5-SMVM thre
 });
 
 test('protection and explicitly marked humanitarian routes share the protection presentation group', () => {
-  for (const [pkg, protectionId] of [[spain, 'ES_PROTECTION'], [argentina, 'AR_PROTECTION'], [uruguay, 'UY_PROTECTION']]) {
+  for (const [pkg, protectionId] of [[spain, 'ES_PROTECTION'], [argentina, 'AR_PROTECTION'], [uruguay, 'UY_PROTECTION'], [brazil, 'BR_REFUGEE_PROTECTION']]) {
     assert.equal(routeById(calculateActiveCountry(profile(), pkg, context), protectionId).presentationGroup, 'INTERNATIONAL_PROTECTION');
   }
   for (const [pkg, routeId, requirementId] of [
@@ -150,7 +151,7 @@ test('presentation contract has five labels/order while internal status contract
 });
 
 test('no publishable route disappears from solo presentation', () => {
-  for (const pkg of [spain, argentina, uruguay]) {
+  for (const pkg of [spain, argentina, uruguay, brazil]) {
     const result = calculateActiveCountry(profile(), pkg, context);
     const publishable = pkg.routes.filter(({ publishable }) => publishable).map(({ route_id }) => route_id).sort();
     assert.deepEqual(result.routes.map(({ routeId }) => routeId).sort(), publishable, pkg.country_id);
