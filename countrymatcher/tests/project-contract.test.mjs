@@ -129,7 +129,7 @@ test('Pages artifact is a positive runtime allowlist', async () => {
     for (const required of [
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json',
       'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
@@ -194,7 +194,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
   assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
   const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json']);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json']);
   for (const filename of filenames) {
     assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));

@@ -15,6 +15,7 @@ const row = (quote, rate, date = '2026-08-11') => ({ quote, rate, date });
 const requiredRows = (date = '2026-08-11') => [
   row('EUR', 0.86, date),
   row('ARS', 1320, date),
+  row('MXN', 18.6, date),
   row('BRL', 5.4, date),
   row('RUB', 79, date),
   row('UYU', 40.1, date),
@@ -42,7 +43,7 @@ const assertIncomplete = async (operation, message) => assert.rejects(operation,
 
 test('FX endpoint is generated from the single requested-currency list', () => {
   assert.deepEqual(REQUESTED_CURRENCIES, ['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU']);
-  assert.deepEqual(REQUIRED_CURRENCIES, ['EUR', 'ARS', 'BRL', 'RUB', 'UYU']);
+  assert.deepEqual(REQUIRED_CURRENCIES, ['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU']);
   assert.equal(FX_ENDPOINT, `https://api.frankfurter.dev/v2/rates?base=USD&quotes=${REQUESTED_CURRENCIES.join(',')}`);
   assert.equal(FX_FALLBACK_URL.href, new URL('../data/fx-fallback.json', new URL('../pilot/fx-context.js', import.meta.url)).href);
 });
@@ -78,13 +79,14 @@ test('missing or malformed required BRL rejects the network context', async () =
   await assertIncomplete(() => network([...withoutBrl, row('BRL', 0)]), /BRL/);
 });
 
-test('malformed optional MXN is omitted without failing a complete loader context', async () => {
-  const context = await network([
-    ...requiredRows(), row('MXN', 18.6, 'not-a-date'),
-  ]);
-  assert.equal(context.fx.rates.UYU, 40.1);
-  assert.equal(context.fx.rates.MXN, undefined);
-  assert.equal(context.fx.rates.BRL, 5.4);
+test('missing or malformed required MXN rejects the network context', async () => {
+  const withoutMxn = requiredRows().filter(({ quote }) => quote !== 'MXN');
+  await assert.rejects(() => network(withoutMxn), (error) => {
+    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
+    assert.equal(error.details.currency, 'MXN');
+    return true;
+  });
+  await assertIncomplete(() => network([...withoutMxn, row('MXN', 0)]), /MXN/);
 });
 
 test('missing required RUB preserves the existing incomplete-context error contract', async () => {
@@ -94,8 +96,8 @@ test('missing required RUB preserves the existing incomplete-context error contr
 test('an older required UYU controls as_of', async () => {
   const context = await network([
     row('EUR', 0.86, '2026-08-11'), row('ARS', 1320, '2026-08-11'),
-    row('BRL', 5.4, '2026-08-11'), row('RUB', 79, '2026-08-11'),
-    row('UYU', 40.1, '2026-07-01'),
+    row('MXN', 18.6, '2026-08-11'), row('BRL', 5.4, '2026-08-11'),
+    row('RUB', 79, '2026-08-11'), row('UYU', 40.1, '2026-07-01'),
   ], { maxAgeHours: 2000 });
   assert.equal(context.fx.rates.UYU, 40.1);
   assert.equal(context.fx.as_of, '2026-07-01');
@@ -124,7 +126,7 @@ test('saved fallback with all required active-country currencies is accepted wit
   const context = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, now: NOW, storage });
   assert.equal(context.fx.is_saved_fallback, true);
   assert.equal(context.fx.as_of, '2020-01-01');
-  assert.deepEqual(context.fx.rates, { EUR: 0.86, ARS: 1320, BRL: 5.4, RUB: 79, UYU: 40.1 });
+  assert.deepEqual(context.fx.rates, { EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, UYU: 40.1 });
 });
 
 test('healthy live and saved cache precede the bundled fallback', async () => {
@@ -144,14 +146,14 @@ test('valid bundled fallback is the dated final calculation source and retains r
 
 test('malformed bundled fallback and a required currency missing everywhere fail explicitly', async () => {
   await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: { nope: true }, now: NOW }));
-  await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => response(requiredRows().filter(({ quote }) => quote !== 'UYU')), storage: null, bundledFallback: bundled({ EUR: 0.86, ARS: 1320, BRL: 5.4, RUB: 79 }), now: NOW }), (error) => {
+  await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => response(requiredRows().filter(({ quote }) => quote !== 'UYU')), storage: null, bundledFallback: bundled({ EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79 }), now: NOW }), (error) => {
     assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
     assert.equal(error.details.currency, 'UYU');
     return true;
   });
 });
 
-test('bundled fallback requires the remaining requested optional MXN without changing live/cache semantics', async () => {
+test('bundled fallback requires active-country MXN without changing live/cache semantics', async () => {
   for (const currency of ['MXN']) {
     const missing = bundled();
     delete missing.rates[currency];

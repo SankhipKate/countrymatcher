@@ -18,6 +18,7 @@ const ACTIVE_RP4_PACKAGES = [
   'UY-research-v4.0.json',
   'BR-research-v4.0.json',
   'PT-research-v4.0.json',
+  'MX-research-v4.0.json',
 ];
 let currentStep = 1;
 let activeResearchPackages = [];
