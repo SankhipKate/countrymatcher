@@ -1,6 +1,6 @@
 {
   "schema_version": "4.0",
-  "updated_at": "2026-08-10",
+  "updated_at": "2026-08-16",
   "countries": [
     {
       "overall_rank": 1,
@@ -35,7 +35,7 @@
       "country": "Португалия",
       "region": "Европа",
       "category": "Признан однополый брак",
-      "research_status": "Исследована, ожидает миграции 4.0"
+      "research_status": "Подключена"
     },
     {
       "overall_rank": 6,

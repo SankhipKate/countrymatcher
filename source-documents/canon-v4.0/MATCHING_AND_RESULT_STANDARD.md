@@ -198,6 +198,31 @@ Flag не ставится на финансовый порог, будущую 
 
 Route-level `is_humanitarian: true` отмечает гуманитарный маршрут без изменения его юридического `route_type` (для текущих AR/UY это `OTHER`). `route_type = INTERNATIONAL_PROTECTION` и явный `is_humanitarian: true` дают одну пользовательскую presentation group `INTERNATIONAL_PROTECTION`; она имеет приоритет над остальной presentation derivation. Гуманитарный marker не выводится из route ID, названия/текста, requirement type, `OTHER_BASIS`, `covers_categories` или condition text.
 
+#### Запрет на country-specific подгонку статуса
+
+`evaluation_mode`, `unmet_effect`, `requires_separate_basis`, `publishable` и структура `requirements[]` выбираются только из юридического смысла факта и знаний questionnaire. Их запрещено добавлять, удалять или менять только для того, чтобы конкретная страна или маршрут получили желаемый публичный статус.
+
+`UNASKED_CONDITION` используется только для подтверждённого обязательного содержательного требования eligibility, которое заявитель действительно должен выполнить, но questionnaire не устанавливает, выполнено ли оно.
+
+Исследовательская неопределённость, региональная оговорка, неоднозначность применимого источника или порога, отсутствие уточняющего официального разъяснения, processing caveat и `open_item` сами по себе не являются `UNASKED_CONDITION` и не должны понижать `SUITABLE`. Такой факт хранится как пояснение в соответствующем substantive requirement и/или как non-blocking `open_item`.
+
+Если реальное юридическое правило нельзя корректно выразить текущим generic contract, это integration blocker для общего contract/engine change. Country-specific hardcode, ручное назначение route status и специальная status-логика для одной страны запрещены.
+
+#### Public-route policy для supporting routes
+
+`publishable` управляет только присутствием самостоятельной route card в публичной выдаче и не меняет юридическое существование маршрута, `route_coverage` или внутренний route status.
+
+В текущем MVP отдельные узкие supporting/derivative routes не показываются как самостоятельные рекомендации:
+
+- чистый `route_type=FAMILY`, когда семейный переезд уже представлен через `family_scenarios` основных маршрутов или требует отдельного уже существующего спонсора;
+- чистый `route_type=INTRA_COMPANY_TRANSFER`, который является специальным корпоративным механизмом, а не самостоятельным широким specialist route.
+
+Для таких routes используется `publishable=false`, при этом маршрут остаётся полностью исследованным и сохраняется в `route_coverage`.
+
+Широкий маршрут `HIGHLY_QUALIFIED_SPECIALIST`, который дополнительно покрывает `INTRA_COMPANY_TRANSFER` через `covers_categories`, не скрывается только из-за ICT coverage.
+
+Эта visibility policy применяется одинаково ко всем странам. Запрещён country-specific UI hardcode по `route_id`.
+
 ### `evaluation_mode = DISPLAY_ONLY`
 
 Требование не влияет на статус. В MVP этот режим используется для непроверяемых характеристик, которые продукт сознательно не оценивает и оставляет для проверки при подаче: например, длительность уже указанной работы или дохода, длительность отношений с текущим работодателем/заказчиком, срок деятельности текущего работодателя/заказчика, диплом/уровень или направление образования, профессиональный опыт и обычные подтверждения уже существующего факта.
