@@ -1,0 +1,3991 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "BR",
+  "country_name_ru": "Бразилия",
+  "research_date": "2026-08-16",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-16",
+    "migration_rules_next_review": "2026-11-16",
+    "financial_costs_next_review": "2026-09-16",
+    "taxes_next_review": "2026-11-16",
+    "lgbt_legal_next_review": "2027-02-16",
+    "lgbt_practical_next_review": "2026-11-16",
+    "schools_pets_next_review": "2026-11-16",
+    "climate_next_review": "2027-08-16"
+  },
+  "country_currency": "BRL",
+  "country_summary_ru": "Бразилия предлагает отдельные маршруты для цифровых кочевников, пенсионеров, местной и академической работы, корпоративных руководителей, инвесторов, студентов, семьи, выпускников бразильских вузов, академической деятельности без трудовой связи и международной защиты. Для граждан РФ краткосрочный въезд безвизовый до 90 дней в применимом 180-дневном периоде. Practical country layer включает четыре сопоставимых города с полной one-person cost basket, school cities, pets, LGBT и taxes. Единственный non-blocking gap — невозможность доказать абсолютную исчерпывающую полноту school-city каталога.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_DIGITAL_NOMAD"
+      ],
+      "explanation_ru": "Отдельное основание цифрового кочевника существует и доступно гражданам РФ при выполнении условий.",
+      "source_ids": [
+        "BR_SRC_NOMAD_RULE"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельный общий маршрут только на основании пассивного/собственного дохода для гражданина РФ в исследованной системе не подтверждён; пенсионный маршрут выделен отдельно.",
+      "source_ids": [
+        "BR_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_RETIREMENT"
+      ],
+      "explanation_ru": "Подтверждён отдельный пенсионный маршрут RN 40.",
+      "source_ids": [
+        "BR_SRC_RETIREMENT_RULE"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_LOCAL_EMPLOYMENT"
+      ],
+      "explanation_ru": "Подтверждена рабочая резиденция по бразильскому трудовому договору.",
+      "source_ids": [
+        "BR_SRC_WORK_CONTRACT"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_ACADEMIC_EMPLOYMENT_RN24"
+      ],
+      "explanation_ru": "Подтверждён специализированный академический/исследовательский маршрут с трудовой связью.",
+      "source_ids": [
+        "BR_SRC_RN24"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_CORPORATE_EXECUTIVE_RN11"
+      ],
+      "explanation_ru": "Подтверждён корпоративный маршрут руководителя/исполнительного директора RN 11.",
+      "source_ids": [
+        "BR_SRC_RN11"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_PRODUCTIVE_INVESTOR_RN13"
+      ],
+      "explanation_ru": "Производительная инвестиция через бразильское юридическое лицо покрывает предпринимательский сценарий.",
+      "source_ids": [
+        "BR_SRC_PRODUCTIVE_INVESTOR"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_PRODUCTIVE_INVESTOR_RN13",
+        "BR_REAL_ESTATE_INVESTOR_RN36"
+      ],
+      "explanation_ru": "Подтверждены производительная инвестиция и инвестиция в городскую недвижимость.",
+      "source_ids": [
+        "BR_SRC_PRODUCTIVE_INVESTOR",
+        "BR_SRC_REAL_ESTATE_INVESTOR"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_STUDY"
+      ],
+      "explanation_ru": "Подтверждено учебное основание VITEM IV / residência para estudo.",
+      "source_ids": [
+        "BR_SRC_STUDY_RULE"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_FAMILY_REUNIFICATION"
+      ],
+      "explanation_ru": "Подтверждено семейное воссоединение с гражданином/подходящим резидентом Бразилии.",
+      "source_ids": [
+        "BR_SRC_FAMILY_PORTARIA"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "UNAVAILABLE_TO_RU",
+      "linked_route_ids": [],
+      "explanation_ru": "Обычный MERCOSUR-национальный маршрут не применяется к гражданину РФ только на основании российского гражданства; в RP4 не публикуется как общий Brazil residence route для российского пользователя.",
+      "source_ids": [
+        "BR_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_REFUGEE_PROTECTION"
+      ],
+      "explanation_ru": "Подтверждена отдельная процедура международной защиты/признания статуса беженца.",
+      "source_ids": [
+        "BR_SRC_REFUGEE_LAW"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BR_GRADUATE_WORK_RN50",
+        "BR_ACADEMIC_NO_EMPLOYMENT_RN20"
+      ],
+      "explanation_ru": "Подтверждены переход к работе после бразильского высшего образования и академическая деятельность без трудовой связи.",
+      "source_ids": [
+        "BR_SRC_GRADUATE_WORK",
+        "BR_SRC_RN20"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Для краткосрочной поездки гражданину РФ доступен безвизовый въезд до 90 дней в применимом 180-дневном периоде; это не заменяет отдельное основание резиденции.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "BR_SRC_ENTRY_RU"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "BR_DIGITAL_NOMAD",
+      "name_ru": "Резиденция цифрового кочевника",
+      "official_term_ru": "VITEM XIV / autorização de residência para nômade digital — Resolução CNIG nº 45/2021",
+      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
+      "covers_categories": [
+        "DIGITAL_NOMAD_REMOTE_WORK"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Удалённая профессиональная деятельность для работодателя или заказчиков за пределами Бразилии.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_NOMAD_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить зарубежную удалённую деятельность и либо не менее 1 500 USD регулярного месячного дохода, либо не менее 18 000 USD доступных банковских средств.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE",
+            "BR_SRC_NOMAD_CONSULATE"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 1500,
+                "currency": "USD",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_NOMAD_RULE",
+                  "BR_SRC_NOMAD_CONSULATE"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": true,
+                "amount": 18000,
+                "currency": "USD",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_NOMAD_RULE",
+                  "BR_SRC_NOMAD_CONSULATE"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          },
+          "met_ru": "Зарубежное удалённое основание и финансовая альтернатива подтверждаются по данным анкеты.",
+          "unmet_ru": "Не подтверждена требуемая комбинация зарубежного удалённого основания и официального финансового минимума."
+        },
+        {
+          "requirement_id": "BR_NOMAD_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Маршрут предназначен для удалённой профессиональной деятельности для работодателя или заказчиков за пределами Бразилии без бразильской трудовой связи.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_NOMAD_RULE"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE",
+            "BR_SRC_NOMAD_CONSULATE"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE",
+            "BR_SRC_NOMAD_CONSULATE"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_DIGITAL_NOMAD_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Бразильская трудовая связь не является допустимым основанием цифрового кочевника.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Самостоятельные услуги допустимы в рамках удалённой деятельности для зарубежных клиентов.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Удалённая работа/услуги для зарубежного работодателя или клиентов — основа маршрута.",
+          "source_ids": [
+            "BR_SRC_NOMAD_RULE"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 12,
+        "renewal_ru": "Продление возможно при сохранении основания и повторном подтверждении требований.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_NOMAD_RULE"
+    },
+    {
+      "route_id": "BR_RETIREMENT",
+      "name_ru": "Резиденция пенсионера или получателя pensão por morte",
+      "official_term_ru": "VITEM XIV / autorização de residência com base em aposentadoria ou benefício de pensão por morte — RN nº 40/2019",
+      "route_type": "RETIREMENT",
+      "covers_categories": [
+        "RETIREMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Пенсия или выплата по случаю смерти кормильца с регулярным финансовым обеспечением.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RET_BASIS",
+          "type": "RETIREMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить государственную или частную пенсию либо pensão por morte, отвечающую требованиям RN 40.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "BR_RET_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить регулярный перевод/доход не менее 2 000 USD в месяц; пенсия может дополняться другими регулярными источниками.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 2000,
+                "currency": "USD",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PENSION",
+                  "OTHER_REGULAR_INCOME"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": "Пенсионное основание обязательно; недостаток пенсии может дополняться другими документируемыми регулярными доходами.",
+                "source_ids": [
+                  "BR_SRC_RETIREMENT_RULE"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          },
+          "met_ru": "Подтверждаемый допустимый регулярный доход достигает 2 000 USD в месяц.",
+          "unmet_ru": "Подтверждаемый допустимый регулярный доход ниже официального минимума 2 000 USD в месяц."
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_RETIREMENT_RULE"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_RETIREMENT_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Пенсионное основание не исследовано как основание для бразильской занятости.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Пенсионное основание не исследовано как основание самостоятельной деятельности.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Пенсионное основание не исследовано как основание удалённой профессиональной деятельности.",
+          "source_ids": [
+            "BR_SRC_RETIREMENT_RULE"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Дальнейший статус и продление проверяются по действующей процедуре RN 40; единый числовой срок последующего разрешения в исследованном источнике не установлен.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_RETIREMENT_RULE"
+    },
+    {
+      "route_id": "BR_LOCAL_EMPLOYMENT",
+      "name_ru": "Рабочая резиденция по бразильскому трудовому договору",
+      "official_term_ru": "Autorização de residência para fins de trabalho com vínculo empregatício no Brasil — RN nº 02/2017",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Реальный трудовой договор с бразильской компанией или учреждением.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_EMP_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить реальный бразильский трудовой договор и работодателя/учреждение, готовых провести предусмотренную процедуру.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_WORK_CONTRACT"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_LOCAL_EMPLOYMENT_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Разрешённая бразильская занятость является основанием маршрута.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Этот маршрут оформляется под трудовую связь, а не самостоятельную деятельность.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Этот маршрут не предназначен для зарубежной удалённой работы как основания.",
+          "source_ids": [
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Для дальнейшего проживания проверяется продление или изменение рабочего основания на доступный долгосрочный статус.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_WORK_CONTRACT"
+    },
+    {
+      "route_id": "BR_ACADEMIC_EMPLOYMENT_RN24",
+      "name_ru": "Академическая/исследовательская резиденция с трудовой связью",
+      "official_term_ru": "Autorização de residência para professor, pesquisador ou cientista com vínculo no Brasil — RN nº 24",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Исследовательская, преподавательская или научная деятельность с бразильской трудовой/принимающей основой.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN24_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подходящее исследовательское, преподавательское или академическое трудовое/принимающее основание в Бразилии.",
+          "source_ids": [
+            "BR_SRC_RN24",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN24_QUAL",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить академическую/научную квалификацию и документы принимающей организации, требуемые процедурой.",
+          "source_ids": [
+            "BR_SRC_RN24"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_RN24"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_RN24",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_RN24",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_ACADEMIC_EMPLOYMENT_RN24_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Разрешена академическая/исследовательская занятость в рамках выданного основания.",
+          "source_ids": [
+            "BR_SRC_RN24"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Иная самостоятельная деятельность требует проверки совместимости с основанием.",
+          "source_ids": [
+            "BR_SRC_RN24"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Иная удалённая деятельность требует проверки совместимости с основанием.",
+          "source_ids": [
+            "BR_SRC_RN24"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Резиденция на неопределённый срок по подтверждённому академическому трудовому основанию.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Статус оформляется на неопределённый срок при сохранении законного основания и соблюдении общих миграционных правил.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут предусматривает резиденцию на неопределённый срок.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 4,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация: 4 года проживания на неопределённый срок, с предусмотренными законом сокращениями в отдельных случаях.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RN24",
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_RN24"
+    },
+    {
+      "route_id": "BR_CORPORATE_EXECUTIVE_RN11",
+      "name_ru": "Корпоративная резиденция руководителя / исполнительного директора",
+      "official_term_ru": "Autorização de residência para administrador, gerente, diretor ou executivo — RN nº 11",
+      "route_type": "INTRA_COMPANY_TRANSFER",
+      "covers_categories": [
+        "INTRA_COMPANY_TRANSFER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Корпоративная руководящая роль в бразильском юридическом лице при выполнении инвестиционных условий.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN11_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Иметь реальную должность administrador, gerente, diretor или executivo в бразильском юридическом лице и соответствующее корпоративное основание.",
+          "source_ids": [
+            "BR_SRC_RN11",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN11_CAPITAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить корпоративный капитал: стандартно не менее 600 000 BRL либо не менее 150 000 BRL при выполнении специального условия создания 10 рабочих мест. Это инвестиционный капитал компании, а не questionnaire savings.",
+          "source_ids": [
+            "BR_SRC_RN11"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INVESTMENT_CAPITAL",
+            "alternatives": [
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 600000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Стандартный корпоративный инвестиционный порог.",
+                "source_ids": [
+                  "BR_SRC_RN11"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 150000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Пониженный порог применим только вместе с обязательством создать не менее 10 новых рабочих мест в установленный срок.",
+                "source_ids": [
+                  "BR_SRC_RN11"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_RN11"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_RN11",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_RN11",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_CORPORATE_EXECUTIVE_RN11_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Разрешена деятельность в соответствующей корпоративной должности.",
+          "source_ids": [
+            "BR_SRC_RN11"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Иная самостоятельная деятельность требует проверки совместимости с основанием.",
+          "source_ids": [
+            "BR_SRC_RN11"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Иная удалённая деятельность требует проверки совместимости с основанием.",
+          "source_ids": [
+            "BR_SRC_RN11"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Резиденция на неопределённый срок при сохранении корпоративного основания.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Статус оформляется на неопределённый срок при сохранении законного основания и соблюдении общих миграционных правил.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут предусматривает резиденцию на неопределённый срок.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 4,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация: 4 года проживания на неопределённый срок, с предусмотренными законом сокращениями в отдельных случаях.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RN11",
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_RN11"
+    },
+    {
+      "route_id": "BR_PRODUCTIVE_INVESTOR_RN13",
+      "name_ru": "Резиденция производительного инвестора",
+      "official_term_ru": "Autorização de residência por investimento de pessoa física em pessoa jurídica no Brasil — RN nº 13/2017",
+      "route_type": "INVESTMENT",
+      "covers_categories": [
+        "INVESTMENT",
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Вложение собственных средств внешнего происхождения в бразильское юридическое лицо с реальным проектом.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN13_PROJECT",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Создать/использовать реальное бразильское юридическое лицо и представить инвестиционный проект с требуемым экономическим результатом.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR",
+            "BR_SRC_INVESTOR_INDEX",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN13_CAPITAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить инвестиционный капитал: стандартно не менее 500 000 BRL; специальный инновационный/научный/технологический режим допускает сумму от 150 000 BRL только при выполнении дополнительных критериев. Questionnaire savings не считаются этим капиталом автоматически.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR",
+            "BR_SRC_INVESTOR_INDEX"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INVESTMENT_CAPITAL",
+            "alternatives": [
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 500000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Стандартный порог производительной инвестиции.",
+                "source_ids": [
+                  "BR_SRC_PRODUCTIVE_INVESTOR",
+                  "BR_SRC_INVESTOR_INDEX"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 150000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Пониженный диапазон от 150 000 BRL применим только к квалифицирующим инновационным, научным или технологическим проектам с дополнительными критериями.",
+                "source_ids": [
+                  "BR_SRC_PRODUCTIVE_INVESTOR",
+                  "BR_SRC_INVESTOR_INDEX"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_PRODUCTIVE_INVESTOR"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_PRODUCTIVE_INVESTOR_RN13_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Резидент-инвестор может осуществлять разрешённую деятельность при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Предпринимательская/самостоятельная деятельность совместима с инвестиционным основанием при соблюдении корпоративных правил.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Удалённая деятельность допустима при соблюдении общих миграционных и налоговых правил.",
+          "source_ids": [
+            "BR_SRC_PRODUCTIVE_INVESTOR"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Резиденция на неопределённый срок при подтверждённой производительной инвестиции.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Статус оформляется на неопределённый срок при сохранении законного основания и соблюдении общих миграционных правил.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут предусматривает резиденцию на неопределённый срок.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 4,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация: 4 года проживания на неопределённый срок, с предусмотренными законом сокращениями в отдельных случаях.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_PRODUCTIVE_INVESTOR",
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_PRODUCTIVE_INVESTOR"
+    },
+    {
+      "route_id": "BR_REAL_ESTATE_INVESTOR_RN36",
+      "name_ru": "Резиденция инвестора в городскую недвижимость",
+      "official_term_ru": "Autorização de residência em decorrência de investimento imobiliário — RN nº 36/2018",
+      "route_type": "INVESTMENT",
+      "covers_categories": [
+        "INVESTMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Покупка квалифицирующей городской недвижимости в Бразилии за собственные средства внешнего происхождения.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN36_PROPERTY",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Выбрать и документально оформить квалифицирующую городскую недвижимость и международный перевод капитала.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN36_CAPITAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить собственный инвестиционный капитал: не менее 1 000 000 BRL, либо 700 000 BRL для квалифицирующей недвижимости в Северном/Северо-Восточном регионе. Questionnaire savings не являются автоматически подтверждённым капиталом покупки.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INVESTMENT_CAPITAL",
+            "alternatives": [
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 1000000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Стандартный минимальный собственный капитал в городскую недвижимость.",
+                "source_ids": [
+                  "BR_SRC_REAL_ESTATE_INVESTOR"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 700000,
+                "currency": "BRL",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "FOREIGN",
+                "family_formula_ru": "Порог 700 000 BRL применим только к квалифицирующей городской недвижимости в Северном или Северо-Восточном регионе.",
+                "source_ids": [
+                  "BR_SRC_REAL_ESTATE_INVESTOR"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_REAL_ESTATE_INVESTOR"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_REAL_ESTATE_INVESTOR_RN36_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "После получения резиденции трудовая деятельность возможна на общих условиях.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Самостоятельная деятельность возможна на общих условиях.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Удалённая зарубежная деятельность возможна на общих условиях.",
+          "source_ids": [
+            "BR_SRC_REAL_ESTATE_INVESTOR"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 48,
+        "initial_status_ru": "Временная резиденция инвестора в городскую недвижимость сроком до 4 лет.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "После 4 лет при сохранении инвестиции и выполнении требований возможно изменение статуса на неопределённый срок; текущая процедура проверяется на момент подачи.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 4,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После 4 лет первоначальной резиденции возможно изменение на резиденцию на неопределённый срок при сохранении инвестиции и требуемых документов.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок после перехода к такому статусу; возможны законные сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для этого основания требуется находиться в Бразилии минимум 14 дней подряд или суммарно в каждом двухлетнем периоде; также применяются общие миграционные правила.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке.",
+        "source_ids": [
+          "BR_SRC_REAL_ESTATE_INVESTOR",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_REAL_ESTATE_INVESTOR"
+    },
+    {
+      "route_id": "BR_STUDY",
+      "name_ru": "Студенческая резиденция",
+      "official_term_ru": "VITEM IV / autorização de residência para fins de estudo — Portaria Interministerial nº 7/2018",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Зачисление на регулярную учебную, обменную или исследовательскую программу в Бразилии.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_STUDY_BASIS",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить зачисление на допустимую программу в признанном бразильском учреждении.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE",
+            "BR_SRC_STUDY_GUIDE"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_STUDY_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить достаточные средства без универсального национального числового минимума: собственные средства, накопления, допустимый спонсор или стипендия.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE",
+            "BR_SRC_STUDY_GUIDE"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "SPONSOR_OR_SCHOLARSHIP",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_STUDY_RULE",
+                  "BR_SRC_STUDY_GUIDE"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "OTHER",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_STUDY_RULE",
+                  "BR_SRC_STUDY_GUIDE"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "SPONSOR",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "OTHER",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_STUDY_RULE",
+                  "BR_SRC_STUDY_GUIDE"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "SCHOLARSHIP",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "ACADEMIC_YEAR",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_STUDY_RULE",
+                  "BR_SRC_STUDY_GUIDE"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_STUDY_RULE"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE",
+            "BR_SRC_STUDY_GUIDE"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE",
+            "BR_SRC_STUDY_GUIDE"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_STUDY_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Оплачиваемая деятельность допускается, когда совместима с учебным расписанием и условиями студенческого статуса.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Самостоятельная деятельность требует совместимости с учебным статусом и общими правилами.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Удалённая деятельность требует совместимости с учебным статусом и расписанием.",
+          "source_ids": [
+            "BR_SRC_STUDY_RULE"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 12,
+        "renewal_ru": "Продление возможно при сохранении зачисления, успеваемости, средств и иных текущих требований.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_STUDY_RULE"
+    },
+    {
+      "route_id": "BR_FAMILY_REUNIFICATION",
+      "name_ru": "Семейное воссоединение",
+      "official_term_ru": "VITEM XI / autorização de residência para reunião familiar — Portaria Interministerial nº 12/2018",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Семейная связь с гражданином Бразилии или иностранцем с подходящей бразильской резиденцией.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_FAM_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить предусмотренную законом семейную связь с гражданином Бразилии или иностранцем, имеющим подходящую бразильскую резиденцию.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA",
+            "BR_SRC_FAMILY_GUIDE"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_FAMILY_PORTARIA"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA",
+            "BR_SRC_FAMILY_GUIDE"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA",
+            "BR_SRC_FAMILY_GUIDE"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_FAMILY_OWN_HOUSEHOLD",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "При подтверждённом квалифицирующем семейном основании супруг/партнёр и дети оформляются по применимой семейной процедуре; административно заявления могут быть отдельными.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Срок и характер семейной резиденции следуют статусу спонсора: при спонсоре с резиденцией на неопределённый срок семейный статус также может быть неопределённым; при временном — следует его сроку.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Продление/сохранение зависят от действительности семейной связи и статуса спонсора.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Долгосрочный результат зависит от статуса спонсора и сохранения семейного основания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "При резиденции на неопределённый срок обычная натурализация обычно требует 4 года такого проживания; для брака/партнёрства с гражданином Бразилии или бразильского ребёнка возможны сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Нужно сохранять реальное семейное основание и соблюдать общие миграционные правила, включая правила длительного отсутствия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке.",
+        "source_ids": [
+          "BR_SRC_FAMILY_DECREE",
+          "BR_SRC_FAMILY_PORTARIA",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_FAMILY_PORTARIA"
+    },
+    {
+      "route_id": "BR_GRADUATE_WORK_RN50",
+      "name_ru": "Рабочая резиденция после бразильского высшего образования",
+      "official_term_ru": "Autorização de residência para fins de trabalho ao egresso de graduação ou pós-graduação stricto sensu no Brasil — RN nº 50/2024",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Завершённая в Бразилии graduação или pós-graduação stricto sensu и квалифицирующее рабочее основание.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN50_WORK",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить квалифицирующее рабочее основание после завершения подходящего бразильского образования.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK",
+            "BR_SRC_WORK_CONTRACT",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN50_EDU",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Маршрут требует завершённую в Бразилии graduação или pós-graduação stricto sensu и нахождение заявителя в Бразилии.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_GRADUATE_WORK"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_GRADUATE_WORK_RN50_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Разрешена работа в рамках квалифицирующего рабочего основания RN 50.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK",
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Маршрут исследован как рабочая резиденция по квалифицирующему основанию, а не как самостоятельный бизнес-маршрут.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK",
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Зарубежная удалённая работа не является основанием RN 50.",
+          "source_ids": [
+            "BR_SRC_GRADUATE_WORK",
+            "BR_SRC_WORK_CONTRACT"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Для более длительного проживания требуется продление либо переход на доступное основание на неопределённый срок.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_GRADUATE_WORK"
+    },
+    {
+      "route_id": "BR_ACADEMIC_NO_EMPLOYMENT_RN20",
+      "name_ru": "Академическая/исследовательская резиденция без трудовой связи",
+      "official_term_ru": "Autorização de residência para professor, pesquisador ou cientista sem vínculo empregatício — RN nº 20",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Исследовательская, преподавательская или научная деятельность без бразильской трудовой связи по принимающему академическому основанию.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_RN20_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить реальное принимающее исследовательское/преподавательское/научное основание без бразильской трудовой связи.",
+          "source_ids": [
+            "BR_SRC_RN20",
+            "BR_SRC_MIGRANTEWEB"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "BR_RN20_QUAL",
+          "type": "EDUCATION",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить академическую/научную квалификацию и документы принимающей организации.",
+          "source_ids": [
+            "BR_SRC_RN20"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "BR_RN20_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Если процедура требует финансовое обеспечение, подтвердить его документально; универсального числового порога в исследованном основании не установлено.",
+          "source_ids": [
+            "BR_SRC_RN20"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BR_SRC_RN20"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_RN20"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "entry_condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача через компетентное бразильское консульство/предварительную процедуру по месту законного проживания.",
+          "source_ids": [
+            "BR_SRC_RN20",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_RN20",
+            "BR_SRC_MIGRANTEWEB"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_ACADEMIC_NO_EMPLOYMENT_RN20_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": "BR_FAMILY_REUNIFICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные заявления оформляются как отдельные административные дела; в применимых случаях подача возможна одновременно с основным заявителем, а срок семейной резиденции следует статусу спонсора.",
+          "source_ids": [
+            "BR_SRC_FAMILY_DECREE",
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Маршрут специально относится к академической/исследовательской деятельности без бразильской трудовой связи.",
+          "source_ids": [
+            "BR_SRC_RN20"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 0,
+          "rule_ru": "Допустимая деятельность ограничена рамками исследовательского/академического основания без vínculo empregatício.",
+          "source_ids": [
+            "BR_SRC_RN20"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_APPLICABLE",
+          "available_after_months": null,
+          "rule_ru": "Зарубежная удалённая работа не является предметом этого академического основания.",
+          "source_ids": [
+            "BR_SRC_RN20"
+          ]
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": null,
+        "renewal_ru": "Для более длительного проживания требуется проверить продление или переход на другое доступное основание.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Автоматический переход на резиденцию на неопределённый срок этим временным основанием не установлен; для долгосрочного статуса требуется предусмотренное действующим правом основание/изменение статуса.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Обычная натурализация обычно требует 4 года проживания на неопределённый срок; для отдельных обстоятельств предусмотрены сокращения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Общее миграционное правило допускает процедуру утраты резиденции после отсутствия более 2 лет без принятой причины; конкретное основание может иметь дополнительные условия.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке в предусмотренной форме.",
+        "source_ids": [
+          "BR_SRC_RESIDENCE_LOSS",
+          "BR_SRC_NATURALIZATION_TERM",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "BR_SRC_RN20"
+    },
+    {
+      "route_id": "BR_REFUGEE_PROTECTION",
+      "name_ru": "Международная защита / статус беженца",
+      "official_term_ru": "Reconhecimento da condição de refugiado — Lei nº 9.474/1997",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальное основание международной защиты в соответствии с бразильским законодательством о беженцах.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BR_PROT_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальные обстоятельства, соответствующие критериям беженца/международной защиты; гражданство РФ само по себе не является основанием.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_LAW",
+            "BR_SRC_REFUGEE_REQUEST"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый обязательный срок решения в использованном официальном источнике не зафиксирован; фактический срок зависит от процедуры.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BR_SRC_REFUGEE_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача доступна при физическом присутствии в Бразилии и выполнении процессуальных условий.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_REQUEST"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BR_PROTECTION_FAMILY",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейные последствия и включение/воссоединение оцениваются в рамках конкретной процедуры международной защиты и подтверждённой семейной связи.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_LAW",
+            "BR_SRC_REFUGEE_FAQ"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Документированный заявитель на убежище/беженец может получать документы для формальной работы в соответствии с процедурой.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_FAQ"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Документированный заявитель/беженец может осуществлять самостоятельную деятельность в рамках действующих правил.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_FAQ"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Профессиональная деятельность возможна при соблюдении общих правил статуса и налогообложения.",
+          "source_ids": [
+            "BR_SRC_REFUGEE_FAQ"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе заниматься оплачиваемой деятельностью в Бразилии на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе вести самостоятельную деятельность на общих условиях.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": 0,
+          "rule_ru": "Получатель семейной резиденции вправе выполнять удалённую работу при соблюдении общих правил.",
+          "source_ids": [
+            "BR_SRC_FAMILY_PORTARIA"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "После признания — статус беженца и долгосрочное законное пребывание; во время процедуры действует отдельное документированное положение заявителя.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Признанный статус не моделируется как обычное срочное экономическое разрешение; сохраняются применимые обязанности и основания прекращения/утраты защиты.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Положительное решение создаёт долгосрочный защитный статус/право проживания, а не обычную временную экономическую резиденцию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 4,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Для признанного беженца исследование зафиксировало возможность обычной натурализации после применимого срока проживания; конкретный отсчёт подтверждается по действующей процедуре.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Применяются специальные правила статуса беженца и общие правила законного пребывания; индивидуальные выезды могут иметь значение для защиты.",
+        "language_requirements_ru": "Для обычной натурализации требуется подтверждение способности общаться на португальском языке.",
+        "source_ids": [
+          "BR_SRC_REFUGEE_LAW",
+          "BR_SRC_REFUGEE_FAQ",
+          "BR_SRC_NATURALIZATION_REQUIREMENTS",
+          "BR_SRC_DUAL_CITIZENSHIP"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Признание статуса беженца по Lei 9.474/1997, включая конвенционные основания и предусмотренную законом ситуацию тяжёлого и общего нарушения прав человека.",
+        "recognized_grounds_ru": "Раса, религия, национальность, принадлежность к определённой социальной группе, политическое мнение; также предусмотренная законом ситуация grave e generalizada violação de direitos humanos.",
+        "individual_risk_rule_ru": "Решение основывается на индивидуальных фактах и обстоятельствах дела; российское гражданство само по себе не создаёт защитного основания.",
+        "protected_ground_link_ru": "Для конвенционного преследования риск должен быть связан с защищаемым основанием; отдельная законная ветвь относится к grave e generalizada violação de direitos humanos.",
+        "evidence_rule_ru": "Заявитель представляет индивидуальный рассказ и доступные подтверждения; CONARE оценивает доказательства и достоверность в процедуре.",
+        "admissibility_ru": "Запрос подаётся на территории Бразилии по текущей процедуре через Sisconare и Polícia Federal.",
+        "safe_third_country_ru": "В Country Matcher не кодируется автоматический safe-third-country blocker; применимые процессуальные вопросы оцениваются индивидуально компетентным органом.",
+        "previous_applications_ru": "Предыдущая история обращений за защитой должна раскрываться в применимой процедуре; её значение оценивается индивидуально.",
+        "right_to_remain_during_processing_ru": "После оформления запроса заявитель получает документирование/регуляризацию пребывания на период рассмотрения в рамках процедуры.",
+        "reception_housing_ru": "Универсальная автоматическая государственная гарантия жилья для каждого заявителя в исследованных материалах не используется как условие маршрута; помощь зависит от программ и обстоятельств.",
+        "assistance_ru": "Процедурные документы позволяют пользоваться предусмотренными механизмами интеграции и социальной поддержки в соответствии с действующими правилами.",
+        "healthcare_ru": "Доступ к государственной системе здравоохранения осуществляется по общим правилам публичной системы и документированного статуса.",
+        "appeal_ru": "Отрицательное решение имеет предусмотренный законом административный порядок пересмотра/обжалования.",
+        "status_after_positive_decision_ru": "После признания лицо получает статус беженца и связанные с ним документы, право на труд и долгосрочное законное пребывание.",
+        "source_ids": [
+          "BR_SRC_REFUGEE_LAW",
+          "BR_SRC_REFUGEE_REQUEST",
+          "BR_SRC_REFUGEE_FAQ"
+        ]
+      },
+      "official_source_id": "BR_SRC_REFUGEE_LAW"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "BR_SAO_PAULO",
+      "name_ru": "Сан-Паулу",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Город выбран как репрезентативный сценарий категории LARGE внутри национальной системы расселения; население не используется для пользовательского вывода.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 649,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_SAO_PAULO"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 64.6,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Ежемесячные коммунальные услуги для стандартной городской квартиры.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_SAO_PAULO"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 244,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_SAO_PAULO"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 44.4,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_SAO_PAULO"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Влажный субтропический высокогорный",
+        "cold_min_c": 13,
+        "cold_max_c": 23,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 19,
+        "hot_max_c": 29,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INMET normals 1991–2020",
+        "notes_ru": "Округлённый сезонный диапазон средних минимальных и максимальных температур для сопоставимого пользовательского описания.",
+        "source_ids": [
+          "BR_SRC_CLIMATE_INMET"
+        ]
+      },
+      "source_ids": [
+        "BR_SRC_COST_SAO_PAULO",
+        "BR_SRC_CLIMATE_INMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BR_BRASILIA",
+      "name_ru": "Бразилиа",
+      "structural_roles": [
+        "CAPITAL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Город выбран как репрезентативный сценарий категории CAPITAL внутри национальной системы расселения; население не используется для пользовательского вывода.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 547,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BRASILIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 61.4,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Ежемесячные коммунальные услуги для стандартной городской квартиры.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BRASILIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 199,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BRASILIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 36.5,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BRASILIA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Тропический саванный высокогорный с выраженным сухим сезоном",
+        "cold_min_c": 14,
+        "cold_max_c": 26,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 27,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INMET normals 1991–2020",
+        "notes_ru": "Сухой зимний сезон и тёплый влажный летний сезон; диапазоны округлены для пользовательского сравнения.",
+        "source_ids": [
+          "BR_SRC_CLIMATE_INMET"
+        ]
+      },
+      "source_ids": [
+        "BR_SRC_COST_BRASILIA",
+        "BR_SRC_CLIMATE_INMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BR_FLORIANOPOLIS",
+      "name_ru": "Флорианополис",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Город выбран как репрезентативный сценарий категории MEDIUM внутри национальной системы расселения; население не используется для пользовательского вывода.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 558,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_FLORIANOPOLIS"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 73.1,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Ежемесячные коммунальные услуги для стандартной городской квартиры.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_FLORIANOPOLIS"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 198,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_FLORIANOPOLIS"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 54.3,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_FLORIANOPOLIS"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Влажный субтропический морской",
+        "cold_min_c": 13,
+        "cold_max_c": 21,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 21,
+        "hot_max_c": 29,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INMET normals 1991–2020",
+        "notes_ru": "Морское влияние смягчает сезонные экстремумы; значения округлены для сопоставимого пользовательского описания.",
+        "source_ids": [
+          "BR_SRC_CLIMATE_INMET"
+        ]
+      },
+      "source_ids": [
+        "BR_SRC_COST_FLORIANOPOLIS",
+        "BR_SRC_CLIMATE_INMET"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BR_BAURU",
+      "name_ru": "Бауру",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Город выбран как репрезентативный сценарий категории SMALL внутри национальной системы расселения; население не используется для пользовательского вывода.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 217,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BAURU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 61.5,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Ежемесячные коммунальные услуги для стандартной городской квартиры.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BAURU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 177,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BAURU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 39,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт на одного человека в месяц.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "BR_SRC_COST_BAURU"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Тропический внутренний климат с сухой зимой",
+        "cold_min_c": 10,
+        "cold_max_c": 25,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 20,
+        "hot_max_c": 31,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "IPMet/UNESP historical monthly climatology; local series, not INMET 1991–2020",
+        "notes_ru": "Локальная климатологическая серия Bauru хранится отдельно от INMET normals; диапазоны являются округлённым сезонным сравнением.",
+        "source_ids": [
+          "BR_SRC_CLIMATE_BAURU"
+        ]
+      },
+      "source_ids": [
+        "BR_SRC_COST_BAURU",
+        "BR_SRC_CLIMATE_BAURU"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Бразилия: государственная система образования; отдельно подтверждён доступ детей-мигрантов к школам штата Сан-Паулу.",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Португальский; языковая и адаптационная поддержка зависит от сети/школы.",
+        "compulsory_age_min": 4,
+        "compulsory_age_max": 17,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Дети-мигранты имеют доступ к государственной школьной сети; в штате Сан-Паулу подтверждено зачисление даже при неполном комплекте миграционных документов.",
+        "source_ids": [
+          "BR_SRC_PUBLIC_SCHOOL"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [],
+    "international_school_cities": [
+      {
+        "city_name_ru": "Бразилиа",
+        "source_ids": [
+          "BR_SRC_SCHOOL_BRASILIA"
+        ]
+      },
+      {
+        "city_name_ru": "Кампинас",
+        "source_ids": [
+          "BR_SRC_SCHOOL_CAMPINAS"
+        ]
+      },
+      {
+        "city_name_ru": "Сан-Паулу",
+        "source_ids": [
+          "BR_SRC_SCHOOL_SAO_PAULO"
+        ]
+      }
+    ],
+    "international_school_tuition_observations": [
+      {
+        "school_name_ru": "Graded — The American School of São Paulo",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 153816,
+          "currency": "BRL",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-16"
+        },
+        "source_ids": [
+          "BR_SRC_SCHOOL_TUITION_GRADED_2026_27"
+        ]
+      },
+      {
+        "school_name_ru": "Graded — The American School of São Paulo",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 190872,
+          "currency": "BRL",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-16"
+        },
+        "source_ids": [
+          "BR_SRC_SCHOOL_TUITION_GRADED_2026_27"
+        ]
+      },
+      {
+        "school_name_ru": "Avenues São Paulo",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 234395,
+          "currency": "BRL",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-16"
+        },
+        "source_ids": [
+          "BR_SRC_SCHOOL_TUITION_AVENUES_2026_27"
+        ]
+      },
+      {
+        "school_name_ru": "Avenues São Paulo",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 234395,
+          "currency": "BRL",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-16"
+        },
+        "source_ids": [
+          "BR_SRC_SCHOOL_TUITION_AVENUES_2026_27"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESEARCHED_NONE_FOUND",
+      "explanation_ru": "В исследованной федеральной процедуре не выявлен decision-relevant общий запрет на ввоз собак/кошек или федеральный breed ban. Обычные CVI/ветеринарные требования являются процедурой ввоза и отображаются отдельно от «ограничений».",
+      "source_ids": [
+        "BR_SRC_PETS_IMPORT"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "После въезда действуют региональные правила: в штате São Paulo и в Santa Catarina подтверждены специальные требования контроля/обращения с отдельными потенциально опасными породами собак. Эти правила не являются универсальным федеральным запретом и должны показываться с указанием территории.",
+      "source_ids": [
+        "BR_SRC_PETS_SP",
+        "BR_SRC_PETS_SC"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-16",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны; исследование не выявило федеральной криминализации добровольных однополых отношений.",
+    "state_restrictions_ru": "Федерального запрета однополых отношений или брака нет; практическая безопасность и качество исполнения прав неоднородны по регионам.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Resolução CNJ nº 175/2013 запрещает органам регистрации отказывать в однополом гражданском браке или преобразовании união estável в брак.",
+    "registered_partnership_recognized": "YES",
+    "registered_partnership_rule_ru": "Однополая união estável признаётся в правовой системе и используется в семейных отношениях; документальное подтверждение союза требуется по конкретной процедуре.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранный документ о браке/семейном статусе может использоваться при выполнении требований к действительности, апостилю/легализации и переводу в конкретной процедуре.",
+    "parenthood_ru": "Семейные и родительские права оцениваются по действующим правилам гражданского/семейного права и документам; отдельного общего LGBT-ограничения для Country Matcher не кодируется.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "уголовно-правовая защита от гомофобии и трансфобии",
+        "равный доступ к гражданскому браку",
+        "общая защита достоинства и равенства"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Судебная защита, полиция/прокуратура и службы публичной правовой помощи в зависимости от нарушения.",
+      "rule_ru": "STF применил антирасистскую уголовно-правовую рамку к гомофобии и трансфобии; CNJ обеспечивает равный доступ к гражданскому браку.",
+      "source_ids": [
+        "BR_SRC_STF_ADO26",
+        "BR_SRC_CNJ_175"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Несмотря на сильное правовое признание, правозащитные источники продолжают фиксировать насилие, дискриминацию и институциональные/политические напряжения; практическая среда неоднородна.",
+    "regional_differences_ru": "Крупные города и отдельные регионы могут заметно различаться по видимости сообщества, доступу к услугам и бытовой безопасности; универсальный рейтинг городов не используется.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "HETEROGENEOUS",
+    "assessment_basis_ru": "Правовая оценка опирается на общенациональное признание брака/союза и судебную антидискриминационную защиту; практическая оценка — на актуальный правозащитный обзор 2026 года, который одновременно фиксирует права и сохраняющиеся риски.",
+    "source_ids": [
+      "BR_SRC_CNJ_175",
+      "BR_SRC_STF_ADO26",
+      "BR_SRC_OUTRIGHT",
+      "BR_SRC_FAMILY_PORTARIA"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-16",
+    "tax_residency_rule_ru": "Для соответствующего временного пребывания Receita применяет правило приобретения налогового резидентства после завершения 184 дней пребывания, подряд или нет, в соответствующем 12-месячном периоде; существуют и другие триггеры в зависимости от статуса и обстоятельств.",
+    "typical_day_threshold": 184,
+    "other_residency_triggers_ru": "Налоговый статус также зависит от типа въезда/резиденции, даты приобретения постоянного/трудового статуса и иных обстоятельств по правилам Receita; иммиграционная резиденция и налоговая резиденция не являются одним и тем же понятием.",
+    "personal_income_tax_ru": "Для налоговых резидентов действует прогрессивное налогообложение доходов физических лиц; точный расчёт зависит от вида дохода, вычетов и статуса и требует индивидуального расчёта.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Социальные взносы зависят от формы занятости или самостоятельной деятельности и конкретной базы; они не являются иммиграционным условием маршрутов.",
+    "foreign_income_ru": "Налоговые резиденты в общем случае учитывают иностранные доходы по правилам Receita; конкретное налогообложение и зачёты зависят от вида дохода и применимого соглашения.",
+    "double_taxation_with_russia_ru": "Между Бразилией и Россией действует соглашение об избежании двойного налогообложения, промульгированное Decreto nº 9.115/2017; конкретное применение льгот требует индивидуального налогового анализа.",
+    "source_ids": [
+      "BR_SRC_TAX_RESIDENCY",
+      "BR_SRC_DTT_RU"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "BR_OPEN_SCHOOLS_EXHAUSTIVE",
+      "block": "SCHOOLS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Нельзя доказать абсолютную исчерпывающую полноту списка всех городов Бразилии с international/English-medium schools.",
+      "handling_ru": "Использовать подтверждённый country-level список school cities как reasonably comprehensive practical evidence; tuition optional. Расширять список при появлении новых подтверждённых данных, не блокируя публикацию страны."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "PARTIAL",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "BR_OPEN_SCHOOLS_EXHAUSTIVE"
+        ]
+      },
+      {
+        "block": "PETS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "BR_SRC_MIGRATION_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Presidência da República",
+      "title_ru": "Lei nº 13.445/2017 — Lei de Migração",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/lei/l13445.htm",
+      "supports_ru": "Базовая правовая рамка миграции и резиденции в Бразилии.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_NOMAD_RULE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Imigração / MJSP",
+      "title_ru": "Resolução CNIG nº 45/2021 — цифровой кочевник",
+      "url": "https://dspace.mj.gov.br/bitstream/1/6057/2/RES_CNIG_2021_45.html",
+      "supports_ru": "Удалённая деятельность для зарубежных работодателей/клиентов, срок до 1 года, 1 500 USD/мес или 18 000 USD банковских средств и продление.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_NOMAD_CONSULATE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério das Relações Exteriores",
+      "title_ru": "VITEM XIV — Digital Nomad",
+      "url": "https://www.gov.br/mre/pt-br/consulado-nova-york/servicos-consulares/visto-visa-2/VITEM/nomad_XIV",
+      "supports_ru": "Консульская подача и документы по цифровому кочевнику.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_RETIREMENT_RULE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Imigração / MJSP",
+      "title_ru": "Resolução Normativa nº 40/2019 — пенсионер / pensão por morte",
+      "url": "https://dspace.mj.gov.br/bitstream/1/2049/2/REN_CNIG_2019_40.html",
+      "supports_ru": "Пенсионное основание, перевод не менее 2 000 USD/мес и возможность дополнения другими регулярными доходами.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_WORK_CONTRACT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Работа по трудовому договору — RN 02/2017",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/trabalho-com-contrato-de-trabalho-no-brasil",
+      "supports_ru": "Рабочая резиденция при бразильском трудовом договоре и порядок подачи.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_RN24",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "RN 24 — профессор, исследователь или учёный с трудовой связью",
+      "url": "https://portaldeimigracao.mj.gov.br/pt/nav-guiada/rn-24",
+      "supports_ru": "Резиденция для исследовательской, преподавательской или академической деятельности с трудовой связью; навигация по RN 24.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_RN11",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "RN 11 — administrador, gerente, diretor ou executivo",
+      "url": "https://portaldeimigracao.mj.gov.br/pt/nav-guiada/rn-11",
+      "supports_ru": "Корпоративная executive/manager/director резиденция и инвестиционные условия 600 000 BRL либо 150 000 BRL с созданием 10 рабочих мест.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_PRODUCTIVE_INVESTOR",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Imigração / MJSP",
+      "title_ru": "Resolução Normativa nº 13/2017 — производительная инвестиция",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/investidor-pessoa-fisica/rn-13-2017/resolucao-normativa-no-13-2017",
+      "supports_ru": "Инвестиция физлица в бразильское юрлицо и резиденция инвестора.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_INVESTOR_INDEX",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Инвестор — физическое лицо",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/investidor-pessoa-fisica/investidor-pessoa-fisica",
+      "supports_ru": "Стандартная инвестиция от 500 000 BRL, инновационный диапазон от 150 000 BRL и недвижимость.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_REAL_ESTATE_INVESTOR",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Imigração / MJSP",
+      "title_ru": "Resolução Normativa nº 36/2018 — городская недвижимость",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/investidor-pessoa-fisica/rn-36-2018/resolucao-normativa-no-36-2018",
+      "supports_ru": "1 000 000 BRL, снижение на 30% на Севере/Северо-Востоке, первоначальный срок 4 года и переход на неопределённый срок.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_STUDY_RULE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Ministério da Justiça / Ministério das Relações Exteriores",
+      "title_ru": "Portaria Interministerial nº 7/2018 — учёба",
+      "url": "https://dspace.mj.gov.br/bitstream/1/924/4/PRI_GM_2018_7.html",
+      "supports_ru": "Учебные основания, зачисление, средства, продление и совместимая с учёбой оплачиваемая деятельность.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_STUDY_GUIDE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Студенческая резиденция",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/estudo",
+      "supports_ru": "Подача по учебному основанию из-за рубежа и внутри Бразилии.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_FAMILY_DECREE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Presidência da República",
+      "title_ru": "Decreto nº 9.199/2017 — reunião familiar",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/decreto/d9199.htm",
+      "supports_ru": "Круг семьи, срок семейной резиденции и правила воссоединения.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_FAMILY_PORTARIA",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Ministério da Justiça / Ministério das Relações Exteriores",
+      "title_ru": "Portaria Interministerial nº 12/2018 — семейное воссоединение",
+      "url": "https://dspace.mj.gov.br/bitstream/1/888/2/PRI_GM_2018_12.html",
+      "supports_ru": "Супруг/партнёр без дискриминации, união estável, семейная подача и право на деятельность, включая оплачиваемую.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_FAMILY_GUIDE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Polícia Federal",
+      "title_ru": "Кто считается chamante и chamado",
+      "url": "https://www.gov.br/pf/pt-br/assuntos/imigracao/pt/duvidas",
+      "supports_ru": "Перечень родственников и документальные условия семейной резиденции.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_GRADUATE_WORK",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Imigração / MJSP",
+      "title_ru": "Resolução CNIG/MJSP nº 50/2024 — работа после бразильского вуза",
+      "url": "https://dspace.mj.gov.br/handle/1/13504",
+      "supports_ru": "Рабочая резиденция находящегося в Бразилии выпускника graduação или pós-graduação stricto sensu.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2024-06-27",
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_RN20",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "RN 20 — профессор, исследователь или учёный без трудовой связи",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/navegacao-guiada-1/possui-autorizacao-de-residencia/o-que-deseja/qual-a-finalidade-desejada-1/trabalho-sem-contrato-de-trabalho-no-brasil/professor-pesquisador-ou-cientista",
+      "supports_ru": "Академическая/исследовательская деятельность без бразильской трудовой связи, подача и срок до 2 лет.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_MIGRANTEWEB",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "MigranteWeb 2.0",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/portal-de-imigracao-laboral/migranteweb-1/migranteweb/",
+      "supports_ru": "Электронный канал трудовых и инвестиционных процедур.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_RESIDENCE_LOSS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Polícia Federal",
+      "title_ru": "Отсутствие более двух лет и риск утраты резиденции",
+      "url": "https://www.gov.br/pf/pt-br/assuntos/imigracao/duvidas-frequentes/autorizacao-de-residencia-e-registro-nacional-migratorio-rnm/por-motivos-alheios-a-minha",
+      "supports_ru": "Общее правило риска утраты резиденции после отсутствия более 2 лет и возможность обосновать отсутствие.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_NATURALIZATION_TERM",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Срок проживания для обычной натурализации",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/naturalizacao/o-que-e-naturalizacao/naturalizacao-ordinaria/ter-residencia-em-territorio-nacional-pelo-prazo-estabelecido-pela-lei-brasileira",
+      "supports_ru": "Обычный срок 4 года от регистрации резиденции на неопределённый срок и предусмотренные сокращения.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_NATURALIZATION_REQUIREMENTS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Обычная натурализация — требования",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/migracoes/naturalizacao/o-que-e-naturalizacao/naturalizacao-ordinaria",
+      "supports_ru": "Язык, проживание и основные требования обычной натурализации.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_DUAL_CITIZENSHIP",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Presidência da República",
+      "title_ru": "Emenda Constitucional nº 131/2023",
+      "url": "https://www.planalto.gov.br/ccivil_03/constituicao/emendas/emc/emc131.htm",
+      "supports_ru": "Отмена утраты бразильской национальности из-за простого приобретения другой национальности.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2023-10-03",
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_REFUGEE_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Presidência da República",
+      "title_ru": "Lei nº 9.474/1997 — статус беженца",
+      "url": "https://www.planalto.gov.br/ccivil_03/leis/l9474.htm",
+      "supports_ru": "Критерии признания беженцем, процедура и правовые последствия.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_REFUGEE_REQUEST",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Запросить признание статуса беженца",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/refugio/servicos/pedir-refugio",
+      "supports_ru": "Текущая процедура обращения за убежищем/статусом беженца через Sisconare и Polícia Federal.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_REFUGEE_FAQ",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Justiça e Segurança Pública",
+      "title_ru": "Refúgio — perguntas frequentes",
+      "url": "https://www.gov.br/mj/pt-br/assuntos/seus-direitos/refugio/perguntas-frequentes/faq-perguntas-frequentes",
+      "supports_ru": "Документы, права в ходе процедуры, работа и общая информация по защите.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_ENTRY_RU",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério das Relações Exteriores / Embaixada do Brasil em Moscou",
+      "title_ru": "VIVIS — правила для российских граждан",
+      "url": "https://www.gov.br/mre/pt-br/embaixada-moscou/servicos-consulares/vistos-visa/vivis-vistiors-visa",
+      "supports_ru": "Краткосрочный безвизовый въезд граждан РФ до 90 дней в применимом 180-дневном периоде.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_COST_SAO_PAULO",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни — São Paulo",
+      "url": "https://livingcost.org/cost/brazil/sao-paulo",
+      "supports_ru": "Сопоставимые текущие значения 1BR центра, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_COST_BRASILIA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни — Brasília",
+      "url": "https://livingcost.org/cost/brazil/brasilia",
+      "supports_ru": "Сопоставимые текущие значения 1BR центра, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_COST_FLORIANOPOLIS",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни — Florianópolis",
+      "url": "https://livingcost.org/cost/brazil/florianopolis",
+      "supports_ru": "Сопоставимые текущие значения 1BR центра, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_COST_BAURU",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Стоимость жизни — Bauru",
+      "url": "https://livingcost.org/cost/brazil/bauru",
+      "supports_ru": "Сопоставимые текущие значения 1BR центра, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_CLIMATE_INMET",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Instituto Nacional de Meteorologia",
+      "title_ru": "Нормы климата Бразилии 1991–2020",
+      "url": "https://portal.inmet.gov.br/normais",
+      "supports_ru": "Официальные климатические нормы для São Paulo, Brasília и Florianópolis.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_CLIMATE_BAURU",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "IPMet / UNESP",
+      "title_ru": "Климатология Bauru — локальная метеорологическая серия",
+      "url": "https://www.ipmetradar.com.br/",
+      "supports_ru": "Локальная историческая климатология Bauru; используется отдельно от INMET 1991–2020.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_PUBLIC_SCHOOL",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Secretaria da Educação do Estado de São Paulo",
+      "title_ru": "Право детей-мигрантов на государственную школу",
+      "url": "https://www.educacao.sp.gov.br/alunos-imigrantes-tem-direito-matricula-na-rede-estadual-mesmo-sem-documentacao/",
+      "supports_ru": "Подтверждает доступ детей-мигрантов к государственной школе даже при неполном комплекте документов.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_SCHOOL_SAO_PAULO",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Graded — The American School of São Paulo",
+      "title_ru": "Международная школа в São Paulo",
+      "url": "https://www.graded.br/",
+      "supports_ru": "Подтверждает international/English-medium school presence в São Paulo.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_SCHOOL_BRASILIA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "American School of Brasília",
+      "title_ru": "Международная школа в Brasília",
+      "url": "https://www.eabdf.br/",
+      "supports_ru": "Подтверждает international/English-medium school presence в Brasília.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_SCHOOL_CAMPINAS",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Escola Americana de Campinas",
+      "title_ru": "Международная школа в Campinas",
+      "url": "https://eac.com.br/",
+      "supports_ru": "Подтверждает international/English-medium school presence в Campinas.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_PETS_IMPORT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministério da Agricultura e Pecuária",
+      "title_ru": "Въезд в Бразилию с домашними животными",
+      "url": "https://www.gov.br/agricultura/pt-br/assuntos/vigilancia-agropecuaria/animais-estimacao/entrar-no-brasil",
+      "supports_ru": "Обычные ветеринарные/CVI требования для собак и кошек; decision-relevant федеральный запрет пород в исследованной процедуре не выявлен.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_PETS_SP",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Assembleia Legislativa do Estado de São Paulo",
+      "title_ru": "Lei estadual nº 11.531/2003 — правила обращения с отдельными породами собак",
+      "url": "https://www.al.sp.gov.br/repositorio/legislacao/lei/2003/lei-11531-11.11.2003.html",
+      "supports_ru": "Региональные правила контроля/содержания потенциально опасных собак в штате São Paulo.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_PETS_SC",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Assembleia Legislativa de Santa Catarina",
+      "title_ru": "Lei estadual nº 14.204/2007 — правила обращения с отдельными собаками",
+      "url": "https://leis.alesc.sc.gov.br/ato-normativo/16070",
+      "supports_ru": "Региональные правила контроля/содержания потенциально опасных собак в Santa Catarina.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_CNJ_175",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Conselho Nacional de Justiça",
+      "title_ru": "Resolução CNJ nº 175/2013",
+      "url": "https://atos.cnj.jus.br/atos/detalhar/atos-normativos?documento=1754",
+      "supports_ru": "Запрет органам регистрации отказывать в однополом гражданском браке и преобразовании união estável в брак.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2013-05-14",
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_STF_ADO26",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Supremo Tribunal Federal",
+      "title_ru": "ADO 26 — защита от гомофобии и трансфобии",
+      "url": "https://portal.stf.jus.br/peticaoInicial/verPeticaoInicial.asp?base=ADO&numProcesso=26",
+      "supports_ru": "Судебная защита, применяющая антирасистскую уголовно-правовую рамку к гомофобии и трансфобии.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_OUTRIGHT",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "Outright International",
+      "title_ru": "Brazil — LGBTIQ country overview, 2026",
+      "url": "https://outrightinternational.org/our-work/americas/brazil",
+      "supports_ru": "Актуальный обзор правового признания и неоднородной практической безопасности ЛГБТ-людей в Бразилии.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-03-12",
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_TAX_RESIDENCY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Receita Federal",
+      "title_ru": "Saída / condição de não residente — residência fiscal",
+      "url": "https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/preenchimento/dsdp/nao-residente",
+      "supports_ru": "Налоговое резидентство, включая правило 184 дней для соответствующего временного пребывания, и общие последствия смены статуса.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_DTT_RU",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Presidência da República",
+      "title_ru": "Decreto nº 9.115/2017 — соглашение Бразилия–Россия об избежании двойного налогообложения",
+      "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2017/decreto/d9115.htm",
+      "supports_ru": "Действующий нормативный инструмент соглашения Бразилия–Россия об избежании двойного налогообложения.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2017-07-31",
+      "language": "pt-BR"
+    },
+    {
+      "source_id": "BR_SRC_SCHOOL_TUITION_GRADED_2026_27",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Graded — The American School of São Paulo",
+      "title_ru": "Стоимость обучения Graded — 2026–27",
+      "url": "https://www.graded.br/admissions/tuition-and-fees",
+      "supports_ru": "На 2026–27 учебный год школа публикует 12 ежемесячных платежей: 12 818 BRL для PK3–Grade 5 и 15 906 BRL для Grades 6–12. Для Grade 1 это соответствует 153 816 BRL за учебный год, для Grade 12 — 190 872 BRL.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_SCHOOL_TUITION_AVENUES_2026_27",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Avenues São Paulo",
+      "title_ru": "Стоимость обучения Avenues São Paulo — 2026–27",
+      "url": "https://www.avenues.org/sao-paulo/admissions/tuition-and-financial-aid",
+      "supports_ru": "На 2026–27 учебный год для Grades 1–12 действует единый тариф: первоначальный взнос 37 000 BRL и 11 платежей по 17 945 BRL, что соответствует 234 395 BRL за учебный год.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    }
+  ],
+  "pending_changes": []
+}

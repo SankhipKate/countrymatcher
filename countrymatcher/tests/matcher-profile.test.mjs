@@ -13,6 +13,7 @@ const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-pr
 const universalProfiles = JSON.parse(await readFile(new URL('./fixtures/universal-profile-samples-v1.json', import.meta.url), 'utf8'));
 const spainResearch = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguayResearch = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
+const brazilResearch = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
 
 test('visible matcher version matches package version', async () => {
   const [matcherHtml, packageJson, fxContext] = await Promise.all([
@@ -142,7 +143,7 @@ test('tax block renders four factual headings and no internal research commentar
   for (const heading of ['Налоговое резидентство', 'Подоходный налог', 'Доходы из-за рубежа', 'Россия и двойное налогообложение']) assert.ok(appSource.includes(heading));
   assert.match(appSource, /<h3>Налоги<\/h3>/);
   assert.match(appSource, /Проверено:/);
-  for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch]) {
+  for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch, brazilResearch]) {
     const taxText = Object.entries(pkg.taxes).filter(([key, value]) => key.endsWith('_ru') && typeof value === 'string').map(([, value]) => value).join(' ');
     assert.doesNotMatch(taxText, /v3\.0|ranking|Country Matcher/i);
     const renderedTaxText = [pkg.taxes.tax_residency_rule_ru, pkg.taxes.personal_income_tax_ru, pkg.taxes.foreign_income_ru, pkg.taxes.double_taxation_with_russia_ru].join(' ');
@@ -800,6 +801,23 @@ test('route cards deduplicate financial actions by requirement identity', async 
   const suitable = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: satisfied.summary, financialRequirements: [satisfied], conditionActions: [] }, 'Страна');
   assert.match(suitable, /Финансовое требование/u);
   assert.match(suitable, /Удовлетворённое требование/u);
+
+  const incomeOrSavings = { requirementId: 'FIN_OR', effect: 'NONE', summary: {
+    model: 'INCOME_OR_SAVINGS',
+    alternatives: [
+      { ...alternative('Доход', 1500, 1500), kind: 'INCOME', kindLabel: 'Доход', currency: 'USD', period: 'MONTHLY' },
+      { ...alternative('Накопления', 18000, 18000), kind: 'SAVINGS', kindLabel: 'Накопления', currency: 'USD', period: 'ONE_TIME' },
+    ],
+  } };
+  const incomeOrSavingsOutput = renderRoute({
+    ...base,
+    routeStatus: 'SUITABLE',
+    financialSummary: incomeOrSavings.summary,
+    financialRequirements: [incomeOrSavings],
+    conditionActions: [],
+  }, 'Страна');
+  assert.match(incomeOrSavingsOutput, /Финансовое требование[\s\S]*доход 1500 USD\/мес или накопления 18000 USD/u);
+  assert.doesNotMatch(incomeOrSavingsOutput, /Доход — доход|Накопления — накопления/u);
 
   const guidance = {
     status: 'FOUND', summary_ru: 'Практические значения.', disclaimer_ru: 'Не официальный порог.',

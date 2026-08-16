@@ -16,6 +16,7 @@ const ACTIVE_RP4_PACKAGES = [
   'ES-research-v4.0.json',
   'AR-research-v4.0.json',
   'UY-research-v4.0.json',
+  'BR-research-v4.0.json',
 ];
 let currentStep = 1;
 let activeResearchPackages = [];
@@ -401,8 +402,13 @@ function routeCard(route, countryName, main = false) {
   const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
   const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialRequirements = route.financialRequirements || (route.financialSummary ? [{ requirementId: null, effect: 'NONE', summary: route.financialSummary }] : []);
-  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) =>
-    summary.alternatives?.filter((item) => item.threshold != null).map((item) => `${item.requirementLabel || item.kindLabel} — ${formatFinancialAlternative(item)}`) || []);
+  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) => {
+    const alternatives = summary?.alternatives?.filter((item) => item.threshold != null) || [];
+    if (summary?.model === 'INCOME_OR_SAVINGS' && alternatives.length > 1) {
+      return [alternatives.map(formatFinancialAlternative).join(' или ')];
+    }
+    return alternatives.map((item) => `${item.requirementLabel || item.kindLabel} — ${formatFinancialAlternative(item)}`);
+  });
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ONE_TIME: 'единовременно', OTHER: '' };
   const practicalEvidenceLabel = {

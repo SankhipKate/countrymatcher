@@ -9,6 +9,7 @@ const schema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
+const brazil = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
 const ajv = new Ajv2020({ allErrors: true, strict: false });
 addFormats(ajv);
 ajv.addSchema(schema);
@@ -41,11 +42,33 @@ test('schools schema accepts AVAILABLE with either legacy schools or new school 
   assert.equal(validateSchools(newSchools), true, JSON.stringify(validateSchools.errors));
 });
 
-test('full schema accepts existing ES, AR, and UY packages without tuition migration', () => {
+test('full schema accepts legacy ES/AR/UY school shapes and Brazil new-country school-city shape', () => {
   for (const pkg of [spain, argentina, uruguay]) {
     assert.equal(validatePackage(pkg), true, `${pkg.country_id}: ${JSON.stringify(validatePackage.errors)}`);
     assert.equal('international_school_tuition_observations' in pkg.schools, false, pkg.country_id);
   }
+  assert.equal(validatePackage(brazil), true, `BR: ${JSON.stringify(validatePackage.errors)}`);
+  assert.equal(brazil.schools.international_school_status, 'AVAILABLE');
+  assert.ok(brazil.schools.international_school_cities.length > 0);
+
+  const brazilTuition = brazil.schools.international_school_tuition_observations;
+  assert.equal(brazilTuition.length, 4);
+  const brazilFirstGrade = brazilTuition
+    .filter(({ grade_stage }) => grade_stage === 'FIRST_GRADE')
+    .map(({ tuition }) => tuition.amount);
+  const brazilFinalGrade = brazilTuition
+    .filter(({ grade_stage }) => grade_stage === 'FINAL_GRADE')
+    .map(({ tuition }) => tuition.amount);
+  assert.equal(Math.min(...brazilFirstGrade), 153816);
+  assert.equal(Math.max(...brazilFinalGrade), 234395);
+  assert.ok(brazilTuition.every(({ tuition }) =>
+    tuition.currency === 'BRL' && tuition.period === 'ACADEMIC_YEAR'));
+
+  const publicSchoolText = brazil.schools.public_school_rules
+    .map(({ jurisdiction_ru, rule_ru }) => `${jurisdiction_ru} ${rule_ru}`)
+    .join('\n');
+  assert.match(publicSchoolText, /Сан-Паулу/u);
+  assert.doesNotMatch(publicSchoolText, /operational|São Paulo/u);
 });
 
 test('schools schema accepts annual first/final tuition observations and rejects invalid stages or periods', () => {

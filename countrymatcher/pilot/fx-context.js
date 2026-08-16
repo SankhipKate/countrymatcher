@@ -1,5 +1,5 @@
 export const REQUESTED_CURRENCIES = Object.freeze(['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU']);
-export const REQUIRED_CURRENCIES = Object.freeze(['EUR', 'ARS', 'RUB', 'UYU']);
+export const REQUIRED_CURRENCIES = Object.freeze(['EUR', 'ARS', 'BRL', 'RUB', 'UYU']);
 export const FX_ENDPOINT = `https://api.frankfurter.dev/v2/rates?base=USD&quotes=${REQUESTED_CURRENCIES.join(',')}`;
 export const FX_CACHE_KEY = 'country-matcher-last-fx-context-v1';
 export const FX_FALLBACK_URL = new URL('../data/fx-fallback.json', import.meta.url);
