@@ -8,7 +8,7 @@ const files = [
   '.nojekyll', 'index.html', 'payment-config.js',
   'assets', 'landing', 'matcher', 'pilot', 'js',
   'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json',
-  'data/fx-fallback.json', 'data/schemas/user-profile-v1.schema.json',
+  'data/quality-of-life-ru.json', 'data/fx-fallback.json', 'data/schemas/user-profile-v1.schema.json',
 ];
 
 await rm(outputRoot, { recursive: true, force: true });

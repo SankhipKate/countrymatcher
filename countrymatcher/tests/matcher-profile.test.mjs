@@ -154,7 +154,7 @@ test('tax block renders four factual headings and no internal research commentar
   assert.doesNotMatch(taxSource, /socialContributions|social_contributions/);
 });
 
-test('five country-information sections share one card system with distinct pastel modifiers', async () => {
+test('six country-information sections share one card system with distinct pastel modifiers', async () => {
   const [appSource, styles] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
@@ -165,12 +165,13 @@ test('five country-information sections share one card system with distinct past
     lgbt: 'country-info-card country-info-lgbt lgbt-research',
     pets: 'country-info-card country-info-pets',
     taxes: 'country-info-card country-info-taxes tax-research',
+    qualityOfLife: 'country-info-card country-info-quality-of-life',
   };
   for (const value of Object.values(classes)) assert.ok(appSource.includes(value), value);
   assert.match(styles, /\.country-info-card\{[^}]*box-sizing:border-box[^}]*width:100%[^}]*padding:20px[^}]*border:1px solid[^}]*border-radius:16px/);
-  const backgrounds = [...styles.matchAll(/\.country-info-(cities|schools|lgbt|pets|taxes)\{background:(#[0-9a-f]{6});border-color:(#[0-9a-f]{6})\}/g)];
-  assert.equal(backgrounds.length, 5);
-  assert.equal(new Set(backgrounds.map((match) => match[2])).size, 5);
+  const backgrounds = [...styles.matchAll(/\.country-info-(cities|schools|lgbt|pets|taxes|quality-of-life)\{background:(#[0-9a-f]{6});border-color:(#[0-9a-f]{6})\}/g)];
+  assert.equal(backgrounds.length, 6);
+  assert.equal(new Set(backgrounds.map((match) => match[2])).size, 6);
   assert.match(styles, /@media\(max-width:760px\)[\s\S]*?\.country-info-card\{padding:15px\}/);
   assert.doesNotMatch(appSource, /Расходы по городам/);
   assert.match(appSource, /Города, климат и расходы/);
