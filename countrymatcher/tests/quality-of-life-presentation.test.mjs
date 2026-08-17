@@ -44,6 +44,12 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.PT.score, 8.0);
   assert.ok(editorial.countries.PT.narrative_ru.length >= 6);
   assert.match(editorial.countries.PT.formula_ru, /Безопасность/);
+  assert.equal(editorial.countries.MX.score, 6.4);
+  assert.ok(editorial.countries.MX.narrative_ru.length >= 6);
+  assert.match(editorial.countries.MX.formula_ru, /Огромный выбор городов/);
+  assert.equal(editorial.countries.PY.score, 5.9);
+  assert.ok(editorial.countries.PY.narrative_ru.length >= 6);
+  assert.match(editorial.countries.PY.formula_ru, /Низкая стоимость жизни/);
 });
 
 test('Pages artifact includes quality-of-life editorial data', async () => {
