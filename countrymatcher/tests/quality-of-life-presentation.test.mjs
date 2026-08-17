@@ -32,8 +32,12 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.UY.score, 7.7);
   assert.ok(editorial.countries.UY.narrative_ru.length >= 6);
   assert.match(editorial.countries.UY.formula_ru, /Сильные институты/);
-  assert.equal(editorial.countries.ES, undefined);
-  assert.equal(editorial.countries.AR, undefined);
+  assert.equal(editorial.countries.ES.score, 8.4);
+  assert.ok(editorial.countries.ES.narrative_ru.length >= 6);
+  assert.match(editorial.countries.ES.formula_ru, /Развитая инфраструктура/);
+  assert.equal(editorial.countries.AR.score, 7.5);
+  assert.ok(editorial.countries.AR.narrative_ru.length >= 6);
+  assert.match(editorial.countries.AR.formula_ru, /Разнообразие городов/);
 });
 
 test('Pages artifact includes quality-of-life editorial data', async () => {
