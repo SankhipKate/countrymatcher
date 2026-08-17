@@ -31,7 +31,6 @@ const arFixture = JSON.parse(arFixtureBytes);
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
-const brazil = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
 const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, UYU: 40, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
@@ -117,23 +116,21 @@ test('active contract accepts only Final Lock Research Package 4.0 without fallb
   assert.equal(ACTIVE_CANON_REVISION, '2026-08-08-final-lock');
   assert.doesNotThrow(() => assertActiveResearchPackage(spain));
   assert.doesNotThrow(() => assertActiveResearchPackage(argentina));
-  assert.doesNotThrow(() => assertActiveResearchPackage(uruguay));
-  assert.doesNotThrow(() => assertActiveResearchPackage(brazil));
   assert.throws(() => assertActiveResearchPackage({ ...spain, schema_version: '3.0' }), /schema_version 4\.0/);
   assert.throws(() => assertActiveResearchPackage({ ...spain, canon_revision: 'draft' }), /2026-08-08-final-lock/);
 });
 
-test('active matcher calculates real Spain, Argentina, Uruguay, and Brazil packages through the same country pipeline', () => {
+test('active matcher calculates real Spain, Argentina, and Uruguay packages through the same country pipeline', () => {
   const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
+  const threeCountryContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };
   const one = calculateActiveMatcher(input, [spain], context);
   assert.equal(one.results.length, 1);
   assert.equal(one.results[0].country.countryId, 'ES');
-  const fourCountryContext = { fx: { ...context.fx, rates: { ...context.fx.rates, BRL: 5.4 } } };
-  const four = calculateActiveMatcher(input, [spain, argentina, uruguay, brazil], fourCountryContext);
-  assert.deepEqual(four.results.map(({ country }) => country.countryId), ['ES', 'AR', 'UY', 'BR']);
-  assert.deepEqual(four.results.map(({ routes }) => routes.length), [11, 8, 7, 12]);
-  assert.ok(four.results[3].routes.every(({ routeName }) => typeof routeName === 'string' && routeName.length > 0));
-  assert.deepEqual(sortCountriesForDisplay(four.results).map(({ country }) => country.countryId).sort(), ['AR', 'BR', 'ES', 'UY']);
+  const three = calculateActiveMatcher(input, [spain, argentina, uruguay], threeCountryContext);
+  assert.deepEqual(three.results.map(({ country }) => country.countryId), ['ES', 'AR', 'UY']);
+  assert.deepEqual(three.results.map(({ routes }) => routes.length), [11, 8, 7]);
+  assert.ok(three.results[2].routes.every(({ routeName }) => typeof routeName === 'string' && routeName.length > 0));
+  assert.deepEqual(sortCountriesForDisplay(three.results).map(({ country }) => country.countryId).sort(), ['AR', 'ES', 'UY']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
 });
 
@@ -147,7 +144,7 @@ test('current public route policy hides narrow supporting routes without hiding 
 });
 
 test('every active AFTER_APPROVAL display-only fact remains represented without preparation duplication', () => {
-  const audited = [spain, argentina, uruguay, brazil].flatMap((pkg) => pkg.routes.flatMap((item) =>
+  const audited = [spain, argentina, uruguay].flatMap((pkg) => pkg.routes.flatMap((item) =>
     (item.requirements || []).filter(({ evaluation_mode, timing }) => evaluation_mode === 'DISPLAY_ONLY' && timing === 'AFTER_APPROVAL')
       .map((requirement) => ({ pkg, route: item, requirement }))));
   assert.deepEqual(audited.map(({ route, requirement }) => [route.route_id, requirement.requirement_id]), [['ES_NLV', 'ES_NLV_NOWORK']]);

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
+import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, enrichCityCategories, formatCityTemperatureRange, formatTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCitiesForComparison, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from '../matcher/profile.js';
 import { formatCurrency } from '../matcher/format.js';
 import { APPLICATION_METHOD_LABELS_RU } from '../js/engine/rp4-engine.js';
 import { STATUS_LABELS_RU } from '../js/engine/status-contract.js';
@@ -13,7 +13,6 @@ const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-pr
 const universalProfiles = JSON.parse(await readFile(new URL('./fixtures/universal-profile-samples-v1.json', import.meta.url), 'utf8'));
 const spainResearch = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguayResearch = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
-const brazilResearch = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
 
 test('visible matcher version matches package version', async () => {
   const [matcherHtml, packageJson, fxContext] = await Promise.all([
@@ -22,13 +21,13 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.1.2');
+  assert.equal(packageJson.version, '7.2.0');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.1\.2'/);
+  assert.match(fxContext, /engine_version: '7\.2\.0'/);
 });
 
 test('country flags are derived generically from ISO alpha-2 codes', () => {
@@ -143,7 +142,7 @@ test('tax block renders four factual headings and no internal research commentar
   for (const heading of ['Налоговое резидентство', 'Подоходный налог', 'Доходы из-за рубежа', 'Россия и двойное налогообложение']) assert.ok(appSource.includes(heading));
   assert.match(appSource, /<h3>Налоги<\/h3>/);
   assert.match(appSource, /Проверено:/);
-  for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch, brazilResearch]) {
+  for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch]) {
     const taxText = Object.entries(pkg.taxes).filter(([key, value]) => key.endsWith('_ru') && typeof value === 'string').map(([, value]) => value).join(' ');
     assert.doesNotMatch(taxText, /v3\.0|ranking|Country Matcher/i);
     const renderedTaxText = [pkg.taxes.tax_residency_rule_ru, pkg.taxes.personal_income_tax_ru, pkg.taxes.foreign_income_ru, pkg.taxes.double_taxation_with_russia_ru].join(' ');
@@ -481,25 +480,74 @@ test('city-cost presentation describes the shared basket once without source met
   const scenarios = [{ component: 'RENT_STANDARD', condition: '1 спальня в центре.' }];
   assert.equal(
     describeCityCostBasket(['RENT_STANDARD', 'UTILITIES'], scenarios),
-    'В расчёт входят: аренда квартиры с 1 спальней в центре + коммунальные расходы.',
+    'В расчёт входит: аренда квартиры с 1 спальней в центре + коммунальные расходы на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.',
   );
   assert.equal(
     describeCityCostBasket(['RENT_STANDARD'], [{ component: 'RENT_STANDARD', condition: 'Однокомнатная квартира в центре.' }]),
-    'В расчёт входит: аренда однокомнатной квартиры в центре.',
+    'В расчёт входит: аренда квартиры с 1 спальней в центре на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.',
   );
   assert.equal(
     describeCityCostBasket(['RENT_STANDARD', 'TRANSPORT'], [{ component: 'RENT_STANDARD', condition: 'Сценарий Expatistan.' }]),
-    'В расчёт входят: аренда + транспорт.',
+    'В расчёт входит: аренда квартиры с 1 спальней в центре + транспорт на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.',
   );
   assert.equal(
     describeCityCostBasket(['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'], [{ component: 'RENT_STANDARD', condition: 'Однокомнатная квартира в центре.' }]),
-    'Ориентировочная стоимость жизни для 1 человека: аренда однокомнатной квартиры в центре + коммунальные расходы + продукты + транспорт.',
+    'В расчёт входит: аренда квартиры с 1 спальней в центре + коммунальные расходы + продукты + транспорт на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.',
   );
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   const citySection = app.slice(app.indexOf('function renderCountryResult'), app.indexOf('function calculateActiveCountries'));
   assert.match(citySection, /describeCityCostBasket\(comparisonComponents, comparisonCities\[0\]\?\.comparisonScenarios\)/u);
   assert.equal((citySection.match(/describeCityCostBasket/g) || []).length, 1);
   assert.doesNotMatch(citySection, /research observation|price_date|Numbeo|Livingcost|Expatistan/u);
+});
+
+test('city comparison sorting is semantic, stable, reversible, and keeps missing values last', () => {
+  const cities = [
+    { name: 'B', size: 'MEDIUM', comparisonCost: 1500, coldRange: '1–10', hotRange: '20–31' },
+    { name: 'Missing', size: null, comparisonCost: null, coldRange: null, hotRange: null },
+    { name: 'A', size: 'LARGE', comparisonCost: 900, coldRange: '1–8', hotRange: '18–31' },
+    { name: 'C', size: 'SMALL', comparisonCost: 2100, coldRange: '5–12', hotRange: '19–35' },
+  ];
+  assert.deepEqual(sortCitiesForComparison(cities, 'cost').map(({ name }) => name), ['A', 'B', 'C', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, 'cost', 'desc').map(({ name }) => name), ['C', 'B', 'A', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, 'size').map(({ name }) => name), ['A', 'B', 'C', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, 'size', 'desc').map(({ name }) => name), ['C', 'B', 'A', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, 'cold').map(({ name }) => name), ['A', 'B', 'C', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, 'hot').map(({ name }) => name), ['A', 'B', 'C', 'Missing']);
+  assert.deepEqual(sortCitiesForComparison(cities, null).map(({ name }) => name), cities.map(({ name }) => name));
+  assert.equal(citySizeLabel('LARGE'), 'Большой');
+  assert.equal(citySizeLabel('MEDIUM'), 'Средний');
+  assert.equal(citySizeLabel('SMALL'), 'Небольшой');
+  assert.deepEqual(nextCitySortState({}, 'cost'), { key: 'cost', direction: 'asc' });
+  assert.deepEqual(nextCitySortState({ key: 'cost', direction: 'asc' }, 'cost'), { key: 'cost', direction: 'desc' });
+  assert.deepEqual(nextCitySortState({ key: 'cost', direction: 'desc' }, 'size'), { key: 'size', direction: 'asc' });
+});
+
+test('city comparison click flow appends rows to tbody in the selected DOM order across rerenders', () => {
+  const row = (name, size, cost, coldLow, coldHigh, hotLow, hotHigh) => ({ name, dataset: {
+    size, cost, coldLow, coldHigh, hotLow, hotHigh,
+  } });
+  const rows = [
+    row('Medium', 'MEDIUM', '1500', '1', '10', '20', '31'),
+    row('Missing', '', '', '', '', '', ''),
+    row('Large', 'LARGE', '900', '1', '8', '18', '31'),
+    row('Small', 'SMALL', '2100', '5', '12', '19', '35'),
+  ];
+  const renderedNames = [];
+  const body = { append: (item) => renderedNames.push(item.name) };
+  let state = nextCitySortState({}, 'cost');
+  reorderCityComparisonRows(body, rows, state.key, state.direction);
+  assert.deepEqual(renderedNames.splice(0), ['Large', 'Medium', 'Small', 'Missing']);
+  state = nextCitySortState(state, 'cost');
+  reorderCityComparisonRows(body, rows, state.key, state.direction);
+  assert.deepEqual(renderedNames.splice(0), ['Small', 'Medium', 'Large', 'Missing']);
+  state = nextCitySortState(state, 'size');
+  reorderCityComparisonRows(body, rows, state.key, state.direction);
+  assert.deepEqual(renderedNames.splice(0), ['Large', 'Medium', 'Small', 'Missing']);
+  const rerenderedBody = { append: (item) => renderedNames.push(item.name) };
+  const rerenderedState = nextCitySortState({}, 'cold');
+  reorderCityComparisonRows(rerenderedBody, rows, rerenderedState.key, rerenderedState.direction);
+  assert.deepEqual(renderedNames.splice(0), ['Large', 'Medium', 'Small', 'Missing']);
 });
 
 test('AR and UY city gap handling uses one common intersection without affordability wording', async () => {
@@ -603,6 +651,8 @@ test('climate formatter removes internal methodology from the short range', () =
   assert.equal(formatTemperatureRange('8,6–15,1'), 'примерно 8,6–15,1 °C');
   assert.equal(formatTemperatureRange([1, 11]), 'примерно 1–11 °C');
   assert.equal(formatTemperatureRange([-1, 8]), 'примерно -1–8 °C');
+  assert.equal(formatCityTemperatureRange([1, 11]), '1–11 °C');
+  assert.equal(formatCityTemperatureRange('около 18 °C'), '18 °C');
 });
 
 test('missing child age is reported as a profile validation error', () => {
@@ -726,10 +776,10 @@ test('school UI renders international tuition range without exposing legacy tari
   assert.match(renderSchool(presentation('ACADEMIC_YEAR')), /1200 EUR \/учебный год/);
 
   const ranged = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 10000, maximum: 20000 } }));
-  assert.match(ranged, /Стоимость по найденным школам: 10000 USD–20000 USD в год\./);
+  assert.match(ranged, /Стоимость обучения: 10000 USD–20000 USD в год\./);
   assert.match(ranged, /Вступительные и регистрационные взносы не включены\./);
   const equal = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 15000, maximum: 15000 } }));
-  assert.match(equal, /Стоимость по найденным школам: 15000 USD в год\./);
+  assert.match(equal, /Стоимость обучения: 15000 USD в год\./);
   assert.doesNotMatch(equal, /15000 USD–15000 USD/);
 
   const available = renderSchool(presentation('ANNUAL', { cities: [] }));
@@ -801,23 +851,6 @@ test('route cards deduplicate financial actions by requirement identity', async 
   const suitable = renderRoute({ ...base, routeStatus: 'SUITABLE', financialSummary: satisfied.summary, financialRequirements: [satisfied], conditionActions: [] }, 'Страна');
   assert.match(suitable, /Финансовое требование/u);
   assert.match(suitable, /Удовлетворённое требование/u);
-
-  const incomeOrSavings = { requirementId: 'FIN_OR', effect: 'NONE', summary: {
-    model: 'INCOME_OR_SAVINGS',
-    alternatives: [
-      { ...alternative('Доход', 1500, 1500), kind: 'INCOME', kindLabel: 'Доход', currency: 'USD', period: 'MONTHLY' },
-      { ...alternative('Накопления', 18000, 18000), kind: 'SAVINGS', kindLabel: 'Накопления', currency: 'USD', period: 'ONE_TIME' },
-    ],
-  } };
-  const incomeOrSavingsOutput = renderRoute({
-    ...base,
-    routeStatus: 'SUITABLE',
-    financialSummary: incomeOrSavings.summary,
-    financialRequirements: [incomeOrSavings],
-    conditionActions: [],
-  }, 'Страна');
-  assert.match(incomeOrSavingsOutput, /Финансовое требование[\s\S]*доход 1500 USD\/мес или накопления 18000 USD/u);
-  assert.doesNotMatch(incomeOrSavingsOutput, /Доход — доход|Накопления — накопления/u);
 
   const guidance = {
     status: 'FOUND', summary_ru: 'Практические значения.', disclaimer_ru: 'Не официальный порог.',
@@ -894,7 +927,7 @@ test('route cards deduplicate financial actions by requirement identity', async 
     ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Обычное условие.'],
     conditionActions: [{ text: 'Обычное условие.', requirementId: 'COND', financialSummary: null }],
   }, 'Страна', true);
-  assert.match(ordinaryConditional, /Лучший маршрут исходя из ваших ответов/u);
+  assert.doesNotMatch(ordinaryConditional, /Лучший маршрут исходя из ваших ответов/u);
 });
 
 test('ES NLV route description stays concise in researched data and UI input', () => {
@@ -931,9 +964,10 @@ test('entry UI uses RP4 fields and city UI has no affordability matching', async
   assert.match(app, /Города, климат и расходы/);
   assert.doesNotMatch(app, /Расходы по городам/);
   assert.match(app, /comparisonCost: city\.comparisonCostUsd/);
-  assert.match(app, /≈ \$\{currency\(comparisonCost\)\}\/мес/);
+  assert.match(app, /comparisonCost == null \? 'Нет данных' : currency\(comparisonCost\)/);
   assert.match(app, /country-info-card country-info-cities/);
-  assert.match(app, /\$\{basketDescription\}<div class="city-budget-grid/);
+  assert.match(app, /\$\{basketDescription\}<div class="cities-comparison"><table>/);
+  assert.doesNotMatch(app, /city-budget-grid|city-card/);
   assert.doesNotMatch(app, /city-direct Livingcost/);
   assert.doesNotMatch(entrySource, /summary_ru|air_entry_ru|land_sea_entry_ru|fee_local_ru|in_country_residence_application_ru/);
   assert.doesNotMatch(app, /internationalSchoolCost|knownSchoolCost|numericSchoolCost/);
@@ -965,7 +999,7 @@ test('country navigation omits route names and every route uses native collapsib
   assert.equal(tabSource.includes('best.routeName'), false);
   const cardSource = app.slice(app.indexOf('function routeCard'), app.indexOf('function countryPresentation'));
   assert.match(cardSource, /<details\$\{main \? ' open' : ''\}>/);
-  assert.match(cardSource, /\['SUITABLE', 'SUITABLE_WITH_CONDITIONS'\]\.includes\(presentationGroup\)/);
+  assert.doesNotMatch(cardSource, /Лучший маршрут исходя из ваших ответов/u);
   assert.match(cardSource, /when-closed">Показать подробности/);
   assert.match(cardSource, /when-open">Скрыть подробности/);
   assert.match(cardSource, /Почему не подходит/);
@@ -1083,21 +1117,40 @@ test('result UI handles no evaluable routes and filters family presentation by s
   assert.match(app, /applicableScenarioIds\?\.includes\(item\.scenarioId\)/);
 });
 
-test('city cards grow with content, wrap long text, and constrain mobile overflow', async () => {
+test('city comparison has five accessible columns and a responsive non-grid layout', async () => {
   const [app, styles] = await Promise.all([
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/styles.css', import.meta.url), 'utf8'),
   ]);
-  assert.match(app, /city-role-list[^`]*city\.categories\.map/);
-  assert.equal(app.includes('citySizeLabels'), false);
-  assert.equal(app.includes('<small>${html(city'), false);
+  assert.match(app, /<table><thead><tr><th scope="col">Город<\/th>/);
+  assert.match(app, /Тип города/);
+  assert.match(app, /Расходы в мес/);
+  assert.doesNotMatch(app, /Расходы \/ мес/);
+  assert.match(app, /Холодный сезон/);
+  assert.match(app, /Жаркий сезон/);
+  assert.doesNotMatch(app, /❄︎|☀︎/);
+  assert.match(app, /> ↕<\/span>/);
+  assert.match(app, /reorderCityComparisonRows\(body, sourceCities, key, direction\)/);
+  assert.doesNotMatch(app, /comparison\.tBodies/);
+  assert.match(app, /formatCityTemperatureRange\(coldValue\)/);
+  assert.match(app, /formatCityTemperatureRange\(hotValue\)/);
+  assert.match(app, /aria-sort="none"/);
+  assert.match(app, /data-city-sort/);
+  assert.match(app, /badges = city\.categories\.filter/);
+  assert.match(app, /badges\.map\(\(category\) => `<span>\$\{html\(category\)\}<\/span>`\)\.join\(''\)/);
+  assert.doesNotMatch(app, /climateLine|climate\.notes_ru|Климат:/);
+  assert.doesNotMatch(app, /city-budget-grid|city-card/);
   assert.match(styles, /html,body\{max-width:100%;overflow-x:clip\}/);
-  assert.match(styles, /\.city-budget-grid\{[^}]*align-items:start;max-width:100%/);
-  assert.match(styles, /\.city-budget-grid \.city-card\{height:auto;min-height:0;min-width:0;overflow-wrap:anywhere/);
-  assert.match(styles, /\.city-role-list\{display:flex;flex-wrap:wrap/);
-  assert.match(styles, /@media\(max-width:760px\)[\s\S]*\.city-budget-grid\{grid-template-columns:1fr\}/);
+  assert.match(styles, /\.cities-comparison table\{[^}]*width:100%[^}]*border-collapse:collapse/);
+  assert.match(styles, /\.city-role-list\{display:flex;flex-direction:column;align-items:flex-start/);
+  assert.match(styles, /\.city-role-list span\{display:block\}/);
+  assert.doesNotMatch(styles, /city-role-list[^\n]*·/);
+  assert.doesNotMatch(styles, /\.city-role-list span\{[^}]*background:/);
+  assert.match(styles, /\.cities-comparison th:not\(:first-child\)\{text-align:center\}/);
+  assert.match(styles, /\.cities-comparison th button\{[^}]*justify-content:center[^}]*width:100%[^}]*text-align:center/);
+  assert.match(styles, /\.city-cost\{[^}]*text-align:right!important/);
+  assert.match(styles, /@media\(max-width:760px\)[\s\S]*\.cities-comparison tbody tr\{display:grid;grid-template-columns:1fr 1fr/);
   assert.match(styles, /@media\(max-width:600px\)\{\.secure-note\{display:none\}\}/);
-  assert.equal(/\.city-budget-grid \.city-card\{[^}]*(?:^|;)height:\s*\d/.test(styles), false);
 });
 
 

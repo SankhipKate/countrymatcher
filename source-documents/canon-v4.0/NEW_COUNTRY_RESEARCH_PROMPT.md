@@ -80,26 +80,6 @@ COUNTRY_RESEARCH_STANDARD.md — единственный норматив о т
 
 Для ENGINE-требований обязательно заполняй met_ru и unmet_ru. Критические требования, участвующие в автоматической проверке, должны иметь confidence HIGH или MEDIUM.
 
-ЗАПРЕТ ПОДГОНКИ СТАТУСА И НОРМАЛИЗАЦИЯ CITY-COST
-
-Запрещено выбирать или менять `evaluation_mode`, `unmet_effect`, `requires_separate_basis`, `publishable` или структуру `requirements[]` ради желаемого статуса конкретной страны или маршрута.
-
-Сначала определяется юридический смысл факта, затем его generic mapping. Research gap, региональная оговорка, неясность применимого порога или источника и иная информационная неопределённость не превращаются в `UNASKED_CONDITION` только потому, что их полезно показать пользователю.
-
-Такие факты хранятся как пояснение substantive requirement и/или non-blocking `open_item`. Если current generic contract не способен выразить реальное обязательное правило, это integration blocker для generic contract/engine change. Country-specific status logic запрещена.
-
-Для standardized city-cost basket `condition_ru` — нормализованное определение сценария, а не описание конкретного observation. Для одинакового сценария одноимённого компонента используй одинаковый `condition_ru` во всех displayed cities. Цены, диапазоны, даты, источники, FX и технические notes в `condition_ru` не помещай.
-
-PUBLIC ROUTE VISIBILITY
-
-Не создавай country-specific UI-фильтры по `route_id`.
-
-В текущем MVP чистые supporting routes с `route_type=FAMILY` и чистые `route_type=INTRA_COMPANY_TRANSFER` сохраняй в исследовании и `route_coverage`, но не показывай отдельной recommendation card: `publishable=false`.
-
-Если широкий `HIGHLY_QUALIFIED_SPECIALIST` одновременно покрывает `INTRA_COMPANY_TRANSFER` через `covers_categories`, он может оставаться publishable: это не чистый ICT supporting route.
-
-`publishable=false` по этой общей presentation policy не означает, что legal route отсутствует, и не должно менять его substantive requirements или route status logic.
-
 ФИНАНСЫ
 
 Единственный источник финансового требования — requirements[].financial. Не создавай дублирующие краткие пороги на уровне маршрута.

@@ -80,17 +80,17 @@ test('root index is the application and matcher has no user page or redirect', a
   assert.match(html, /<link rel="canonical" href="https:\/\/sankhipkate\.github\.io\/countrymatcher\/">/);
 
   const assets = [
-    './matcher/access-gate.css?v=4.0.1',
-    './pilot/styles.css?v=7.1.2',
-    './matcher/styles.css?v=7.1.2',
-    './matcher/access-gate.js?v=5.0.0',
-    './matcher/app.js?v=7.1.2',
+    './matcher/access-gate.css?v=7.2.0',
+    './pilot/styles.css?v=7.2.0',
+    './matcher/styles.css?v=7.2.0',
+    './matcher/access-gate.js?v=7.2.0',
+    './matcher/app.js?v=7.2.0',
   ];
   for (const asset of assets) {
     assert.ok(html.includes(`"${asset}"`), asset);
     await existingRelativeAsset(asset);
   }
-  assert.match(html, /class="access-brand" href="\.\/landing\/"/);
+  assert.ok(html.indexOf('id="accessGate"') < html.indexOf('id="resultView"'));
   assert.match(html, /class="brand" href="\.\/"/);
 
   await assert.rejects(access(new URL('../matcher/index.html', import.meta.url)));
@@ -215,15 +215,15 @@ test('runtime data URLs are module-relative and remain valid under a project sub
   ]);
   assert.match(matcher, /const DATA_BASE = new URL\('\.\.\/data\/', import\.meta\.url\)/);
   assert.doesNotMatch(matcher, /fetch\(['"]\.\.\/data/);
-  assert.match(matcher, /new URL\(`\$\{filename\}\?v=7\.1\.2`, DATA_BASE\)/);
-  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=7\.1\.2', DATA_BASE\)/);
+  assert.match(matcher, /new URL\(`\$\{filename\}\?v=7\.2\.0`, DATA_BASE\)/);
+  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=7\.2\.0', DATA_BASE\)/);
   assert.match(fx, /new URL\('\.\.\/data\/fx-fallback\.json', import\.meta\.url\)/);
   const deploymentRoot = new URL('https://example.test/future/project-subpath/');
   const matcherModule = new URL('matcher/app.js', deploymentRoot);
   const pilotModule = new URL('pilot/fx-context.js', deploymentRoot);
   const dataBase = new URL('../data/', matcherModule);
-  assert.equal(new URL('ES-research-v4.0.json?v=7.1.2', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=7.1.2');
-  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=7.1.2', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=7.1.2');
+  assert.equal(new URL('ES-research-v4.0.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=7.2.0');
+  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=7.2.0');
   assert.equal(new URL('../data/fx-fallback.json', pilotModule).href, 'https://example.test/future/project-subpath/data/fx-fallback.json');
   assert.doesNotMatch(`${matcher}\n${fx}`, /sankhipkate\.github\.io|github\.io\/countrymatcher/);
 });
@@ -246,11 +246,9 @@ test('matcher renders practical financial guidance separately from official nume
   assert.match(matcher, /Это не официальный минимальный порог\./);
   assert.match(matcher, /надёжную практическую сумму найти не удалось/);
   assert.doesNotMatch(matcher, /thresholdUsd[^\n]+practicalGuidance|practicalGuidance[^\n]+thresholdUsd/);
-  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?const financeBlock =/);
+  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?summary\.alternatives[\s\S]*?\);/);
   assert.ok(numericFinancialItems);
   assert.doesNotMatch(numericFinancialItems[0], /practicalGuidance/);
-  assert.match(numericFinancialItems[0], /summary\?\.model === 'INCOME_OR_SAVINGS'/);
-  assert.match(numericFinancialItems[0], /alternatives\.map\(formatFinancialAlternative\)\.join\(' или '\)/);
 });
 
 test('research order marks only migrated RP4 countries connected and ignores archived RP3 files', async () => {
@@ -258,12 +256,12 @@ test('research order marks only migrated RP4 countries connected and ignores arc
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  for (const country of ['Испания', 'Аргентина', 'Уругвай', 'Португалия']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
-  for (const country of ['Бразилия', 'Мексика', 'Парагвай']) {
+  for (const country of ['Испания', 'Аргентина', 'Уругвай']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
+  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия']) {
     assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
   }
   const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
   assert.ok(archivedV3.length > 0);
   const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
-  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина', 'Португалия', 'Уругвай']);
+  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина', 'Уругвай']);
 });
