@@ -1,2 +1,5 @@
 node_modules/
 countrymatcher/.pages-artifact/
+
+__pycache__/
+*.py[cod]
