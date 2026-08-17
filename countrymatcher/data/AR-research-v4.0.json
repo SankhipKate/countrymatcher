@@ -1,0 +1,3174 @@
+{
+  "schema_version": "4.0",
+  "country_id": "AR",
+  "country_name_ru": "Аргентина",
+  "research_date": "2026-08-10",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-10",
+    "migration_rules_next_review": "2026-11-10",
+    "financial_costs_next_review": "2026-09-10",
+    "taxes_next_review": "2027-02-10",
+    "lgbt_legal_next_review": "2027-02-10",
+    "lgbt_practical_next_review": "2026-11-10",
+    "schools_pets_next_review": "2027-02-10",
+    "climate_next_review": "2031-01-01"
+  },
+  "country_currency": "ARS",
+  "country_summary_ru": "Аргентина сочетает безвизовый краткосрочный въезд для граждан РФ с несколькими временными основаниями: цифровой кочевник, rentista, pensionado, местная работа, специалист/внутрикорпоративный перевод, учёба, семья, гуманитарные основания и международная защита. Для non-MERCOSUR общий путь к ПМЖ по временной резиденции составляет 3 года при требованиях присутствия; после реформы 2025 года гражданство требует 2 лет непрерывного законного проживания без выездов. Инвесторская категория существует в законе, но скрыта до подтверждения актуальной операционной процедуры.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть отдельный транзитный статус цифрового кочевника.",
+      "source_ids": [
+        "AR_DNV"
+      ],
+      "linked_route_ids": [
+        "AR_NOMAD"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Категория rentista покрывает проживание за счёт пассивного/имущественного дохода из-за рубежа.",
+      "source_ids": [
+        "AR_RENTISTA"
+      ],
+      "linked_route_ids": [
+        "AR_RENTISTA"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть отдельная временная категория pensionado.",
+      "source_ids": [
+        "AR_PENSIONADO"
+      ],
+      "linked_route_ids": [
+        "AR_PENSIONADO"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть временная резиденция трудового мигранта по местному договору.",
+      "source_ids": [
+        "AR_WORKER"
+      ],
+      "linked_route_ids": [
+        "AR_WORKER"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Единая категория учёных/специалистов покрывает специализированную работу.",
+      "source_ids": [
+        "AR_SPECIALIST"
+      ],
+      "linked_route_ids": [
+        "AR_SPECIALIST_TRANSFER"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Та же категория включает персонал, переведённый из иностранной компании.",
+      "source_ids": [
+        "AR_SPECIALIST"
+      ],
+      "linked_route_ids": [
+        "AR_SPECIALIST_TRANSFER"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "NO_ROUTE",
+      "explanation_ru": "Отдельного общего стартового ВНЖ для предпринимателя/самозанятого гражданина РФ в перечне исследованных категорий не выявлено; самозанятость разрешается как право работы после получения временной резиденции по иному основанию.",
+      "source_ids": [
+        "AR_MIGRATION_LAW"
+      ],
+      "linked_route_ids": []
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Закон предусматривает временную категорию инвестора; маршрут скрыт до подтверждения текущей операционной процедуры.",
+      "source_ids": [
+        "AR_MIGRATION_LAW"
+      ],
+      "linked_route_ids": [
+        "AR_INVESTOR_HIDDEN"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть временная студенческая резиденция.",
+      "source_ids": [
+        "AR_STUDENT"
+      ],
+      "linked_route_ids": [
+        "AR_STUDENT"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть временная семейная резиденция по воссоединению.",
+      "source_ids": [
+        "AR_FAMILY"
+      ],
+      "linked_route_ids": [
+        "AR_FAMILY"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "UNAVAILABLE_TO_RU",
+      "explanation_ru": "Упрощённая резиденция по гражданству предназначена для MERCOSUR и ассоциированных государств; российское гражданство само по себе её не даёт.",
+      "source_ids": [
+        "AR_MERCOSUR"
+      ],
+      "linked_route_ids": []
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Действует процедура признания статуса беженца по Закону 26.165 и регламенту 646/2025.",
+      "source_ids": [
+        "AR_ASYLUM_LAW",
+        "AR_ASYLUM_REG"
+      ],
+      "linked_route_ids": [
+        "AR_PROTECTION"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Есть индивидуальная временная резиденция по гуманитарным основаниям.",
+      "source_ids": [
+        "AR_HUMANITARIAN"
+      ],
+      "linked_route_ids": [
+        "AR_HUMANITARIAN"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Владельцы действительных обычных паспортов РФ могут въезжать без визы на срок до 90 дней в каждом 180-дневном периоде; для работы/коммерческой деятельности или более длительного проживания нужен соответствующий миграционный статус.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "AR_ENTRY_RU"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "AR_NOMAD",
+      "name_ru": "Резиденция цифрового кочевника",
+      "official_term_ru": "Residencia transitoria como Nómada Digital",
+      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
+      "covers_categories": [
+        "DIGITAL_NOMAD_REMOTE_WORK"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Удалённые услуги с использованием цифровых/телекоммуникационных средств в пользу лиц или организаций, находящихся за пределами Аргентины.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_NOMAD_BASIS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить, что текущая удалённая работа или самостоятельные услуги выполняются в пользу работодателя/заказчиков за пределами Аргентины; фиксированного денежного порога для этого критерия не установлено.",
+          "met_ru": "Текущий тип дохода и его зарубежная география соответствуют основанию цифрового кочевника.",
+          "unmet_ru": "Текущий тип дохода или подтверждённая география источника не соответствуют основанию цифрового кочевника.",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "AR_DNV",
+                  "AR_DNV_DISPOSITION"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального числового минимума нет. Практические источники называют около 2 000–2 500 USD в месяц для заявителя с зарубежной удалённой деятельностью.",
+                  "figures": [
+                    {
+                      "amount_min": 2000,
+                      "amount_max": 2500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "AR_DNV_CITIZEN_REMOTE", "source_date": "2026-02-26", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Опубликованный практический диапазон, не официальный государственный минимум."
+                    },
+                    {
+                      "amount": 2000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "AR_DNV_REWIRE_2026", "source_date": "2026-07-16", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Отдельный опубликованный ориентир, использованный в утверждённом screening rule."
+                    }
+                  ],
+                  "disclaimer_ru": "Это практические ориентиры, а не официальный порог DNM. Для предварительного подбора Country Matcher использует 2 000 USD в месяц; решение по документам принимает миграционный орган."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 2000,
+                  "source_ids": ["AR_DNV_CITIZEN_REMOTE", "AR_DNV_REWIRE_2026"]
+                }
+              }
+            ]
+          },
+          "source_ids": [
+            "AR_DNV",
+            "AR_DNV_DISPOSITION"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_DNV"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Подача проводится лично через Национальное управление миграции Аргентины (DNM); RaDEX для этой процедуры не используется.",
+          "source_ids": [
+            "AR_DNV"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный канал для заявителя вне Аргентины.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Для находящихся за рубежом предусмотрена электронная процедура въезда; ONLINE не заменяет географическое основание подачи.",
+          "source_ids": [
+            "AR_DNV_ABROAD"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_NOMAD_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_DNV",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+      "condition_ru": "Заявитель может использовать этот маршрут, но партнёр и ребёнок не получают статус автоматически. Чтобы переехать вместе, для них потребуется другое подходящее законное основание.",
+          "source_ids": [
+            "AR_DNV",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус цифрового кочевника не даёт общего разрешения на местную работу по найму.",
+          "source_ids": [
+            "AR_DNV",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допустима только в рамках удалённых услуг в пользу лиц или организаций, находящихся за пределами Аргентины.",
+          "source_ids": [
+            "AR_DNV",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Маршрут прямо предназначен для удалённых услуг в пользу лиц или организаций, находящихся за пределами Аргентины.",
+          "source_ids": [
+            "AR_DNV"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": null,
+      "long_term_path": {
+        "first_permit_months": 6,
+    "initial_status_ru": "Краткосрочная резиденция цифрового кочевника действует до 180 дней.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 6,
+    "renewal_ru": "Возможно одно продление ещё до 180 дней.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+    "pr_path_ru": "Сам этот статус не является долгосрочным маршрутом к ПМЖ; для такого пути потребуется перейти на подходящую категорию проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+    "citizenship_path_ru": "Срок пребывания в статусе цифрового кочевника не используется как подтверждённый отсчёт для гражданства.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для самого DNV действует срок до 180 дней и возможное одно продление; долгосрочные сроки начинают оцениваться после смены основания.",
+        "language_requirements_ru": "Отдельное языковое требование для DNV не установлено.",
+        "source_ids": [
+          "AR_DNV",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_DNV"
+    },
+    {
+      "route_id": "AR_RENTISTA",
+      "name_ru": "Временная резиденция рантье",
+      "official_term_ru": "Residencia temporaria como rentista",
+      "route_type": "INCOME_FINANCIALLY_INDEPENDENT",
+      "covers_categories": [
+        "INCOME_FINANCIALLY_INDEPENDENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Содержание за счёт дохода от собственных активов или ресурсов из-за рубежа; оплата личного труда исключена из категории.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_RENT_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "5 SMVM (МРОТ)",
+          "source_ids": [
+            "AR_RENTISTA",
+            "AR_RENT_THRESHOLD",
+            "AR_SMVM"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 1883000,
+                "currency": "ARS",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "AR_RENTISTA",
+                  "AR_RENT_THRESHOLD",
+                  "AR_SMVM"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          },
+          "profile_path": "INCOME_APPLICANT",
+          "met_ru": "Подтверждаемый подходящий доход достигает 5 SMVM.",
+          "unmet_ru": "Требуется подтвердить пассивный или инвестиционный доход не ниже 5 SMVM (МРОТ) — 1 883 000 ARS в месяц."
+        },
+        {
+          "requirement_id": "AR_RENT_SOURCE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Доход должен происходить от активов/собственных ресурсов и поступать из-за рубежа; вознаграждение за личный труд не относится к rentista.",
+          "source_ids": [
+            "AR_RENTISTA"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_RENTISTA"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_RENTISTA"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_RENT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Партнёр/ребёнок использует применимую семейную резиденцию или собственное основание; семейный доход автоматически к порогу rentista не прибавляется.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_RENTISTA",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_RENTISTA"
+    },
+    {
+      "route_id": "AR_PENSIONADO",
+      "name_ru": "Временная резиденция пенсионера",
+      "official_term_ru": "Residencia temporaria como pensionado",
+      "route_type": "RETIREMENT",
+      "covers_categories": [
+        "RETIREMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Регулярная и постоянная пенсия от государства, международной организации или частной компании за услуги, оказанные за рубежом.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_PENS_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "5 SMVM (МРОТ)",
+          "source_ids": [
+            "AR_PENSIONADO",
+            "AR_RENT_THRESHOLD",
+            "AR_SMVM"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 1883000,
+                "currency": "ARS",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PENSION"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "AR_PENSIONADO",
+                  "AR_RENT_THRESHOLD",
+                  "AR_SMVM"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          },
+          "profile_path": "INCOME_APPLICANT",
+          "met_ru": "Подтверждаемая пенсия достигает 5 SMVM.",
+          "unmet_ru": "Требуется подтвердить регулярную пенсию не ниже 5 SMVM (МРОТ) — 1 883 000 ARS в месяц."
+        },
+        {
+          "requirement_id": "AR_PENS_BASIS",
+          "type": "RETIREMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить, что пенсия является регулярной и постоянной выплатой от государства, международной организации или частной компании за услуги, оказанные за рубежом.",
+          "source_ids": [
+            "AR_PENSIONADO"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_PENSIONADO"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_PENSIONADO"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_PENS_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Сопровождающему члену семьи потребуется отдельное применимое семейное или собственное миграционное основание.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_PENSIONADO",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_PENSIONADO"
+    },
+    {
+      "route_id": "AR_WORKER",
+      "name_ru": "Временная резиденция по местному трудовому договору",
+      "official_term_ru": "Residencia temporaria como trabajador migrante",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Наёмная работа в Аргентине по законному договору с работодателем, выполняющим регистрационные требования.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_WORKER_OFFER",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подходящий местный трудовой договор/предконтракт с работодателем, выполняющим требования DNM/RENURE.",
+          "source_ids": [
+            "AR_WORKER"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_WORKER"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_WORKER"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_WORKER_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Сопровождающему члену семьи потребуется отдельное применимое семейное или собственное миграционное основание.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_WORKER",
+          "AR_WORKER_RENEW",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_WORKER"
+    },
+    {
+      "route_id": "AR_SPECIALIST_TRANSFER",
+      "name_ru": "Временная резиденция специалиста или переведённого сотрудника",
+      "official_term_ru": "Residencia temporaria como científico y/o personal especializado y/o personal de traslado",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "INTRA_COMPANY_TRANSFER"
+      ],
+      "route_subtype_ru": "Учёный / специализированный персонал / внутрикорпоративный перевод",
+      "basis_ru": "Научная, исследовательская, техническая или консультационная работа по специальности либо перевод руководителя/технического/административного сотрудника иностранной организации на конкретную должность в Аргентине.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_SPEC_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить контракт с соответствующей организацией либо документированный внутрикорпоративный перевод на подходящую должность.",
+          "source_ids": [
+            "AR_SPECIALIST"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "AR_SPEC_QUAL",
+          "type": "EXPERIENCE",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить специализированный характер выполняемой работы и документы, требуемые для выбранного подтипа.",
+          "source_ids": [
+            "AR_SPECIALIST"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_SPECIALIST"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_SPECIALIST"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_SPEC_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Сопровождающему члену семьи потребуется отдельное применимое семейное или собственное миграционное основание.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_SPECIALIST",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_SPECIALIST"
+    },
+    {
+      "route_id": "AR_STUDENT",
+      "name_ru": "Временная студенческая резиденция",
+      "official_term_ru": "Residencia temporaria como estudiante",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Очное/официально признанное обучение в аргентинском учреждении как регулярный студент либо соответствующий признанный образовательный сценарий.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_STUDY_ADMISSION",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить зачисление/электронную регистрацию в признанном учебном заведении по подходящей программе.",
+          "source_ids": [
+            "AR_STUDENT"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_STUDENT"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_STUDENT"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_STUDY_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Сопровождающему члену семьи потребуется отдельное применимое семейное или собственное миграционное основание.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_STUDENT",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_STUDENT"
+    },
+    {
+      "route_id": "AR_FAMILY",
+      "name_ru": "Временная резиденция по воссоединению семьи",
+      "official_term_ru": "Residencia temporaria por reunificación familiar",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Прямая семейная связь с гражданином Аргентины либо постоянным/временным резидентом в предусмотренных законом категориях.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "AR_FAMILY_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить предусмотренную законом семейную связь: супруг/зарегистрированный партнёр, родитель или соответствующий ребёнок аргентинца либо постоянного/временного резидента.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_FAMILY"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_FAMILY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_FAMILY_DERIV",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Каждый сопровождающий член семьи должен сам соответствовать предусмотренной законом родственной связи с аргентинцем либо временным/постоянным резидентом.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Временная семейная резиденция: срок соответствует резиденции спонсора, а при аргентинском или постоянном резиденте может быть предоставлен до 3 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении семейного основания; для некоторых семейных связей доступна постоянная резиденция напрямую.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Некоторые прямые родственники аргентинцев могут получать постоянную резиденцию по семейному основанию; при временной семейной резиденции к ПМЖ также применяется соответствующая долгосрочная категория.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "При выполнении общего правила 2 лет непрерывного законного проживания возможна натурализация.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Конкретный путь к ПМЖ зависит от семейной связи; для гражданства действует 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах не установлено.",
+        "source_ids": [
+          "AR_FAMILY",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_FAMILY"
+    },
+    {
+      "route_id": "AR_HUMANITARIAN",
+      "name_ru": "Временная резиденция по гуманитарным основаниям",
+      "official_term_ru": "Residencia temporaria por razones humanitarias",
+      "route_type": "OTHER",
+      "is_humanitarian": true,
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальные гуманитарные обстоятельства, которые по оценке DNM оправдывают специальный режим временной резиденции.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_HUM_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальные гуманитарные обстоятельства, достаточные для специального рассмотрения DNM.",
+          "source_ids": [
+            "AR_HUMANITARIAN",
+            "AR_MIGRATION_LAW"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_HUMANITARIAN"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление подаётся по действующей процедуре Национального управления миграции Аргентины (DNM).",
+          "source_ids": [
+            "AR_HUMANITARIAN"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_HUM_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Сопровождающему члену семьи потребуется отдельное применимое семейное или собственное миграционное основание.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Временная резиденция по гуманитарным основаниям; конкретный срок определяется применимым решением/категорией.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении соответствующего основания и соблюдении действующих требований DNM.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Для гражданина РФ как гражданина страны вне MERCOSUR переход к постоянной резиденции по arraigo доступен после 3 лет временной резиденции; требуется провести в Аргентине не менее 50% предоставленного срока и не отсутствовать 6 месяцев подряд.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Действующая после реформы 2025 года норма требует 2 лет непрерывного законного проживания непосредственно перед натурализацией без выездов из Аргентины в этот период.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для ПМЖ по arraigo — не менее 50% срока временной резиденции в стране и отсутствие непрерывного выезда на 6 месяцев; для гражданства — 2 года непрерывного законного проживания без выездов.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах о натурализации не установлено.",
+        "source_ids": [
+          "AR_HUMANITARIAN",
+          "AR_MIGRATION_LAW",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "AR_HUMANITARIAN"
+    },
+    {
+      "route_id": "AR_PROTECTION",
+      "name_ru": "Международная защита",
+      "official_term_ru": "Solicitud de reconocimiento de la condición de refugiado",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальная потребность в международной защите по Закону 26.165.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "AR_PROT_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальные обстоятельства, соответствующие основаниям международной защиты.",
+          "source_ids": [
+            "AR_ASYLUM_LAW",
+            "AR_ASYLUM_REG"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_ASYLUM_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Необходимо находиться в Аргентине с законным въездом/статусом, если процедура требует подачи в стране.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление может быть подано на территории Аргентины лично, устно или письменно.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Заявление о защите может быть заявлено в пункте пограничного контроля.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "На границе заявление принимается лично миграционным сотрудником.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_PROT_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Принцип семейного единства применяется индивидуально; расширение/воссоединение зависит от признания и решения CONARE по семейной связи.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временный сертификат заявителя прямо включает разрешение на работу по найму.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временный сертификат заявителя прямо включает разрешение на автономную работу.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "В рамках общего разрешения на работу заявитель может осуществлять законную удалённую деятельность; специальных ограничений по иностранному заказчику в исследованном регламенте не выделено.",
+          "source_ids": [
+            "AR_ASYLUM_REG"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Временная резиденция даёт право осуществлять оплачиваемую или прибыльную деятельность в течение разрешённого срока пребывания.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Во время рассмотрения — сертификат временного пребывания, возобновляемый каждые 90 дней; после признания оформляется резиденция через DNM.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 3,
+        "renewal_ru": "Сертификат заявителя автоматически возобновляется на идентичные периоды, пока заявление рассматривается; после признания применяется миграционный статус беженца.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Признанный беженец может подавать на постоянную резиденцию при выполнении требования arraigo; универсальный числовой срок для беженца на странице ПМЖ не задан отдельно.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 2,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "После получения засчитываемого законного статуса применяется общее правило 2 лет непрерывного законного проживания; период одной лишь precaria не следует автоматически считать подтверждённым для натурализации.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для гражданства необходимо 2 года непрерывного законного проживания без выездов; путь ПМЖ для признанного беженца требует arraigo.",
+        "language_requirements_ru": "Отдельное языковое требование в исследованных нормах не установлено.",
+        "source_ids": [
+          "AR_ASYLUM_REG",
+          "AR_PR",
+          "AR_CITIZENSHIP_DNU"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Статус беженца по Закону 26.165; процедура применяется к лицам, нуждающимся в международной защите по предусмотренным законом основаниям.",
+        "recognized_grounds_ru": "Включает преследование по защищаемым признакам, а также предусмотренные законом ситуации насилия, конфликтов, массовых нарушений прав человека и иных обстоятельств, серьёзно нарушающих общественный порядок.",
+        "individual_risk_rule_ru": "Заявитель должен изложить обстоятельства, связывающие его ситуацию с критериями международной защиты; одного гражданства недостаточно.",
+        "protected_ground_link_ru": "Для классического определения беженца преследование должно быть связано с расой, религией, национальностью, принадлежностью к определённой социальной группе или политическими убеждениями; закон также содержит расширенные региональные основания.",
+        "evidence_rule_ru": "CONARE проводит индивидуальную процедуру; заявитель вправе представить документы и иные доступные доказательства и дать объяснения.",
+        "admissibility_ru": "Регламент 646/2025 предусматривает предварительную оценку жизнеспособности заявления и возможность мотивированного отказа in limine с судебным обжалованием.",
+        "safe_third_country_ru": "В исследованных основных нормах не найден автоматический универсальный запрет только из-за транзита через третью страну; применимость иных оснований допустимости оценивается индивидуально.",
+        "previous_applications_ru": "Предыдущие заявления и ранее предоставленная защита могут учитываться в индивидуальной оценке; универсальное автоматическое правило для всех случаев в используемых источниках не выделено.",
+        "right_to_remain_during_processing_ru": "Заявителю выдаётся временное подтверждение пребывания, которое продлевается, пока заявление рассматривается; действует принцип невысылки в предусмотренном законом объёме.",
+        "reception_housing_ru": "Единого гарантированного государственного жилья для всех заявителей в исследованных нормах не установлено; помощь зависит от доступных механизмов и индивидуальной ситуации.",
+        "assistance_ru": "Закон и регламент предусматривают процессуальные гарантии и административную помощь; конкретный объём социальной поддержки зависит от программы и ситуации.",
+        "healthcare_ru": "Временный сертификат заявителя позволяет обращаться в органы здравоохранения и социальной защиты в установленном объёме.",
+        "appeal_ru": "Мотивированный отказ может быть обжалован прямым судебным средством в предусмотренном законом порядке.",
+        "status_after_positive_decision_ru": "После признания беженец оформляет резиденцию в DNM; признанный статус даёт законное проживание и доступ к работе, а ПМЖ возможен при выполнении требования arraigo.",
+        "source_ids": [
+          "AR_ASYLUM_LAW",
+          "AR_ASYLUM_REG",
+          "AR_PR"
+        ]
+      },
+      "official_source_id": "AR_ASYLUM_LAW"
+    },
+    {
+      "route_id": "AR_INVESTOR_HIDDEN",
+      "name_ru": "Временная резиденция инвестора",
+      "official_term_ru": "Residencia temporaria como inversionista",
+      "route_type": "INVESTMENT",
+      "covers_categories": [
+        "INVESTMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Закон 25.871 сохраняет категорию инвестора, но актуальный операционный порог и процедура не подтверждены достаточно надёжно.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "AR_INV_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "До публикации необходимо подтвердить действующий инвестиционный порог, допустимую форму вложения и процедуру DNM.",
+          "source_ids": [
+            "AR_MIGRATION_LAW"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный единый срок решения для этого типа заявления на странице процедуры не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "AR_MIGRATION_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "NOT_RESEARCHED",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_RESEARCHED",
+          "entry_condition_ru": "Не исследовано.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Не исследовано до закрытия операционного пробела.",
+          "source_ids": []
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "AR_INV_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": null,
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NOT_RESEARCHED",
+          "separate_route_required": null,
+          "linked_route_id": null,
+          "join_stage": "NOT_RESEARCHED",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Семейная цепочка не публикуется до подтверждения действующей операционной процедуры инвесторской резиденции.",
+          "source_ids": []
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_RESEARCHED",
+          "available_after_months": null,
+          "rule_ru": "Операционный объём прав в рамках неактивного для публикации маршрута не исследован.",
+          "source_ids": []
+        },
+        "self_employment": {
+          "status": "NOT_RESEARCHED",
+          "available_after_months": null,
+          "rule_ru": "Операционный объём прав в рамках неактивного для публикации маршрута не исследован.",
+          "source_ids": []
+        },
+        "remote_foreign_work": {
+          "status": "NOT_RESEARCHED",
+          "available_after_months": null,
+          "rule_ru": "Операционный объём прав в рамках неактивного для публикации маршрута не исследован.",
+          "source_ids": []
+        },
+        "allowed_remote_activity_types": null
+      },
+      "partner_work_rights": null,
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "В Законе 25.871 предусмотрена временная категория инвестора, но действующая операционная процедура/порог не подтверждены для публикации.",
+        "renewal_status": "NOT_RESEARCHED",
+        "renewal_months": null,
+        "renewal_ru": "Не исследовано до закрытия операционного пробела.",
+        "pr_path_status": "NOT_RESEARCHED",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NOT_RESEARCHED",
+        "pr_path_ru": "Не используется в пользовательском результате до закрытия операционного пробела.",
+        "citizenship_path_status": "NOT_RESEARCHED",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Не используется в пользовательском результате до закрытия операционного пробела.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Не исследовано.",
+        "language_requirements_ru": "Не исследовано.",
+        "source_ids": []
+      },
+      "protection_details": null,
+      "official_source_id": "AR_MIGRATION_LAW"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "AR_BUENOS_AIRES",
+      "name_ru": "Буэнос-Айрес",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Роль выбрана относительно национальной системы расселения; численность не используется для пользовательского вывода до отдельной статистической сверки.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 965744,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Меблированное жильё около 85 м² в обычном районе; прямой текущий ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_BA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 153235,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Отопление, электричество и газ для двух человек в квартире около 85 м²; прямой ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_BA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 54742,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_BA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Влажный умеренно-субтропический",
+        "cold_min_c": 8.3,
+        "cold_max_c": 13.9,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 20.6,
+        "hot_max_c": 27.8,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "WeatherSpark historical model/data baseline 1980–2016",
+        "notes_ru": "Лето тёплое и влажное; зима прохладная и ветреная.",
+        "source_ids": [
+          "AR_CLIMATE_BA"
+        ]
+      },
+      "source_ids": [
+        "AR_CLIMATE_BA",
+        "AR_COST_EXPATISTAN_BA"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "AR_CORDOBA",
+      "name_ru": "Кордова",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Роль выбрана относительно национальной системы расселения; численность не используется для пользовательского вывода до отдельной статистической сверки.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 514399,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Меблированное жильё около 85 м² в обычном районе; прямой текущий ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_CORDOBA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 85435,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Отопление, электричество и газ для двух человек в квартире около 85 м²; прямой ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_CORDOBA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 59440,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_CORDOBA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Континентальный субтропический с сухой зимой",
+        "cold_min_c": 5.6,
+        "cold_max_c": 17.8,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 18.3,
+        "hot_max_c": 29.4,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "WeatherSpark historical model/data baseline 1980–2016",
+        "notes_ru": "Лето тёплое и более влажное; зима короткая, сухая и прохладная.",
+        "source_ids": [
+          "AR_CLIMATE_CBA"
+        ]
+      },
+      "source_ids": [
+        "AR_CLIMATE_CBA",
+        "AR_COST_EXPATISTAN_CORDOBA"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "AR_MENDOZA",
+      "name_ru": "Мендоса",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Роль выбрана относительно национальной системы расселения; численность не используется для пользовательского вывода до отдельной статистической сверки.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 553502,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Меблированное жильё около 85 м² в обычном районе; прямой текущий ориентир Expatistan.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_MENDOZA"
+          ],
+          "confidence": "LOW"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 113265,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Отопление, электричество и газ для двух человек в квартире около 85 м²; прямой ориентир Expatistan.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_MENDOZA"
+          ],
+          "confidence": "LOW"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 45878,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_MENDOZA"
+          ],
+          "confidence": "LOW"
+        }
+      ],
+      "climate": {
+        "category_ru": "Сухой континентальный",
+        "cold_min_c": 2.8,
+        "cold_max_c": 14.4,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 19.4,
+        "hot_max_c": 31.1,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "WeatherSpark historical model/data baseline 1980–2016",
+        "notes_ru": "Сухой климат; жаркое лето и холодные ночи зимой.",
+        "source_ids": [
+          "AR_CLIMATE_MZA"
+        ]
+      },
+      "source_ids": [
+        "AR_CLIMATE_MZA",
+        "AR_COST_EXPATISTAN_MENDOZA"
+      ],
+      "confidence": "LOW"
+    },
+    {
+      "city_id": "AR_USHUAIA",
+      "name_ru": "Ушуайя",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Роль выбрана относительно национальной системы расселения; численность не используется для пользовательского вывода до отдельной статистической сверки.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 616891,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Меблированное жильё около 85 м² в обычном районе; прямой текущий ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_USHUAIA"
+          ],
+          "confidence": "LOW"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 70653,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Отопление, электричество и газ для двух человек в квартире около 85 м²; прямой ориентир Expatistan.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_USHUAIA"
+          ],
+          "confidence": "LOW"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 32000,
+          "currency": "ARS",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Один обычный месячный билет/проездной на общественный транспорт; сравнительный компонент базовой городской корзины.",
+          "price_date": "2026-08-09",
+          "source_ids": [
+            "AR_COST_EXPATISTAN_USHUAIA"
+          ],
+          "confidence": "LOW"
+        }
+      ],
+      "climate": {
+        "category_ru": "Холодный океанический/субполярный",
+        "cold_min_c": -0.6,
+        "cold_max_c": 3.9,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 6.1,
+        "hot_max_c": 12.8,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "WeatherSpark historical model/data baseline 1980–2016",
+        "notes_ru": "Прохладное лето, холодная снежная зима и ветреность круглый год.",
+        "source_ids": [
+          "AR_CLIMATE_USH"
+        ]
+      },
+      "source_ids": [
+        "AR_CLIMATE_USH",
+        "AR_COST_EXPATISTAN_USHUAIA"
+      ],
+      "confidence": "LOW"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Аргентина: национальная рамка, реализация провинциями/городом",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Испанский; конкретные правила школы и региона могут различаться.",
+        "compulsory_age_min": 4,
+        "compulsory_age_max": 17,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Иностранцы имеют право быть принятыми в начальные/первичные и средние учреждения даже при нерегулярном миграционном статусе; обязательное образование начинается с 4 лет и продолжается до окончания средней школы.",
+        "source_ids": [
+          "AR_MIGRATION_LAW",
+          "AR_EDU_LAW"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [
+      {
+        "school_id": "AR_LINCOLN_BA",
+        "name_ru": "Asociación Escuelas Lincoln",
+        "city_id": "AR_BUENOS_AIRES",
+        "tuition": null,
+        "paid_months_per_year": null,
+        "admission_fee": {
+          "amount": 12000,
+          "currency": "USD",
+          "period": "ONE_TIME",
+          "price_date": "2026-08-10"
+        },
+        "source_ids": [
+          "AR_LINCOLN"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESEARCHED_NONE_FOUND",
+      "explanation_ru": "В проверенных национальных правилах ввоза не выявлены decision-relevant запреты или ограничения на допуск собак и кошек.",
+      "source_ids": [
+        "AR_PETS_ENTRY"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "В Ciudad Autónoma de Buenos Aires (CABA) действует специальный режим потенциально опасных собак. Официальный список шире и включает, среди прочих, Pit Bull Terrier, Dogo Argentino, Rottweiler, Doberman, Ovejero Alemán и Cane Corso, а также соответствующие помеси и иные предусмотренные законом категории. Требуются регистрация и страхование гражданской ответственности; в общественных местах обязательны намордник и нерастягивающийся поводок длиной до 2 м. Это правило CABA, а не общенациональное правило Аргентины.",
+      "source_ids": [
+        "AR_DOG_CABA"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-10",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны; действующее национальное право признаёт однополые браки и не содержит уголовного запрета таких отношений.",
+    "state_restrictions_ru": "Равный брак и базовые нормы о гендерной идентичности продолжают действовать. При этом актуальные правозащитные обзоры фиксируют институциональный откат после 2023 года: ликвидацию профильных государственных структур и усиление анти-гендерной и анти-ЛГБТ риторики.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Закон 26.618 установил равный гражданский брак независимо от пола супругов.",
+    "registered_partnership_recognized": "YES",
+    "registered_partnership_rule_ru": "Unión convivencial является признанной формой союза; миграционное право при регистрации признаёт её аналогично браку для ряда семейных оснований.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранные свидетельства о браке/рождении используются при соблюдении требований легализации/апостиля; иностранная unión convivencial для миграционных целей может требовать местной регистрации.",
+    "parenthood_ru": "Правовой режим равного брака и последующие нормы обеспечивают признание семейных связей однополых супругов; конкретное иностранное родительство зависит от документов и их регистрации.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "образование",
+        "труд и занятость",
+        "доступ к публичным услугам",
+        "правосудие"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Доступны судебные и административные механизмы общей защиты равенства и недискриминации; конкретный канал зависит от сферы и юрисдикции.",
+      "rule_ru": "Миграционный закон гарантирует иностранцам равный доступ к защите и основным публичным правам и запрещает дискриминационные ограничения по перечисленным основаниям, включая пол и гендер.",
+      "source_ids": [
+        "AR_MIGRATION_LAW",
+        "AR_GENDER_ID"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Правозащитные источники 2025–2026 годов фиксируют враждебную публичную риторику, ослабление части государственных механизмов защиты и сохраняющиеся случаи дискриминации и насилия. Это ухудшает практическую среду, но не отменяет действующее признание однополых браков.",
+    "regional_differences_ru": "Практическая среда различается по регионам. IGLTA описывает наиболее заметную ЛГБТ-инфраструктуру в Буэнос-Айресе и также отмечает сообщества и мероприятия в Кордове и Мендосе. Это описательная информация, а не методологический рейтинг безопасности или лояльности городов, поэтому friendly_cities не заполняется.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "HETEROGENEOUS",
+    "assessment_basis_ru": "Национальное право сохраняет равный брак, признание семейных связей и правовой режим гендерной идентичности. Одновременно правозащитные организации в 2025–2026 годах фиксируют институциональный и риторический откат: правовое признание остаётся полным, а практическая среда — неоднородной.",
+    "source_ids": [
+      "AR_MARRIAGE",
+      "AR_PARTNERSHIP",
+      "AR_GENDER_ID",
+      "AR_MIGRATION_LAW",
+      "AR_LGBT_PRACTICE",
+      "AR_LGBT_OUTRIGHT_2026",
+      "AR_LGBT_IGLTA_2026"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-10",
+    "tax_residency_rule_ru": "Для иностранца налоговое резидентство может возникать при постоянной резиденции либо после 12 месяцев непрерывного пребывания по временным разрешениям; краткие отсутствия до установленного предела не обязательно прерывают отсчёт.",
+    "typical_day_threshold": null,
+    "other_residency_triggers_ru": "Налоговый статус зависит от юридической категории и продолжительности пребывания; единый универсальный порог 183 дня для всех иностранцев в исследованной норме не используется.",
+    "personal_income_tax_ru": "Налоговые резиденты Аргентины в общем случае облагаются налогом на доходы по правилам Ley de Impuesto a las Ganancias; точная ставка зависит от вида и размера дохода.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Социальные взносы зависят от формы занятости и режима регистрации; единая персональная ставка для всех маршрутов не моделируется.",
+    "foreign_income_ru": "Для резидентов предусмотрено налогообложение доходов иностранного источника с применением правил зачёта/соглашений.",
+    "double_taxation_with_russia_ru": "Аргентина официально перечисляет действующее соглашение с Российской Федерацией об избежании двойного налогообложения; оно действует с 16 октября 2012 года.",
+    "source_ids": [
+      "AR_TAX_RULE",
+      "AR_DTA_RU"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "AR_GAP_INVESTOR_OPERATIONAL",
+      "block": "ROUTES",
+      "priority": "HIGH",
+      "related_route_id": "AR_INVESTOR_HIDDEN",
+      "blocks_publication": true,
+      "missing_ru": "В законе сохраняется категория инвестора, но не подтверждены актуальный операционный порог, допустимые формы инвестиции и рабочая процедура DNM для обычной временной инвесторской резиденции.",
+      "handling_ru": "AR_INVESTOR_HIDDEN остаётся publishable=false до подтверждения текущей официальной процедуры."
+    },
+    {
+      "item_id": "AR_GAP_SCHOOL_TUITION",
+      "block": "SCHOOLS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Школа Lincoln публикует цикл 2026/27 и Capital Assessment, но в доступной первичной выдаче не извлечена числовая регулярная tuition для выбранного уровня.",
+      "handling_ru": "Показывать наличие школы и подтверждённый разовый взнос; регулярную tuition не рассчитывать."
+    },
+    {
+      "item_id": "AR_GAP_PETS_REGIONAL",
+      "block": "PETS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Нет единой надёжной матрицы породных ограничений по всем провинциям/муниципалитетам.",
+      "handling_ru": "Показывать подтверждённое национальное правило ввоза и пример действующего ограничения CABA, не обобщая его на всю страну."
+    },
+    {
+      "item_id": "AR_GAP_PROTECTION_PR_TIME",
+      "block": "LONG_TERM",
+      "priority": "LOW",
+      "related_route_id": "AR_PROTECTION",
+      "blocks_publication": false,
+      "missing_ru": "Страница постоянной резиденции подтверждает путь признанного беженца через arraigo, но не задаёт отдельный универсальный числовой срок именно для этой категории.",
+      "handling_ru": "Оставить years_to_pr=null для AR_PROTECTION и показывать текстовое правило."
+    },
+    {
+      "item_id": "AR_GAP_CITY_BASE_BASKET",
+      "block": "CITIES_COST",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для отображаемых городов не подтверждена полная базовая корзина RENT_STANDARD, GROCERIES, UTILITIES и TRANSPORT: отсутствует сопоставимый компонент GROCERIES.",
+      "handling_ru": "Считать отсутствующий компонент непрепятствующим публикации исследовательским пробелом. Сравнивать все отображаемые города по единому пересечению сопоставимых компонентов: если компонент отсутствует хотя бы в одном городе, исключать его из общего сравнения без подстановки нуля или интерполяции."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "PARTIAL",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_INVESTOR_OPERATIONAL"
+        ]
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_PROTECTION_PR_TIME"
+        ]
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_CITY_BASE_BASKET"
+        ]
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_SCHOOL_TUITION"
+        ]
+      },
+      {
+        "block": "PETS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_PETS_REGIONAL"
+        ]
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "AR_ENTRY_RU",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores, Comercio Internacional y Culto",
+      "title_ru": "Безвизовый режим Аргентина—Россия",
+      "url": "https://www.cancilleria.gob.ar/es/actualidad/comunicados/argentina-rusia-hoy-entra-en-vigencia-la-supresion-de-visas",
+      "supports_ru": "До 90 дней в каждом 180-дневном периоде для владельцев обычных паспортов; для труда/коммерческой деятельности и более долгого пребывания нужен соответствующий статус.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_MIGRATION_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Закон 25.871 о миграции — актуальный текст",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-25871-92016/actualizacion",
+      "supports_ru": "Категории временной/транзитной резиденции, права на работу, семейное воссоединение, доступ к образованию и иные базовые миграционные правила.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_DNV",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временный статус цифрового кочевника",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-transitoria-como-nomada-digital",
+      "supports_ru": "Удалённые услуги в пользу зарубежных заказчиков/работодателей, только для безвизовых туристических национальностей, 180 дней с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_DNV_DISPOSITION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Disposición 758/2022 — резиденция цифрового кочевника",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-758-2022-364601/texto",
+      "supports_ru": "Официальное основание временной резиденции для удалённых услуг лицам или организациям за пределами Аргентины и перечень подтверждающих документов; универсальный числовой минимум дохода не установлен.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2022-05-20",
+      "language": "es"
+    },
+    {
+      "source_id": "AR_DNV_CITIZEN_REMOTE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Citizen Remote",
+      "title_ru": "Argentina Digital Nomad Visa — практический диапазон дохода",
+      "url": "https://citizenremote.com/visas/argentina-digital-nomad-visa/",
+      "supports_ru": "Сообщает практический ориентир стабильного зарубежного дохода около 2 000–2 500 USD в месяц; не используется как официальный порог DNM.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-02-26",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_DNV_REWIRE_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Rewire Abroad",
+      "title_ru": "Argentina Digital Nomad Visa 2026 — практический ориентир",
+      "url": "https://rewireabroad.com/visas/argentina-digital-nomad-visa",
+      "supports_ru": "Публикует ориентир 2 000 USD в месяц для зарубежной удалённой деятельности; сумма рассматривается только как practical evidence, а не официальный минимум.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-16",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_DNV_ABROAD",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Электронное оформление въезда цифрового кочевника",
+      "url": "https://www.argentina.gob.ar/servicio/tramitacion-de-ingreso-electronica-nomadas-digitales",
+      "supports_ru": "Электронная процедура для цифровых кочевников вне Аргентины.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_RENTISTA",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция rentista",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-como-rentista",
+      "supports_ru": "Пассивный/имущественный доход из-за рубежа, исключая оплату личного труда; минимум 5 SMVM; 1 год с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_PENSIONADO",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция pensionado",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-como-pensionado",
+      "supports_ru": "Регулярная постоянная пенсия из-за рубежа, минимум 5 SMVM; 1 год с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_RENT_THRESHOLD",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Disposición 3446/2023",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/disposici%C3%B3n-3446-2023-392424/texto",
+      "supports_ru": "Устанавливает минимум 5 SMVM для rentista и pensionado.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_SMVM",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Consejo Nacional del Empleo / Boletín Oficial",
+      "title_ru": "Resolución 9/2025 — SMVM",
+      "url": "https://www.boletinoficial.gob.ar/detalleAviso/primera/335463/20251203",
+      "supports_ru": "С 1 августа 2026 SMVM = ARS 376 600; 5 SMVM = ARS 1 883 000 в месяц.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_WORKER",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция трудового мигранта",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-como-trabajador-migrante",
+      "supports_ru": "Местный трудовой договор/предконтракт, требования к работодателю, RaDEX, 1 год с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_WORKER_RENEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Продление резиденции трудового мигранта",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-prorroga-de-residencia-temporaria-como-trabajador-migrante",
+      "supports_ru": "Продление при сохранении или новом трудовом договоре.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_SPECIALIST",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция учёного / специалиста / переведённого сотрудника",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-como-cientifico-yo-personal-especializado-yo-personal-de",
+      "supports_ru": "Научная/техническая/специализированная работа и внутрикорпоративный перевод; договор или письмо о переводе; 1 год с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_STUDENT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная студенческая резиденция",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-como-estudiante",
+      "supports_ru": "Официально признанное обучение, электронная регистрация/зачисление; 1 год с продлением.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_FAMILY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция по воссоединению семьи",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-por-reunificacion-familiar",
+      "supports_ru": "Супруг, родитель или ребёнок аргентинца либо постоянного/временного резидента; срок до 3 лет или срок спонсора.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_PR",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Постоянная резиденция",
+      "url": "https://www.argentina.gob.ar/servicio/radicaciones-residencia-permanente",
+      "supports_ru": "Для non-MERCOSUR — 3 года временной резиденции; минимум 50% срока в Аргентине и отсутствие выезда на 6 месяцев подряд.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_CITIZENSHIP_DNU",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Poder Ejecutivo Nacional",
+      "title_ru": "DNU 366/2025",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-366-2025-413297/texto",
+      "supports_ru": "Реформа миграции и натурализации; 2 года непрерывного законного проживания для гражданства.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_CITIZENSHIP_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Закон 346 о гражданстве — актуальный текст",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-346-48854/actualizacion",
+      "supports_ru": "Базовая норма натурализации и гражданства.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_HUMANITARIAN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция по гуманитарным основаниям",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-por-razones-humanitarias",
+      "supports_ru": "Индивидуальные гуманитарные обстоятельства по статье 23(m) Закона 25.871.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_ASYLUM_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Закон 26.165 о признании и защите беженцев",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26165-122609/actualizacion",
+      "supports_ru": "Основания, права заявителей и признанных беженцев, non-refoulement, апелляция.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_ASYLUM_REG",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Poder Ejecutivo Nacional",
+      "title_ru": "Декрет 646/2025 — регламент Закона 26.165",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-646-2025-417374/texto",
+      "supports_ru": "Процедура CONARE, граница/территория, временный сертификат, право работать и семейное единство.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_MERCOSUR",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Временная резиденция по гражданству MERCOSUR",
+      "url": "https://www.argentina.gob.ar/servicio/obtener-una-residencia-temporaria-por-nacionalidad-mercosur",
+      "supports_ru": "Маршрут по гражданству MERCOSUR/ассоциированных государств, не применим к гражданину РФ только по российскому гражданству.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_EDU_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Закон 26.206 о национальном образовании",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26206-123542/actualizacion",
+      "supports_ru": "Обязательное образование с 4 лет до окончания средней школы.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_LINCOLN",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Asociación Escuelas Lincoln",
+      "title_ru": "Tuition and Fees 2026/2027",
+      "url": "https://www.lincoln.edu.ar/admissions/tuition-and-fees",
+      "supports_ru": "Международная школа в районе Буэнос-Айреса; Capital Assessment USD 12 000 для K5–12; опубликован цикл 2026/27.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_PETS_ENTRY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "SENASA",
+      "title_ru": "Въезд в Аргентину с собаками и кошками",
+      "url": "https://www.argentina.gob.ar/senasa/informacion-al-viajero/ingresar-o-regresar-al-pais/ingresos-con-perros-yo-gatos",
+      "supports_ru": "Национальные правила ввоза собак/кошек; породных запретов на въезд на странице не указано.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_DOG_CABA",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Legislatura de la Ciudad Autónoma de Buenos Aires",
+      "title_ru": "Ley 4078 — потенциально опасные собаки",
+      "url": "https://boletinoficial.buenosaires.gob.ar/normativaba/norma/302801",
+      "supports_ru": "Перечень пород/типов собак и специальные требования CABA.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_MARRIAGE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Ley 26.618 — равный гражданский брак",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26618-169608/texto",
+      "supports_ru": "Равный гражданский брак для однополых пар.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_PARTNERSHIP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Justicia",
+      "title_ru": "Uniones convivenciales",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/leysimple/uniones-convivenciales",
+      "supports_ru": "Правовой режим зарегистрированных совместных союзов.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_GENDER_ID",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina",
+      "title_ru": "Ley 26.743 — гендерная идентичность",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/ley-26743-197860/texto",
+      "supports_ru": "Право на признание гендерной идентичности.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_LGBT_PRACTICE",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "Human Rights Watch",
+      "title_ru": "World Report 2026: Argentina",
+      "url": "https://www.hrw.org/world-report/2026/country-chapters/argentina",
+      "supports_ru": "Практический контекст: анти-ЛГБТ риторика и сохраняющиеся проблемы несмотря на действующие правовые гарантии.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_DTA_RU",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Economía",
+      "title_ru": "Действующие соглашения об избежании двойного налогообложения",
+      "url": "https://www.argentina.gob.ar/economia/ingresospublicos/dni/cdi/vigentes",
+      "supports_ru": "Соглашение Аргентина—Россия действует с 16 октября 2012 года.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_TAX_RULE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "República Argentina / ARCA",
+      "title_ru": "Регламент налога на доходы — резидентство",
+      "url": "https://www.argentina.gob.ar/normativa/nacional/decreto-862-2019-332991/actualizacion",
+      "supports_ru": "Правила 12-месячной непрерывности для иностранных лиц и иностранного дохода налоговых резидентов.",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "AR_CLIMATE_BA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "WeatherSpark",
+      "title_ru": "Климат Буэнос-Айреса",
+      "url": "https://weatherspark.com/y/28981/Average-Weather-in-Buenos-Aires-Argentina-Year-Round",
+      "supports_ru": "Средние high/low января и июля; исторические метеоданные и модельная реконструкция.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_CLIMATE_CBA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "WeatherSpark",
+      "title_ru": "Климат Кордовы",
+      "url": "https://weatherspark.com/y/28147/Average-Weather-in-C%C3%B3rdoba-Argentina-Year-Round",
+      "supports_ru": "Средние high/low января и июля; исторические метеоданные и модельная реконструкция.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_CLIMATE_MZA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "WeatherSpark",
+      "title_ru": "Климат Мендосы",
+      "url": "https://weatherspark.com/y/27313/Average-Weather-in-Mendoza-Argentina-Year-Round",
+      "supports_ru": "Средние high/low января и июля; исторические метеоданные и модельная реконструкция.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_CLIMATE_USH",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "WeatherSpark",
+      "title_ru": "Климат Ушуайи",
+      "url": "https://weatherspark.com/y/27291/Average-Weather-in-Ushuaia-Argentina-Year-Round",
+      "supports_ru": "Средние high/low января и июля; исторические метеоданные и модельная реконструкция.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "AR_COST_EXPATISTAN_BA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Expatistan",
+      "title_ru": "Стоимость жизни в Буэнос-Айресе — август 2026",
+      "url": "https://www.expatistan.com/cost-of-living/buenos-aires",
+      "supports_ru": "Прямые текущие значения аренды 85 м² в обычном районе, коммунальных услуг и месячного проездного в Буэнос-Айресе.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-08-09",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_COST_EXPATISTAN_CORDOBA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Expatistan",
+      "title_ru": "Стоимость жизни в Кордове — август 2026",
+      "url": "https://www.expatistan.com/cost-of-living/cordoba",
+      "supports_ru": "Прямые текущие значения аренды 85 м² в обычном районе, коммунальных услуг и месячного проездного в Кордове.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-08-09",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_COST_EXPATISTAN_MENDOZA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Expatistan",
+      "title_ru": "Стоимость жизни в Мендосе — июнь 2026",
+      "url": "https://www.expatistan.com/cost-of-living/mendoza",
+      "supports_ru": "Прямые значения аренды 85 м² в обычном районе, коммунальных услуг и месячного проездного в Мендосе; выборка ограничена.",
+      "checked_at": "2026-08-10",
+      "confidence": "LOW",
+      "published_or_updated_at": "2026-06-21",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_COST_EXPATISTAN_USHUAIA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Expatistan",
+      "title_ru": "Стоимость жизни в Ушуайе — август 2026",
+      "url": "https://www.expatistan.com/cost-of-living/ushuaia",
+      "supports_ru": "Прямые текущие значения аренды 85 м² в обычном районе, коммунальных услуг и месячного проездного в Ушуайе; выборка небольшая.",
+      "checked_at": "2026-08-10",
+      "confidence": "LOW",
+      "published_or_updated_at": "2026-08-09",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_LGBT_OUTRIGHT_2026",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "Outright International",
+      "title_ru": "Argentina — LGBTIQ country overview, обновление 12 марта 2026",
+      "url": "https://outrightinternational.org/our-work/americas/argentina",
+      "supports_ru": "Актуальный правозащитный контекст 2026 года: сохранение ключевых правовых достижений и институциональный откат/анти-гендерная риторика после 2023 года.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-03-12",
+      "language": "en"
+    },
+    {
+      "source_id": "AR_LGBT_IGLTA_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "International LGBTQ+ Travel Association (IGLTA)",
+      "title_ru": "LGBTQ+ Travel Guide: Argentina",
+      "url": "https://www.iglta.org/destinations/south-america/argentina/",
+      "supports_ru": "Практическая городская среда: особенно заметная ЛГБТ-инфраструктура Буэнос-Айреса, а также сообщества/мероприятия в Кордове и Мендосе; источник не используется как рейтинг безопасности.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    }
+  ],
+  "pending_changes": [],
+  "canon_revision": "2026-08-08-final-lock"
+}

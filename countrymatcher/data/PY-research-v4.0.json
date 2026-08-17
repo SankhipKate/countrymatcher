@@ -1,0 +1,2146 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "PY",
+  "country_name_ru": "Парагвай",
+  "research_date": "2026-08-16",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-16",
+    "migration_rules_next_review": "2026-11-16",
+    "financial_costs_next_review": "2026-10-16",
+    "taxes_next_review": "2026-11-16",
+    "lgbt_legal_next_review": "2026-11-16",
+    "lgbt_practical_next_review": "2026-11-16",
+    "schools_pets_next_review": "2026-11-16",
+    "climate_next_review": "2027-08-16"
+  },
+  "country_currency": "PYG",
+  "country_summary_ru": "Парагвай предлагает broad Temporary Residence для разных lawful activity profiles и несколько direct-PR mechanisms, включая Investor Pass и специальные family bases. Для граждан РФ нет отдельной digital-nomad/pensioner/student visa в исследованной architecture. Страна не признаёт однополый брак; применимость иностранного same-sex marriage в family-PR procedure не подтверждена и временно показывается текстовым предупреждением без изменения generic contract.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Отдельной digital-nomad visa не подтверждено; remote worker использует broad General Temporary Residence.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Отдельной passive-income visa не подтверждено; lawful own-income profile может использовать broad General Temporary Residence.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Отдельной pensioner visa не подтверждено; пенсионер использует broad General Temporary Residence.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Local employment является допустимым factual profile внутри broad General Temporary Residence, а не отдельной иммиграционной route family.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Профессионалы/техники входят в broad General Temporary Residence; отдельная specialist visa не требуется для representation current research.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельный current intra-company-transfer route для российского principal applicant в исследованной системе не подтверждён; при lawful activity применяется общая residence architecture.",
+      "source_ids": [
+        "PY_SRC_MIGRATION_LAW",
+        "PY_SRC_TEMP"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY",
+        "PY_INVESTOR_PASS"
+      ],
+      "explanation_ru": "Самозанятость/предпринимательство может использовать broad Temporary Residence; qualifying large investment имеет отдельный direct-PR Investor Pass.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_INVESTOR_PASS"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_INVESTOR_PASS"
+      ],
+      "explanation_ru": "Investor Pass / SUACE даёт отдельный direct-PR investment mechanism.",
+      "source_ids": [
+        "PY_SRC_INVESTOR_PASS",
+        "PY_SRC_INVESTOR_DNM"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Студент использует broad General Temporary Residence; отдельная duplicated Student Visa route card не создаётся.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_FAMILY_PARAGUAYAN",
+        "PY_FAMILY_REPATRIATED"
+      ],
+      "explanation_ru": "Подтверждены два direct-family PR mechanisms: spouse/child of Paraguayan and qualifying family of repatriated Paraguayan.",
+      "source_ids": [
+        "PY_SRC_FAMILY_PARAGUAYAN",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_GENERAL_TEMPORARY"
+      ],
+      "explanation_ru": "Для non-MERCOSUR гражданина РФ существует broad Residencia Temporal.",
+      "source_ids": [
+        "PY_SRC_TEMP",
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "PY_PROTECTION"
+      ],
+      "explanation_ru": "Paraguay имеет отдельную refugee/asylum procedure requiring individual qualifying risk.",
+      "source_ids": [
+        "PY_SRC_REFUGE",
+        "PY_SRC_REFUGEE_LAW"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Residencia Espontánea/Ocasional не публикуется как обычный долгосрочный relocation route в текущем MVP; отдельной дополнительной OTHER route card для российского пользователя не создаётся.",
+      "source_ids": [
+        "PY_SRC_MIGRATION_LAW"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Граждане РФ могут въезжать без визы для краткосрочного пребывания до 90 дней в каждом 180-дневном периоде. Visa-free short stay не отменяет residence-purpose formalities для переезда; действующая процедура позволяет qualifying visa-waiver national оформить соответствующую residence-purpose visa formalities уже в Парагвае.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "PY_SRC_ENTRY_MRE",
+      "PY_SRC_RESIDENCE_VISA_MRE"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "PY_GENERAL_TEMPORARY",
+      "name_ru": "Общая временная резиденция Парагвая",
+      "official_term_ru": "Residencia Temporal",
+      "route_type": "GENERAL_RESIDENCE",
+      "covers_categories": [
+        "GENERAL_RESIDENCE",
+        "DIGITAL_NOMAD_REMOTE_WORK",
+        "INCOME_FINANCIALLY_INDEPENDENT",
+        "RETIREMENT",
+        "LOCAL_EMPLOYMENT",
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Широкая общая временная резиденция для иностранца, намеренного временно поселиться в Парагвае и вести законную деятельность; employee, remote worker, self-employed, pensioner и student — factual profiles, а не отдельные визовые маршруты.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "PY_TEMP_GENERAL_BASIS_INFO",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Маршрут не требует отдельной «digital nomad / pensioner / student visa»: заявитель оформляет общую Residencia Temporal и подтверждает применимые документы и заявленную законную деятельность.",
+          "source_ids": [
+            "PY_SRC_TEMP",
+            "PY_SRC_MIGRATION_LAW"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "PY_TEMP_PR_SOLVENCY_INFO",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "LONG_TERM",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "При последующем переходе на Permanent Residence нужно подтвердить достаточную и проверяемую solvencia económica; универсального фиксированного порога нет.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER",
+                  "LOCAL_EMPLOYMENT",
+                  "PENSION",
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME",
+                  "OTHER_REGULAR_INCOME"
+                ],
+                "source_geography": "MIXED_ALLOWED",
+                "family_formula_ru": "Универсального фиксированного минимума нет: DNM оценивает достаточные, реальные и проверяемые ресурсы по документальному профилю заявителя.",
+                "source_ids": [
+                  "PY_SRC_SOLVENCY"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT",
+                  "PARTNER"
+                ]
+              }
+            ]
+          },
+          "source_ids": [
+            "PY_SRC_SOLVENCY"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный официальный срок полного рассмотрения и выдачи статуса не подтверждён; длительность зависит от процедуры и полноты дела.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "PY_SRC_TEMP"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "PY",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Заявитель должен физически находиться в Парагвае и иметь законное основание пребывания для соответствующей процедуры.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Личная процедура Residencia Temporal проводится через DNM в Парагвае; для граждан РФ residence-purpose visa formalities могут быть выполнены в Парагвае по действующей MRE procedure.",
+          "source_ids": [
+            "PY_SRC_TEMP",
+            "PY_SRC_RESIDENCE_VISA_MRE"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "PY_TEMP_FAM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        {
+          "scenario_id": "PY_TEMP_FAM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная оплачиваемая работа допускается в пределах выданного миграционного/защитного статуса; отдельные трудовые, IPS, налоговые и профессиональные обязанности сохраняются.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допускается в пределах выданного статуса при соблюдении налоговых, регистрационных и профессиональных правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа на иностранного работодателя/клиента не является отдельной digital-nomad visa; деятельность должна быть совместима с законным статусом и налоговыми правилами Парагвая.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Право партнёра на работу возникает из его собственного законного статуса в Парагвае; статус основного заявителя сам по себе не заменяет отдельное миграционное оформление партнёра.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность партнёра зависит от его собственного законного статуса и применимых регистрационных/налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность партнёра зависит от его собственного законного статуса и применимых налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Residencia Temporal — временная резиденция до 2 лет; во время рассмотрения residente precario может давать законное документированное пребывание, работу и учёбу.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Временная резиденция может продлеваться на сопоставимый срок при сохранении законных условий; обычный долгосрочный путь — смена категории на постоянную резиденцию.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Обычный путь для гражданина РФ: Temporary → Permanent. Подача на смену категории предусмотрена в последние три месяца действия временной резиденции; при PR применяется доказуемая solvencia económica без универсального фиксированного порога.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Три года — не срок от въезда и не от Temporary Residence. По текущей практике Corte Suprema минимальный срок для naturalization отсчитывается от решения о предоставлении Permanent Residence, после чего требуется отдельная судебная процедура и выполнение остальных конституционных условий.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Для Temporary Residence длительное необоснованное отсутствие более примерно 1 непрерывного года может иметь последствия для статуса; для Permanent Residence — более примерно 3 непрерывных лет. Эти миграционные пределы не заменяют требования фактической связи с Парагваем при naturalization.",
+        "language_requirements_ru": "Naturalization — судебная процедура с экзаменом по истории, географии, граждановедению/Конституции и культуре Парагвая. Отдельный универсальный языковой порог в RP4 не выдумывается.",
+        "source_ids": [
+          "PY_SRC_TEMP",
+          "PY_SRC_PERM_CHANGE",
+          "PY_SRC_SOLVENCY",
+          "PY_SRC_CONSTITUTION",
+          "PY_SRC_CITIZENSHIP_COURT"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "PY_SRC_TEMP"
+    },
+    {
+      "route_id": "PY_INVESTOR_PASS",
+      "name_ru": "Investor Pass — прямая постоянная резиденция",
+      "official_term_ru": "Paraguay Investor Pass / residencia permanente para inversionistas extranjeros — SUACE",
+      "route_type": "INVESTMENT",
+      "covers_categories": [
+        "INVESTMENT",
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+      ],
+      "route_subtype_ru": "Direct PR через qualifying investment",
+      "basis_ru": "Прямая Permanent Residence для qualifying investor после соответствующей сертификации MIC/SUACE и выполнения условий выбранного инвестиционного варианта.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "PY_INVESTOR_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Получить qualifying investor certification / оформить инвестиционный проект через MIC/SUACE и выполнить неценовые условия выбранного Investor Pass варианта; компания или личная покупка жилья сами по себе не дают автоматический PR.",
+          "source_ids": [
+            "PY_SRC_INVESTOR_DNM",
+            "PY_SRC_INVESTOR_PASS",
+            "PY_SRC_SUACE_CERT"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "PY_INVESTOR_CAPITAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить капитал и дополнительные условия одного из действующих Investor Pass вариантов.",
+          "financial": {
+            "model": "INVESTMENT_CAPITAL",
+            "alternatives": [
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 70000,
+                "currency": "USD",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Производительная бизнес-инвестиция: ориентир от 70 000 USD плюс минимум 5 формальных рабочих мест и business/investment plan.",
+                "source_ids": [
+                  "PY_SRC_INVESTOR_PASS",
+                  "PY_SRC_SUACE_CERT"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 200000,
+                "currency": "USD",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Финансовая инвестиция: ориентир от 200 000 USD с удержанием инвестиции примерно 2 года; требование 5 рабочих мест не является универсальным для этого варианта.",
+                "source_ids": [
+                  "PY_SRC_INVESTOR_PASS",
+                  "PY_SRC_SUACE_CERT"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 200000,
+                "currency": "USD",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Недвижимость: ориентир от 200 000 USD, причём объект должен быть связан с qualifying economic activity; покупка личного жилья сама по себе не является достаточным основанием.",
+                "source_ids": [
+                  "PY_SRC_INVESTOR_PASS",
+                  "PY_SRC_SUACE_CERT"
+                ],
+                "confidence": "HIGH"
+              },
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 150000,
+                "currency": "USD",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Туристический инвестиционный проект: ориентир от 150 000 USD с qualifying project documentation.",
+                "source_ids": [
+                  "PY_SRC_INVESTOR_PASS",
+                  "PY_SRC_SUACE_CERT"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          },
+          "source_ids": [
+            "PY_SRC_INVESTOR_PASS",
+            "PY_SRC_SUACE_CERT"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный официальный срок полного рассмотрения и выдачи статуса не подтверждён; длительность зависит от процедуры и полноты дела.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "PY_SRC_INVESTOR_DNM",
+          "PY_SRC_INVESTOR_PASS"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "PY",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Заявитель должен физически находиться в Парагвае и иметь законное основание пребывания для соответствующей процедуры.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Инвестиционная сертификация может готовиться заранее, но residence filing/идентификация выполняются через компетентные органы в Парагвае.",
+          "source_ids": [
+            "PY_SRC_INVESTOR_DNM",
+            "PY_SRC_SUACE_CERT"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "PY_INVESTOR_FAM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_INVESTOR_DNM"
+          ]
+        },
+        {
+          "scenario_id": "PY_INVESTOR_FAM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_INVESTOR_DNM"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная оплачиваемая работа допускается в пределах выданного миграционного/защитного статуса; отдельные трудовые, IPS, налоговые и профессиональные обязанности сохраняются.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допускается в пределах выданного статуса при соблюдении налоговых, регистрационных и профессиональных правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа на иностранного работодателя/клиента не является отдельной digital-nomad visa; деятельность должна быть совместима с законным статусом и налоговыми правилами Парагвая.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Право партнёра на работу возникает из его собственного законного статуса в Парагвае; статус основного заявителя сам по себе не заменяет отдельное миграционное оформление партнёра.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность партнёра зависит от его собственного законного статуса и применимых регистрационных/налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность партнёра зависит от его собственного законного статуса и применимых налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Residencia Permanente — постоянная резиденция; иммиграционный статус бессрочный, физическая карта имеет отдельный срок действия/обновления.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Бессрочный статус не моделируется как обычное продление временной резиденции; физическая карта резидента обновляется отдельно, обычно на многолетнем цикле.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут при подтверждении своего основания ведёт непосредственно к Permanent Residence без предварительной общей Temporary Residence.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "После решения о Permanent Residence минимальный конституционный срок до возможности начать naturalization составляет 3 года; гражданство не предоставляется автоматически и требует судебной процедуры и остальных условий.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Отсутствие более примерно 3 непрерывных лет может иметь последствия для Permanent Residence; для naturalization оцениваются фактическая резиденция, деятельность и связь со страной, а не только формальное сохранение карты.",
+        "language_requirements_ru": "В судебной naturalization используется экзамен по истории, географии, граждановедению/Конституции и культуре; отдельное универсальное языковое правило в RP4 не утверждается.",
+        "source_ids": [
+          "PY_SRC_INVESTOR_DNM",
+          "PY_SRC_MIGRATION_LAW",
+          "PY_SRC_CONSTITUTION",
+          "PY_SRC_CITIZENSHIP_COURT"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "PY_SRC_INVESTOR_DNM"
+    },
+    {
+      "route_id": "PY_FAMILY_PARAGUAYAN",
+      "name_ru": "Прямая ПМЖ для супруга или ребёнка гражданина Парагвая",
+      "official_term_ru": "Residencia Permanente para hijos y cónyuges de paraguayos",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": "Прямая Permanent Residence по специальному семейному основанию",
+      "basis_ru": "Специальный direct-PR механизм для иностранного супруга или ребёнка гражданина Парагвая.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "PY_FAMILY_PARAGUAYAN_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Подтвердить предусмотренную законом семейную связь с гражданином Парагвая — qualifying spouse или child basis — и документы, требуемые DNM.",
+          "source_ids": [
+            "PY_SRC_FAMILY_PARAGUAYAN"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "PY_FAMILY_PARAGUAYAN_RECOGNITION_NOTE",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Основание супруга гражданина Парагвая существует, однако применимость иностранного однополого брака как spouse-basis в текущей процедуре DNM по имеющимся источникам не подтверждена и требует индивидуальной проверки; registered/de facto same-sex relationship также не следует считать автоматически признанным семейным основанием.",
+          "source_ids": [
+            "PY_SRC_FAMILY_PARAGUAYAN",
+            "PY_SRC_CIVIL_CODE"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный официальный срок полного рассмотрения и выдачи статуса не подтверждён; длительность зависит от процедуры и полноты дела.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "PY_SRC_FAMILY_PARAGUAYAN"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "PY",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Заявитель должен физически находиться в Парагвае и иметь законное основание пребывания для соответствующей процедуры.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача direct family PR выполняется через DNM в Парагвае при подтверждении конкретного statutory family basis.",
+          "source_ids": [
+            "PY_SRC_FAMILY_PARAGUAYAN"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "PY_FAMILY_PARAGUAYAN_FAM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "source_ids": [
+            "PY_SRC_FAMILY_PARAGUAYAN",
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "PY_FAMILY_PARAGUAYAN_FAM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "source_ids": [
+            "PY_SRC_FAMILY_PARAGUAYAN",
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная оплачиваемая работа допускается в пределах выданного миграционного/защитного статуса; отдельные трудовые, IPS, налоговые и профессиональные обязанности сохраняются.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допускается в пределах выданного статуса при соблюдении налоговых, регистрационных и профессиональных правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа на иностранного работодателя/клиента не является отдельной digital-nomad visa; деятельность должна быть совместима с законным статусом и налоговыми правилами Парагвая.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Право партнёра на работу возникает из его собственного законного статуса в Парагвае; статус основного заявителя сам по себе не заменяет отдельное миграционное оформление партнёра.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность партнёра зависит от его собственного законного статуса и применимых регистрационных/налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность партнёра зависит от его собственного законного статуса и применимых налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Residencia Permanente — постоянная резиденция; иммиграционный статус бессрочный, физическая карта имеет отдельный срок действия/обновления.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Бессрочный статус не моделируется как обычное продление временной резиденции; физическая карта резидента обновляется отдельно, обычно на многолетнем цикле.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут при подтверждении своего основания ведёт непосредственно к Permanent Residence без предварительной общей Temporary Residence.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "После решения о Permanent Residence минимальный конституционный срок до возможности начать naturalization составляет 3 года; гражданство не предоставляется автоматически и требует судебной процедуры и остальных условий.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Отсутствие более примерно 3 непрерывных лет может иметь последствия для Permanent Residence; для naturalization оцениваются фактическая резиденция, деятельность и связь со страной, а не только формальное сохранение карты.",
+        "language_requirements_ru": "В судебной naturalization используется экзамен по истории, географии, граждановедению/Конституции и культуре; отдельное универсальное языковое правило в RP4 не утверждается.",
+        "source_ids": [
+          "PY_SRC_FAMILY_PARAGUAYAN",
+          "PY_SRC_CONSTITUTION",
+          "PY_SRC_CITIZENSHIP_COURT"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "PY_SRC_FAMILY_PARAGUAYAN"
+    },
+    {
+      "route_id": "PY_FAMILY_REPATRIATED",
+      "name_ru": "Прямая ПМЖ для qualifying семьи репатриированного парагвайца",
+      "official_term_ru": "Residencia Permanente — familiares extranjeros de paraguayos repatriados (Art. 48 Ley 6984/2022)",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": "Прямая Permanent Residence по специальному семейному основанию",
+      "basis_ru": "Статья 48 Ley 6984/2022 предусматривает direct-PR treatment для определённых иностранных членов семьи репатриированного гражданина Парагвая.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "PY_FAMILY_REPATRIATED_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Подтвердить предусмотренную Art. 48 Ley 6984/2022 семейную связь с репатриированным гражданином Парагвая и соответствие конкретной statutory family category.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "PY_FAMILY_REPATRIATED_RECOGNITION_NOTE",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Основание супруга гражданина Парагвая существует, однако применимость иностранного однополого брака как spouse-basis в текущей процедуре DNM по имеющимся источникам не подтверждена и требует индивидуальной проверки; registered/de facto same-sex relationship также не следует считать автоматически признанным семейным основанием.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_CIVIL_CODE"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный официальный срок полного рассмотрения и выдачи статуса не подтверждён; длительность зависит от процедуры и полноты дела.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "PY_SRC_MIGRATION_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "PY",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Заявитель должен физически находиться в Парагвае и иметь законное основание пребывания для соответствующей процедуры.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Подача direct family PR выполняется через DNM в Парагвае при подтверждении конкретного statutory family basis.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "PY_FAMILY_REPATRIATED_FAM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "PY_FAMILY_REPATRIATED_FAM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная оплачиваемая работа допускается в пределах выданного миграционного/защитного статуса; отдельные трудовые, IPS, налоговые и профессиональные обязанности сохраняются.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допускается в пределах выданного статуса при соблюдении налоговых, регистрационных и профессиональных правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа на иностранного работодателя/клиента не является отдельной digital-nomad visa; деятельность должна быть совместима с законным статусом и налоговыми правилами Парагвая.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Право партнёра на работу возникает из его собственного законного статуса в Парагвае; статус основного заявителя сам по себе не заменяет отдельное миграционное оформление партнёра.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность партнёра зависит от его собственного законного статуса и применимых регистрационных/налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность партнёра зависит от его собственного законного статуса и применимых налоговых правил.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Residencia Permanente — постоянная резиденция; иммиграционный статус бессрочный, физическая карта имеет отдельный срок действия/обновления.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Бессрочный статус не моделируется как обычное продление временной резиденции; физическая карта резидента обновляется отдельно, обычно на многолетнем цикле.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут при подтверждении своего основания ведёт непосредственно к Permanent Residence без предварительной общей Temporary Residence.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "После решения о Permanent Residence минимальный конституционный срок до возможности начать naturalization составляет 3 года; гражданство не предоставляется автоматически и требует судебной процедуры и остальных условий.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Отсутствие более примерно 3 непрерывных лет может иметь последствия для Permanent Residence; для naturalization оцениваются фактическая резиденция, деятельность и связь со страной, а не только формальное сохранение карты.",
+        "language_requirements_ru": "В судебной naturalization используется экзамен по истории, географии, граждановедению/Конституции и культуре; отдельное универсальное языковое правило в RP4 не утверждается.",
+        "source_ids": [
+          "PY_SRC_MIGRATION_LAW",
+          "PY_SRC_CONSTITUTION",
+          "PY_SRC_CITIZENSHIP_COURT"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "PY_SRC_MIGRATION_LAW"
+    },
+    {
+      "route_id": "PY_PROTECTION",
+      "name_ru": "Международная защита в Парагвае",
+      "official_term_ru": "Solicitud de reconocimiento de la condición de refugiado",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": "Refugee / asylum procedure",
+      "basis_ru": "Отдельная система международной защиты для индивидуального дела, соответствующего применимым refugee grounds; гражданство РФ само по себе не является основанием.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "PY_PROTECTION_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Нужны индивидуальные факты и риск, подпадающие под применимые основания международной защиты; российское гражданство само по себе недостаточно.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный официальный срок полного рассмотрения и выдачи статуса не подтверждён; длительность зависит от процедуры и полноты дела.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "PY_SRC_REFUGE",
+          "PY_SRC_REFUGEE_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "PY",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Заявитель должен физически находиться в Парагвае и иметь законное основание пребывания для соответствующей процедуры.",
+          "rule_checked_at": "2026-08-16",
+          "condition_ru": "Заявление на защиту оформляется на территории Парагвая или в предусмотренном порядке при обращении к компетентным органам; это не обычная economic relocation visa.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "PY_PROTECTION_FAM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        {
+          "scenario_id": "PY_PROTECTION_FAM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Законная оплачиваемая работа допускается в пределах выданного миграционного/защитного статуса; отдельные трудовые, IPS, налоговые и профессиональные обязанности сохраняются.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность допускается в пределах выданного статуса при соблюдении налоговых, регистрационных и профессиональных правил.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая работа на иностранного работодателя/клиента не является отдельной digital-nomad visa; деятельность должна быть совместима с законным статусом и налоговыми правилами Парагвая.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Право партнёра на работу возникает из его собственного законного статуса в Парагвае; статус основного заявителя сам по себе не заменяет отдельное миграционное оформление партнёра.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность партнёра зависит от его собственного законного статуса и применимых регистрационных/налоговых правил.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Удалённая деятельность партнёра зависит от его собственного законного статуса и применимых налоговых правил.",
+          "source_ids": [
+            "PY_SRC_REFUGE",
+            "PY_SRC_REFUGEE_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Во время процедуры действует специальное положение заявителя; после положительного решения возникает отдельный защитный статус и связанные с ним residence consequences.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Защитный статус не моделируется как обычная срочная экономическая резиденция.",
+        "pr_path_status": "NOT_RESEARCHED",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NOT_RESEARCHED",
+        "pr_path_ru": "Положительное решение имеет отдельные residence consequences, но current RP4 не утверждает универсальный срок перехода к ordinary PR без дополнительной route-specific проверки.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "Три года — общая минимальная constitutional naturalization reference после решения о Permanent Residence, а не после asylum filing. Для protection case сначала нужно установить его конкретные residence consequences; поэтому protection residence засчитывается только условно и гражданство не обещается автоматически.",
+        "renunciation_required": null,
+        "presence_rule_ru": "Сохранение защиты и миграционного положения зависит от применимого refugee law и индивидуальных обстоятельств.",
+        "language_requirements_ru": "Отдельное языковое условие защиты не установлено; naturalization, если станет применима, является отдельной процедурой.",
+        "source_ids": [
+          "PY_SRC_REFUGE",
+          "PY_SRC_REFUGEE_LAW",
+          "PY_SRC_CONSTITUTION",
+          "PY_SRC_CITIZENSHIP_COURT"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Признание статуса беженца в отдельной системе CONARE по Ley 1938/2002.",
+        "recognized_grounds_ru": "Применяются установленные refugee-law grounds, включая индивидуальный обоснованный риск преследования по защищаемому основанию; точная квалификация зависит от дела.",
+        "individual_risk_rule_ru": "Решение всегда индивидуально; российское гражданство, переезд или LGBT-идентичность сами по себе не гарантируют защиту без qualifying risk facts.",
+        "protected_ground_link_ru": "Заявленный риск должен иметь требуемую законом связь с protected ground / applicable refugee definition.",
+        "evidence_rule_ru": "Заявитель сообщает индивидуальные обстоятельства и представляет доступные подтверждения; CONARE оценивает доказательства и достоверность дела.",
+        "admissibility_ru": "Заявление оформляется в Парагвае/при обращении к компетентным органам по действующей protection procedure; подача не является обычной residence application abroad.",
+        "safe_third_country_ru": "Автоматический safe-third-country вывод в Country Matcher не делается; процессуальные вопросы оцениваются компетентным органом по конкретному делу.",
+        "previous_applications_ru": "Предыдущие обращения за защитой и иной международный статус могут иметь значение и должны раскрываться в процедуре, когда это требуется.",
+        "right_to_remain_during_processing_ru": "Заявитель получает предусмотренное protection procedure документирование/регуляризацию на период рассмотрения согласно применимым правилам.",
+        "reception_housing_ru": "Универсальная гарантия отдельного жилья каждому заявителю не используется как eligibility fact; практическая помощь зависит от программы и обстоятельств.",
+        "assistance_ru": "Объём государственной/гуманитарной помощи не является фиксированным matcher threshold и зависит от применимых программ и индивидуальной ситуации.",
+        "healthcare_ru": "Доступ к медицинской помощи зависит от документированного статуса и общих правил публичных услуг; Country Matcher не рассчитывает индивидуальный пакет помощи.",
+        "appeal_ru": "Отрицательное решение обрабатывается предусмотренными действующим protection law способами пересмотра/обжалования; конкретные сроки проверяются в индивидуальной процедуре.",
+        "status_after_positive_decision_ru": "После признания возникает статус беженца и соответствующие права/обязанности по Paraguayan refugee framework, включая residence/work consequences.",
+        "source_ids": [
+          "PY_SRC_REFUGE",
+          "PY_SRC_REFUGEE_LAW"
+        ]
+      },
+      "official_source_id": "PY_SRC_REFUGE"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "PY_ASUNCION",
+      "name_ru": "Асунсьон",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Столица, главный административный и сервисный центр страны; в MVP выполняет роли CAPITAL и LARGE.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 3080000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города; standardized comparison scenario для одного человека, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ASU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 177000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные расходы для стандартизированной 1BR квартиры; standardized comparison scenario, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ASU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 1760000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты/еда для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ASU"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 403000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ASU"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Жаркий влажный субтропический",
+        "cold_min_c": 13,
+        "cold_max_c": 23,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 23,
+        "hot_max_c": 33,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "WeatherSpark historical/modelled climate baseline; values rounded for Country Matcher comparison",
+        "notes_ru": "Самый выраженный heat stress из трёх отображаемых городов; жаркое влажное лето, более сухая зима, возможны flooding/drainage issues.",
+        "source_ids": [
+          "PY_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "PY_SRC_CITIES_INE",
+        "PY_SRC_COST_ASU",
+        "PY_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "PY_CIUDAD_DEL_ESTE",
+      "name_ru": "Сьюдад-дель-Эсте",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Ключевой восточный экономический и приграничный центр; в MVP выполняет роль LARGE.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 2254000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города; standardized comparison scenario для одного человека, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_CDE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 177000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные расходы для стандартизированной 1BR квартиры; standardized comparison scenario, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_CDE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 1368000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты/еда для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_CDE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 482000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_CDE"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Жаркий влажный субтропический, более дождливый",
+        "cold_min_c": 12,
+        "cold_max_c": 23,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 22,
+        "hot_max_c": 32,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "WeatherSpark historical/modelled climate baseline; values rounded for Country Matcher comparison",
+        "notes_ru": "В целом более влажный/дождливый профиль, чем Асунсьон; осадки значимы круглый год, возможны сильные ливни и грозы.",
+        "source_ids": [
+          "PY_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "PY_SRC_CITIES_INE",
+        "PY_SRC_COST_CDE",
+        "PY_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "PY_ENCARNACION",
+      "name_ru": "Энкарнасьон",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Крупный южный региональный центр с отличимым климатом и cost profile; в MVP выполняет роль MEDIUM.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 2381000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре города; standardized comparison scenario для одного человека, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ENC"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 163000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные расходы для стандартизированной 1BR квартиры; standardized comparison scenario, без масштабирования по семье.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ENC"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 1519000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продукты/еда для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ENC"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 206000,
+          "currency": "PYG",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Транспорт для одного человека в месяц; standardized comparison scenario.",
+          "price_date": "2026-08-16",
+          "source_ids": [
+            "PY_SRC_COST_ENC"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Влажный субтропический, более прохладный южный профиль",
+        "cold_min_c": 12,
+        "cold_max_c": 22,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 22,
+        "hot_max_c": 32,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "WeatherSpark historical/modelled climate baseline; values rounded for Country Matcher comparison",
+        "notes_ru": "Южный город с несколько более прохладной зимой; осадки сохраняются большую часть года, выраженного сухого сезона нет.",
+        "source_ids": [
+          "PY_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "PY_SRC_CITIES_INE",
+        "PY_SRC_COST_ENC",
+        "PY_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Парагвай — национальная государственная школьная система",
+        "foreign_child_access": "NOT_RESEARCHED",
+        "language_ru": "Основные языки системы — испанский и гуарани; конкретный язык и поддержка зависят от учреждения.",
+        "compulsory_age_min": null,
+        "compulsory_age_max": null,
+        "is_free": null,
+        "tuition": null,
+        "rule_ru": "Точный generic foreign-child public-school access contract не используется в этом integration как legal matcher condition; international-school city discovery исследован отдельно.",
+        "source_ids": [
+          "PY_SRC_EDU"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [],
+    "international_school_cities": [
+      {
+        "city_name_ru": "Асунсьон",
+        "source_ids": [
+          "PY_SRC_SCHOOL_ASA"
+        ]
+      },
+      {
+        "city_name_ru": "Луке",
+        "source_ids": [
+          "PY_SRC_SCHOOL_PAIS"
+        ]
+      }
+    ],
+    "international_school_tuition_observations": []
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Для ввоза собак/кошек действуют ветеринарные требования SENACSA/MERCOSUR: оригинальный CVI, клинический осмотр, rabies vaccination для соответствующего возраста, противопаразитарная обработка и ветеринарный контроль при въезде. Для первой/просроченной rabies vaccination research фиксирует ожидание около 21 дня; universal microchip и routine quarantine для compliant import не подтверждены.",
+      "source_ids": [
+        "PY_SRC_PETS"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESEARCHED_NO_RELIABLE_DATA",
+      "explanation_ru": "Единого nationwide post-entry режима, одинаково требующего регистрацию, намордник или поводок для всех companion animals, не подтверждено; муниципальные правила могут отличаться и не переносятся на всю страну.",
+      "source_ids": [
+        "PY_SRC_PETS"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-16",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Добровольные однополые отношения взрослых не криминализированы как отдельное nationwide offence.",
+    "state_restrictions_ru": "Государственная family/marriage framework остаётся opposite-sex; полноценной nationwide same-sex family recognition, сопоставимой с Argentina/Uruguay, нет.",
+    "same_sex_marriage_recognized": "NO",
+    "same_sex_marriage_rule_ru": "Однополый брак в domestic civil-law framework не признаётся.",
+    "registered_partnership_recognized": "NO",
+    "registered_partnership_rule_ru": "Nationwide legally equivalent same-sex registered partnership/civil union regime не подтверждён.",
+    "family_route_available": "CONDITIONAL",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Family routes для statutory spouse/child существуют, но current DNM procedure не подтверждает foreign same-sex marriage как spouse-basis; foreign civil-status documents не следует автоматически считать sufficient recognition for same-sex family eligibility.",
+    "parenthood_ru": "Эквивалентная nationwide same-sex couple parenthood framework не подтверждена; иностранные parentage/adoption facts требуют индивидуальной legal verification и не выводятся из marriage recognition.",
+    "anti_discrimination": {
+      "areas_ru": [],
+      "applies_to_foreigners": "NOT_RESEARCHED",
+      "complaint_mechanisms_ru": "Не используется как универсальный отдельный Country Matcher механизм: применимы общие судебные/правозащитные каналы по конкретной ситуации.",
+      "rule_ru": "Comprehensive nationwide SOGI anti-discrimination framework, сопоставимый с более сильными regional systems, в research не установлен.",
+      "source_ids": [
+        "PY_SRC_LGBT_PRACTICAL"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Практическая среда заметно более консервативна, discrimination/social hostility остаются relevant; правовая защита семейной пары существенно слабее Argentina/Uruguay.",
+    "regional_differences_ru": "Asunción сравнительно более открыта и имеет большую концентрацию support/community infrastructure; это не означает общий высокий уровень принятия по стране.",
+    "friendly_cities": [],
+    "legal_assessment": "SIGNIFICANT_LEGAL_RESTRICTIONS",
+    "practical_assessment": "RESTRICTED",
+    "assessment_basis_ru": "Same-sex marriage/civil union recognition отсутствует, immigration family recognition foreign same-sex spouse не подтверждена, а practical human-rights evidence указывает на консервативную и дискриминационно рискованную среду.",
+    "source_ids": [
+      "PY_SRC_CIVIL_CODE",
+      "PY_SRC_FAMILY_PARAGUAYAN",
+      "PY_SRC_LGBT_PRACTICAL"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-16",
+    "tax_residency_rule_ru": "Paraguayan tax residence/domicile нельзя корректно свести к универсальному правилу 183 дней; применяются habitual presence/residence concepts и statutory presumptions.",
+    "typical_day_threshold": null,
+    "other_residency_triggers_ru": "Около 120 дней может быть relevant в отдельных habitual-residence presumptions; конкретный tax-residence result зависит от migration status, factual presence and other legal criteria.",
+    "personal_income_tax_ru": "IRP для Paraguayan-source personal-service income использует прогрессивные ставки примерно 8%, 9% и 10%; research фиксирует relevant gross-income threshold около Gs 80 млн/год, но Country Matcher не рассчитывает персональный налог.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Для ordinary formal employment research фиксирует примерно 9% employee IPS contribution и 16.5% employer contribution; это labor/social-security fact, а не immigration requirement.",
+    "foreign_income_ru": "Territorial/source principle не означает «любой foreign employer = tax free»: если услуги физически выполняются из Парагвая, доход может быть Paraguayan-source taxable income.",
+    "double_taxation_with_russia_ru": "Comprehensive Russia–Paraguay income-tax treaty в current framework не подтверждён; Country Matcher не предполагает treaty relief автоматически.",
+    "source_ids": [
+      "PY_SRC_TAX"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "PY_GAP_CITY_SMALL_ROLE",
+      "block": "CITIES_COST",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "В основном displayed-city set нет отдельного города роли SMALL с такой же сопоставимой standardized cost basket.",
+      "handling_ru": "Для MVP показывать Асунсьон, Сьюдад-дель-Эсте и Энкарнасьон; SMALL-role оставить явным nonblocking city-cost gap, не добавляя слабый filler-city."
+    },
+    {
+      "item_id": "PY_GAP_FAMILY_RECOGNITION_MACHINE",
+      "block": "FAMILY",
+      "priority": "HIGH",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Ограничение по применимости иностранного однополого брака к family basis выражено информационным текстом, а не машинной семантикой: текущий generic contract не различает подтверждённое и неподтверждённое recognition для конкретной immigration family procedure.",
+      "handling_ru": "До generic family-recognition fix сохранять neutral FAMILY_BASIS condition + DISPLAY_ONLY recognition warning и не сужать relationship_types; после generic fix заменить workaround машинной семантикой."
+    },
+    {
+      "item_id": "PY_GAP_DUAL_CITIZENSHIP_DETAIL",
+      "block": "LONG_TERM",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Нет универсально подтверждённой гарантии сохранения гражданства РФ каждым naturalized Paraguayan; enforcement/declaration detail зависит от Paraguay constitutional practice and Russian law.",
+      "handling_ru": "Показывать только qualified wording: гарантированное Paraguay–Russia dual-citizenship entitlement не установлено; не обещать свободное двойное гражданство."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "PARTIAL",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "PY_GAP_FAMILY_RECOGNITION_MACHINE"
+        ]
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "PY_GAP_DUAL_CITIZENSHIP_DETAIL"
+        ]
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "PY_GAP_CITY_SMALL_ROLE"
+        ]
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PETS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "PY_SRC_MIGRATION_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Congreso / SILpy",
+      "title_ru": "Ley N.º 6984/2022 «De Migraciones»",
+      "url": "https://silpy.congreso.gov.py/ley/143992",
+      "supports_ru": "Действующая миграционная рамка, категории residence, права резидентов, family/repatriate provisions и общие правила статуса.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_TEMP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Residencia Temporal",
+      "url": "https://migraciones.gov.py/residencia-temporal/",
+      "supports_ru": "Общая Temporary Residence до 2 лет, текущая процедура, документы и in-country filing.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_PERM_CHANGE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Residencia permanente — cambio de categoría",
+      "url": "https://migraciones.gov.py/residencia-permanente-para-el-cambio-de-categoria-de-residente-temporal/",
+      "supports_ru": "Обычный переход Temporary → Permanent и окно подачи в последние месяцы временного статуса.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_SOLVENCY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Resolución DNM N.º 407/2026 — solvencia económica",
+      "url": "https://migraciones.gov.py/migraciones-actualiza-el-regimen-de-acreditacion-de-solvencia-economica-para-extranjeros/",
+      "supports_ru": "С 2026 года PR solvency подтверждается подходящими документами по профилям заявителей; универсального числового минимума нет.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_INVESTOR_DNM",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Residencia permanente para inversionistas extranjeros — SUACE",
+      "url": "https://migraciones.gov.py/residencia-permanente-para-inversionistas-extranjeros-suace/",
+      "supports_ru": "Процедура прямой постоянной резиденции для qualifying investors с соответствующей investor certification.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_INVESTOR_PASS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Industria y Comercio",
+      "title_ru": "Paraguay fortalece la atracción de inversiones con el nuevo Investor Pass",
+      "url": "https://www.mic.gov.py/paraguay-fortalece-la-atraccion-de-inversiones-extranjeras-con-el-nuevo-investor-pass/",
+      "supports_ru": "2026 Investor Pass и расширенные варианты qualifying investment.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_SUACE_CERT",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Ministerio de Industria y Comercio / SUACE",
+      "title_ru": "Constancia de Inversionista Extranjero — SUACE",
+      "url": "https://www.mic.gov.py/constancia-de-inversionista-extranjero-suace/",
+      "supports_ru": "Investor certification и инвестиционный проект как часть процедуры.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_FAMILY_PARAGUAYAN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migraciones",
+      "title_ru": "Residencia permanente para hijos y cónyuges de paraguayos",
+      "url": "https://migraciones.gov.py/residencia-permanente-para-hijos-y-conyuges-de-paraguayos/",
+      "supports_ru": "Прямой family-PR механизм для иностранного супруга/ребёнка гражданина Парагвая.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_CIVIL_CODE",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Biblioteca y Archivo Central del Congreso",
+      "title_ru": "Código Civil paraguayo",
+      "url": "https://www.bacn.gov.py/leyes-paraguayas/5293/ley-n-1183-codigo-",
+      "supports_ru": "Действующая гражданско-правовая модель брака не признаёт однополый брак; нельзя автоматически считать иностранный same-sex marriage подтверждённым spouse-basis.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_CONSTITUTION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Biblioteca y Archivo Central del Congreso",
+      "title_ru": "Constitución Nacional — nacionalidad y naturalización",
+      "url": "https://www.bacn.gov.py/leyesparaguayas/9580/constitucion-nacional-",
+      "supports_ru": "Конституционные условия naturalization и квалифицированная рамка множественного гражданства.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_CITIZENSHIP_COURT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Corte Suprema de Justicia / Poder Judicial",
+      "title_ru": "Carta de Naturalización",
+      "url": "https://www.pj.gov.py/contenido/463-carta-de-naturalizacion",
+      "supports_ru": "Naturalization является судебной процедурой; текущая практика, требования и экзаменационный процесс.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_ENTRY_MRE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores",
+      "title_ru": "Requisitos de visa / Paraguay–Russia visa-waiver framework",
+      "url": "https://www.mre.gov.py/",
+      "supports_ru": "Для граждан РФ действует bilateral visa-free short stay; research фиксирует до 90 дней в каждом 180-дневном периоде.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_RESIDENCE_VISA_MRE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores",
+      "title_ru": "Residence-purpose visa procedure for visa-waiver nationals",
+      "url": "https://www.mre.gov.py/",
+      "supports_ru": "Гражданин visa-waiver страны может пройти residence-purpose visa formalities в Парагвае по действующей процедуре.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_REFUGE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "CONARE / Ministerio de Relaciones Exteriores",
+      "title_ru": "Formalización de una solicitud de estatuto de refugiado",
+      "url": "https://www2.mre.gov.py/conare/index.php/servicios-1/formalizacion-de-una-solicitud-de-estatuto-de-refugiado",
+      "supports_ru": "Заявление на международную защиту подаётся в Парагвае/на границе и рассматривается индивидуально.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_REFUGEE_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Biblioteca y Archivo Central del Congreso",
+      "title_ru": "Ley N.º 1938 — General sobre Refugiados",
+      "url": "https://www.bacn.gov.py/leyes-paraguayas/3818/ley-n-1938--general-sobre-refugiados",
+      "supports_ru": "Правовые основания и процедура refugee protection; российское гражданство само по себе не создаёт основания.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_PETS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "SENACSA",
+      "title_ru": "Viajar con mascotas",
+      "url": "https://senacsa.gov.py/servicios/sanidad-animal-identidad-y-trazabilidad/cuarentena/viajar-con-mascotas/",
+      "supports_ru": "Требования к перемещению собак/кошек: CVI, rabies, противопаразитарная обработка, клинический осмотр и ветеринарный контроль.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_TAX",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Ingresos Tributarios",
+      "title_ru": "Impuesto a la Renta Personal — IRP",
+      "url": "https://www.dnit.gov.py/web/portal-institucional/irp",
+      "supports_ru": "IRP, налогообложение личных услуг и territorial/source-oriented tax framework.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_EDU",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación y Ciencias",
+      "title_ru": "Portal del MEC",
+      "url": "https://www.mec.gov.py/",
+      "supports_ru": "Национальная система образования; detailed foreign-child public-school access не используется как legal matcher condition.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_SCHOOL_ASA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "American School of Asunción",
+      "title_ru": "American School of Asunción",
+      "url": "https://asa.edu.py/",
+      "supports_ru": "Подтверждает international/American-school presence in Asunción.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_SCHOOL_PAIS",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Pan American International School",
+      "title_ru": "Pan American International School — Luque",
+      "url": "https://www.pais.edu.py/",
+      "supports_ru": "Подтверждает international/English-medium school presence in Luque / Gran Asunción.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_COST_ASU",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Cost of Living in Asuncion",
+      "url": "https://www.numbeo.com/cost-of-living/in/Asuncion",
+      "supports_ru": "Secondary comparable cost observations used in the standardized one-person city basket.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_COST_CDE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Cost of Living in Ciudad del Este",
+      "url": "https://livingcost.org/cost/paraguay/ciudad-del-este",
+      "supports_ru": "Secondary comparable cost observations used in the standardized one-person city basket.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_COST_ENC",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Cost of Living in Encarnación",
+      "url": "https://livingcost.org/cost/paraguay/encarnacion",
+      "supports_ru": "Secondary comparable cost observations used in the standardized one-person city basket.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_CLIMATE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "WeatherSpark",
+      "title_ru": "Average weather in Paraguay — city comparison",
+      "url": "https://weatherspark.com/countries/PY",
+      "supports_ru": "Comparable historical/modelled climate observations for Asunción, Ciudad del Este and Encarnación.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "PY_SRC_LGBT_PRACTICAL",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "Amnesty International",
+      "title_ru": "Paraguay — submission for the 2026 Universal Periodic Review",
+      "url": "https://www.amnesty.org/es/documents/amr45/0381/2025/es/",
+      "supports_ru": "Current human-rights evidence relevant to discrimination and the practical LGBT environment.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_CITIES_INE",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Instituto Nacional de Estadística Paraguay",
+      "title_ru": "Instituto Nacional de Estadística — datos territoriales y censales",
+      "url": "https://www.ine.gov.py/",
+      "supports_ru": "Официальный статистический источник для идентификации основных городских центров и территориальной структуры; точные population figures в RP4 не заявляются.",
+      "checked_at": "2026-08-16",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    }
+  ],
+  "pending_changes": []
+}

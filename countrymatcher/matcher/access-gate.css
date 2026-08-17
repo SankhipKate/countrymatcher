@@ -1,13 +1,7 @@
-html.access-locked body {
-  overflow: hidden;
-}
-
-.access-locked body > :not(#accessGate) {
-  display: none !important;
-}
-
 .access-gate[hidden],
+.manual-access[hidden],
 #accessForm[hidden],
+.access-payment[hidden],
 .access-retry[hidden] {
   display: none !important;
 }
@@ -17,33 +11,18 @@ html.access-locked body {
 }
 
 .access-gate {
-  min-height: 100vh;
-  padding: 24px;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(circle at top right, rgba(74, 145, 255, .22), transparent 34%),
-    linear-gradient(145deg, #06172f, #0b2b53);
+  padding: 0 0 24px;
+  display: block;
   color: #10213a;
 }
 
 .access-card {
-  width: min(520px, 100%);
-  padding: 42px;
-  border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 26px;
+  width: 100%;
+  padding: 28px;
+  border: 1px solid #d9e3ef;
+  border-radius: 20px;
   background: #fff;
   box-shadow: 0 28px 80px rgba(0, 0, 0, .36);
-}
-
-.access-brand {
-  display: inline-block;
-  margin-bottom: 18px;
-  color: #0b2b53;
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: .06em;
-  text-decoration: none;
 }
 
 .access-label {
@@ -62,10 +41,81 @@ html.access-locked body {
   line-height: 1.08;
 }
 
+.access-value {
+  font-size: 15px;
+}
+
 .access-card > p {
   margin: 0 0 20px;
   color: #58677a;
   line-height: 1.55;
+}
+
+.access-teaser {
+  font-size: 18px;
+  font-weight: 750;
+  color: #243d5c !important;
+}
+
+.access-breakdown {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+
+.access-breakdown span {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #eef4fb;
+  color: #28435f;
+  font-weight: 750;
+}
+
+.access-free-country {
+  font-weight: 750;
+  color: #243d5c !important;
+}
+
+.access-locked-countries {
+  font-weight: 750;
+  color: #243d5c !important;
+}
+
+.country-tab.is-locked {
+  cursor: default;
+  opacity: .72;
+}
+
+.country-tab-lock {
+  margin-left: auto;
+  font-size: 18px;
+}
+
+.access-payment,
+.access-edit {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 850;
+  text-align: center;
+  cursor: pointer;
+}
+
+.access-payment {
+  display: block;
+  border: 0;
+  background: linear-gradient(135deg, #2874d0, #1156ac);
+  color: #fff;
+  text-decoration: none;
+}
+
+.access-edit {
+  border: 1px solid #cbd9e8;
+  background: #fff;
+  color: #174c86;
 }
 
 .access-status {
@@ -85,6 +135,23 @@ html.access-locked body {
   display: grid;
   gap: 12px;
   margin-top: 20px;
+}
+
+.manual-access {
+  margin-top: 24px;
+  padding: 24px;
+}
+
+.manual-access-toggle {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1px solid #cbd9e8;
+  border-radius: 12px;
+  background: #fff;
+  color: #174c86;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
 }
 
 #accessForm label {
@@ -148,13 +215,67 @@ html.access-locked body {
   font-weight: 700;
 }
 
+.access-trust {
+  margin: 10px 0 0 !important;
+  font-size: 13px;
+  text-align: center;
+}
+
+.preview-bottom-cta {
+  grid-column: 1 / -1;
+  padding: 28px;
+  text-align: center;
+}
+
+.preview-bottom-cta h2,
+.preview-bottom-cta p {
+  margin: 0 0 12px;
+}
+
+.preview-bottom-cta ul {
+  max-width: 760px;
+  margin: 0 auto 16px;
+  padding-left: 22px;
+  text-align: left;
+  color: #33465f;
+}
+
+.preview-bottom-cta li + li { margin-top: 8px; }
+
+.answers-review {
+  margin-top: 24px;
+  padding: 26px;
+  text-align: left;
+}
+
+.answers-review > h2 { margin: 0 0 6px; }
+.answers-review > p { margin: 0 0 18px; color: #58677a; }
+.answers-groups { display: grid; gap: 18px; }
+.answers-groups section h3 { margin: 0 0 9px; font-size: 16px; }
+.answers-grid, .answer-subgroup-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+.answer-row { display: grid; grid-template-columns: minmax(140px, .8fr) minmax(0, 1.4fr); gap: 12px; min-width: 0; padding: 8px 0; border-bottom: 1px solid #e4ebf3; }
+.answer-row span, .answer-row b { min-width: 0; text-align: left; overflow-wrap: anywhere; }
+.answer-row span { color: #647286; }
+.answer-row b { color: #203751; }
+.answer-subgroup { min-width: 0; padding: 4px 0 8px; }
+.answer-subgroup h4 { margin: 0 0 4px; color: #203751; font-size: 14px; }
+.access-code-help { margin: -4px 0 0; color: #647286; font-size: 13px; }
+
+.preview-bottom-cta .access-payment {
+  max-width: 420px;
+  margin: 18px auto 10px;
+}
+
 @media (max-width: 520px) {
   .access-gate {
-    padding: 16px;
+    padding-bottom: 16px;
   }
 
   .access-card {
     padding: 30px 22px;
     border-radius: 20px;
   }
+
+  .answers-review { padding: 20px 16px; }
+  .answer-row { grid-template-columns: minmax(0, 1fr); gap: 3px; padding: 7px 0; }
 }

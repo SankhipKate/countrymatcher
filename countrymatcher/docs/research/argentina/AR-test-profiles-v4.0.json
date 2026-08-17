@@ -1,0 +1,93 @@
+{
+  "country_id": "AR",
+  "canon_revision": "2026-08-08-final-lock",
+  "profiles": [
+    {
+      "case_id": "AR_CASE_1_RENTISTA_ABOVE",
+      "purpose_ru": "Пассивный доход выше 5 SMVM должен позволить проверить финансовую пригодность rentista.",
+      "profile_overrides": {
+        "income_type": "PASSIVE_INCOME",
+        "monthly_provable_amount": 2000000,
+        "income_currency": "ARS"
+      }
+    },
+    {
+      "case_id": "AR_CASE_2_RENTISTA_BELOW",
+      "purpose_ru": "Пассивный доход ниже 5 SMVM должен провалить финансовый порог rentista.",
+      "profile_overrides": {
+        "income_type": "PASSIVE_INCOME",
+        "monthly_provable_amount": 1500000,
+        "income_currency": "ARS"
+      }
+    },
+    {
+      "case_id": "AR_CASE_3_PENSION",
+      "purpose_ru": "Пенсия выше порога проверяет pensionado.",
+      "profile_overrides": {
+        "income_type": "PENSION",
+        "monthly_provable_amount": 2000000,
+        "income_currency": "ARS"
+      }
+    },
+    {
+      "case_id": "AR_CASE_4_LOCAL_WORK",
+      "purpose_ru": "Без подтверждённого оффера маршрут local employment остаётся условным.",
+      "profile_overrides": {
+        "income_type": "LOCAL_EMPLOYMENT"
+      }
+    },
+    {
+      "case_id": "AR_CASE_5_STUDY",
+      "purpose_ru": "Студенческий маршрут должен оставаться условным до зачисления.",
+      "profile_overrides": {}
+    },
+    {
+      "case_id": "AR_CASE_6_FAMILY",
+      "purpose_ru": "Профиль с супругом и ребёнком проверяет generic family orchestration.",
+      "profile_overrides": {
+        "partner_included": true,
+        "relationship_type": "MARRIED",
+        "child_ages": [
+          13
+        ]
+      }
+    },
+    {
+      "case_id": "AR_CASE_7_NOMAD_SOLO",
+      "purpose_ru": "Удалённый работник без семьи проверяет DNV presentation и отсутствие семейной деградации.",
+      "profile_overrides": {
+        "income_type": "REMOTE_EMPLOYMENT",
+        "income_source_geography": "SINGLE_COUNTRY",
+        "income_source_country": "US"
+      }
+    },
+    {
+      "case_id": "AR_CASE_8_NOMAD_FAMILY",
+      "purpose_ru": "DNV с семьёй должен показать необходимость отдельного основания для членов семьи.",
+      "profile_overrides": {
+        "income_type": "REMOTE_EMPLOYMENT",
+        "partner_included": true,
+        "relationship_type": "MARRIED",
+        "child_ages": [
+          13
+        ],
+        "income_source_geography": "SINGLE_COUNTRY",
+        "income_source_country": "US"
+      }
+    },
+    {
+      "case_id": "AR_CASE_9_PROTECTION",
+      "purpose_ru": "Защита остаётся условной до подтверждения индивидуального основания.",
+      "profile_overrides": {}
+    },
+    {
+      "case_id": "AR_CASE_10_NOMAD_WRONG_INCOME",
+      "purpose_ru": "Пенсия не должна ошибочно создавать основание цифрового кочевника.",
+      "profile_overrides": {
+        "income_type": "PENSION",
+        "income_source_geography": "SINGLE_COUNTRY",
+        "income_source_country": "US"
+      }
+    }
+  ]
+}

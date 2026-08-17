@@ -1,0 +1,89 @@
+{
+  "country_id": "AR",
+  "rules_version": "4.0",
+  "cases": [
+    {
+      "case_id": "NOMAD_REMOTE_FOREIGN_SOLO",
+      "profile_summary": "Один заявитель с текущей удалённой работой и источником дохода вне Аргентины.",
+      "expected": {
+        "AR_NOMAD": "SUITABLE"
+      }
+    },
+    {
+      "case_id": "NOMAD_NON_REMOTE_INCOME_REJECTED",
+      "profile_summary": "Один заявитель имеет только пенсию: этот тип дохода не создаёт основание цифрового кочевника.",
+      "expected": {
+        "AR_NOMAD": "UNSUITABLE"
+      }
+    },
+    {
+      "case_id": "NOMAD_DESTINATION_SOURCE_REJECTED",
+      "profile_summary": "Удалённая работа есть, но единственный подтверждённый источник находится в Аргентине.",
+      "expected": {
+        "AR_NOMAD": "UNSUITABLE"
+      }
+    },
+    {
+      "case_id": "NOMAD_UNKNOWN_GEOGRAPHY_IS_CONDITION",
+      "profile_summary": "Допустимый удалённый тип есть, но география источника не сводится к одной подтверждённой стране.",
+      "expected": {
+        "AR_NOMAD": "SUITABLE_WITH_CONDITIONS"
+      },
+      "condition_must_reference": "предел"
+    },
+    {
+      "case_id": "RENTISTA_THRESHOLD_BOUNDARY",
+      "profile_summary": "Пассивный иностранный доход сравнивается с официальным порогом ARS 1 883 000 без семейной формулы.",
+      "threshold": {
+        "amount": 1883000,
+        "currency": "ARS"
+      },
+      "expected_at_threshold": {
+        "AR_RENTISTA": "SUITABLE"
+      },
+      "expected_below_threshold": {
+        "AR_RENTISTA": "UNSUITABLE"
+      }
+    },
+    {
+      "case_id": "PENSIONADO_THRESHOLD_BOUNDARY",
+      "profile_summary": "Пенсия сравнивается с официальным порогом ARS 1 883 000.",
+      "threshold": {
+        "amount": 1883000,
+        "currency": "ARS"
+      },
+      "expected_at_threshold": {
+        "AR_PENSIONADO": "SUITABLE_WITH_CONDITIONS"
+      },
+      "expected_below_threshold": {
+        "AR_PENSIONADO": "UNSUITABLE"
+      }
+    },
+    {
+      "case_id": "NOMAD_FAMILY_REQUIRES_SEPARATE_BASIS",
+      "profile_summary": "Заявитель с супругом и ребёнком соответствует DNV, но сам транзитный статус не создаёт подтверждённого производного семейного ВНЖ.",
+      "expected": {
+        "AR_NOMAD": "SUITABLE_WITH_CONDITIONS"
+      },
+      "family_classification": "SEPARATE_LINKED_ROUTE"
+    },
+    {
+      "case_id": "INVESTOR_BLOCKING_GAP_NOT_PUBLISHED",
+      "profile_summary": "Инвесторская категория остаётся в пакете, но скрыта до подтверждения действующей операционной процедуры.",
+      "expected_publishable": {
+        "AR_INVESTOR_HIDDEN": false
+      },
+      "must_not_appear_in_calculated_routes": [
+        "AR_INVESTOR_HIDDEN"
+      ]
+    }
+  ],
+  "country_invariants": {
+    "displayed_cities": 4,
+    "minimum_cost_components_per_city": 3,
+    "lgbt_completeness": "COMPLETE",
+    "friendly_cities_may_be_empty_after_completed_search": true
+  },
+  "canonical_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock"
+}

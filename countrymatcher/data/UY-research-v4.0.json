@@ -1,0 +1,3346 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "UY",
+  "country_name_ru": "Уругвай",
+  "research_date": "2026-08-10",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-10",
+    "migration_rules_next_review": "2026-11-10",
+    "financial_costs_next_review": "2026-11-10",
+    "taxes_next_review": "2027-02-10",
+    "lgbt_legal_next_review": "2027-02-10",
+    "lgbt_practical_next_review": "2027-02-10",
+    "schools_pets_next_review": "2027-02-10",
+    "climate_next_review": "2027-08-10"
+  },
+  "country_currency": "UYU",
+  "country_summary_ru": "Уругвай предлагает общую постоянную резиденцию, временные основания, цифрового кочевника, семейный маршрут и международную защиту; пакет PARTIAL только из-за неблокирующих gaps по school tuition и protection PR path.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_DIGITAL_NOMAD"
+      ],
+      "explanation_ru": "Hoja de Identidad Provisoria для иностранной удалённой деятельности.",
+      "source_ids": [
+        "UY_SRC_04",
+        "UY_SRC_05"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PERMANENT_COMMON"
+      ],
+      "explanation_ru": "Законные средства подтверждаются в общей permanent residence.",
+      "source_ids": [
+        "UY_SRC_01",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PERMANENT_COMMON"
+      ],
+      "explanation_ru": "Пенсия является допустимым способом доказать средства.",
+      "source_ids": [
+        "UY_SRC_01"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_TEMP_WORK",
+        "UY_PERMANENT_COMMON"
+      ],
+      "explanation_ru": "Местная работа поддерживается временным рабочим и общей permanent residence.",
+      "source_ids": [
+        "UY_SRC_01",
+        "UY_SRC_02",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_TEMP_SPECIALIST"
+      ],
+      "explanation_ru": "Временная категория включает professionals, technicians и specialized personnel.",
+      "source_ids": [
+        "UY_SRC_02",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_TEMP_SPECIALIST"
+      ],
+      "explanation_ru": "Применимый transfer моделируется единым specialist route; Fast Track — процедура.",
+      "source_ids": [
+        "UY_SRC_06",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PERMANENT_COMMON"
+      ],
+      "explanation_ru": "Самостоятельная деятельность и company participation подтверждают средства общей residence.",
+      "source_ids": [
+        "UY_SRC_01",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "NO_ROUTE",
+      "explanation_ru": "Отдельная универсальная passive residence-by-investment программа не подтверждена; Fast Track не создаёт самостоятельного маршрута.",
+      "source_ids": [
+        "UY_SRC_01",
+        "UY_SRC_06",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_TEMP_STUDY"
+      ],
+      "explanation_ru": "Зачисленные студенты входят во временную residence.",
+      "source_ids": [
+        "UY_SRC_02",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PERMANENT_URUGUAYAN_LINK"
+      ],
+      "explanation_ru": "Существует permanent residence по связи с гражданином Уругвая; reunification отражается family scenarios.",
+      "source_ids": [
+        "UY_SRC_09",
+        "UY_SRC_10"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PERMANENT_COMMON"
+      ],
+      "explanation_ru": "Общая permanent residence доступна независимо от nationality.",
+      "source_ids": [
+        "UY_SRC_01",
+        "UY_SRC_03",
+        "UY_SRC_07"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_PROTECTION"
+      ],
+      "explanation_ru": "Международная защита предусмотрена Законом 18.076.",
+      "source_ids": [
+        "UY_SRC_11"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "UY_HUMANITARIAN"
+      ],
+      "explanation_ru": "Закон предусматривает temporary residence по гуманитарным основаниям.",
+      "source_ids": [
+        "UY_SRC_07",
+        "UY_SRC_08"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Гражданам РФ с обычным паспортом туристическая виза не требуется; для работы, нетуристической цели или пребывания свыше 90 дней применяется соответствующий миграционный процесс.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "UY_SRC_56",
+      "UY_SRC_07"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "UY_PERMANENT_COMMON",
+      "name_ru": "Общая постоянная резиденция",
+      "official_term_ru": "Residencia Legal Permanente",
+      "route_type": "GENERAL_RESIDENCE",
+      "covers_categories": [
+        "INCOME_FINANCIALLY_INDEPENDENT",
+        "RETIREMENT",
+        "LOCAL_EMPLOYMENT",
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+        "GENERAL_RESIDENCE"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Постоянная резиденция для иностранца, намеренного поселиться в Уругвае, с подтверждением законных средств к существованию.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_PERM_MEANS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить законный источник средств к существованию; универсального официального числового минимума нет.",
+          "met_ru": "Текущий источник соответствует официальным критериям маршрута.",
+          "unmet_ru": "Текущий источник не соответствует официальным критериям маршрута.",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER",
+                  "LOCAL_EMPLOYMENT",
+                  "PENSION",
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME",
+                  "OTHER_REGULAR_INCOME"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "UY_SRC_01",
+                  "UY_SRC_07"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального минимального порога нет. Для одного заявителя практические источники сходятся примерно на 1 500 USD в месяц; для пары встречаются отдельные ориентиры 2 000 и 2 500 USD.",
+                  "figures": [
+                    {
+                      "amount": 1500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        {
+                          "source_id": "UY_SRC_52",
+                          "source_date": "2025-08-04",
+                          "evidence_type": "PRACTITIONER_GUIDANCE"
+                        },
+                        {
+                          "source_id": "UY_SRC_54",
+                          "source_date": "2026-07-10",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Два независимых источника называют одинаковый ориентир для одного заявителя."
+                    },
+                    {
+                      "amount": 2000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Пара",
+                      "evidence": [
+                        {
+                          "source_id": "UY_SRC_52",
+                          "source_date": "2025-08-04",
+                          "evidence_type": "PRACTITIONER_GUIDANCE"
+                        }
+                      ],
+                      "note_ru": "Отдельная профессиональная рекомендация для пары."
+                    },
+                    {
+                      "amount": 2500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Пара",
+                      "evidence": [
+                        {
+                          "source_id": "UY_SRC_54",
+                          "source_date": "2026-07-10",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Отдельное опубликованное практическое значение для пары."
+                    },
+                    {
+                      "amount": 500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Каждый несовершеннолетний ребёнок дополнительно",
+                      "evidence": [
+                        {
+                          "source_id": "UY_SRC_52",
+                          "source_date": "2025-08-04",
+                          "evidence_type": "PRACTITIONER_GUIDANCE"
+                        }
+                      ],
+                      "note_ru": "Единичная профессиональная рекомендация, не официальная семейная формула."
+                    }
+                  ],
+                  "disclaimer_ru": "Официального фиксированного минимума нет. Для предварительного подбора Country Matcher использует нижний подтверждённый практический ориентир: 1 500 USD для одного заявителя, 2 000 USD для пары и +500 USD на ребёнка. Это не официальный порог и не гарантирует одобрение; миграционный орган оценивает достаточность средств индивидуально."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "family_formula": {
+                    "base_applicant_amount": 1500,
+                    "additional_adult_amount": 500,
+                    "child_amount": 500
+                  },
+                  "source_ids": ["UY_SRC_52", "UY_SRC_54"]
+                }
+              }
+            ]
+          },
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+        "scenario_id": "UY_PERMANENT_COMMON_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+      "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+        "condition_ru": "Каждый взрослый оформляет отдельное заявление.",
+        "administrative_separate_filing": true,
+        "source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_PERMANENT_COMMON_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Для ребёнка оформляется отдельное дело.",
+        "administrative_separate_filing": true,
+        "source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07"
+        ]
+      }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Постоянная резиденция Уругвая.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Постоянная резиденция не требует обычного срочного продления.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут непосредственно предоставляет постоянную резиденцию.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Гражданство возможно после 3 лет фактического проживания при наличии семьи в Уругвае либо после 5 лет без неё, при подтверждении устойчивой связи со страной и надлежащего поведения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Заявитель с иным родным языком должен понимать и выражаться по-испански; стандартизированный уровень не опубликован.",
+        "source_ids": [
+          "UY_SRC_01",
+          "UY_SRC_07",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_01"
+    },
+    {
+      "route_id": "UY_TEMP_WORK",
+      "name_ru": "Временная резиденция по работе",
+      "official_term_ru": "Residencia Legal Temporaria — trabajador",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Временная резиденция по будущему местному трудовому основанию.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_WORK_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить допустимый местный трудовой договор или иное подтверждённое рабочее основание.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "UY_WORK_FUTURE_SALARY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Будущий местный договор должен предусматривать вознаграждение не ниже действующего Salario Mínimo Nacional.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 25383,
+                "currency": "UYU",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "DESTINATION_COUNTRY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "UY_SRC_02",
+                  "UY_SRC_16",
+                  "UY_SRC_17"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          },
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_16",
+            "UY_SRC_17"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+        "scenario_id": "UY_TEMP_WORK_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_WORK_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию, обычно от 6 месяцев до 2 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление возможно по применимому основанию.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Общая постоянная резиденция доступна отдельным заявлением при выполнении её требований.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_02"
+    },
+    {
+      "route_id": "UY_TEMP_STUDY",
+      "name_ru": "Временная резиденция по учёбе",
+      "official_term_ru": "Residencia Legal Temporaria — estudiante",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Временная резиденция для зачисленного студента или стажёра.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_STUDY_ADMISSION",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить и подтвердить зачисление в признанную образовательную организацию.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "UY_STUDY_MEANS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить достаточные средства студента, родственника или из-за рубежа без придуманного универсального порога.",
+          "financial": {
+            "model": "SPONSOR_OR_SCHOLARSHIP",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "UY_SRC_02",
+                  "UY_SRC_07"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SPONSOR",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "OTHER",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "UY_SRC_02",
+                  "UY_SRC_07"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          },
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+        "scenario_id": "UY_TEMP_STUDY_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_STUDY_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07"
+        ]
+      }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию, обычно от 6 месяцев до 2 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление возможно по применимому основанию.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Общая постоянная резиденция доступна отдельным заявлением при выполнении её требований.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_07",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_02"
+    },
+    {
+      "route_id": "UY_TEMP_SPECIALIST",
+      "name_ru": "Временная резиденция специалиста",
+      "official_term_ru": "Residencia Legal Temporaria — profesional, técnico o personal especializado",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "INTRA_COMPANY_TRANSFER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Единый временный маршрут для подтверждённого профессионального назначения, включая применимый внутрикорпоративный перевод.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_SPECIALIST_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить подтверждённое профессиональное назначение, трудовое основание или внутрикорпоративный перевод.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+        "scenario_id": "UY_TEMP_SPECIALIST_PARTNER",
+        "applies_to": "PARTNER",
+        "relationship_types": [
+          "MARRIED",
+          "REGISTERED_PARTNERSHIP"
+        ],
+        "child_age_min": null,
+        "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07"
+        ]
+      },
+      {
+        "scenario_id": "UY_TEMP_SPECIALIST_CHILD",
+        "applies_to": "CHILD",
+        "relationship_types": null,
+        "child_age_min": 0,
+        "child_age_max": 17,
+        "simultaneous_move": "CONDITIONAL",
+        "separate_route_required": false,
+        "linked_route_id": null,
+        "join_stage": "WITH_INITIAL_APPLICATION",
+        "separation_months_min": null,
+        "separation_months_max": null,
+        "member_long_term_path": null,
+        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07"
+        ]
+      }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию, обычно от 6 месяцев до 2 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление возможно по применимому основанию.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Общая постоянная резиденция доступна отдельным заявлением при выполнении её требований.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "source_ids": [
+          "UY_SRC_02",
+          "UY_SRC_06",
+          "UY_SRC_07",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_02"
+    },
+    {
+      "route_id": "UY_DIGITAL_NOMAD",
+      "name_ru": "Цифровой кочевник",
+      "official_term_ru": "Hoja de Identidad Provisoria — Nómades Digitales",
+      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
+      "covers_categories": [
+        "DIGITAL_NOMAD_REMOTE_WORK"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Временный документ для удалённой работы на иностранные компании/клиентов или самостоятельной удалённой деятельности.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_NOMAD_BASIS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить текущую удалённую деятельность и иностранную географию работодателя или клиентов; числового минимума нет.",
+          "met_ru": "Текущий источник соответствует официальным критериям маршрута.",
+          "unmet_ru": "Текущий источник не соответствует официальным критериям маршрута.",
+          "profile_path": "INCOME_APPLICANT",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "UY_SRC_04",
+                  "UY_SRC_05",
+                  "UY_SRC_59"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального числового минимума нет. Практические источники называют диапазоны около 1 300–1 500 и 1 500–2 000 USD в месяц.",
+                  "figures": [
+                    {
+                      "amount_min": 1300,
+                      "amount_max": 1500,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "UY_SRC_60", "source_date": "2026-08-16", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Опубликованный практический диапазон, не официальный минимум."
+                    },
+                    {
+                      "amount_min": 1500,
+                      "amount_max": 2000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один заявитель",
+                      "evidence": [
+                        { "source_id": "UY_SRC_61", "source_date": "2026-07-02", "evidence_type": "REPORTED_PRACTICE" }
+                      ],
+                      "note_ru": "Отдельный опубликованный рекомендуемый диапазон."
+                    }
+                  ],
+                  "disclaimer_ru": "Это практические ориентиры, а не официальный порог Уругвая. Для предварительного подбора Country Matcher использует 1 500 USD в месяц; решение принимается по индивидуальным документам."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1500,
+                  "source_ids": ["UY_SRC_60", "UY_SRC_61"]
+                }
+              }
+            ]
+          },
+          "source_ids": [
+            "UY_SRC_04",
+            "UY_SRC_05"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_04",
+          "UY_SRC_05"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_04",
+            "UY_SRC_05"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_04",
+            "UY_SRC_05"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "UY_DIGITAL_NOMAD_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи оформляет собственный применимый законный статус; конкретное основание определяется его обстоятельствами.",
+            "renewal_ru": "Продление зависит от требований выбранного членом семьи собственного основания; сроки PR и citizenship определяются этим конкретным маршрутом.",
+            "years_to_pr": null,
+            "years_to_citizenship": null,
+            "renunciation_required": null,
+            "source_ids": [
+              "UY_SRC_04",
+              "UY_SRC_05"
+            ]
+          },
+          "condition_ru": "Документ цифрового кочевника не создаёт автоматического зависимого статуса; каждому члену семьи требуется собственное законное основание.",
+          "source_ids": [
+            "UY_SRC_04",
+            "UY_SRC_05"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус цифрового кочевника не является разрешением на местную работу по найму.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Допустима самостоятельная удалённая деятельность для иностранных клиентов.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Маршрут предназначен для удалённой деятельности в пользу иностранных компаний или клиентов.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": null,
+      "long_term_path": {
+        "first_permit_months": 6,
+        "initial_status_ru": "Hoja de Identidad Provisoria для цифрового кочевника.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 6,
+        "renewal_ru": "Допускается продление ещё на 6 месяцев.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для долгосрочного проживания требуется отдельно перейти на временную или постоянную резиденцию.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Путь к citizenship требует перехода на засчитываемый статус проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Сам nomad document ограничен 6 месяцами и одним продлением.",
+        "language_requirements_ru": "Для nomad document отдельное языковое требование не опубликовано.",
+        "source_ids": [
+          "UY_SRC_04",
+          "UY_SRC_05",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_04"
+    },
+    {
+      "route_id": "UY_PERMANENT_URUGUAYAN_LINK",
+      "name_ru": "Постоянная резиденция по связи с гражданином Уругвая",
+      "official_term_ru": "Residencia Legal Permanente por vínculo uruguayo",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Постоянная резиденция при подтверждённой связи с гражданином Уругвая через ребёнка, супруга, judicially recognized concubinato либо брата/сестру.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "UY_URUGUAYAN_LINK_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "requires_separate_basis": true,
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить применимую семейную связь с гражданином Уругвая.",
+          "source_ids": [
+            "UY_SRC_09"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_09",
+          "UY_SRC_07"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_09",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_09",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "UY_PERMANENT_URUGUAYAN_LINK_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
+          "source_ids": [
+            "UY_SRC_09",
+            "UY_SRC_07"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Постоянная резиденция Уругвая.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Постоянная резиденция не требует обычного срочного продления.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Маршрут непосредственно предоставляет постоянную резиденцию.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Гражданство возможно после 3 лет фактического проживания при наличии семьи в Уругвае либо после 5 лет без неё, при подтверждении устойчивой связи со страной и надлежащего поведения.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает требуемый отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Заявитель с иным родным языком должен понимать и выражаться по-испански; стандартизированный уровень не опубликован.",
+        "source_ids": [
+          "UY_SRC_09",
+          "UY_SRC_07",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_09"
+    },
+    {
+      "route_id": "UY_PROTECTION",
+      "name_ru": "Международная защита",
+      "official_term_ru": "Solicitud de reconocimiento de la condición de refugiado",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальная международная защита по Закону 18.076.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_PROTECTION_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальные обстоятельства, соответствующие основаниям международной защиты.",
+          "source_ids": [
+            "UY_SRC_11"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 180,
+        "official_rule_ru": "Закон предусматривает до 90 дней instruction и затем до 90 дней для решения CORE; это два нормативных этапа, а не гарантия общей длительности.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_11"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_11"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_11"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+      "scenario_id": "UY_PROTECTION_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+      "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+      "condition_ru": "После признания статуса защиты семейное единство распространяется по запросу и при индивидуальной проверке семейной связи, оснований исключения из защиты и прекращения статуса.",
+          "source_ids": [
+            "UY_SRC_11"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Во время рассмотрения действует временное удостоверение личности и право оставаться в стране; после признания предоставляются удостоверение личности резидента и проездной документ беженца по процедуре Ley 18.076.",
+        "renewal_status": "NOT_RESEARCHED",
+        "renewal_months": null,
+        "renewal_ru": "Отдельный обычный цикл продления protection status исследованием не установлен; применяется специальная процедура Ley 18.076.",
+        "pr_path_status": "NOT_RESEARCHED",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NOT_RESEARCHED",
+        "pr_path_ru": "Правовая связь признанного статуса беженца с постоянным статусом подтверждена; конкретный механизм перехода и универсальный срок до permanent residence в исследовании не установлены.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "source_ids": [
+          "UY_SRC_11",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Статус беженца и международная защита по Закону 18.076.",
+        "recognized_grounds_ru": "Обоснованный страх преследования по защищаемым признакам и расширенные региональные основания серьёзной угрозы жизни, безопасности или свободе.",
+        "individual_risk_rule_ru": "Одного гражданства недостаточно; требуется индивидуальная связь с предусмотренными основаниями.",
+        "protected_ground_link_ru": "Классические основания включают расу, религию, национальность, политические убеждения и принадлежность к социальной группе, включая gender в формулировке закона.",
+        "evidence_rule_ru": "Заявитель представляет доступные документы, объяснения и иные доказательства; проводится индивидуальное интервью и проверка.",
+        "admissibility_ru": "Заявление принимается уполномоченным органом и передаётся в секретариат CORE; индивидуально проверяются основания исключения из защиты и прекращения статуса.",
+        "safe_third_country_ru": "Автоматическое универсальное исключение только из-за транзита в исследованной норме не установлено.",
+        "previous_applications_ru": "Предыдущие заявления и ранее предоставленная защита оцениваются индивидуально.",
+        "right_to_remain_during_processing_ru": "Действует non-refoulement до окончательного отрицательного решения и право на provisional identity document.",
+        "reception_housing_ru": "Универсальное гарантированное жильё для каждого заявителя официально не установлено.",
+        "assistance_ru": "Предусмотрены interpreter, legal assistance и процессуальные гарантии.",
+        "healthcare_ru": "Applicants/refugees пользуются гражданскими, экономическими, социальными и культурными правами жителей в установленном объёме.",
+        "appeal_ru": "Решение CORE обжалуется административными средствами; appeal приостанавливает expulsion.",
+        "status_after_positive_decision_ru": "После признания выдаются удостоверение личности резидента и проездной документ беженца.",
+        "source_ids": [
+          "UY_SRC_11"
+        ]
+      },
+      "official_source_id": "UY_SRC_11"
+    },
+    {
+      "route_id": "UY_HUMANITARIAN",
+      "name_ru": "Временная резиденция по гуманитарным основаниям",
+      "official_term_ru": "Residencia temporaria por razones humanitarias",
+      "route_type": "OTHER",
+      "is_humanitarian": true,
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальная временная резиденция по гуманитарным основаниям Закона 18.250 и Decreto 394/009.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "UY_HUMANITARIAN_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "BEFORE_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальное гуманитарное основание, признаваемое компетентным органом.",
+          "source_ids": [
+            "UY_SRC_07",
+            "UY_SRC_08"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый общий срок окончательного решения официально не установлен.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "UY_SRC_07",
+          "UY_SRC_08"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Требуется законное нахождение в Уругвае и соблюдение правил выбранной процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Заявление начинается через Национальное управление миграции Уругвая (DNM) или портал gub.uy и завершается в предусмотренном процедурой месте.",
+          "source_ids": [
+            "UY_SRC_07",
+            "UY_SRC_08"
+          ]
+        },
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "entry_condition_ru": "Электронный этап не заменяет требуемое личное завершение процедуры.",
+          "rule_checked_at": "2026-08-10",
+          "condition_ru": "Доступен электронный этап подачи и загрузки документов.",
+          "source_ids": [
+            "UY_SRC_07",
+            "UY_SRC_08"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "UY_HUMANITARIAN_FAM",
+          "applies_to": "PARTNER_AND_CHILDREN",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
+          "source_ids": [
+            "UY_SRC_07",
+            "UY_SRC_08"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе работать по найму в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Резидент вправе заниматься самостоятельной деятельностью в пределах законного статуса.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Законная удалённая деятельность допускается в рамках общего права резидента на труд.",
+          "source_ids": [
+            "UY_SRC_07"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT",
+          "CONTRACTOR",
+          "FREELANCE_OR_SELF_EMPLOYED",
+          "SOLE_PROPRIETOR",
+          "COMPANY_OWNER"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 24,
+        "initial_status_ru": "Временная резиденция по соответствующему основанию, обычно от 6 месяцев до 2 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 24,
+        "renewal_ru": "Продление возможно по применимому основанию.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Общая постоянная резиденция доступна отдельным заявлением при выполнении её требований.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
+        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "source_ids": [
+          "UY_SRC_07",
+          "UY_SRC_08",
+          "UY_SRC_22",
+          "UY_SRC_23"
+        ]
+      },
+      "protection_details": null,
+      "official_source_id": "UY_SRC_07"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "UY_MONTEVIDEO",
+      "name_ru": "Монтевидео",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Столица и крупнейший городской центр страны; optional population оставлен null без смешения статистических серий.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 674,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "UY_SRC_26"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 107,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные услуги для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "UY_SRC_26"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 171,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Месячный транспортный компонент для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "UY_SRC_26"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный влажный климат",
+        "cold_min_c": 8,
+        "cold_max_c": 16,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 28,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INUMET 1991–2020 normals; secondary monthly table for ranges",
+        "notes_ru": "Диапазоны отражают прозрачное сравнение холодного и жаркого сезонов по указанному источнику.",
+        "source_ids": [
+          "UY_SRC_32",
+          "UY_SRC_35"
+        ]
+      },
+      "source_ids": [
+        "UY_SRC_24",
+        "UY_SRC_26",
+        "UY_SRC_32",
+        "UY_SRC_35"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "UY_SALTO",
+      "name_ru": "Сальто",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": 112527,
+      "population_agglomeration": null,
+      "size_basis_ru": "Крупный внутренний городской центр; locality population 112 527 по Censo 2023 INE.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 392,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_27"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 114,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные услуги для одного человека; research observation date.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_27"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 49.1,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Месячный транспортный компонент для одного человека; research observation date.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_27"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный влажный климат",
+        "cold_min_c": 7,
+        "cold_max_c": 19,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 32,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INUMET authority; TimeAndDate 2012–2021 ranges",
+        "notes_ru": "Диапазоны отражают прозрачное сравнение холодного и жаркого сезонов по указанному источнику.",
+        "source_ids": [
+          "UY_SRC_32",
+          "UY_SRC_33"
+        ]
+      },
+      "source_ids": [
+        "UY_SRC_25",
+        "UY_SRC_27",
+        "UY_SRC_32",
+        "UY_SRC_33"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "UY_MALDONADO",
+      "name_ru": "Мальдонадо",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Средний прибрежный городской центр по национальной структуре расселения.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 377,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_28"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 88.5,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Коммунальные услуги для одного человека; research observation date.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_28"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 49.4,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Месячный транспортный компонент для одного человека; research observation date.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_28"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный влажный климат",
+        "cold_min_c": 7,
+        "cold_max_c": 16,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 17,
+        "hot_max_c": 28,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INUMET authority; TimeAndDate monthly ranges",
+        "notes_ru": "Диапазоны отражают прозрачное сравнение холодного и жаркого сезонов по указанному источнику.",
+        "source_ids": [
+          "UY_SRC_32",
+          "UY_SRC_34"
+        ]
+      },
+      "source_ids": [
+        "UY_SRC_24",
+        "UY_SRC_28",
+        "UY_SRC_32",
+        "UY_SRC_34"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "UY_COLONIA",
+      "name_ru": "Колония-дель-Сакраменто",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": 32159,
+      "population_agglomeration": null,
+      "size_basis_ru": "Малый город; locality population 32 159 по current INE material.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 24369,
+          "currency": "UYU",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Однокомнатная квартира в центре.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_29"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 5000,
+          "currency": "UYU",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Basic utilities; last update September 2025 без точного дня, price_date — research observation.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_29"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "OTHER_CORE",
+          "amount": 1550,
+          "currency": "UYU",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Месячная стоимость интернета по city-direct Numbeo; last update September 2025 без точного дня, price_date — research observation.",
+          "price_date": "2026-08-10",
+          "source_ids": [
+            "UY_SRC_29"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный влажный климат",
+        "cold_min_c": 7,
+        "cold_max_c": 14,
+        "cold_months": [
+          6,
+          7,
+          8
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 28,
+        "hot_months": [
+          12,
+          1,
+          2
+        ],
+        "climate_normal_period": "INUMET authority; TimeAndDate monthly ranges",
+        "notes_ru": "Диапазоны отражают прозрачное сравнение холодного и жаркого сезонов по указанному источнику.",
+        "source_ids": [
+          "UY_SRC_32",
+          "UY_SRC_36"
+        ]
+      },
+      "source_ids": [
+        "UY_SRC_25",
+        "UY_SRC_29",
+        "UY_SRC_32",
+        "UY_SRC_36"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Уругвай: национальная система государственного образования",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Испанский; для детей-мигрантов, не говорящих по-испански, доступна языковая поддержка Национальной администрации государственного образования Уругвая (ANEP).",
+        "compulsory_age_min": 4,
+        "compulsory_age_max": 17,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Государственное начальное и среднее образование бесплатно; дети-мигранты имеют доступ к обучению.",
+        "source_ids": [
+          "UY_SRC_37",
+          "UY_SRC_38",
+          "UY_SRC_39"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [
+      {
+        "school_id": "UY_UAS_MONTEVIDEO",
+        "name_ru": "Uruguayan American School",
+        "city_id": "UY_MONTEVIDEO",
+        "tuition": null,
+        "paid_months_per_year": null,
+        "admission_fee": null,
+        "source_ids": [
+          "UY_SRC_40",
+          "UY_SRC_41"
+        ]
+      },
+      {
+        "school_id": "UY_GARZON_MALDONADO",
+        "name_ru": "The Garzón School",
+        "city_id": "UY_MALDONADO",
+        "tuition": null,
+        "paid_months_per_year": null,
+        "admission_fee": null,
+        "source_ids": [
+          "UY_SRC_42"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESEARCHED_NONE_FOUND",
+      "explanation_ru": "В проверенных национальных правилах ввоза не выявлены decision-relevant запреты или ограничения на допуск собак и кошек.",
+      "source_ids": [
+        "UY_SRC_43"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "На всей территории Уругвая для собак, относимых к потенциально опасным, действует специальный режим безопасности: в общественных местах требуются ошейник, безопасный поводок и намордник. Категория определяется не только породой и может учитывать массу более 25 кг, физические характеристики, агрессивное поведение, подтверждённые нападения и обучение защите или атаке; одновременное наличие всех признаков не требуется.",
+      "source_ids": [
+        "UY_SRC_57",
+        "UY_SRC_58"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-10",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны.",
+    "state_restrictions_ru": "Государственный запрет однополых отношений отсутствует; действует развитая правовая защита.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Однополый брак разрешён с 2013 года.",
+    "registered_partnership_recognized": "YES",
+    "registered_partnership_rule_ru": "Признанное фактическое партнёрство (concubinato) является юридически значимой семейной формой.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранные документы требуют применимой легализации/апостиля и признания.",
+    "parenthood_ru": "Однополое родительство и adoption признаются законом; конкретная иностранная запись зависит от документов.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "образование",
+        "труд и занятость",
+        "доступ к услугам",
+        "публичное пространство"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Доступны судебные, административные и муниципальные механизмы.",
+      "rule_ru": "Национальное право защищает от дискриминации по сексуальной ориентации и гендерной идентичности.",
+      "source_ids": [
+        "UY_SRC_46",
+        "UY_SRC_47",
+        "UY_SRC_48",
+        "UY_SRC_49"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Отдельные случаи дискриминации не меняют общей правовой оценки.",
+    "regional_differences_ru": "Наиболее документированная инфраструктура сосредоточена в Монтевидео.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "OPEN",
+    "assessment_basis_ru": "Однополый брак, усыновление, признание гендерной идентичности, защита от дискриминации и действующие государственные программы подтверждают полное правовое признание и открытую практическую среду.",
+    "source_ids": [
+      "UY_SRC_46",
+      "UY_SRC_47",
+      "UY_SRC_48",
+      "UY_SRC_49"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-10",
+    "tax_residency_rule_ru": "Налоговое резидентство возникает, в частности, при присутствии более 183 дней в календарном году либо по независимым критериям центра интересов, деятельности и инвестиций.",
+    "typical_day_threshold": 183,
+    "other_residency_triggers_ru": "Центр жизненных интересов, основная деятельность или доход и установленные инвестиционные критерии являются независимыми основаниями.",
+    "personal_income_tax_ru": "IRPF зависит от вида и размера дохода.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Social contributions зависят от формы занятости и регистрации.",
+    "foreign_income_ru": "Для новых налоговых резидентов доступна специальная опция для соответствующего требованиям иностранного дохода от движимого капитала: режим IRNR на 10 лет плюс год возникновения резидентства либо IRPF по ставке 7% без ограничения срока.",
+    "double_taxation_with_russia_ru": "Действующее соглашение об избежании двойного налогообложения с Россией в исследованных источниках не подтверждено; применимость требует индивидуальной проверки.",
+    "source_ids": [
+      "UY_SRC_50",
+      "UY_SRC_51"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "UY_GAP_SCHOOL_TUITION",
+      "block": "SCHOOLS",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Не подтверждён current primary-source regular international-school tuition schedule для каждого displayed city.",
+      "handling_ru": "Показывать только подтверждённую доступность и датированные verified fees; неизвестные цены не экстраполировать."
+    },
+    {
+      "item_id": "UY_GAP_PROTECTION_PR_PATH",
+      "block": "LONG_TERM",
+      "priority": "LOW",
+      "related_route_id": "UY_PROTECTION",
+      "blocks_publication": false,
+      "missing_ru": "Точный механизм перехода признанного protection status к permanent residence и универсальный срок такого перехода не подтверждены.",
+      "handling_ru": "Показывать подтверждённую правовую связь с постоянным статусом, но не показывать выдуманный fixed PR timeline или конкретный механизм перехода."
+    },
+    {
+      "item_id": "UY_GAP_CITY_BASE_BASKET",
+      "block": "CITIES_COST",
+      "priority": "LOW",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Для отображаемых городов не подтверждена единая полная базовая корзина RENT_STANDARD, GROCERIES, UTILITIES и TRANSPORT.",
+      "handling_ru": "Считать отсутствующие компоненты непрепятствующими публикации исследовательскими пробелами. Сравнивать все отображаемые города по единому пересечению сопоставимых компонентов: если компонент отсутствует хотя бы в одном городе, исключать его из общего сравнения без подстановки нуля или интерполяции."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "PARTIAL",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "UY_GAP_PROTECTION_PR_PATH"
+        ]
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "UY_GAP_CITY_BASE_BASKET"
+        ]
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "UY_GAP_SCHOOL_TUITION"
+        ]
+      },
+      {
+        "block": "PETS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "UY_SRC_01",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Dirección Nacional de Migración — Residencia Legal - Permanente",
+      "url": "https://www.gub.uy/tramites/residencia-legal-permanente",
+      "supports_ru": "Dirección Nacional de Migración — Residencia Legal - Permanente",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-02-19",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_02",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Dirección Nacional de Migración — Residencia Legal - Temporaria",
+      "url": "https://www.gub.uy/tramites/residencia-legal-temporaria",
+      "supports_ru": "Dirección Nacional de Migración — Residencia Legal - Temporaria",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-03-12",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_03",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Dirección Nacional de Migración — Residencia Legal umbrella",
+      "url": "https://www.gub.uy/tramites/residencia-legal",
+      "supports_ru": "Dirección Nacional de Migración — Residencia Legal umbrella",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_04",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Dirección Nacional de Migración",
+      "title_ru": "Dirección Nacional de Migración — Hoja de identidad provisoria",
+      "url": "https://www.gub.uy/tramites/hoja-identidad-provisoria",
+      "supports_ru": "Dirección Nacional de Migración — Hoja de identidad provisoria",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_05",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Uruguay XXI",
+      "title_ru": "Uruguay XXI — Nómades digitales",
+      "url": "https://www.uruguayxxi.gub.uy/es/noticias/articulo/nomades-digitales-podran-vivir-y-trabajar-legalmente-en-uruguay/",
+      "supports_ru": "Uruguay XXI — Nómades digitales",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_06",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Uruguay XXI",
+      "title_ru": "Uruguay XXI — Fast Track",
+      "url": "https://www.uruguayxxi.gub.uy/es/quiero-invertir/fast-track/",
+      "supports_ru": "Uruguay XXI — Fast Track",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_07",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Ley 18.250, Ley de Migraciones",
+      "url": "https://www.impo.com.uy/bases/leyes/18250-2008",
+      "supports_ru": "IMPO — Ley 18.250, Ley de Migraciones",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_08",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Decreto 394/009",
+      "url": "https://www.impo.com.uy/bases/decretos/394-2009",
+      "supports_ru": "IMPO — Decreto 394/009",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_09",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "DNM",
+      "title_ru": "DNM — Permanent residence by Uruguayan link",
+      "url": "https://www.gub.uy/tramites/residencia-legal-permanente-vinculo-uruguayo",
+      "supports_ru": "DNM — Permanent residence by Uruguayan link",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_10",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "DNM / MRREE",
+      "title_ru": "DNM / MRREE — family reunification",
+      "url": "https://www.gub.uy/tramites/solicitud-reunificacion-familiar",
+      "supports_ru": "DNM / MRREE — family reunification",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_11",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Ley 18.076, refugee/protection law",
+      "url": "https://www.impo.com.uy/bases/leyes/18076-2006",
+      "supports_ru": "IMPO — Ley 18.076, refugee/protection law",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_12",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Decreto 138/024, historical arraigo program",
+      "url": "https://www.impo.com.uy/bases/decretos/138-2024",
+      "supports_ru": "IMPO — Decreto 138/024, historical arraigo program",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_13",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Parliament",
+      "title_ru": "Parliament — CRR 2263/2026, Residencia por Arraigo bill",
+      "url": "https://propaci.parlamento.gub.uy/sipfront/servlet/com.sipfront.unproyectoley?172129=",
+      "supports_ru": "Parliament — CRR 2263/2026, Residencia por Arraigo bill",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_14",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Parliament",
+      "title_ru": "Parliament — project listing",
+      "url": "https://parlamento.gub.uy/documentosyleyes/proyectos-entrados",
+      "supports_ru": "Parliament — project listing",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_15",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Cámara de Representantes",
+      "title_ru": "Cámara de Representantes — proposed arraigo bill text",
+      "url": "https://documentos.diputados.gub.uy/docs/L50/Repartid/R0585.pdf",
+      "supports_ru": "Cámara de Representantes — proposed arraigo bill text",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_16",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "MTSS",
+      "title_ru": "MTSS — Salario Mínimo Nacional, 1 Jan 2026",
+      "url": "https://www.gub.uy/ministerio-trabajo-seguridad-social/comunicacion/noticias/salario-minimo-nacional-24572-desde-1o-enero-2026",
+      "supports_ru": "MTSS — Salario Mínimo Nacional, 1 Jan 2026",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-12-31",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_17",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Presidency",
+      "title_ru": "Presidency — 2026 national minimum wage schedule",
+      "url": "https://www.gub.uy/presidencia/comunicacion/noticias/salario-minimo-aumento-enero-julio-2026",
+      "supports_ru": "Presidency — 2026 national minimum wage schedule",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-12-31",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_18",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "INE",
+      "title_ru": "INE — Salario Mínimo Nacional series",
+      "url": "https://www5.ine.gub.uy/documents/Estad%C3%ADsticasecon%C3%B3micas/SERIES%20Y%20OTROS/IMS/Salario%20M%C3%ADnimo%20Nacional.xls",
+      "supports_ru": "INE — Salario Mínimo Nacional series",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_19",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "BPS",
+      "title_ru": "BPS — current values",
+      "url": "https://www.bps.gub.uy/5478/valores-actuales.html",
+      "supports_ru": "BPS — current values",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_20",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Banco Central del Uruguay",
+      "title_ru": "Banco Central del Uruguay — exchange rates",
+      "url": "https://www.bcu.gub.uy/Estadisticas-e-Indicadores/Paginas/Cotizaciones.aspx",
+      "supports_ru": "Banco Central del Uruguay — exchange rates",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_21",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "BCU",
+      "title_ru": "BCU — new daily quotation query system, 2026",
+      "url": "https://www.bcu.gub.uy/Comunicaciones/Paginas/El%20BCU%20pone%20a%20disposici%C3%B3n%20un%20nuevo%20sistema%20de%20consulta%20de%20las%20cotizaciones%20diarias.aspx",
+      "supports_ru": "BCU — new daily quotation query system, 2026",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-16",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_22",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Constitución de la República, Art. 75",
+      "url": "https://www.impo.com.uy/bases/constitucion/1967-1967/75",
+      "supports_ru": "IMPO — Constitución de la República, Art. 75",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_23",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Corte Electoral",
+      "title_ru": "Corte Electoral — Carta de Ciudadanía / legal citizenship guidance",
+      "url": "https://www.gub.uy/corte-electoral/",
+      "supports_ru": "Corte Electoral — Carta de Ciudadanía / legal citizenship guidance",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_24",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "INE",
+      "title_ru": "INE — Censo 2023 microdata/current catalogue",
+      "url": "https://www4.ine.gub.uy/Anda5/index.php/catalog/780/get-microdata",
+      "supports_ru": "INE — Censo 2023 microdata/current catalogue",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_25",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "INE",
+      "title_ru": "INE — Localidades censales 2023",
+      "url": "https://www5.ine.gub.uy/documents/Cartograf%C3%ADa/Censo%202023/DATOS%20CENSALES/Localidades%20censales%202023.xlsx",
+      "supports_ru": "INE — Localidades censales 2023",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_26",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Livingcost — Montevideo",
+      "url": "https://livingcost.org/cost/uruguay/montevideo",
+      "supports_ru": "Livingcost — Montevideo",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-21",
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_27",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Livingcost — Salto",
+      "url": "https://livingcost.org/cost/uruguay/salto",
+      "supports_ru": "Livingcost — Salto",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_28",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost",
+      "title_ru": "Livingcost — Maldonado",
+      "url": "https://livingcost.org/cost/uruguay/maldonado",
+      "supports_ru": "Livingcost — Maldonado",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_29",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Numbeo — Colonia del Sacramento",
+      "url": "https://www.numbeo.com/cost-of-living/in/Colonia-Del-Sacramento-Uruguay",
+      "supports_ru": "Прямые цены Colonia del Sacramento; страница указывает last update September 2025 без точного дня.",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_30",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Wise",
+      "title_ru": "Wise — Colonia del Sacramento cost cross-check",
+      "url": "https://wise.com/gb/cost-of-living/uruguay/colonia-del-sacramento",
+      "supports_ru": "Wise — Colonia del Sacramento cost cross-check",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_31",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Nomadlio",
+      "title_ru": "Nomadlio — Colonia del Sacramento",
+      "url": "https://nomadlio.com/colonia-del-sacramento/cost-of-living/",
+      "supports_ru": "Nomadlio — Colonia del Sacramento",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-27",
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_32",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "INUMET",
+      "title_ru": "INUMET — official climatological statistics",
+      "url": "https://www.inumet.gub.uy/clima/estadisticas-climatologicas",
+      "supports_ru": "INUMET — official climatological statistics",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_33",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "TimeAndDate",
+      "title_ru": "TimeAndDate — Salto climate",
+      "url": "https://www.timeanddate.com/weather/uruguay/salto/climate",
+      "supports_ru": "TimeAndDate — Salto climate",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_34",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "TimeAndDate",
+      "title_ru": "TimeAndDate — Maldonado climate",
+      "url": "https://www.timeanddate.com/weather/uruguay/maldonado/climate",
+      "supports_ru": "TimeAndDate — Maldonado climate",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_35",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "TimeAndDate",
+      "title_ru": "TimeAndDate — Montevideo climate",
+      "url": "https://www.timeanddate.com/weather/uruguay/montevideo/climate",
+      "supports_ru": "TimeAndDate — Montevideo climate",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_36",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "TimeAndDate",
+      "title_ru": "TimeAndDate — Colonia del Sacramento climate",
+      "url": "https://www.timeanddate.com/weather/uruguay/colonia-del-sacramento/climate",
+      "supports_ru": "TimeAndDate — Colonia del Sacramento climate",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_37",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO",
+      "title_ru": "IMPO — Constitution Art. 71, free public education",
+      "url": "https://www.impo.com.uy/bases/constitucion/1967-1967/71",
+      "supports_ru": "IMPO — Constitution Art. 71, free public education",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_38",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación y Cultura",
+      "title_ru": "Ministerio de Educación y Cultura",
+      "url": "https://www.gub.uy/ministerio-educacion-cultura/",
+      "supports_ru": "Ministerio de Educación y Cultura",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_39",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "ANEP",
+      "title_ru": "ANEP",
+      "url": "https://www.anep.edu.uy/",
+      "supports_ru": "ANEP",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_40",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Uruguayan American School",
+      "title_ru": "Uruguayan American School",
+      "url": "https://www.uas.edu.uy/",
+      "supports_ru": "Uruguayan American School",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_41",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "UAS admissions",
+      "title_ru": "UAS admissions",
+      "url": "https://www.uas.edu.uy/admissions",
+      "supports_ru": "UAS admissions",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_42",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "The Garzón School",
+      "title_ru": "The Garzón School — Tuition & Fees",
+      "url": "https://thegarzonschool.edu.uy/admissions/tuition-fees/",
+      "supports_ru": "The Garzón School — Tuition & Fees",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_43",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "MGAP",
+      "title_ru": "MGAP — Solicitud de ingreso de mascotas a Uruguay",
+      "url": "https://www.gub.uy/tramites/solicitud-ingreso-mascotas-uruguay",
+      "supports_ru": "MGAP — Solicitud de ingreso de mascotas a Uruguay",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-30",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_44",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Intendencia de Montevideo",
+      "title_ru": "Intendencia de Montevideo — dog regulation",
+      "url": "https://normativa.montevideo.gub.uy/articulos/57205",
+      "supports_ru": "Intendencia de Montevideo — dog regulation",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_45",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Junta Departamental de Maldonado",
+      "title_ru": "Junta Departamental de Maldonado — decree record",
+      "url": "https://www.juntamaldonado.gub.uy/index.php/documentos/versiones-taquigraficas/versiones-2012/nov2712part1",
+      "supports_ru": "Junta Departamental de Maldonado — decree record",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_46",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores",
+      "title_ru": "Ministerio de Relaciones Exteriores — International Day Against Homophobia, Transphobia and Biphobia, 17 May 2026",
+      "url": "https://www.gub.uy/ministerio-relaciones-exteriores/comunicacion/comunicados/dia-internacional-contra-homofobia-transfobia-bifobia-2",
+      "supports_ru": "Ministerio de Relaciones Exteriores — International Day Against Homophobia, Transphobia and Biphobia, 17 May 2026",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-05-17",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_47",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "Outright International",
+      "title_ru": "Outright International — Uruguay",
+      "url": "https://outrightinternational.org/our-work/americas/uruguay",
+      "supports_ru": "Outright International — Uruguay",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_48",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Intendencia de Montevideo",
+      "title_ru": "Intendencia de Montevideo — Plan por la Diversidad Afectiva, Sexual y de Género 2026–2030",
+      "url": "https://montevideo.gub.uy/noticias/montevideo-presento-su-plan-por-la-diversidad-afectiva-sexual-y-de-genero",
+      "supports_ru": "Intendencia de Montevideo — Plan por la Diversidad Afectiva, Sexual y de Género 2026–2030",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-05-25",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_49",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Montevideo",
+      "title_ru": "Montevideo — Diversidad",
+      "url": "https://montevideo.gub.uy/area-tematica/inclusion-social/diversidad",
+      "supports_ru": "Montevideo — Diversidad",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_50",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "DGI",
+      "title_ru": "DGI — Causales de residencia fiscal",
+      "url": "https://www.gub.uy/direccion-general-impositiva/comunicacion/publicaciones/causales-residencia-fiscal",
+      "supports_ru": "DGI — Causales de residencia fiscal",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-10-20",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_51",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "DGI",
+      "title_ru": "DGI — Tax Holidays / option for new fiscal residents",
+      "url": "https://www.gub.uy/direccion-general-impositiva/comunicacion/publicaciones/tax-holidays-opcion-para-nuevos-residentes-fiscales-uruguay",
+      "supports_ru": "DGI — Tax Holidays / option for new fiscal residents",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_52",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Guru'Guay",
+      "title_ru": "Guru'Guay — Uruguay residency guide by immigration lawyer Mark Teuten",
+      "url": "https://www.guruguay.com/getting-uruguay-residency/",
+      "supports_ru": "Guru'Guay — Uruguay residency guide by immigration lawyer Mark Teuten",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_53",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Teuten Abogados",
+      "title_ru": "Teuten Abogados — professional profile / immigration practice",
+      "url": "https://teutenabogados.com/",
+      "supports_ru": "Teuten Abogados — professional profile / immigration practice",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_54",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Golden Harbors",
+      "title_ru": "Golden Harbors — Uruguay Independent Means Visa 2026, 10 Jul 2026",
+      "url": "https://goldenharbors.com/articles/uruguay-independent-means-visa",
+      "supports_ru": "Golden Harbors — Uruguay Independent Means Visa 2026, 10 Jul 2026",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-10",
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_55",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Henley & Partners",
+      "title_ru": "Henley & Partners — Uruguay Residence",
+      "url": "https://www.henleyglobal.com/residence-investment/uruguay",
+      "supports_ru": "Henley & Partners — Uruguay Residence",
+      "checked_at": "2026-08-10",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_56",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio del Interior",
+      "title_ru": "Ministerio del Interior — Régimen de visas de admisión",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/publicaciones/regimen-visas-admision",
+      "supports_ru": "Ministerio del Interior — Régimen de visas de admisión",
+      "checked_at": "2026-08-10",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_57",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "IMPO — Centro de Información Oficial",
+      "title_ru": "Ley N.º 18.471 — статья 10, меры безопасности для потенциально опасных собак",
+      "url": "https://www.impo.com.uy/bases/leyes/18471-2009/10",
+      "supports_ru": "Общенациональное правило для владельцев и держателей собак потенциально опасных пород либо собак, обученных для защиты или нападения: при нахождении и перемещении в общественных местах обязательны намордник, ошейник и безопасный поводок.",
+      "checked_at": "2026-08-13",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2009-04-21",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_58",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Ganadería, Agricultura y Pesca",
+      "title_ru": "Resolución N.º 2/019 — определение потенциально опасной собаки",
+      "url": "https://www.gub.uy/ministerio-ganaderia-agricultura-pesca/institucional/normativa/resolucion-n-2019-definicion-perro-potencialmente-peligroso",
+      "supports_ru": "Национальное определение потенциально опасной собаки: масса, физические характеристики, агрессивность, подтверждённые нападения и обучение атаке/защите; все признаки одновременно не обязательны.",
+      "checked_at": "2026-08-13",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2019-03-29",
+      "language": "es"
+    },
+    {
+      "source_id": "UY_SRC_59",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Chambers and Partners — Corporate Immigration 2026",
+      "title_ru": "Corporate Immigration 2026 — Uruguay, digital nomad permit",
+      "url": "https://practiceguides.chambers.com/practice-guides/corporate-immigration-2026/uruguay",
+      "supports_ru": "Профессиональное подтверждение, что digital nomad permit предназначен для удалённых работников, выдаётся на шесть месяцев с продлением и не имеет установленного минимального дохода.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-23",
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_60",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "IMI Daily",
+      "title_ru": "Uruguay Digital Nomad Visa — практический диапазон средств",
+      "url": "https://www.imidaily.com/uruguay-digital-nomad-visa/",
+      "supports_ru": "Сообщает практический диапазон стабильного удалённого дохода около 1 300–1 500 USD в месяц при отсутствии опубликованного официального фиксированного минимума.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "UY_SRC_61",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Stamped Nomad",
+      "title_ru": "Explaining Uruguay's Digital Nomad Permit — practical guidance 2026",
+      "url": "https://www.stampednomad.com/updates/explaining-uruguays-digital-nomad-permit",
+      "supports_ru": "Публикует рекомендуемый практический диапазон 1 500–2 000 USD в месяц и отдельно указывает отсутствие официального минимального дохода.",
+      "checked_at": "2026-08-16",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-02",
+      "language": "en"
+    }
+  ],
+  "pending_changes": []
+}

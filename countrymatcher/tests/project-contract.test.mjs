@@ -1,6 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readdir, readFile } from 'node:fs/promises';
+import { access, mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+const execFileAsync = promisify(execFile);
 
 const repositoryRoot = new URL('../../', import.meta.url);
 const appRoot = new URL('../', import.meta.url);
@@ -23,6 +28,44 @@ test('repository has one application folder, one backlog, and one source-documen
   assert.equal(appChildren.includes('research-backlog'), false);
   assert.equal(appChildren.includes('source-documents'), false);
   assert.equal(visible.some((name) => name.includes('immigration-country-matcher')), false);
+
+  const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
+  for (const path of [
+    'README.md',
+    'canon-v4.0/CANON_MANIFEST.md',
+    'canon-v4.0/COUNTRY_RESEARCH_STANDARD.md',
+    'canon-v4.0/MATCHING_AND_RESULT_STANDARD.md',
+    'canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md',
+    'canon-v4.0/FINAL_LOCK_VALIDATION_REPORT_v4.0.md',
+    'canon-v4.0/process/',
+  ]) await access(new URL(path, sourceDocumentsRoot));
+  for (const path of [
+    'README_v4.0.md',
+    'COUNTRY_RESEARCH_STANDARD_v4.0.md',
+    'MATCHING_AND_RESULT_STANDARD_v4.0.md',
+    'NEW_COUNTRY_RESEARCH_PROMPT_v4.0.md',
+    'canon-v4.0/CANON_MANIFEST_v4.0.md',
+  ]) await assert.rejects(access(new URL(path, sourceDocumentsRoot)));
+
+  const sourceReadme = await readFile(new URL('README.md', sourceDocumentsRoot), 'utf8');
+  assert.match(sourceReadme, /Действующий Canon: 4\.0/);
+  assert.match(sourceReadme, /source-documents\/canon-v4\.0\//);
+  const manifest = await readFile(new URL('canon-v4.0/CANON_MANIFEST.md', sourceDocumentsRoot), 'utf8');
+  assert.match(manifest, /Только эти два документа являются normative standards Canon 4\.0\./);
+});
+
+test('current Canon never requires a school-type preference for international school presentation', async () => {
+  const sourceDocumentsRoot = new URL('../../source-documents/canon-v4.0/', import.meta.url);
+  const documents = await Promise.all([
+    'COUNTRY_RESEARCH_STANDARD.md',
+    'MATCHING_AND_RESULT_STANDARD.md',
+    'NEW_COUNTRY_RESEARCH_PROMPT.md',
+  ].map((path) => readFile(new URL(path, sourceDocumentsRoot), 'utf8')));
+  const canon = documents.join('\n');
+  assert.doesNotMatch(canon, /Международная школа учитывается отдельно и только когда пользователь указал необходимость международной школы/u);
+  assert.match(canon, /Анкета не спрашивает тип школы/u);
+  assert.match(canon, /Международные школы с обучением на английском/u);
+  assert.match(canon, /school_needed[^\n]+не выбирает/u);
 });
 
 test('root index is the application and matcher has no user page or redirect', async () => {
@@ -37,62 +80,22 @@ test('root index is the application and matcher has no user page or redirect', a
   assert.match(html, /<link rel="canonical" href="https:\/\/sankhipkate\.github\.io\/countrymatcher\/">/);
 
   const assets = [
-    './matcher/access-gate.css?v=4.0.1',
-    './pilot/styles.css?v=7.1.2',
-    './matcher/styles.css?v=7.1.2',
-    './matcher/access-gate.js?v=5.0.0',
-    './matcher/app.js?v=7.1.2',
+    './matcher/access-gate.css?v=7.2.0',
+    './pilot/styles.css?v=7.2.0',
+    './matcher/styles.css?v=7.2.0',
+    './matcher/access-gate.js?v=7.2.0',
+    './matcher/app.js?v=7.2.0',
   ];
   for (const asset of assets) {
     assert.ok(html.includes(`"${asset}"`), asset);
     await existingRelativeAsset(asset);
   }
-  assert.match(html, /class="access-brand" href="\.\/landing\/"/);
+  assert.ok(html.indexOf('id="accessGate"') < html.indexOf('id="resultView"'));
   assert.match(html, /class="brand" href="\.\/"/);
 
   await assert.rejects(access(new URL('../matcher/index.html', import.meta.url)));
   await assert.rejects(access(new URL('../pilot/index.html', import.meta.url)));
   await access(new URL('../landing/index.html', import.meta.url));
-});
-
-test('matcher resolves runtime data relative to its module and reports load failure', async () => {
-  const ui = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
-
-  assert.ok(
-    ui.includes("const DATA_BASE = new URL('../data/', import.meta.url);"),
-  );
-
-  assert.equal(ui.includes("fetch('../data/"), false);
-
-  for (const file of [
-    'spain-research-v3.0.json',
-    'uruguay-research-v3.0.json',
-    'argentina-research-v3.0.json',
-    'paraguay-research-v3.0.json',
-    'portugal-research-v3.0.json',
-    'mexico-research-v3.0.json',
-    'brazil-research-v3.0.json',
-    'schemas/user-profile-v1.schema.json',
-  ]) {
-    assert.ok(
-      ui.includes(`fetch(new URL('${file}?v=${version}', DATA_BASE))`),
-      file,
-    );
-  }
-
-  const publicDataBase = new URL(
-    '../data/',
-    'https://sankhipkate.github.io/countrymatcher/matcher/app.js',
-  );
-
-  assert.equal(
-    new URL('spain-research-v3.0.json', publicDataBase).href,
-    'https://sankhipkate.github.io/countrymatcher/data/spain-research-v3.0.json',
-  );
-
-  assert.ok(ui.includes('DATA_LOAD_ERROR_MESSAGE'));
-  assert.ok(ui.includes('dataLoadErrorMessage || DATA_LOAD_ERROR_MESSAGE'));
 });
 
 test('Pages workflow tests before publishing only countrymatcher', async () => {
@@ -107,7 +110,10 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
   assert.match(workflow, /contents: read/);
   assert.match(workflow, /pages: write/);
   assert.match(workflow, /id-token: write/);
-  assert.match(workflow, /path: countrymatcher/);
+  assert.match(workflow, /build-pages-artifact\.mjs pages-artifact/);
+  assert.match(workflow, /refresh-fx-fallback\.mjs pages-artifact \|\| echo/);
+  assert.match(workflow, /path: pages-artifact/);
+  assert.doesNotMatch(workflow, /^\s+path: countrymatcher\s*$/m);
   assert.equal(workflow.includes('path: .'), false);
   const testPosition = workflow.indexOf('run: npm test');
   const uploadPosition = workflow.indexOf('actions/upload-pages-artifact@v3');
@@ -115,19 +121,52 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
   assert.ok(testPosition > -1 && testPosition < uploadPosition && uploadPosition < deployPosition);
 });
 
+test('Pages artifact is a positive runtime allowlist', async () => {
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-pages-'));
+  const output = join(temporaryRoot, 'artifact');
+  try {
+    await execFileAsync(process.execPath, [new URL('../scripts/build-pages-artifact.mjs', import.meta.url).pathname, output]);
+    for (const required of [
+      'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
+      'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json',
+      'data/quality-of-life-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
+    ]) await access(join(output, required));
+    for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
+      await assert.rejects(access(join(output, excluded)), excluded);
+    }
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
+});
+
+test('CI and Pages validate every RP4 package before completion or deploy', async () => {
+  const workflows = await Promise.all(['test.yml', 'pages.yml'].map((name) => readFile(new URL(`../../.github/workflows/${name}`, import.meta.url), 'utf8')));
+  for (const workflow of workflows) {
+    assert.match(workflow, /actions\/setup-python@v5/);
+    assert.match(workflow, /pip install -r countrymatcher\/requirements\.txt/);
+    assert.match(workflow, /packages=\(countrymatcher\/data\/\*-research-v4\.0\.json\)/);
+    assert.match(workflow, /if \[ \$\{#packages\[@\]\} -eq 0 \]/);
+    assert.match(workflow, /python3 countrymatcher\/data\/validate-v4\.0\.py "\$package"/);
+  }
+  const pages = workflows[1];
+  assert.ok(pages.indexOf('validate-v4.0.py') < pages.indexOf('actions/upload-pages-artifact@v3'));
+});
+
 test('schema ids and maintained public documents use canonical addresses', async () => {
-  const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v3.0.schema.json', import.meta.url), 'utf8'));
+  const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
   const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
-  assert.equal(researchSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/research-package-v3.0.schema.json');
+  assert.equal(researchSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/research-package-v4.0.schema.json');
   assert.equal(profileSchema.$id, 'https://sankhipkate.github.io/countrymatcher/data/schemas/user-profile-v1.schema.json');
 
   const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
-  const sourceMarkdown = (await readdir(sourceDocumentsRoot)).filter((name) => name.endsWith('.md'));
+  const sourceMarkdown = (await readdir(sourceDocumentsRoot, { recursive: true })).filter((name) => name.endsWith('.md'));
   const maintainedFiles = [
     new URL('../index.html', import.meta.url),
     new URL('../landing/index.html', import.meta.url),
     new URL('../README.md', import.meta.url),
     new URL('../DEPLOYMENT.md', import.meta.url),
+    new URL('../docs/research/README.md', import.meta.url),
     ...sourceMarkdown.map((name) => new URL(name, sourceDocumentsRoot)),
   ];
   for (const file of maintainedFiles) {
@@ -136,40 +175,93 @@ test('schema ids and maintained public documents use canonical addresses', async
       assert.equal(contents.includes(oldUrl), false, `${file.pathname}: ${oldUrl}`);
     }
   }
-});
 
-test('every connected country has legal-entry data for a Russian citizen and the UI renders it', async () => {
-  const packageFiles = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json')).sort();
-  for (const file of packageFiles) {
-    const data = JSON.parse(await readFile(new URL(file, dataRoot), 'utf8'));
-    const entry = data.entry_for_russian_citizen;
-    assert.ok(entry, `${file}: entry_for_russian_citizen`);
-    assert.ok(entry.summary_ru.length > 40, `${file}: summary_ru`);
-    assert.ok(entry.maximum_stay_days > 0, `${file}: maximum_stay_days`);
-    assert.ok(entry.source_ids.length > 0, `${file}: source_ids`);
-    for (const sourceId of entry.source_ids) {
-      assert.ok(data.sources.some(({ source_id }) => source_id === sourceId), `${file}: missing ${sourceId}`);
+  const markdownFiles = maintainedFiles.filter((file) => file.pathname.endsWith('.md'));
+  for (const file of markdownFiles) {
+    const contents = await readFile(file, 'utf8');
+    const targets = [...contents.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)].map((match) => match[1].trim());
+    for (const target of targets) {
+      if (/^(?:https?:|mailto:|tel:|data:|#)/i.test(target)) continue;
+      const localTarget = target.split('#', 1)[0].split('?', 1)[0];
+      if (!localTarget) continue;
+      await access(new URL(localTarget, file));
     }
   }
-  const adapters = await Promise.all([
-    'argentina-adapter.js', 'brazil-adapter.js', 'mexico-adapter.js',
-    'paraguay-adapter.js', 'portugal-adapter.js', 'spain-adapter.js',
-  ].map((file) => readFile(new URL(`../js/countries/${file}`, import.meta.url), 'utf8')));
-  assert.equal(adapters.every((source) => source.includes('entryForRussianCitizen: data.entry_for_russian_citizen || null')), true);
-  assert.equal(adapters.every((source) => source.includes('data.entry_for_russian_citizen?.source_ids')), true);
-  const ui = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.ok(ui.includes('Как гражданину РФ законно въехать'));
-  assert.ok(ui.includes("replace(/[.;]+$/u, '')"));
 });
 
-test('research order mirrors all countries and marks every packaged country as connected', async () => {
-  const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER.json', import.meta.url), 'utf8'));
+test('active matcher declares a non-empty list of Final Lock RP4 packages', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+  const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json']);
+  for (const filename of filenames) {
+    assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
+    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+    assert.equal(pkg.schema_version, '4.0');
+    assert.equal(pkg.canon_revision, '2026-08-08-final-lock');
+    assert.notEqual(pkg.completeness.country_ready_status, 'BLOCKED');
+  }
+  assert.match(matcher, /Promise\.all\(ACTIVE_RP4_PACKAGES\.map/);
+  assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
+  assert.doesNotMatch(matcher, /countries\/.+-adapter\.js/);
+  assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
+});
+
+test('runtime data URLs are module-relative and remain valid under a project subpath', async () => {
+  const [matcher, fx] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
+  ]);
+  assert.match(matcher, /const DATA_BASE = new URL\('\.\.\/data\/', import\.meta\.url\)/);
+  assert.doesNotMatch(matcher, /fetch\(['"]\.\.\/data/);
+  assert.match(matcher, /new URL\(`\$\{filename\}\?v=7\.2\.0`, DATA_BASE\)/);
+  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=7\.2\.0', DATA_BASE\)/);
+  assert.match(fx, /new URL\('\.\.\/data\/fx-fallback\.json', import\.meta\.url\)/);
+  const deploymentRoot = new URL('https://example.test/future/project-subpath/');
+  const matcherModule = new URL('matcher/app.js', deploymentRoot);
+  const pilotModule = new URL('pilot/fx-context.js', deploymentRoot);
+  const dataBase = new URL('../data/', matcherModule);
+  assert.equal(new URL('ES-research-v4.0.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=7.2.0');
+  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=7.2.0');
+  assert.equal(new URL('../data/fx-fallback.json', pilotModule).href, 'https://example.test/future/project-subpath/data/fx-fallback.json');
+  assert.doesNotMatch(`${matcher}\n${fx}`, /sankhipkate\.github\.io|github\.io\/countrymatcher/);
+});
+
+test('matcher renders practical financial guidance separately from official numeric thresholds', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(matcher, /\.filter\(\(item\) => item\.threshold != null\)/);
+  assert.match(matcher, /const practicalGuidanceBlock =/);
+  assert.match(matcher, /item\.practicalGuidance/);
+  assert.match(matcher, /practicalGuidanceItems = financialRequirements\.flatMap[\s\S]*?\.filter\(\(item\) => item\.practicalGuidance\)[\s\S]*?\.map\(\(item\) => item\.practicalGuidance\)/);
+  assert.match(matcher, /const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems\.length/);
+  assert.match(matcher, /PRACTITIONER_GUIDANCE:\s*'Практическая рекомендация специалиста'/);
+  assert.match(matcher, /REPORTED_PRACTICE:\s*'Опубликованная практика'/);
+  assert.match(matcher, /INDIVIDUAL_CASE:\s*'Индивидуальный кейс'/);
+  assert.match(matcher, /figure\.evidence\.map\(\(evidence\) =>/);
+  assert.match(matcher, /practicalEvidenceLabel\[evidence\.evidence_type\]/);
+  assert.match(matcher, /formatPracticalSourceDate\(evidence\.source_date\)/);
+  assert.doesNotMatch(matcher, /figure\.(?:evidence_type|source_date|source_ids)/);
+  assert.match(matcher, /Дата источника:/);
+  assert.match(matcher, /Это не официальный минимальный порог\./);
+  assert.match(matcher, /надёжную практическую сумму найти не удалось/);
+  assert.doesNotMatch(matcher, /thresholdUsd[^\n]+practicalGuidance|practicalGuidance[^\n]+thresholdUsd/);
+  const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?summary\.alternatives[\s\S]*?\);/);
+  assert.ok(numericFinancialItems);
+  assert.doesNotMatch(numericFinancialItems[0], /practicalGuidance/);
+});
+
+test('research order marks only migrated RP4 countries connected and ignores archived RP3 files', async () => {
+  const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
   const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  const packageFiles = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
-  for (const file of packageFiles) {
-    const data = JSON.parse(await readFile(new URL(file, dataRoot), 'utf8'));
-    assert.equal(byName.get(data.country_name_ru)?.research_status, 'Подключена', data.country_name_ru);
+  for (const country of ['Испания', 'Аргентина', 'Уругвай']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
+  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия']) {
+    assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
   }
+  const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
+  assert.ok(archivedV3.length > 0);
+  const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
+  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина', 'Уругвай']);
 });

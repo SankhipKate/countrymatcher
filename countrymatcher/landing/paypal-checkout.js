@@ -2,7 +2,7 @@ import {
   CLARITY_EVENTS,
   trackClarityEvent,
   trackPayPalFundingSource,
-} from "./clarity-analytics.js?v=1.0.0";
+} from "./clarity-analytics.js?v=7.2.0";
 
 import {
   assertAllowedPaymentHost,
@@ -19,7 +19,7 @@ import {
   recoverUrl,
   savePendingOrder,
   workerUrlFor,
-} from "../payment-config.js?v=7.1.2";
+} from "../payment-config.js?v=7.2.0";
 
 export {
   TOKEN_STORAGE_KEY,
@@ -212,7 +212,7 @@ function addOpenAccessLink(container) {
   link.href = "../";
   link.className = "button paypal-checkout-open";
   link.dataset.openCountrymatcher = "";
-  link.textContent = "Открыть Country Matcher →";
+  link.textContent = "Открыть результат →";
   container.appendChild(link);
 }
 

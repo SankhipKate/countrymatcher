@@ -1,6 +1,12 @@
 import { parseCountryCode } from './countries.js';
+import { ROUTE_PRESENTATION_RANK, routePresentationGroup } from '../js/engine/route-presentation-contract.js';
 
 const money = (amount, currency) => amount === '' || amount == null ? null : ({ amount: Number(amount), currency });
+
+export function countryFlag(countryId) {
+  if (!/^[A-Z]{2}$/.test(countryId || '')) return '🌍';
+  return [...countryId].map((letter) => String.fromCodePoint(letter.charCodeAt(0) + 127397)).join('');
+}
 
 
 export function resolveProvableAmount(totalAmount, evidenceLevel, partialAmount) {
@@ -13,8 +19,8 @@ export function resolveProvableAmount(totalAmount, evidenceLevel, partialAmount)
 const incomeSource = (prefix, owner, answers) => answers[`${prefix}Type`] === 'NO_REGULAR_INCOME' ? ({
   owner,
   type: 'NO_REGULAR_INCOME',
-  source_geography: 'NO_PERMANENT_PAYER',
-  source_country: null,
+  source_geography: 'NO_STABLE_PAYER',
+  country_id: null,
   bank_country: null,
   monthly_total: { amount: 0, currency: 'USD' },
   monthly_provable: { amount: 0, currency: 'USD' },
@@ -27,8 +33,8 @@ const incomeSource = (prefix, owner, answers) => answers[`${prefix}Type`] === 'N
 }) : ({
   owner,
   type: answers[`${prefix}Type`],
-  source_geography: answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER'),
-  source_country: (answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'ONE_COUNTRY' : 'NO_PERMANENT_PAYER')) === 'ONE_COUNTRY'
+  source_geography: answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'SINGLE_COUNTRY' : 'NO_STABLE_PAYER'),
+  country_id: (answers[`${prefix}SourceScope`] || (answers[`${prefix}SourceCountry`] ? 'SINGLE_COUNTRY' : 'NO_STABLE_PAYER')) === 'SINGLE_COUNTRY'
     ? parseCountryCode(answers[`${prefix}SourceCountry`]) : null,
   bank_country: null,
   monthly_total: money(answers[`${prefix}TotalAmount`] ?? answers[`${prefix}Amount`], answers[`${prefix}Currency`]),
@@ -72,7 +78,7 @@ export function buildUserProfile(answers) {
       partner_included: partnerIncluded,
       relationship_type: partnerIncluded ? answers.relationshipType : null,
       children,
-      school_needed: children.length > 0 && Boolean(answers.schoolNeeded),
+      school_needed: false,
     },
     lgbt: {
       enabled: Boolean(answers.lgbtEnabled),
@@ -85,14 +91,14 @@ export function buildUserProfile(answers) {
       has_additional_sources: Boolean(answers.hasAdditionalIncome),
       additional_sources: additional,
       partner: { has_income: partnerSources.length > 0, sources: partnerSources },
-      savings: null,
+      savings: money(answers.savingsAmount, answers.savingsCurrency),
     },
     goal: {
       long_term: answers.longTermGoal,
       keep_russian_citizenship: answers.keepRuCitizenship,
     },
     preferences: {
-      monthly_budget: answers.budgetUnknown ? null : money(answers.monthlyBudget, answers.budgetCurrency),
+      monthly_budget: null,
       city_size: 'ANY',
       climate: ['ANY'],
     },
@@ -125,8 +131,8 @@ export function validateUserProfile(profile) {
   const sources = [profile?.income?.primary, ...(profile?.income?.additional_sources || []), ...(profile?.income?.partner?.sources || [])];
   for (const source of sources) {
     if (!source?.type) add('primaryType', 'Укажите тип дохода.');
-    if (!['ONE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_PERMANENT_PAYER'].includes(source?.source_geography)) add('primarySourceScope', 'Укажите географию источников дохода.');
-    if (source?.source_geography === 'ONE_COUNTRY' && !code(source?.source_country)) add('primarySourceCountry', 'Укажите страну источника дохода.');
+    if (!['SINGLE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER'].includes(source?.source_geography)) add('primarySourceScope', 'Укажите географию источников дохода.');
+    if (source?.source_geography === 'SINGLE_COUNTRY' && !code(source?.country_id)) add('primarySourceCountry', 'Укажите страну источника дохода.');
     const noIncome = source?.type === 'NO_REGULAR_INCOME';
     const totalValid = noIncome || (Boolean(positiveMoney(source?.monthly_total)) && source.monthly_total.amount > 0);
     const provableValid = Boolean(positiveMoney(source?.monthly_provable));
@@ -134,9 +140,9 @@ export function validateUserProfile(profile) {
     if (!provableValid || source.monthly_provable.amount < 0 || (!noIncome && totalValid && source.monthly_provable.amount > source.monthly_total.amount)) add('primaryAmount', 'Подтверждаемая сумма должна быть от 0 до общего дохода.');
     if (!source?.evidence_level) add('primaryEvidence', 'Укажите полноту подтверждения дохода.');
   }
+  if (!positiveMoney(profile?.income?.savings)) add('savingsAmount', 'Укажите подтверждаемые сбережения; если их нет, укажите 0.');
   if (!profile?.goal?.long_term) add('longTermGoal', 'Выберите долгосрочную цель.');
   if (!profile?.goal?.keep_russian_citizenship) add('keepRuCitizenship', 'Укажите важность сохранения гражданства РФ.');
-  if (profile?.preferences?.monthly_budget !== null && (!positiveMoney(profile?.preferences?.monthly_budget) || profile.preferences.monthly_budget.amount <= 0)) add('monthlyBudget', 'Укажите положительный семейный бюджет или выберите «Пока не знаю».');
   if (!profile?.pets?.types?.length) add('petTypes', 'Укажите домашних животных.');
   if (!profile?.special_circumstances?.length) add('specialCircumstances', 'Ответьте на вопрос об особых обстоятельствах.');
   return { valid: errors.length === 0, errors };
@@ -237,18 +243,16 @@ export function describeIncomeRequirement(route, formatCurrency) {
 }
 
 export function describeResultIntro(routes, changed = false) {
+  if (!routes?.length) return {
+    heading: changed ? 'Результат обновлён после уточнения' : 'Сейчас нет маршрутов, доступных для надёжной оценки',
+    routeLabel: 'Сейчас нет маршрутов с завершёнными данными, которые можно надёжно оценить по вашим ответам.',
+  };
   const allUnsuitable = routes?.length > 0 && routes.every((route) => route.routeStatus === 'UNSUITABLE');
   return {
     heading: changed ? 'Результат обновлён после уточнения' : allUnsuitable ? 'Сейчас подходящих вариантов не найдено' : 'Результат по стране',
     routeLabel: allUnsuitable ? 'Первый из проверенных неподходящих маршрутов' : 'Наиболее подходящий вариант по вашим ответам',
   };
 }
-
-const ROUTE_DISPLAY_RANK = Object.freeze({
-  SUITABLE: 0,
-  SUITABLE_WITH_CONDITIONS: 1,
-  UNSUITABLE: 2,
-});
 
 export function sortRoutesForDisplay(routes = []) {
   const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
@@ -258,13 +262,14 @@ export function sortRoutesForDisplay(routes = []) {
     .sort((left, right) => {
       const a = left.route;
       const b = right.route;
-      const statusDifference = (ROUTE_DISPLAY_RANK[a.routeStatus] ?? 99) - (ROUTE_DISPLAY_RANK[b.routeStatus] ?? 99);
+      const statusDifference = (ROUTE_PRESENTATION_RANK[routePresentationGroup(a)] ?? 99)
+        - (ROUTE_PRESENTATION_RANK[routePresentationGroup(b)] ?? 99);
       if (statusDifference) return statusDifference;
       const familyDifference = (familyRank[a.familyFit] ?? 1) - (familyRank[b.familyFit] ?? 1);
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[a.goalFit] ?? 1) - (goalRank[b.goalFit] ?? 1);
       if (goalDifference) return goalDifference;
-      if (a.routeStatus === 'UNSUITABLE') {
+      if (routePresentationGroup(a) === 'UNSUITABLE') {
         const blockerDifference = (a.blockers?.length || 0) - (b.blockers?.length || 0);
         if (blockerDifference) return blockerDifference;
       }
@@ -277,19 +282,13 @@ export function sortRoutesForDisplay(routes = []) {
 export function sortCountriesForDisplay(countries = []) {
   const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
   const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
-  const medianCost = (country) => {
-    const values = (country?.cities || []).map((city) => Number(city.costUsd)).filter(Number.isFinite).sort((a, b) => a - b);
-    if (!values.length) return null;
-    const middle = Math.floor(values.length / 2);
-    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
-  };
   return countries
     .map((country, originalIndex) => ({ country, originalIndex }))
     .sort((left, right) => {
-      const leftStatus = left.country?.bestRoute?.routeStatus ?? left.country?.country?.group;
-      const rightStatus = right.country?.bestRoute?.routeStatus ?? right.country?.country?.group;
-      const leftRank = ROUTE_DISPLAY_RANK[leftStatus] ?? 99;
-      const rightRank = ROUTE_DISPLAY_RANK[rightStatus] ?? 99;
+      const leftStatus = routePresentationGroup(left.country?.bestRoute) ?? left.country?.country?.group;
+      const rightStatus = routePresentationGroup(right.country?.bestRoute) ?? right.country?.country?.group;
+      const leftRank = ROUTE_PRESENTATION_RANK[leftStatus] ?? 99;
+      const rightRank = ROUTE_PRESENTATION_RANK[rightStatus] ?? 99;
       if (leftRank !== rightRank) return leftRank - rightRank;
       const leftBest = left.country?.bestRoute;
       const rightBest = right.country?.bestRoute;
@@ -297,12 +296,22 @@ export function sortCountriesForDisplay(countries = []) {
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[leftBest?.goalFit] ?? 1) - (goalRank[rightBest?.goalFit] ?? 1);
       if (goalDifference) return goalDifference;
-      const leftCost = medianCost(left.country);
-      const rightCost = medianCost(right.country);
-      if (leftCost != null && rightCost != null && leftCost !== rightCost) return leftCost - rightCost;
       return left.originalIndex - right.originalIndex;
     })
     .map(({ country }) => country);
+}
+
+const CITY_COST_COMPONENT_LABELS = {
+  RENT_STANDARD: 'аренда квартиры с 1 спальней в центре',
+  UTILITIES: 'коммунальные расходы',
+  GROCERIES: 'продукты',
+  TRANSPORT: 'транспорт',
+};
+
+export function describeCityCostBasket(components = []) {
+  if (!components.includes('RENT_STANDARD')) return 'Сопоставимый сценарий аренды для всех городов пока не подтверждён.';
+  const labels = components.map((component) => CITY_COST_COMPONENT_LABELS[component] || component);
+  return `В расчёт входит: ${labels.join(' + ')} на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.`;
 }
 
 const CITY_SIZE_LABELS = new Map([
@@ -311,7 +320,78 @@ const CITY_SIZE_LABELS = new Map([
   ['LARGE', 'Большой город'],
 ]);
 
+const CITY_SIZE_SHORT_LABELS = new Map([
+  ['LARGE', 'Большой'],
+  ['MEDIUM', 'Средний'],
+  ['SMALL', 'Небольшой'],
+]);
+
+export function citySizeLabel(size) {
+  return CITY_SIZE_SHORT_LABELS.get(size) || 'Нет данных';
+}
+
+const cityTemperatureBounds = (city, field, fallback) => {
+  const values = Array.isArray(city[field])
+    ? city[field].map(Number).filter(Number.isFinite)
+    : temperatureNumbers(city[field]);
+  if (values.length >= 2) return values.slice(0, 2);
+  const value = Number(city[fallback]);
+  return Number.isFinite(value) ? [value, value] : null;
+};
+
+export function sortCitiesForComparison(cities = [], key, direction = 'asc') {
+  const rank = { LARGE: 0, MEDIUM: 1, SMALL: 2 };
+  const value = (city) => {
+    if (key === 'size') return Object.hasOwn(rank, city.size) ? [rank[city.size]] : null;
+    if (key === 'cost') {
+      const cost = Number(city.comparisonCost);
+      return city.comparisonCost != null && Number.isFinite(cost) ? [cost] : null;
+    }
+    if (key === 'cold') return cityTemperatureBounds(city, 'coldRange', 'avgTempColdestMonthC');
+    if (key === 'hot') {
+      const bounds = cityTemperatureBounds(city, 'hotRange', 'avgTempHottestMonthC');
+      return bounds ? [bounds[1], bounds[0]] : null;
+    }
+    return null;
+  };
+  const factor = direction === 'desc' ? -1 : 1;
+  return cities.map((city, index) => ({ city, index, value: value(city) })).sort((a, b) => {
+    if (!a.value) return b.value ? 1 : a.index - b.index;
+    if (!b.value) return -1;
+    for (let index = 0; index < Math.max(a.value.length, b.value.length); index += 1) {
+      const difference = (a.value[index] ?? 0) - (b.value[index] ?? 0);
+      if (difference) return difference * factor;
+    }
+    return a.index - b.index;
+  }).map(({ city }) => city);
+}
+
+export function nextCitySortState(current = {}, key) {
+  return { key, direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc' };
+}
+
+export function reorderCityComparisonRows(body, rows = [], key, direction) {
+  const cityForRow = (row) => ({
+    row,
+    size: row.dataset.size,
+    comparisonCost: row.dataset.cost === '' ? null : Number(row.dataset.cost),
+    coldRange: row.dataset.coldLow === '' ? null : [Number(row.dataset.coldLow), Number(row.dataset.coldHigh)],
+    hotRange: row.dataset.hotLow === '' ? null : [Number(row.dataset.hotLow), Number(row.dataset.hotHigh)],
+  });
+  const sorted = sortCitiesForComparison(rows.map(cityForRow), key, direction);
+  sorted.forEach(({ row }) => body.append(row));
+  return sorted.map(({ row }) => row);
+}
+
+const RP4_CITY_ROLE_LABELS = new Map([
+  ['CAPITAL', 'Столица'],
+  ['LARGE', 'Большой город'],
+  ['MEDIUM', 'Средний город'],
+  ['SMALL', 'Небольшой город'],
+]);
+
 const CITY_ROLE_LABELS = new Map([
+  // Display labels produced by presentCities() enter the RP4 UI through this mapping.
   ['столица', 'Столица'],
   ['самый недорогой', 'Самый недорогой'],
   ['самый дорогой', 'Самый дорогой'],
@@ -321,11 +401,47 @@ const CITY_ROLE_LABELS = new Map([
 ]);
 
 export function cityCategories(size, roles = []) {
+  const roleLabel = (role) => {
+    const value = String(role).trim();
+    if (RP4_CITY_ROLE_LABELS.has(value)) return RP4_CITY_ROLE_LABELS.get(value);
+    const legacy = CITY_ROLE_LABELS.get(value.toLocaleLowerCase('ru'));
+    if (legacy) return legacy;
+    if (/^[A-Z_]+$/.test(value)) throw new TypeError(`Unsupported RP4 city structural role: ${value}`);
+    return null;
+  };
   const categories = [
     CITY_SIZE_LABELS.get(size),
-    ...roles.map((role) => CITY_ROLE_LABELS.get(String(role).trim().toLocaleLowerCase('ru'))),
+    ...roles.map(roleLabel),
   ].filter(Boolean);
   return [...new Set(categories)];
+}
+
+export function russianMonths(value) {
+  const months = Number(value);
+  const mod100 = months % 100;
+  const mod10 = months % 10;
+  const word = mod100 >= 11 && mod100 <= 14 ? 'месяцев'
+    : mod10 === 1 ? 'месяц' : mod10 >= 2 && mod10 <= 4 ? 'месяца' : 'месяцев';
+  return `${months} ${word}`;
+}
+
+export function deduplicatedWorkRights(workRights = {}) {
+  return [['Заявитель', workRights.applicant], ['Партнёр', workRights.partner]].flatMap(([subject, rights]) => {
+    const rules = [...new Set((rights || []).map(({ rule }) => String(rule || '').trim()).filter(Boolean))];
+    return rules.length ? [`${subject}: ${rules.join('; ')}`] : [];
+  });
+}
+
+const normalizedApplicationSentinel = (value) => String(value || '').trim()
+  .replace(/[\s.!?;:]+$/u, '')
+  .toLocaleLowerCase('ru');
+
+export function applicationPresentationText(item = {}) {
+  const guidance = String(item.guidance || '').trim();
+  const rawEntryGuidance = String(item.entryGuidance || '').trim();
+  const entryGuidance = normalizedApplicationSentinel(rawEntryGuidance) === 'не применимо' ? '' : rawEntryGuidance;
+  const details = [guidance, entryGuidance && entryGuidance !== guidance ? entryGuidance : null].filter(Boolean).join(' ');
+  return `${item.methodLabel || ''}${details ? `: ${details}` : ''}`;
 }
 
 const temperatureNumbers = (value) => String(value ?? '')
@@ -335,22 +451,27 @@ const temperatureNumbers = (value) => String(value ?? '')
   .filter(Number.isFinite) || [];
 
 export function formatTemperatureRange(value) {
-  const numbers = temperatureNumbers(value);
+  const numbers = Array.isArray(value) ? value.map(Number).filter(Number.isFinite) : temperatureNumbers(value);
   if (numbers.length >= 2) return `примерно ${numbers[0].toLocaleString('ru-RU')}–${numbers[1].toLocaleString('ru-RU')} °C`;
   if (numbers.length === 1) return `около ${numbers[0].toLocaleString('ru-RU')} °C`;
   return value ? String(value) : '';
+}
+
+export function formatCityTemperatureRange(value) {
+  return formatTemperatureRange(value).replace(/^(?:примерно|около)\s+/u, '');
 }
 
 export function enrichCityCategories(cities = []) {
   if (!cities.length) return [];
   const researchedCategories = new Set(cities.flatMap((city) =>
     cityCategories(city.size ?? city.populationCategory, city.roles)));
-  const cost = (city) => Number(city.cost ?? city.costUsd);
+  const cost = (city) => city.comparisonCostUsd == null ? Number.NaN : Number(city.comparisonCostUsd);
   const cold = (city) => temperatureNumbers(city.coldRange)[0] ?? Number(city.avgTempColdestMonthC);
   const hot = (city) => temperatureNumbers(city.hotRange).at(-1) ?? Number(city.avgTempHottestMonthC);
   const finite = (selector) => cities.filter((city) => Number.isFinite(selector(city)));
-  const mostExpensive = finite(cost).sort((a, b) => cost(b) - cost(a))[0];
-  const cheapest = finite(cost).sort((a, b) => cost(a) - cost(b))[0];
+  const comparableCosts = cities.length > 1 && cities.every((city) => Number.isFinite(cost(city)));
+  const mostExpensive = comparableCosts ? finite(cost).sort((a, b) => cost(b) - cost(a))[0] : null;
+  const cheapest = comparableCosts ? finite(cost).sort((a, b) => cost(a) - cost(b))[0] : null;
   const coolest = finite(cold).sort((a, b) => cold(a) - cold(b))[0];
   const hottest = finite(hot).sort((a, b) => hot(b) - hot(a))[0];
   return cities.map((city) => ({

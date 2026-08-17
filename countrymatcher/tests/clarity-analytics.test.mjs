@@ -94,11 +94,11 @@ test("checkout contains the purchase-funnel analytics hooks", async () => {
 
   assert.match(
     landing,
-    /paypal-checkout\.js\?v=7\.0\.1/,
+    /paypal-checkout\.js\?v=7\.2\.0/,
   );
   assert.match(
     checkout,
-    /clarity-analytics\.js\?v=1\.0\.0/,
+    /clarity-analytics\.js\?v=7\.2\.0/,
   );
   assert.match(
     checkout,
