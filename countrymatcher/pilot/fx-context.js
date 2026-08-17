@@ -50,7 +50,7 @@ function readSavedContext(storage, now) {
     const { rates, asOf } = parseRates(saved?.rows);
     return {
       calculation_date: now.toISOString(),
-      engine_version: '7.1.2',
+      engine_version: '7.1.9',
       fx: { base_currency: 'USD', rates, source: saved.source || 'Frankfurter — последний доступный курс', as_of: asOf, max_age_hours: null, is_saved_fallback: true },
     };
   } catch { return null; }
@@ -66,7 +66,7 @@ function contextFromBundled(payload, now) {
   }
   return {
     calculation_date: now.toISOString(),
-    engine_version: '7.1.2',
+    engine_version: '7.1.9',
     fx: { base_currency: 'USD', rates, source: payload.source || 'Frankfurter — резервный курс', as_of: asOf, max_age_hours: null, is_bundled_fallback: true },
   };
 }
@@ -83,7 +83,7 @@ export async function loadCalculationContext({ fetchImpl = globalThis.fetch, fal
     }
     const context = {
       calculation_date: now.toISOString(),
-      engine_version: '7.1.2',
+      engine_version: '7.1.9',
       fx: { base_currency: 'USD', rates, source: 'Frankfurter', as_of: asOf, max_age_hours: maxAgeHours },
     };
     try {

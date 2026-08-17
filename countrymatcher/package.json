@@ -1,6 +1,6 @@
 {
   "name": "countrymatcher",
-  "version": "7.1.2",
+  "version": "7.1.9",
   "private": true,
   "type": "module",
   "scripts": {

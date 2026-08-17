@@ -21,13 +21,13 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.1.2');
+  assert.equal(packageJson.version, '7.1.9');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.1\.2'/);
+  assert.match(fxContext, /engine_version: '7\.1\.9'/);
 });
 
 test('country flags are derived generically from ISO alpha-2 codes', () => {
@@ -725,10 +725,10 @@ test('school UI renders international tuition range without exposing legacy tari
   assert.match(renderSchool(presentation('ACADEMIC_YEAR')), /1200 EUR \/учебный год/);
 
   const ranged = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 10000, maximum: 20000 } }));
-  assert.match(ranged, /Стоимость по найденным школам: 10000 USD–20000 USD в год\./);
+  assert.match(ranged, /Стоимость обучения: 10000 USD–20000 USD в год\./);
   assert.match(ranged, /Вступительные и регистрационные взносы не включены\./);
   const equal = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 15000, maximum: 15000 } }));
-  assert.match(equal, /Стоимость по найденным школам: 15000 USD в год\./);
+  assert.match(equal, /Стоимость обучения: 15000 USD в год\./);
   assert.doesNotMatch(equal, /15000 USD–15000 USD/);
 
   const available = renderSchool(presentation('ANNUAL', { cities: [] }));
@@ -876,7 +876,7 @@ test('route cards deduplicate financial actions by requirement identity', async 
     ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Обычное условие.'],
     conditionActions: [{ text: 'Обычное условие.', requirementId: 'COND', financialSummary: null }],
   }, 'Страна', true);
-  assert.match(ordinaryConditional, /Лучший маршрут исходя из ваших ответов/u);
+  assert.doesNotMatch(ordinaryConditional, /Лучший маршрут исходя из ваших ответов/u);
 });
 
 test('ES NLV route description stays concise in researched data and UI input', () => {
@@ -947,7 +947,7 @@ test('country navigation omits route names and every route uses native collapsib
   assert.equal(tabSource.includes('best.routeName'), false);
   const cardSource = app.slice(app.indexOf('function routeCard'), app.indexOf('function countryPresentation'));
   assert.match(cardSource, /<details\$\{main \? ' open' : ''\}>/);
-  assert.match(cardSource, /\['SUITABLE', 'SUITABLE_WITH_CONDITIONS'\]\.includes\(presentationGroup\)/);
+  assert.doesNotMatch(cardSource, /Лучший маршрут исходя из ваших ответов/u);
   assert.match(cardSource, /when-closed">Показать подробности/);
   assert.match(cardSource, /when-open">Скрыть подробности/);
   assert.match(cardSource, /Почему не подходит/);

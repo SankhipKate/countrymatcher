@@ -42,6 +42,8 @@ test('release version is identical in every required location', async () => {
 test('application cache keys use the release version', async () => {
   const version = (await read('VERSION')).trim();
   const files = [
+    'index.html',
+    ...await sourceFiles('landing/'),
     ...await sourceFiles('js/'),
     ...await sourceFiles('matcher/'),
     ...await sourceFiles('pilot/'),
@@ -49,10 +51,9 @@ test('application cache keys use the release version', async () => {
 
   for (const file of files) {
     const source = await read(file);
-    for (const match of source.matchAll(/([^'"\s]+)\?v=(\d+\.\d+\.\d+)/g)) {
-      const [, asset, cacheVersion] = match;
-      if (asset.includes('access-gate.')) continue;
-      assert.equal(cacheVersion, version, `${file}: ${asset} uses cache key ${cacheVersion}`);
+    for (const match of source.matchAll(/\?v=(\d+\.\d+\.\d+)/g)) {
+      const [, cacheVersion] = match;
+      assert.equal(cacheVersion, version, `${file} uses cache key ${cacheVersion}`);
     }
   }
 });

@@ -1,9 +1,17 @@
-import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.1.2';
-import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.1.2';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.2';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.2';
-import { formatCurrency } from './format.js?v=7.1.2';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.2';
+import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.1.9';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.1.9';
+import { loadCalculationContext } from '../pilot/fx-context.js?v=7.1.9';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.1.9';
+import { formatCurrency } from './format.js?v=7.1.9';
+import {
+  ACCESS_GRANTED_EVENT,
+  ACCESS_STATES,
+  hideAccessGate,
+  resolveAccessState,
+  showAccessTeaser,
+} from './access-gate.js?v=7.1.9';
+import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=7.1.9';
+import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.9';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -21,7 +29,10 @@ let currentStep = 1;
 let activeResearchPackages = [];
 let calculationContext;
 let currentProfile;
+let currentAnswers;
 let profileSchema;
+let pendingCalculation = null;
+let verifiedAccessActive = false;
 
 const value = (id) => $(`#${id}`)?.value ?? '';
 const checked = (id) => Boolean($(`#${id}`)?.checked);
@@ -265,6 +276,48 @@ function renderProfileSummary(p) {
   $('#profileSummary').innerHTML = rows.map(([label, val]) => `<div class="summary-row"><span>${html(label)}</span><b>${html(val)}</b></div>`).join('');
 }
 
+const ANSWER_LABELS = {
+  CITIZENSHIP: 'Гражданство', PERMANENT_RESIDENCE: 'ПМЖ', TEMPORARY_RESIDENCE: 'ВНЖ', WORK_OR_FAMILY_VISA: 'Рабочая или семейная виза', STUDENT_STATUS: 'Студенческий статус', TOURIST_OR_VISA_FREE: 'Туристическая виза или безвизовый въезд', OTHER_LEGAL_STATUS: 'Другой законный статус', NO_LEGAL_STATUS: 'Нет законного статуса', MARRIED: 'Официальный брак', REGISTERED_PARTNERSHIP: 'Зарегистрированное партнёрство', UNREGISTERED_PARTNERSHIP: 'Незарегистрированные отношения', REMOTE_EMPLOYMENT: 'Удалённая работа по трудовому договору', CONTRACTOR: 'Контракт с заказчиком', FREELANCE_OR_SELF_EMPLOYED: 'Фриланс или самозанятость', SOLE_PROPRIETOR: 'ИП', COMPANY_OWNER: 'Владелец компании', LOCAL_EMPLOYMENT: 'Работа в стране назначения', PENSION: 'Пенсия', PASSIVE_INCOME: 'Пассивный доход', INVESTMENT_INCOME: 'Инвестиционный доход', OTHER_REGULAR_INCOME: 'Другой регулярный доход', NO_REGULAR_INCOME: 'Регулярного дохода сейчас нет', SINGLE_COUNTRY: 'Одна страна', MULTIPLE_COUNTRIES: 'Несколько стран', NO_STABLE_PAYER: 'Нет постоянного плательщика', FULL: 'Весь доход', PARTIAL: 'Только часть', NONE: 'Пока не могу подтвердить', TEMPORARY_RESIDENCE_SUFFICIENT: 'Временного ВНЖ достаточно', PR_REQUIRED: 'ПМЖ обязательно', CITIZENSHIP_REQUIRED: 'Гражданство обязательно', REQUIRED: 'Обязательно', NOT_REQUIRED: 'Не обязательно',
+};
+const answerMoney = (amount, code, period = '') => amount === '' || amount == null || !code ? '' : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(Number(amount))} ${{ EUR: '€', USD: '$', RUB: '₽' }[code] || code}${period}`;
+const russianYears = (age) => {
+  const number = Number(age);
+  const mod100 = Math.abs(number) % 100;
+  const mod10 = Math.abs(number) % 10;
+  const unit = mod100 >= 11 && mod100 <= 14 ? 'лет' : mod10 === 1 ? 'год' : mod10 >= 2 && mod10 <= 4 ? 'года' : 'лет';
+  return `${age} ${unit}`;
+};
+const countryDisplayName = (value) => {
+  const code = parseCountryCode(value);
+  return countryOptions().find((country) => country.code === code)?.name || String(value || '').trim();
+};
+
+function renderAnswersBlock(a) {
+  if (!a) return '';
+  const groups = [];
+  const presentRows = (rows) => rows.filter(([, answer]) => answer !== '' && answer != null);
+  const add = (title, items) => {
+    const present = items.map((item) => Array.isArray(item) ? item : { ...item, rows: presentRows(item.rows) })
+      .filter((item) => Array.isArray(item) ? item[1] !== '' && item[1] != null : item.rows.length);
+    if (present.length) groups.push([title, present]);
+  };
+  const yesNo = (answer) => answer ? 'Да' : 'Нет';
+  const income = (prefix, title) => {
+    const type = a[`${prefix}Type`]; if (!type) return { title, rows: [] };
+    const rows = [['Тип', ANSWER_LABELS[type]]];
+    if (type !== 'NO_REGULAR_INCOME') rows.push(['География', ANSWER_LABELS[a[`${prefix}SourceScope`]]], ...(a[`${prefix}SourceScope`] === 'SINGLE_COUNTRY' ? [['Страна источника', countryDisplayName(a[`${prefix}SourceCountry`])]] : []), ['Подтверждение', ANSWER_LABELS[a[`${prefix}Evidence`]]], ['Сумма', answerMoney(a[`${prefix}TotalAmount`], a[`${prefix}Currency`], ' / мес')], ...(a[`${prefix}Evidence`] === 'PARTIAL' ? [['Подтверждаемая сумма', answerMoney(a[`${prefix}Amount`], a[`${prefix}Currency`], ' / мес')]] : []));
+    return { title, rows };
+  };
+  add('О вас', [['Гражданство', 'Россия'], ['Сейчас в России', yesNo(a.inRussia)], ...(!a.inRussia ? [['Текущая страна', countryDisplayName(a.currentCountry)], ['Легальный статус', ANSWER_LABELS[a.currentStatus]]] : []), ['Возраст', a.applicantAge ? russianYears(a.applicantAge) : ''], ['Учитывать права и признание ЛГБТ', yesNo(a.lgbtEnabled)]]);
+  add('Семья', [['Переезд с партнёром', yesNo(a.partnerIncluded)], ...(a.partnerIncluded ? [['Форма отношений', ANSWER_LABELS[a.relationshipType]], ['Возраст партнёра', a.partnerAge ? russianYears(a.partnerAge) : '']] : []), ['Переезд с детьми', yesNo(Boolean(a.childAges?.length))], ...(a.childAges?.length ? [['Возраст детей', a.childAges.map(russianYears).join(', ')]] : []), ['Домашние животные', yesNo(a.petTypes?.[0] !== 'NONE')]]);
+  add('Работа и доход', [income('primary', 'Основной доход'), ['Дополнительный источник дохода', yesNo(a.hasAdditionalIncome)], ...(a.hasAdditionalIncome ? [income('additional', 'Дополнительный доход')] : []), ...(a.partnerIncluded ? [['Доход партнёра', yesNo(a.partnerHasIncome)]] : []), ...(a.partnerIncluded && a.partnerHasIncome ? [income('partner', 'Доход партнёра')] : [])]);
+  add('Финансы', [['Накопления', answerMoney(a.savingsAmount, a.savingsCurrency)]]);
+  add('Планы переезда', [['Цель', ANSWER_LABELS[a.longTermGoal]], ...(a.longTermGoal && a.longTermGoal !== 'TEMPORARY_RESIDENCE_SUFFICIENT' ? [['Сохранить гражданство РФ', ANSWER_LABELS[a.keepRuCitizenship]]] : [])]);
+  const row = ([label, answer]) => `<div class="answer-row"><span>${html(label)}</span><b>${html(answer)}</b></div>`;
+  const item = (entry) => Array.isArray(entry) ? row(entry) : `<section class="answer-subgroup"><h4>${html(entry.title)}</h4><div class="answer-subgroup-grid">${entry.rows.map(row).join('')}</div></section>`;
+  return `<section class="answers-review surface"><h2>Ваши ответы</h2><p>Эти данные использованы для расчёта результатов.</p><div class="answers-groups">${groups.map(([title, items]) => `<section><h3>${html(title)}</h3><div class="answers-grid">${items.map(item).join('')}</div></section>`).join('')}</div></section>`;
+}
+
 function statusClass(group) { return ({ SUITABLE: 'positive', SUITABLE_WITH_CONDITIONS: 'conditional', REQUIRES_SEPARATE_BASIS: 'separate-basis', INTERNATIONAL_PROTECTION: 'protection', UNSUITABLE: 'negative' })[group] || 'negative'; }
 
 function renderLgbtResearch(calculation) {
@@ -328,7 +381,7 @@ function renderSchoolPresentation(calculation) {
     ? currency(tuition.minimum, 'USD')
     : `${currency(tuition.minimum, 'USD')}–${currency(tuition.maximum, 'USD')}` : null;
   const tuitionLines = tuitionAmount
-    ? `<p>Стоимость по найденным школам: ${html(tuitionAmount)} в год.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
+    ? `<p>Стоимость обучения: ${html(tuitionAmount)} в год.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
   return `<section class="country-info-card country-info-schools school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p>${tuitionLines}</div></section>`;
 }
 
@@ -375,8 +428,6 @@ function longTermConditions(route) {
 function routeCard(route, countryName, main = false) {
   const unsuitable = route.routeStatus === "UNSUITABLE";
   const presentationGroup = routePresentationGroup(route);
-  const bestRouteLabel = main && ['SUITABLE', 'SUITABLE_WITH_CONDITIONS'].includes(presentationGroup)
-    ? `<span class="best-route-label">Лучший маршрут исходя из ваших ответов</span>` : '';
   const list = (items = []) => `<ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul>`;
   const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4>Почему не подходит</h4>${list(route.blockers)}</div>` : "";
   const formatFinancialAlternative = (item) => {
@@ -453,7 +504,7 @@ function routeCard(route, countryName, main = false) {
   const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
   const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(presentationGroup)}">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}${bestRouteLabel}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(presentationGroup)}">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
   const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
   return `<article class="route-result ${main ? 'best' : 'compact'}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
@@ -477,6 +528,11 @@ function renderCountryTab(calculation, active = false) {
   const summary = best ? '' : '<small>Нет маршрутов для надёжной оценки</small>';
   const status = best ? `<span class="status-pill ${statusClass(routePresentationGroup(best))}">${html(ROUTE_PRESENTATION_LABELS_RU[routePresentationGroup(best)])}</span>` : '';
   return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong>${summary}</span>${status}</button>`;
+}
+
+function renderLockedCountryTab(country) {
+  const flag = country.countryId ? countryFlag(country.countryId) : '';
+  return `<button class="country-tab is-locked" type="button" role="tab" aria-disabled="true" tabindex="-1"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(country.name)}</strong><small>Доступно после оплаты</small></span><span class="country-tab-lock" aria-hidden="true">🔒</span></button>`;
 }
 
 function renderCountryResult(calculation, changed = false, active = false) {
@@ -537,11 +593,11 @@ function calculateActiveCountries() {
   return calculateActiveMatcher(currentProfile, activeResearchPackages, calculationContext);
 }
 
-function renderResult(calculation, changed = false) {
+function renderResult(calculation, changed = false, lockedCountries = [], answers = null) {
   const countries = sortCountriesForDisplay(calculation.results || []);
   const calculatedAt = countries[0]?.calculatedAt?.slice(0, 10) || calculationContext.calculation_date?.slice(0, 10);
-  const calculationNote = `<p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Расчёт: ${html(calculatedAt)}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат предварительный и не является юридическим обещанием.</p>`;
-  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${calculationNote}`;
+  const calculationNote = `<p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Расчёт: ${html(calculatedAt)}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат носит информационный характер и не является юридическим обещанием.</p>`;
+  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}${lockedCountries.map(renderLockedCountryTab).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${calculationNote}${answers ? renderAnswersBlock(answers) : ''}`;
   const activateCountry = (countryId) => {
     $$('[data-country-tab]', $('#result')).forEach((tab) => {
       const active = tab.dataset.countryTab === countryId;
@@ -557,13 +613,94 @@ function renderResult(calculation, changed = false) {
 }
 
 function switchToResult(calculation, changed = false) {
+  hideAccessGate();
+  $('#previewBottomCta').hidden = true;
+  $('#citizenshipGate').hidden = true;
   renderResult(calculation, changed);
   $('#questionnaireView').hidden = true;
   $('#resultView').hidden = false;
   $('#heroTitle').textContent = 'Ваш результат';
+  $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'По вашим ответам рассчитаны доступные варианты переезда и условия для семьи.';
   $('#editProfile').hidden = false;
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showUnpaidResult(presentation, accessState, changed = false) {
+  const { teaser } = presentation;
+  $('#citizenshipGate').hidden = true;
+  $('#questionnaireView').hidden = true;
+  const hasFreeCountry = presentation.state === FUNNEL_STATES.FREE_COUNTRY;
+  if (hasFreeCountry) renderResult(presentation.previewCalculation, changed, presentation.lockedCountries, currentAnswers);
+  $('#resultView').hidden = !hasFreeCountry;
+  $('#heroTitle').textContent = 'Результат расчёта';
+  $('#heroSubtitle').textContent = '';
+  $('#heroSubtitle').hidden = true;
+  $('#editProfile').hidden = true;
+  showAccessTeaser({
+    heading: teaser.heading,
+    text: teaser.text,
+    breakdown: teaser.breakdown,
+    freeCountryMessage: presentation.freeCountryMessage,
+    lockedCountryCount: presentation.lockedCountryCount || 0,
+    accessState,
+    hasFreeCountry,
+  });
+}
+
+function showCalculationFailure() {
+  pendingCalculation = null;
+  hideAccessGate();
+  $('#result').innerHTML = '';
+  $('#previewBottomCta').hidden = true;
+  $('#resultView').hidden = true;
+  $('#questionnaireView').hidden = false;
+  $('#heroTitle').textContent = 'Подберём вариант иммиграции';
+  $('#heroSubtitle').hidden = false;
+  $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
+  $('#formError').hidden = false;
+  $('#formError').textContent = 'Не удалось сформировать результат. Проверьте ответы и попробуйте выполнить расчёт ещё раз.';
+}
+
+async function accessStateForResult() {
+  if (verifiedAccessActive) return { state: ACCESS_STATES.ACTIVE, source: 'session' };
+  const accessState = await resolveAccessState();
+  if (accessState.state === ACCESS_STATES.ACTIVE) verifiedAccessActive = true;
+  return accessState;
+}
+
+async function handleCalculatedResult(calculation, { changed = false, accessState = null } = {}) {
+  const presentation = deriveFunnelPresentation(calculation, sortCountriesForDisplay);
+  if (presentation.state === FUNNEL_STATES.ERROR) {
+    showCalculationFailure();
+    return;
+  }
+  pendingCalculation = { calculation, changed, answers: currentAnswers };
+  const resolvedAccessState = accessState || await accessStateForResult();
+
+  if (resolvedAccessState.state === ACCESS_STATES.ACTIVE) {
+    verifiedAccessActive = true;
+    pendingCalculation = null;
+    switchToResult(calculation, changed);
+    return;
+  }
+
+  showUnpaidResult(presentation, resolvedAccessState, changed);
+}
+
+function returnToQuestionnaire() {
+  pendingCalculation = null;
+  hideAccessGate();
+  $('#result').innerHTML = '';
+  $('#previewBottomCta').hidden = true;
+  $('#citizenshipGate').hidden = true;
+  $('#resultView').hidden = true;
+  $('#questionnaireView').hidden = false;
+  $('#heroTitle').textContent = 'Подберём вариант иммиграции';
+  $('#heroSubtitle').hidden = false;
+  $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
+  $('#editProfile').hidden = true;
+  showStep(1);
 }
 
 function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.hidden = false; clearTimeout(showToast.timer); showToast.timer = setTimeout(() => { toast.hidden = true; }, 2600); }
@@ -597,7 +734,7 @@ $('#prevStep').addEventListener('click', () => showStep(currentStep - 1));
 $('#childrenCount').addEventListener('input', () => { syncChildren(); renderProfileSummary(profile()); });
 form.addEventListener('change', (event) => { if (event.target?.name === 'hasChildren') syncChildren(); syncConditional(); renderProfileSummary(profile()); });
 form.addEventListener('input', () => renderProfileSummary(profile()));
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
   event.preventDefault();
   if (!validateStep(currentStep)) return;
   if (!activeResearchPackages.length || !calculationContext) {
@@ -606,30 +743,79 @@ form.addEventListener('submit', (event) => {
     availabilityError.textContent = 'Расчёт временно недоступен: не удалось загрузить необходимый расчётный контекст.';
     return;
   }
-  currentProfile = profile();
+  currentAnswers = collectAnswers();
+  currentProfile = buildUserProfile(currentAnswers);
   const validation = validateUserProfile(currentProfile);
   if (!validation.valid) { $('#formError').hidden = false; $('#formError').textContent = validation.errors[0].message; return; }
   const schemaErrors = validateAgainstSchema(currentProfile, profileSchema);
   if (schemaErrors.length) { $('#formError').hidden = false; $('#formError').textContent = `Проверьте ответы: ${schemaErrors[0].message}`; return; }
-  try { switchToResult(calculateActiveCountries()); }
-  catch (error) { $('#formError').hidden = false; $('#formError').textContent = `Не удалось выполнить расчёт: ${error.message}`; }
+
+  localStorage.setItem(DRAFT_KEY, JSON.stringify(draft()));
+  pendingCalculation = null;
+
+  try {
+    const calculation = calculateActiveCountries();
+    await handleCalculatedResult(calculation);
+  } catch (error) {
+    $('#formError').hidden = false;
+    $('#formError').textContent = `Не удалось выполнить расчёт: ${error.message}`;
+  }
 });
 $('#saveDraft').addEventListener('click', () => { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft())); showToast('Ответы сохранены только в этом браузере. Можно вернуться позже.'); });
 $('#clearDraft').addEventListener('click', clearAll);
-$('#editProfile').addEventListener('click', () => { $('#resultView').hidden = true; $('#questionnaireView').hidden = false; $('#heroTitle').textContent = 'Подберём вариант иммиграции'; $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.'; $('#editProfile').hidden = true; showStep(1); });
+$('#editProfile').addEventListener('click', returnToQuestionnaire);
+window.addEventListener(ACCESS_GRANTED_EVENT, () => {
+  verifiedAccessActive = true;
+  if (!pendingCalculation) return;
+  const pending = pendingCalculation;
+  pendingCalculation = null;
+  currentAnswers = pending.answers;
+  switchToResult(pending.calculation, pending.changed);
+});
+
+function isSuccessfulPaymentReturn() {
+  return new URLSearchParams(window.location.search).get('payment') === 'success';
+}
+
+async function handlePaymentReturn(restoredDraft) {
+  if (!isSuccessfulPaymentReturn()) return;
+
+  const accessState = await resolveAccessState();
+  if (accessState.state === ACCESS_STATES.ACTIVE) verifiedAccessActive = true;
+  if (!restoredDraft) return;
+
+  currentAnswers = collectAnswers();
+  currentProfile = buildUserProfile(currentAnswers);
+  const validation = validateUserProfile(currentProfile);
+  const schemaErrors = validation.valid ? validateAgainstSchema(currentProfile, profileSchema) : [];
+  if (!validation.valid || schemaErrors.length) {
+    returnToQuestionnaire();
+    return;
+  }
+
+  try {
+    const calculation = calculateActiveCountries();
+    await handleCalculatedResult(calculation, { accessState });
+  } catch (error) {
+    returnToQuestionnaire();
+    $('#formError').hidden = false;
+    $('#formError').textContent = `Не удалось выполнить расчёт: ${error.message}`;
+  }
+}
 
 async function init() {
-  restoreDraft(); syncChildren(); syncConditional(); showStep(1, false);
+  const restoredDraft = restoreDraft();
+  syncChildren(); syncConditional(); showStep(1, false);
   try {
     const [packages, schemaResponse, context] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(new URL(`${filename}?v=7.1.2`, DATA_BASE));
+        const response = await fetch(new URL(`${filename}?v=7.1.9`, DATA_BASE));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
         const pkg = await response.json();
         assertActiveResearchPackage(pkg);
         return pkg;
       })),
-      fetch(new URL('schemas/user-profile-v1.schema.json?v=7.1.2', DATA_BASE)),
+      fetch(new URL('schemas/user-profile-v1.schema.json?v=7.1.9', DATA_BASE)),
       loadCalculationContext(),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
@@ -638,6 +824,7 @@ async function init() {
     calculationContext = context;
     $('#calculationAvailabilityError').hidden = true;
     $('#calculationAvailabilityError').textContent = '';
+    await handlePaymentReturn(restoredDraft);
   } catch (error) {
     $('#calculationAvailabilityError').hidden = false;
     $('#calculationAvailabilityError').textContent = error.code === 'CALCULATION_CONTEXT_INCOMPLETE' ? 'Расчёт временно недоступен: не удалось получить курс валют.' : `Не удалось загрузить данные: ${error.message}`;
