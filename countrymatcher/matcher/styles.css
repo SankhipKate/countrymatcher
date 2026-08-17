@@ -96,6 +96,12 @@ html,body{max-width:100%;overflow-x:clip}
 .country-info-lgbt{background:#fff5fa;border-color:#e8cbdd}
 .country-info-pets{background:#f3faf6;border-color:#c9e2d3}
 .country-info-taxes{background:#fff9ee;border-color:#e8d7ae}
+.country-info-quality-of-life{background:#f6f8f5;border-color:#d4ddd0}
+.quality-of-life-score{margin:0 0 12px;font-size:17px;line-height:1.5}
+.quality-of-life-disclaimer{margin:0 0 18px;padding:12px;border-radius:10px;background:#eef2ec;color:#465246;line-height:1.5}
+.quality-of-life-narrative p{margin:0 0 13px;line-height:1.65;color:#334155}
+.quality-of-life-narrative p:last-child{margin-bottom:0}
+.quality-of-life-formula{margin:18px 0 0;padding-top:16px;border-top:1px solid #dce3d8;line-height:1.6}
 .school-subsection+.school-subsection{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}.school-subsection>h4{margin:0 0 10px}.school-rule+.school-rule{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}.school-rule h5{margin:0 0 8px;font-size:1rem}.school-rule p{margin:6px 0}
 .lgbt-list{overflow:hidden;border:1px solid #ded5ef;border-radius:var(--control-radius);background:#fff}
 .lgbt-row{display:grid;grid-template-columns:minmax(190px,30%) minmax(0,1fr);gap:20px;padding:15px 16px;border-top:1px solid #eee8f6;align-items:start}

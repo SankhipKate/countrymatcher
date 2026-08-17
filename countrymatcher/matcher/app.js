@@ -29,8 +29,10 @@ const ACTIVE_RP4_PACKAGES = [
   'MX-research-v4.0.json',
   'PY-research-v4.0.json',
 ];
+const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 let currentStep = 1;
 let activeResearchPackages = [];
+let qualityOfLifeEditorial = { countries: {} };
 let calculationContext;
 let currentProfile;
 let currentAnswers;
@@ -594,7 +596,23 @@ function renderCountryResult(calculation, changed = false, active = false) {
     ${entryBlock}
     <section class="country-info-card country-info-cities"><div class="section-title-row"><div><h3>Города, климат и расходы</h3></div></div>${citySection}</section>
     ${renderSchoolPresentation(calculation)}
-    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}</div></article>`;
+    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}</div></article>`;
+}
+
+function renderQualityOfLife(calculation) {
+  const editorial = qualityOfLifeEditorial?.countries?.[calculation.country.countryId];
+  if (!editorial) return '';
+  const score = Number(editorial.score);
+  const scoreText = Number.isFinite(score) ? `${score.toFixed(1).replace('.', ',')}/10` : null;
+  const paragraphs = Array.isArray(editorial.narrative_ru)
+    ? editorial.narrative_ru.filter((text) => String(text || '').trim()).map((text) => `<p>${html(text)}</p>`).join('')
+    : '';
+  const formula = String(editorial.formula_ru || '').trim();
+  if (!scoreText && !paragraphs && !formula) return '';
+  const scoreBlock = scoreText ? `<p class="quality-of-life-score">Субъективная редакционная оценка качества жизни: <b>${html(scoreText)}</b></p>` : '';
+  const disclaimer = 'Оценка отражает общее качество повседневной жизни в стране. Она не показывает, насколько эта страна подходит именно вам, насколько легко получить ВНЖ, ПМЖ или гражданство, насколько легко интегрироваться в общество или стоит ли вам туда переезжать.';
+  const formulaBlock = formula ? `<p class="quality-of-life-formula"><b>Формула страны:</b> ${html(formula)}</p>` : '';
+  return `<section class="country-info-card country-info-quality-of-life"><div class="section-title-row"><div><h3>Качество жизни в стране</h3></div></div>${scoreBlock}<p class="quality-of-life-disclaimer">${html(disclaimer)}</p><div class="quality-of-life-narrative">${paragraphs}</div>${formulaBlock}</section>`;
 }
 
 function calculateActiveCountries() {
@@ -831,7 +849,7 @@ async function init() {
   const restoredDraft = restoreDraft();
   syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [packages, schemaResponse, context] = await Promise.all([
+    const [packages, schemaResponse, context, editorial] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
         const response = await fetch(new URL(`${filename}?v=7.2.0`, DATA_BASE));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
@@ -841,11 +859,15 @@ async function init() {
       })),
       fetch(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', DATA_BASE)),
       loadCalculationContext(),
+      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=7.2.0`, DATA_BASE))
+        .then((response) => response.ok ? response.json() : { countries: {} })
+        .catch(() => ({ countries: {} })),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
     activeResearchPackages = packages;
     profileSchema = await schemaResponse.json();
     calculationContext = context;
+    qualityOfLifeEditorial = editorial?.countries && typeof editorial.countries === 'object' ? editorial : { countries: {} };
     $('#calculationAvailabilityError').hidden = true;
     $('#calculationAvailabilityError').textContent = '';
     await handlePaymentReturn(restoredDraft);
