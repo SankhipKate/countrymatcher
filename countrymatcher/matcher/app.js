@@ -11,7 +11,7 @@ import {
   showAccessTeaser,
 } from './access-gate.js?v=7.1.9';
 import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=7.1.9';
-import { applicationPresentationText, buildUserProfile, cityCategories, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatTemperatureRange, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.9';
+import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.1.9';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -564,21 +564,25 @@ function renderCountryResult(calculation, changed = false, active = false) {
         hotRange: city.hotRange,
         avgTempColdestMonthC: city.avgTempColdestMonthC,
         avgTempHottestMonthC: city.avgTempHottestMonthC,
-        climate: city.climate,
       }));
   const comparisonComponents = comparisonCities[0]?.comparisonComponents || [];
   const basketDescription = `<p class="research-caveat">${html(describeCityCostBasket(comparisonComponents, comparisonCities[0]?.comparisonScenarios))}</p>`;
   const citySection = comparisonCities.length
-    ? `${basketDescription}<div class="city-budget-grid climate-grid">${comparisonCities.map((city) => {
+    ? `${basketDescription}<div class="cities-comparison"><table><thead><tr><th scope="col">Город</th>${[
+        ['size', 'Тип города', 'Сортировать по типу города'],
+        ['cost', 'Расходы в мес', 'Сортировать по расходам в месяц'],
+        ['cold', 'Холодный сезон', 'Сортировать по холодному сезону'],
+        ['hot', 'Жаркий сезон', 'Сортировать по жаркому сезону'],
+      ].map(([key, label, ariaLabel]) => `<th scope="col" aria-sort="none"><button type="button" data-city-sort="${key}" aria-label="${ariaLabel}">${label}<span class="sort-direction" aria-hidden="true"> ↕</span></button></th>`).join('')}</tr></thead><tbody>${comparisonCities.map((city, index) => {
         const comparisonCost = Number.isFinite(city.comparisonCost) ? Math.round(city.comparisonCost) : null;
         const coldValue = city.coldRange ?? city.avgTempColdestMonthC;
         const hotValue = city.hotRange ?? city.avgTempHottestMonthC;
-        const coldLine = coldValue != null ? `<span>Холодный период: <b>${html(formatTemperatureRange(coldValue))}</b></span>` : '';
-        const hotLine = hotValue != null ? `<span>Жаркий период: <b>${html(formatTemperatureRange(hotValue))}</b></span>` : '';
-        const climateLine = city.climate ? `<span>Климат: <b>${html(city.climate)}</b></span>` : '';
-        const costLine = comparisonCost == null ? '' : `<strong>≈ ${currency(comparisonCost)}/мес</strong>`;
-        return `<article class="city-card"><div class="city-role-list">${city.categories.map((category) => `<span>${html(category)}</span>`).join('')}</div><h4>${html(city.name)}</h4>${costLine}${climateLine}${coldLine}${hotLine}</article>`;
-      }).join('')}</div>`
+        const badges = city.categories.filter((category) => !/^(Большой|Средний|Небольшой) город$/u.test(category));
+        const numberList = (value) => String(value ?? '').replaceAll(',', '.').match(/[−-]?\d+(?:\.\d+)?/g)?.map((item) => Number(item.replace('−', '-'))) || [];
+        const coldBounds = numberList(coldValue);
+        const hotBounds = numberList(hotValue);
+        return `<tr data-city-index="${index}" data-size="${city.size || ''}" data-cost="${comparisonCost ?? ''}" data-cold-low="${coldBounds[0] ?? ''}" data-cold-high="${coldBounds[1] ?? coldBounds[0] ?? ''}" data-hot-low="${hotBounds[0] ?? ''}" data-hot-high="${hotBounds[1] ?? hotBounds[0] ?? ''}"><td data-label="Город"><div class="city-name">${html(city.name)}</div><div class="city-role-list">${badges.map((category) => `<span>${html(category)}</span>`).join('')}</div></td><td data-label="Тип города">${html(citySizeLabel(city.size))}</td><td data-label="Расходы в мес" class="city-cost">${comparisonCost == null ? 'Нет данных' : currency(comparisonCost)}</td><td data-label="Холодный сезон">${coldValue == null ? 'Нет данных' : html(formatCityTemperatureRange(coldValue))}</td><td data-label="Жаркий сезон">${hotValue == null ? 'Нет данных' : html(formatCityTemperatureRange(hotValue))}</td></tr>`;
+      }).join('')}</tbody></table></div>`
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
@@ -610,6 +614,22 @@ function renderResult(calculation, changed = false, lockedCountries = [], answer
     });
   };
   $$('[data-country-tab]', $('#result')).forEach((tab) => tab.addEventListener('click', () => activateCountry(tab.dataset.countryTab)));
+  $$('.cities-comparison', $('#result')).forEach((comparison) => {
+    const sourceCities = [...comparison.querySelectorAll('tbody tr')];
+    const body = comparison.querySelector('tbody');
+    let sortState = {};
+    $$('[data-city-sort]', comparison).forEach((button) => button.addEventListener('click', () => {
+      const key = button.dataset.citySort;
+      sortState = nextCitySortState(sortState, key);
+      const { direction } = sortState;
+      reorderCityComparisonRows(body, sourceCities, key, direction);
+      $$('[data-city-sort]', comparison).forEach((control) => {
+        const selected = control === button;
+        control.closest('th').setAttribute('aria-sort', selected ? (direction === 'asc' ? 'ascending' : 'descending') : 'none');
+        $('.sort-direction', control).textContent = selected ? (direction === 'asc' ? ' ↑' : ' ↓') : ' ↕';
+      });
+    }));
+  });
 }
 
 function switchToResult(calculation, changed = false) {

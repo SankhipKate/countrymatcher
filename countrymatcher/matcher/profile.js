@@ -302,31 +302,16 @@ export function sortCountriesForDisplay(countries = []) {
 }
 
 const CITY_COST_COMPONENT_LABELS = {
-  RENT_STANDARD: 'аренда',
+  RENT_STANDARD: 'аренда квартиры с 1 спальней в центре',
   UTILITIES: 'коммунальные расходы',
   GROCERIES: 'продукты',
   TRANSPORT: 'транспорт',
 };
 
-const conciseRentScenario = (condition) => {
-  const normalized = String(condition || '').trim().replace(/[.!?;:]+$/u, '');
-  if (/^1 спальня в центре$/iu.test(normalized)) return 'аренда квартиры с 1 спальней в центре';
-  if (/^однокомнатная квартира в центре$/iu.test(normalized)) return 'аренда однокомнатной квартиры в центре';
-  return null;
-};
-
-export function describeCityCostBasket(components = [], scenarios = []) {
+export function describeCityCostBasket(components = []) {
   if (!components.includes('RENT_STANDARD')) return 'Сопоставимый сценарий аренды для всех городов пока не подтверждён.';
-  const labels = components.map((component) => {
-    if (component === 'RENT_STANDARD') {
-      const scenario = scenarios.find((item) => item.component === component);
-      return conciseRentScenario(scenario?.condition) || CITY_COST_COMPONENT_LABELS[component];
-    }
-    return CITY_COST_COMPONENT_LABELS[component] || component;
-  });
-  const fullOnePersonBasket = ['RENT_STANDARD', 'UTILITIES', 'GROCERIES', 'TRANSPORT'].every((component) => components.includes(component));
-  if (fullOnePersonBasket) return `Ориентировочная стоимость жизни для 1 человека: ${labels.join(' + ')}.`;
-  return `${components.length === 1 ? 'В расчёт входит' : 'В расчёт входят'}: ${labels.join(' + ')}.`;
+  const labels = components.map((component) => CITY_COST_COMPONENT_LABELS[component] || component);
+  return `В расчёт входит: ${labels.join(' + ')} на 1 человека. Это ориентир для сравнения городов между собой, а не расчёт бюджета вашей семьи.`;
 }
 
 const CITY_SIZE_LABELS = new Map([
@@ -334,6 +319,69 @@ const CITY_SIZE_LABELS = new Map([
   ['MEDIUM', 'Средний город'],
   ['LARGE', 'Большой город'],
 ]);
+
+const CITY_SIZE_SHORT_LABELS = new Map([
+  ['LARGE', 'Большой'],
+  ['MEDIUM', 'Средний'],
+  ['SMALL', 'Небольшой'],
+]);
+
+export function citySizeLabel(size) {
+  return CITY_SIZE_SHORT_LABELS.get(size) || 'Нет данных';
+}
+
+const cityTemperatureBounds = (city, field, fallback) => {
+  const values = Array.isArray(city[field])
+    ? city[field].map(Number).filter(Number.isFinite)
+    : temperatureNumbers(city[field]);
+  if (values.length >= 2) return values.slice(0, 2);
+  const value = Number(city[fallback]);
+  return Number.isFinite(value) ? [value, value] : null;
+};
+
+export function sortCitiesForComparison(cities = [], key, direction = 'asc') {
+  const rank = { LARGE: 0, MEDIUM: 1, SMALL: 2 };
+  const value = (city) => {
+    if (key === 'size') return Object.hasOwn(rank, city.size) ? [rank[city.size]] : null;
+    if (key === 'cost') {
+      const cost = Number(city.comparisonCost);
+      return city.comparisonCost != null && Number.isFinite(cost) ? [cost] : null;
+    }
+    if (key === 'cold') return cityTemperatureBounds(city, 'coldRange', 'avgTempColdestMonthC');
+    if (key === 'hot') {
+      const bounds = cityTemperatureBounds(city, 'hotRange', 'avgTempHottestMonthC');
+      return bounds ? [bounds[1], bounds[0]] : null;
+    }
+    return null;
+  };
+  const factor = direction === 'desc' ? -1 : 1;
+  return cities.map((city, index) => ({ city, index, value: value(city) })).sort((a, b) => {
+    if (!a.value) return b.value ? 1 : a.index - b.index;
+    if (!b.value) return -1;
+    for (let index = 0; index < Math.max(a.value.length, b.value.length); index += 1) {
+      const difference = (a.value[index] ?? 0) - (b.value[index] ?? 0);
+      if (difference) return difference * factor;
+    }
+    return a.index - b.index;
+  }).map(({ city }) => city);
+}
+
+export function nextCitySortState(current = {}, key) {
+  return { key, direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc' };
+}
+
+export function reorderCityComparisonRows(body, rows = [], key, direction) {
+  const cityForRow = (row) => ({
+    row,
+    size: row.dataset.size,
+    comparisonCost: row.dataset.cost === '' ? null : Number(row.dataset.cost),
+    coldRange: row.dataset.coldLow === '' ? null : [Number(row.dataset.coldLow), Number(row.dataset.coldHigh)],
+    hotRange: row.dataset.hotLow === '' ? null : [Number(row.dataset.hotLow), Number(row.dataset.hotHigh)],
+  });
+  const sorted = sortCitiesForComparison(rows.map(cityForRow), key, direction);
+  sorted.forEach(({ row }) => body.append(row));
+  return sorted.map(({ row }) => row);
+}
 
 const RP4_CITY_ROLE_LABELS = new Map([
   ['CAPITAL', 'Столица'],
@@ -407,6 +455,10 @@ export function formatTemperatureRange(value) {
   if (numbers.length >= 2) return `примерно ${numbers[0].toLocaleString('ru-RU')}–${numbers[1].toLocaleString('ru-RU')} °C`;
   if (numbers.length === 1) return `около ${numbers[0].toLocaleString('ru-RU')} °C`;
   return value ? String(value) : '';
+}
+
+export function formatCityTemperatureRange(value) {
+  return formatTemperatureRange(value).replace(/^(?:примерно|около)\s+/u, '');
 }
 
 export function enrichCityCategories(cities = []) {

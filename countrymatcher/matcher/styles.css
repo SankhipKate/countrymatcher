@@ -43,7 +43,7 @@ html,body{max-width:100%;overflow-x:clip}
 .money-combo input,.money-combo select{border:0!important;border-radius:0!important;box-shadow:none!important}
 .money-combo select{border-left:1px solid var(--line)!important}
 .income-block .field-grid{align-items:start}.money-combo{height:48px}.money-combo-fixed-currency{grid-template-columns:1fr 132px}.money-combo-fixed-currency>span{display:flex;align-items:center;padding:0 12px;border-left:1px solid var(--line);color:var(--muted);font-size:13px}
-.city-role-list{display:flex;flex-wrap:wrap;gap:6px}.city-role-list span{padding:4px 8px;border-radius:999px;background:#eaf2ff;color:#174f9b;font-size:12px;font-weight:700}
+.city-role-list{display:flex;flex-direction:column;align-items:flex-start;gap:2px;margin-top:4px;color:var(--muted);font-size:12px;font-weight:600}.city-role-list span{display:block}
 .field textarea{width:100%;min-height:100px;padding:12px 14px;border:1px solid var(--line-strong);border-radius:var(--control-radius);resize:vertical}
 .route-result{margin-top:14px;padding:18px;border:1px solid var(--line);border-radius:15px;background:#fff}
 .route-result.best{border-color:var(--blue-600);background:#f7fbff}
@@ -76,11 +76,20 @@ html,body{max-width:100%;overflow-x:clip}
 .country-summary-text{min-width:0;flex:1}
 .country-toggle{font-size:24px;transition:transform .2s ease}
 .country-comparison[open] .country-toggle{transform:rotate(180deg)}
-.city-budget-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:start;max-width:100%}
-.city-budget-grid .city-card{height:auto;min-height:0;min-width:0;overflow-wrap:anywhere;word-break:normal}
-.city-budget-grid .city-card>*{max-width:100%}
-.climate-grid .city-card span{display:block;margin-top:7px;color:#46596e}
-.climate-grid .city-card a{display:inline-block;margin-top:10px;color:var(--navy);font-weight:700;text-underline-offset:3px}
+.cities-comparison{margin-top:14px;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff}
+.cities-comparison table{width:100%;border-collapse:collapse;table-layout:fixed}
+.cities-comparison th,.cities-comparison td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.cities-comparison th:first-child,.cities-comparison td:first-child{width:30%}
+.cities-comparison th:nth-child(2){width:16%}
+.cities-comparison th:nth-child(3){width:20%}
+.cities-comparison tbody tr:last-child td{border-bottom:0}
+.cities-comparison th{background:#f8fafd;color:#46596e;font-size:13px;font-weight:800}
+.cities-comparison th:not(:first-child){text-align:center}.cities-comparison th button{display:flex;align-items:center;justify-content:center;width:100%;padding:0;border:0;background:transparent;color:inherit;font:inherit;cursor:pointer;text-align:center}
+.cities-comparison th button:focus-visible{outline:2px solid var(--blue-600);outline-offset:3px;border-radius:3px}
+.sort-direction{min-width:1.1em;color:var(--blue-700)}
+.city-name{font-weight:850;color:var(--ink)}
+.cities-comparison td:nth-child(4),.cities-comparison td:nth-child(5){text-align:center}.city-cost{padding-left:16px!important;text-align:right!important;font-weight:800;white-space:nowrap}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 .country-info-card{box-sizing:border-box;width:100%;padding:20px;border:1px solid;border-radius:16px}
 .country-info-cities{background:#f3f7fd;border-color:#c9d9ee}
 .country-info-schools{background:#f8f4ff;border-color:#d8c9ef}
@@ -110,7 +119,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-comparison-body{padding:22px}
 .country-comparison-body>section{margin-top:22px}
 @media(max-width:1100px){.matcher-layout{grid-template-columns:1fr}}
-@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.route-card-heading>.status-pill{flex:0 0 auto;width:auto}.city-budget-grid{grid-template-columns:1fr}.lgbt-row{grid-template-columns:1fr;gap:7px}.country-info-card{padding:15px}}
+@media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.route-card-heading>.status-pill{flex:0 0 auto;width:auto}.cities-comparison{border:0;background:transparent;overflow:visible}.cities-comparison table,.cities-comparison thead,.cities-comparison tbody,.cities-comparison tr,.cities-comparison th,.cities-comparison td{display:block;width:auto!important}.cities-comparison thead tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:8px}.cities-comparison thead th:first-child{display:none}.cities-comparison th{padding:7px 5px;border:1px solid var(--line);border-radius:8px;background:#fff;text-align:center}.cities-comparison th button{justify-content:center;width:100%;font-size:12px}.cities-comparison tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;margin-top:10px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff}.cities-comparison td{padding:0;border:0}.cities-comparison td:first-child{grid-column:1/-1}.cities-comparison td::before{content:attr(data-label);display:block;margin-bottom:2px;color:var(--muted);font-size:11px;font-weight:700}.cities-comparison td:first-child::before{display:none}.city-cost{white-space:normal}.lgbt-row{grid-template-columns:1fr;gap:7px}.country-info-card{padding:15px}}
 @media(max-width:600px){.secure-note{display:none}}
 @media(max-width:430px){.two-choice,.segmented.four{grid-template-columns:1fr}.money-combo{grid-template-columns:minmax(0,1fr) 82px}}
 
