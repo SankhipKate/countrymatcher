@@ -8,15 +8,22 @@
 
 ## Подключённые страны
 
-### Испания
+В активный matcher подключены семь Research Package 4.0:
 
-- Активные машиночитаемые данные: `../../data/ES-research-v4.0.json`
-- Статус: единственная подключённая страна Canon 4.0.
+- Испания — `../../data/ES-research-v4.0.json`;
+- Аргентина — `../../data/AR-research-v4.0.json`;
+- Уругвай — `../../data/UY-research-v4.0.json`;
+- Бразилия — `../../data/BR-research-v4.0.json`;
+- Португалия — `../../data/PT-research-v4.0.json`;
+- Мексика — `../../data/MX-research-v4.0.json`;
+- Парагвай — `../../data/PY-research-v4.0.json`.
 
-Аргентина, Бразилия, Мексика, Парагвай, Португалия и Уругвай ожидают миграции на Research Package 4.0. Их RP3.0-файлы сохранены как инертные исследования и не используются matcher.
+Файлы Research Package 3.0 и старые country reports сохраняются только как архивные материалы и не используются активным matcher.
+
+Quality of Life хранится отдельно в `../../data/quality-of-life-ru.json`. Это editorial presentation layer, а не Research Package и не источник route status.
 
 ## Исследование новой страны
 
-Новые и пересобранные исследования создаются только по [единому стандарту 4.0](../../../source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md) и проверяются по [Research Package 4.0](../../data/research-package-v4.0.schema.json). Research Package 3.0 — прежний формат ещё не мигрированных исследований стран.
+Новые исследования создаются только по [единому стандарту 4.0](../../../source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md) и проверяются по [Research Package 4.0](../../data/research-package-v4.0.schema.json).
 
-Для запуска исследования используйте [готовый промпт 4.0](../../../source-documents/canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md). До подключения рабочие файлы находятся только в корневом `research-backlog/`; после подключения текущая версия переносится в `countrymatcher/docs/research/`, а пакет — в `countrymatcher/data/`.
+Для запуска исследования используется [готовый промпт 4.0](../../../source-documents/canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md). До подключения рабочие исследовательские материалы находятся в корневом `research-backlog/`; после интеграции активный пакет находится в `countrymatcher/data/`, а необходимые отчёты могут сохраняться в `countrymatcher/docs/research/`.

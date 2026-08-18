@@ -21,6 +21,18 @@ async function existingRelativeAsset(relativePath) {
   await access(new URL(`../${cleanPath}`, import.meta.url));
 }
 
+async function activeRp4CountryNames() {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const activeBlock = app.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(activeBlock, 'ACTIVE_RP4_PACKAGES must exist');
+  const activeFiles = [...activeBlock[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
+  assert.ok(activeFiles.length > 0, 'at least one active RP4 package is required');
+  return Promise.all(activeFiles.map(async (filename) => {
+    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+    return pkg.country_name_ru;
+  }));
+}
+
 test('repository has one application folder, one backlog, and one source-document folder', async () => {
   const visible = (await readdir(repositoryRoot)).filter((name) => !name.startsWith('.')).sort();
   assert.deepEqual(visible, ['countrymatcher', 'research-backlog', 'source-documents']);
@@ -63,9 +75,43 @@ test('current Canon never requires a school-type preference for international sc
   ].map((path) => readFile(new URL(path, sourceDocumentsRoot), 'utf8')));
   const canon = documents.join('\n');
   assert.doesNotMatch(canon, /Международная школа учитывается отдельно и только когда пользователь указал необходимость международной школы/u);
+  assert.doesNotMatch(canon, /необходимость международной школы/u);
   assert.match(canon, /Анкета не спрашивает тип школы/u);
   assert.match(canon, /Международные школы с обучением на английском/u);
   assert.match(canon, /school_needed[^\n]+не выбирает/u);
+});
+
+test('maintained project documents describe the production 7.2.0 questionnaire and funnel', async () => {
+  const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
+  const [readme, deployment, researchReadme, questionnaire, overview, roadmap, matchingStandard] = await Promise.all([
+    readFile(new URL('../README.md', import.meta.url), 'utf8'),
+    readFile(new URL('../DEPLOYMENT.md', import.meta.url), 'utf8'),
+    readFile(new URL('../docs/research/README.md', import.meta.url), 'utf8'),
+    readFile(new URL('QUESTIONNAIRE_AND_RESULTS_v4.0.md', sourceDocumentsRoot), 'utf8'),
+    readFile(new URL('PROJECT_OVERVIEW_v4.0.md', sourceDocumentsRoot), 'utf8'),
+    readFile(new URL('ROADMAP_v4.0.md', sourceDocumentsRoot), 'utf8'),
+    readFile(new URL('canon-v4.0/MATCHING_AND_RESULT_STANDARD.md', sourceDocumentsRoot), 'utf8'),
+  ]);
+
+  const activeCountryNames = await activeRp4CountryNames();
+  for (const country of activeCountryNames) {
+    assert.ok(readme.includes(country), `README: ${country}`);
+    assert.ok(deployment.includes(country), `DEPLOYMENT: ${country}`);
+    assert.ok(researchReadme.includes(country), `research README: ${country}`);
+    assert.ok(overview.includes(country), `PROJECT_OVERVIEW: ${country}`);
+  }
+
+  assert.doesNotMatch(`${readme}
+${deployment}
+${researchReadme}`, /подключены три страны|активные страны — Испания, Аргентина и Уругвай|единственная подключённая страна Canon 4\.0/u);
+  assert.match(questionnaire, /подтверждаемых сбережений/u);
+  assert.doesNotMatch(questionnaire, /семейный бюджет|Не знаю бюджет|Накопления[^\n]+не спрашиваются/u);
+  assert.match(questionnaire, /первая страна открывается бесплатно полностью/u);
+  assert.match(questionnaire, /автоматической синхронизации доступа между разными браузерами или устройствами нет/u);
+  assert.match(matchingStandard, /## 22\.1\. Бесплатный preview и полный доступ/u);
+  assert.match(matchingStandard, /## 32\.1\. Quality of Life editorial layer/u);
+  assert.doesNotMatch(matchingStandard, /необходимость международной школы/u);
+  assert.doesNotMatch(roadmap, /перенести проверку платного доступа на сервер|автоматическая оплата иностранными картами|автоматическая выдача доступа после подтверждённой оплаты/u);
 });
 
 test('root index is the application and matcher has no user page or redirect', async () => {
@@ -251,17 +297,17 @@ test('matcher renders practical financial guidance separately from official nume
   assert.doesNotMatch(numericFinancialItems[0], /practicalGuidance/);
 });
 
-test('research order marks only migrated RP4 countries connected and ignores archived RP3 files', async () => {
+test('research order connected status matches the active RP4 matcher and ignores archived RP3 files', async () => {
   const queue = JSON.parse(await readFile(new URL('../../source-documents/COUNTRY_RESEARCH_ORDER_v4.0.json', import.meta.url), 'utf8'));
   assert.equal(queue.countries.length, 250);
   assert.equal(new Set(queue.countries.map(({ overall_rank }) => overall_rank)).size, 250);
-  const byName = new Map(queue.countries.map((country) => [country.country, country]));
-  for (const country of ['Испания', 'Аргентина', 'Уругвай']) assert.equal(byName.get(country)?.research_status, 'Подключена', country);
-  for (const country of ['Бразилия', 'Мексика', 'Парагвай', 'Португалия']) {
-    assert.equal(byName.get(country)?.research_status, 'Исследована, ожидает миграции 4.0', country);
-  }
+
+  const activeCountryNames = await activeRp4CountryNames();
+  const connectedNames = queue.countries
+    .filter(({ research_status }) => research_status === 'Подключена')
+    .map(({ country }) => country);
+
+  assert.deepEqual([...connectedNames].sort(), [...activeCountryNames].sort());
   const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
   assert.ok(archivedV3.length > 0);
-  const formerlyConnected = ['Испания', 'Аргентина', 'Бразилия', 'Мексика', 'Парагвай', 'Португалия', 'Уругвай'];
-  assert.deepEqual(formerlyConnected.filter((country) => byName.get(country)?.research_status === 'Подключена'), ['Испания', 'Аргентина', 'Уругвай']);
 });
