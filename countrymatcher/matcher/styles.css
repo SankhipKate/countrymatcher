@@ -97,6 +97,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-info-pets{background:#f3faf6;border-color:#c9e2d3}
 .country-info-taxes{background:#fff9ee;border-color:#e8d7ae}
 .country-info-quality-of-life{background:#f6f8f5;border-color:#d4ddd0}
+.country-fx-errors{margin-top:16px;background:#fff8f4;border-color:#e7cdbd}.country-fx-error{display:grid;gap:3px;padding:10px 0;border-top:1px solid #ead8cd}.country-fx-error:first-of-type{border-top:0}.country-fx-error span{color:var(--muted);line-height:1.45}
 .quality-of-life-score{margin:0 0 12px;font-size:17px;line-height:1.5}
 .quality-of-life-disclaimer{margin:0 0 18px;padding:12px;border-radius:10px;background:#eef2ec;color:#465246;line-height:1.5}
 .quality-of-life-narrative p{margin:0 0 13px;line-height:1.65;color:#334155}

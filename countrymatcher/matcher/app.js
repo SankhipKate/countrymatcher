@@ -1,6 +1,6 @@
 import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.2.0';
 import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.2.0';
-import { loadCalculationContext } from '../pilot/fx-context.js?v=7.2.0';
+import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=7.2.0';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.2.0';
 import { formatCurrency } from './format.js?v=7.2.0';
 import {
@@ -46,6 +46,11 @@ const radio = (name) => $(`input[name="${name}"]:checked`)?.value || '';
 const checkboxValues = (name) => $$(`input[name="${name}"]:checked`).map((input) => input.value);
 const html = (text) => String(text ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
 const currency = formatCurrency;
+const questionnaireCurrencies = () => [...new Set(
+  $$('select[id$="Currency"] option')
+    .map((option) => String(option.value || option.textContent || '').trim())
+    .filter((code) => /^[A-Z]{3}$/.test(code)),
+)];
 const officialFinancialPeriodSuffix = (period) => ({ MONTHLY: '/мес', ANNUAL: '/год' })[period] || '';
 const INCOME_FIELDS = (prefix, title) => `<h3>${title}</h3><div class="field-grid two-col">
   <label class="field"><span>Тип дохода *</span><select id="${prefix}Type"><option value="" disabled selected hidden>Выберите</option><option value="REMOTE_EMPLOYMENT">Удалённая работа по трудовому договору</option><option value="CONTRACTOR">Контракт с заказчиком (без трудовых отношений)</option><option value="FREELANCE_OR_SELF_EMPLOYED">Фриланс или самозанятость</option><option value="SOLE_PROPRIETOR">ИП</option><option value="COMPANY_OWNER">Владелец компании</option><option value="LOCAL_EMPLOYMENT">Работа в стране назначения</option><option value="PENSION">Пенсия</option><option value="PASSIVE_INCOME">Пассивный доход</option><option value="INVESTMENT_INCOME">Инвестиционный доход</option><option value="OTHER_REGULAR_INCOME">Другой регулярный доход</option><option value="NO_REGULAR_INCOME">Регулярного дохода сейчас нет</option></select><small id="${prefix}IncomeTypeHelp"></small></label>
@@ -619,11 +624,35 @@ function calculateActiveCountries() {
   return calculateActiveMatcher(currentProfile, activeResearchPackages, calculationContext);
 }
 
+function renderCalculationErrors(errors = []) {
+  if (!errors.length) return '';
+  const rows = errors.map((error) => {
+    const currencies = Array.isArray(error.currencies) ? error.currencies.join(', ') : '';
+    const detail = currencies ? `Нет доступного курса: ${currencies}.` : 'Нет доступного валютного курса.';
+    return `<div class="country-fx-error"><b>${html(error.countryName || error.countryId || 'Страна')}</b><span>${html(detail)}</span></div>`;
+  }).join('');
+  return `<section class="country-info-card country-fx-errors"><div class="section-title-row"><div><h3>Временно не рассчитано</h3></div></div>${rows}</section>`;
+}
+
+function calculationErrorText(errors = []) {
+  if (!errors.length) return 'Не удалось сформировать результат. Проверьте ответы и попробуйте выполнить расчёт ещё раз.';
+  return errors.map((error) => error.message || `${error.countryName || error.countryId}: нет доступного валютного курса.`).join(' ');
+}
+
+function calculationNoteHtml(country) {
+  const calculatedAt = country?.calculatedAt?.slice(0, 10) || calculationContext.calculation_date?.slice(0, 10);
+  const fxSummary = summarizeFxContext(calculationContext.fx, country?.fxUsedCurrencies || []);
+  const fxNote = fxSummary.as_of && fxSummary.source
+    ? ` Курс валют: ${html(fxSummary.as_of.slice(0, 10))}, источник ${html(fxSummary.source)}.`
+    : '';
+  return `Юридические правила маршрутов проверены по указанным источникам. Расчёт: ${html(calculatedAt)}.${fxNote} Результат носит информационный характер и не является юридическим обещанием.`;
+}
+
 function renderResult(calculation, changed = false, lockedCountries = [], answers = null) {
   const countries = sortCountriesForDisplay(calculation.results || []);
-  const calculatedAt = countries[0]?.calculatedAt?.slice(0, 10) || calculationContext.calculation_date?.slice(0, 10);
-  const calculationNote = `<p class="result-note">Юридические правила маршрутов проверены по указанным источникам. Расчёт: ${html(calculatedAt)}. Курс валют: ${html(calculationContext.fx.as_of?.slice(0, 10))}, источник ${html(calculationContext.fx.source)}. Результат носит информационный характер и не является юридическим обещанием.</p>`;
-  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}${lockedCountries.map(renderLockedCountryTab).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${calculationNote}${answers ? renderAnswersBlock(answers) : ''}`;
+  const calculationNote = `<p id="calculationResultNote" class="result-note">${calculationNoteHtml(countries[0])}</p>`;
+  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}${lockedCountries.map(renderLockedCountryTab).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${renderCalculationErrors(calculation.errors || [])}${calculationNote}${answers ? renderAnswersBlock(answers) : ''}`;
+  const countryById = new Map(countries.map((country) => [country.country.countryId, country]));
   const activateCountry = (countryId) => {
     $$('[data-country-tab]', $('#result')).forEach((tab) => {
       const active = tab.dataset.countryTab === countryId;
@@ -631,6 +660,8 @@ function renderResult(calculation, changed = false, lockedCountries = [], answer
       tab.setAttribute('aria-selected', String(active));
     });
     $$('[data-country-panel]', $('#result')).forEach((panel) => { panel.hidden = panel.dataset.countryPanel !== countryId; });
+    const note = $('#calculationResultNote', $('#result'));
+    if (note) note.innerHTML = calculationNoteHtml(countryById.get(countryId));
     requestAnimationFrame(() => {
       $('.country-workspace', $('#result'))?.scrollIntoView({ block: 'start', behavior: 'smooth' });
     });
@@ -679,9 +710,10 @@ function showUnpaidResult(presentation, accessState, changed = false) {
   $('#heroSubtitle').textContent = '';
   $('#heroSubtitle').hidden = true;
   $('#editProfile').hidden = true;
+  const fxErrorText = !hasFreeCountry && presentation.errors?.length ? calculationErrorText(presentation.errors) : '';
   showAccessTeaser({
     heading: teaser.heading,
-    text: teaser.text,
+    text: [teaser.text, fxErrorText].filter(Boolean).join(' '),
     breakdown: teaser.breakdown,
     freeCountryMessage: presentation.freeCountryMessage,
     lockedCountryCount: presentation.lockedCountryCount || 0,
@@ -690,7 +722,7 @@ function showUnpaidResult(presentation, accessState, changed = false) {
   });
 }
 
-function showCalculationFailure() {
+function showCalculationFailure(errors = []) {
   pendingCalculation = null;
   hideAccessGate();
   $('#result').innerHTML = '';
@@ -701,7 +733,7 @@ function showCalculationFailure() {
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
   $('#formError').hidden = false;
-  $('#formError').textContent = 'Не удалось сформировать результат. Проверьте ответы и попробуйте выполнить расчёт ещё раз.';
+  $('#formError').textContent = calculationErrorText(errors);
 }
 
 async function accessStateForResult() {
@@ -714,7 +746,7 @@ async function accessStateForResult() {
 async function handleCalculatedResult(calculation, { changed = false, accessState = null } = {}) {
   const presentation = deriveFunnelPresentation(calculation, sortCountriesForDisplay);
   if (presentation.state === FUNNEL_STATES.ERROR) {
-    showCalculationFailure();
+    showCalculationFailure(presentation.errors || calculation.errors || []);
     return;
   }
   pendingCalculation = { calculation, changed, answers: currentAnswers };
@@ -849,7 +881,7 @@ async function init() {
   const restoredDraft = restoreDraft();
   syncChildren(); syncConditional(); showStep(1, false);
   try {
-    const [packages, schemaResponse, context, editorial] = await Promise.all([
+    const [packages, schemaResponse, editorial] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
         const response = await fetch(new URL(`${filename}?v=7.2.0`, DATA_BASE));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
@@ -858,22 +890,29 @@ async function init() {
         return pkg;
       })),
       fetch(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', DATA_BASE)),
-      loadCalculationContext(),
       fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=7.2.0`, DATA_BASE))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
+    const fxCurrencies = [...new Set([...collectCurrencyCodes(packages), ...questionnaireCurrencies()])];
+    const context = await loadCalculationContext({ currencies: fxCurrencies });
     activeResearchPackages = packages;
     profileSchema = await schemaResponse.json();
     calculationContext = context;
     qualityOfLifeEditorial = editorial?.countries && typeof editorial.countries === 'object' ? editorial : { countries: {} };
-    $('#calculationAvailabilityError').hidden = true;
-    $('#calculationAvailabilityError').textContent = '';
+    const availabilityError = $('#calculationAvailabilityError');
+    if (hasCompleteFxOutage(context.fx)) {
+      availabilityError.hidden = false;
+      availabilityError.textContent = 'Курсы валют сейчас недоступны. Расчёт стран, где нужна конвертация валют, временно может быть недоступен.';
+    } else {
+      availabilityError.hidden = true;
+      availabilityError.textContent = '';
+    }
     await handlePaymentReturn(restoredDraft);
   } catch (error) {
     $('#calculationAvailabilityError').hidden = false;
-    $('#calculationAvailabilityError').textContent = error.code === 'CALCULATION_CONTEXT_INCOMPLETE' ? 'Расчёт временно недоступен: не удалось получить курс валют.' : `Не удалось загрузить данные: ${error.message}`;
+    $('#calculationAvailabilityError').textContent = `Не удалось загрузить данные: ${error.message}`;
   }
 }
 

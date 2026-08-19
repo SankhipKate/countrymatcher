@@ -107,8 +107,9 @@ export function teaserPresentation(calculation) {
 }
 
 export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
+  const errors = Array.isArray(calculation?.errors) ? calculation.errors : [];
   if (!hasValidResults(calculation) || typeof sortCountriesForDisplay !== 'function') {
-    return { state: FUNNEL_STATES.ERROR };
+    return errors.length ? { state: FUNNEL_STATES.ERROR, errors } : { state: FUNNEL_STATES.ERROR };
   }
 
   const teaser = teaserPresentation(calculation);
@@ -117,6 +118,7 @@ export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
   ));
 
   if (matchedCountries.length === 0) {
+    if (errors.length) return { state: FUNNEL_STATES.ERROR, errors };
     return {
       state: FUNNEL_STATES.ZERO_MATCH,
       teaser,
@@ -132,7 +134,8 @@ export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
     teaser,
     freeCountryMessage: 'Одна страна открыта бесплатно — полный разбор ниже.',
     lockedCountryCount: Math.max(0, sortedMatchedCountries.length - 1),
-    previewCalculation: { results: [freeCountry] },
+    ...(errors.length ? { errors } : {}),
+    previewCalculation: { results: [freeCountry], ...(errors.length ? { errors } : {}) },
     lockedCountries: sortedMatchedCountries
       .filter((result) => result !== freeCountry)
       .map((result) => ({

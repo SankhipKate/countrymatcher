@@ -120,6 +120,31 @@ test('active contract accepts only Final Lock Research Package 4.0 without fallb
   assert.throws(() => assertActiveResearchPackage({ ...spain, canon_revision: 'draft' }), /2026-08-08-final-lock/);
 });
 
+test('one missing country FX rate produces a country-scoped error while other countries still calculate', () => {
+  const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
+  const partialContext = { fx: { base_currency: 'USD', rates: { EUR: 0.9 }, as_of: '2026-08-09', source: 'test' } };
+  const calculation = calculateActiveMatcher(input, [spain, uruguay], partialContext);
+  assert.deepEqual(calculation.results.map(({ country }) => country.countryId), ['ES']);
+  assert.deepEqual(calculation.errors, [{
+    countryId: 'UY',
+    countryName: 'Уругвай',
+    code: 'FX_RATE_MISSING',
+    currencies: ['UYU'],
+    message: 'Расчёт для страны «Уругвай» временно недоступен: нет курса UYU.',
+  }]);
+});
+
+test('country result records only FX currencies actually used by that country calculation', () => {
+  const input = profile({ applicantAmount: 6000, applicantCurrency: 'RUB' });
+  const usageContext = { fx: { ...context.fx, rates: { ...context.fx.rates, RUB: 80 } } };
+  const calculation = calculateActiveMatcher(input, [spain, uruguay], usageContext);
+  const byCountry = new Map(calculation.results.map((result) => [result.country.countryId, result]));
+  assert.deepEqual(byCountry.get('ES').fxUsedCurrencies, ['EUR', 'RUB']);
+  assert.deepEqual(byCountry.get('UY').fxUsedCurrencies, ['RUB', 'UYU']);
+  assert.equal(byCountry.get('ES').fxUsedCurrencies.includes('UYU'), false);
+  assert.equal(byCountry.get('UY').fxUsedCurrencies.includes('EUR'), false);
+});
+
 test('active matcher calculates real Spain, Argentina, and Uruguay packages through the same country pipeline', () => {
   const input = profile({ applicantAmount: 6000, applicantCurrency: 'USD' });
   const threeCountryContext = { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } };

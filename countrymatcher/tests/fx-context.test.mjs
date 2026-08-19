@@ -1,192 +1,280 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import {
-  CalculationContextLoadError,
+  buildFxEndpoint,
+  collectCurrencyCodes,
+  collectQuestionnaireCurrencyCodes,
+  FX_BASE_CURRENCY,
   FX_CACHE_KEY,
-  FX_ENDPOINT,
   FX_FALLBACK_URL,
-  REQUESTED_CURRENCIES,
-  REQUIRED_CURRENCIES,
+  hasCompleteFxOutage,
   loadCalculationContext,
+  normalizeFxCurrencies,
+  summarizeFxContext,
 } from '../pilot/fx-context.js';
 
 const NOW = new Date('2026-08-12T00:00:00.000Z');
 const row = (quote, rate, date = '2026-08-11') => ({ quote, rate, date });
-const requiredRows = (date = '2026-08-11') => [
-  row('EUR', 0.86, date),
-  row('ARS', 1320, date),
-  row('MXN', 18.6, date),
-  row('BRL', 5.4, date),
-  row('RUB', 79, date),
-  row('UYU', 40.1, date),
-  row('PYG', 6250, date),
-];
-const bundled = (rates = { EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, UYU: 40.1, PYG: 6250 }) => ({
-  base_currency: 'USD', source: 'Frankfurter — резервный курс', as_of: '2026-08-01', rates,
-});
 const response = (rows) => ({ ok: true, json: async () => rows });
-const network = (rows, extra = {}) => loadCalculationContext({
-  fetchImpl: async () => response(rows),
-  now: NOW,
-  storage: null,
-  ...extra,
-});
-const storageWith = (rows) => ({
-  getItem: (key) => key === FX_CACHE_KEY ? JSON.stringify({ source: 'Frankfurter', rows }) : null,
-  setItem() {},
-});
-const assertIncomplete = async (operation, message) => assert.rejects(operation, (error) => {
-  assert.ok(error instanceof CalculationContextLoadError);
-  assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-  if (message) assert.match(error.message, message);
-  return true;
+const bundled = (rates, dates = {}) => ({
+  base_currency: 'USD',
+  source: 'Frankfurter — резервный курс',
+  as_of: '2026-08-01',
+  dates,
+  rates,
 });
 
-test('FX endpoint is generated from the single requested-currency list', () => {
-  assert.deepEqual(REQUESTED_CURRENCIES, ['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU', 'PYG']);
-  assert.deepEqual(REQUIRED_CURRENCIES, ['EUR', 'ARS', 'MXN', 'BRL', 'RUB', 'UYU', 'PYG']);
-  assert.equal(FX_ENDPOINT, `https://api.frankfurter.dev/v2/rates?base=USD&quotes=${REQUESTED_CURRENCIES.join(',')}`);
+function memoryStorage(rows = []) {
+  let value = rows.length ? JSON.stringify({ source: 'Frankfurter', rows }) : null;
+  return {
+    getItem(key) { return key === FX_CACHE_KEY ? value : null; },
+    setItem(key, next) { if (key === FX_CACHE_KEY) value = String(next); },
+    snapshot() { return value ? JSON.parse(value) : null; },
+  };
+}
+
+const load = (currencies, rows, extra = {}) => loadCalculationContext({
+  currencies,
+  fetchImpl: async () => response(rows),
+  fallbackFetchImpl: async () => ({ ok: false, status: 404 }),
+  now: NOW,
+  storage: null,
+  logger: { warn() {} },
+  ...extra,
+});
+
+test('FX currencies are discovered from RP4 currency fields instead of a country-specific manual list', () => {
+  const packages = [
+    { country_currency: 'EUR', nested: { currency: 'USD' } },
+    { country_currency: 'CLP', tuition: { currency: 'CLP' } },
+    { country_currency: 'UYU', note: { currency: null } },
+  ];
+  assert.deepEqual(collectCurrencyCodes(packages), ['EUR', 'USD', 'CLP', 'UYU']);
+  assert.deepEqual(normalizeFxCurrencies([...collectCurrencyCodes(packages), 'RUB', 'USD']), ['CLP', 'EUR', 'RUB', 'UYU']);
+  assert.equal(buildFxEndpoint(['EUR', 'CLP', 'USD', 'RUB']), 'https://api.frankfurter.dev/v2/rates?base=USD');
+  assert.equal(FX_BASE_CURRENCY, 'USD');
   assert.equal(FX_FALLBACK_URL.href, new URL('../data/fx-fallback.json', new URL('../pilot/fx-context.js', import.meta.url)).href);
 });
 
-test('complete network response retains all valid requested currencies', async () => {
-  const context = await network([
-    row('EUR', 0.86, '2026-08-10'), row('ARS', 1320), row('MXN', 18.6),
-    row('BRL', 5.4), row('RUB', 79), row('UYU', 40.1), row('PYG', 6250), row('CAD', 1.3),
-  ]);
-  assert.deepEqual(context.fx.rates, { EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, UYU: 40.1, PYG: 6250 });
-  assert.equal(context.fx.base_currency, 'USD');
+
+test('questionnaire currencies are discovered from actual currency selects instead of a second FX list', () => {
+  const indexMarkup = '<select id="primaryCurrency"><option>USD</option><option>EUR</option><option>RUB</option></select>';
+  const appMarkup = '<select id="${prefix}Currency"><option>USD</option><option value="EUR">Euro</option><option>RUB</option></select>';
+  assert.deepEqual(collectQuestionnaireCurrencyCodes([indexMarkup, appMarkup]), ['USD', 'EUR', 'RUB']);
+});
+
+test('live endpoint deliberately requests all available Frankfurter rates so one bad local code cannot poison quotes', async () => {
+  let requestedUrl = null;
+  const context = await loadCalculationContext({
+    currencies: ['EUR', 'ZZZ'],
+    fetchImpl: async (url) => {
+      requestedUrl = String(url);
+      return response([row('EUR', 0.86)]);
+    },
+    bundledFallback: bundled({}),
+    now: NOW,
+    storage: null,
+    logger: { warn() {} },
+  });
+  assert.equal(requestedUrl, 'https://api.frankfurter.dev/v2/rates?base=USD');
+  assert.deepEqual(context.fx.rates, { EUR: 0.86 });
+  assert.deepEqual(context.fx.missing_currencies, ['ZZZ']);
+});
+
+test('complete live response is used directly', async () => {
+  const context = await load(['EUR', 'RUB', 'CLP'], [row('EUR', 0.86), row('RUB', 79), row('CLP', 930)]);
+  assert.deepEqual(context.fx.rates, { CLP: 930, EUR: 0.86, RUB: 79 });
+  assert.deepEqual(context.fx.missing_currencies, []);
   assert.equal(context.fx.source, 'Frankfurter');
-  assert.equal(context.fx.as_of, '2026-08-10');
+  assert.equal(context.fx.as_of, '2026-08-11');
+  assert.equal(context.fx.is_saved_fallback, false);
+  assert.equal(context.fx.is_bundled_fallback, false);
 });
 
-test('missing or malformed required UYU rejects the network context', async () => {
-  const withoutUyu = requiredRows().filter(({ quote }) => quote !== 'UYU');
-  await assert.rejects(() => network(withoutUyu), (error) => {
-    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-    assert.equal(error.details.currency, 'UYU');
-    return true;
+test('one missing live currency is filled from bundled fallback without discarding healthy live rates', async () => {
+  const context = await load(['EUR', 'UYU'], [row('EUR', 0.86)], {
+    bundledFallback: bundled({ EUR: 0.80, UYU: 40.1 }),
   });
-  await assertIncomplete(() => network([...withoutUyu, row('UYU', 0)]), /UYU/);
-});
-
-test('missing or malformed required PYG rejects the network context', async () => {
-  const withoutPyg = requiredRows().filter(({ quote }) => quote !== 'PYG');
-  await assert.rejects(() => network(withoutPyg), (error) => {
-    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-    assert.equal(error.details.currency, 'PYG');
-    return true;
-  });
-  await assertIncomplete(() => network([...withoutPyg, row('PYG', 0)]), /PYG/);
-});
-
-test('missing or malformed required BRL rejects the network context', async () => {
-  const withoutBrl = requiredRows().filter(({ quote }) => quote !== 'BRL');
-  await assert.rejects(() => network(withoutBrl), (error) => {
-    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-    assert.equal(error.details.currency, 'BRL');
-    return true;
-  });
-  await assertIncomplete(() => network([...withoutBrl, row('BRL', 0)]), /BRL/);
-});
-
-test('missing or malformed required MXN rejects the network context', async () => {
-  const withoutMxn = requiredRows().filter(({ quote }) => quote !== 'MXN');
-  await assert.rejects(() => network(withoutMxn), (error) => {
-    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-    assert.equal(error.details.currency, 'MXN');
-    return true;
-  });
-  await assertIncomplete(() => network([...withoutMxn, row('MXN', 0)]), /MXN/);
-});
-
-test('missing required RUB preserves the existing incomplete-context error contract', async () => {
-  await assertIncomplete(() => network(requiredRows().filter(({ quote }) => quote !== 'RUB')), /RUB/);
-});
-
-test('an older required UYU controls as_of', async () => {
-  const context = await network([
-    row('EUR', 0.86, '2026-08-11'), row('ARS', 1320, '2026-08-11'),
-    row('MXN', 18.6, '2026-08-11'), row('BRL', 5.4, '2026-08-11'),
-    row('RUB', 79, '2026-08-11'), row('UYU', 40.1, '2026-07-01'), row('PYG', 6250, '2026-08-11'),
-  ], { maxAgeHours: 2000 });
-  assert.equal(context.fx.rates.UYU, 40.1);
-  assert.equal(context.fx.as_of, '2026-07-01');
-});
-
-test('stale and excessively future-dated required network contexts keep the common error code', async () => {
-  await assertIncomplete(() => network(requiredRows('2026-08-01'), { maxAgeHours: 96 }), /устарел/);
-  await assertIncomplete(() => network(requiredRows('2026-08-14'), { maxAgeHours: 96 }), /устарел/);
-  const staleUyu = requiredRows().map((item) => item.quote === 'UYU' ? row('UYU', 40.1, '2026-08-01') : item);
-  await assertIncomplete(() => network(staleUyu, { maxAgeHours: 96 }), /устарел/);
-});
-
-test('saved fallback without required RUB is rejected', async () => {
-  const storage = storageWith(requiredRows('2020-01-01').filter(({ quote }) => quote !== 'RUB'));
-  await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, now: NOW, storage }));
-});
-
-test('saved fallback without required UYU is rejected', async () => {
-  const rows = requiredRows('2020-01-01').filter(({ quote }) => quote !== 'UYU');
-  const storage = storageWith(rows);
-  await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, now: NOW, storage }));
-});
-
-test('saved fallback without required PYG is rejected', async () => {
-  const rows = requiredRows('2020-01-01').filter(({ quote }) => quote !== 'PYG');
-  const storage = storageWith(rows);
-  await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, now: NOW, storage }));
-});
-
-test('saved fallback with all required active-country currencies is accepted without cache freshness validation', async () => {
-  const storage = storageWith(requiredRows('2020-01-01'));
-  const context = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, now: NOW, storage });
-  assert.equal(context.fx.is_saved_fallback, true);
-  assert.equal(context.fx.as_of, '2020-01-01');
-  assert.deepEqual(context.fx.rates, { EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, UYU: 40.1, PYG: 6250 });
-});
-
-test('healthy live and saved cache precede the bundled fallback', async () => {
-  const live = await loadCalculationContext({ fetchImpl: async () => response(requiredRows()), bundledFallback: bundled(), now: NOW });
-  assert.equal(live.fx.source, 'Frankfurter');
-  const saved = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: storageWith(requiredRows('2020-01-01')), bundledFallback: bundled(), now: NOW });
-  assert.equal(saved.fx.is_saved_fallback, true);
-});
-
-test('valid bundled fallback is the dated final calculation source and retains requested currencies', async () => {
-  const context = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: bundled(), now: NOW });
-  assert.equal(context.fx.is_bundled_fallback, true);
-  assert.equal(context.fx.source, 'Frankfurter — резервный курс');
+  assert.deepEqual(context.fx.rates, { EUR: 0.86, UYU: 40.1 });
+  assert.deepEqual(context.fx.missing_currencies, []);
+  assert.equal(context.fx.source, 'Frankfurter + резервный курс');
   assert.equal(context.fx.as_of, '2026-08-01');
-  assert.deepEqual(Object.keys(context.fx.rates), REQUESTED_CURRENCIES);
+  assert.equal(context.fx.is_bundled_fallback, true);
 });
 
-test('malformed bundled fallback and a required currency missing everywhere fail explicitly', async () => {
-  await assertIncomplete(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: { nope: true }, now: NOW }));
-  await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => response(requiredRows().filter(({ quote }) => quote !== 'UYU')), storage: null, bundledFallback: bundled({ EUR: 0.86, ARS: 1320, MXN: 18.6, BRL: 5.4, RUB: 79, PYG: 6250 }), now: NOW }), (error) => {
-    assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-    assert.equal(error.details.currency, 'UYU');
-    return true;
+test('stale or malformed live rows fall back independently while fresh rows stay live', async () => {
+  const context = await load(['EUR', 'RUB', 'UYU'], [
+    row('EUR', 0.86),
+    row('RUB', 79, '2026-07-01'),
+    row('UYU', 0),
+  ], {
+    bundledFallback: bundled({ RUB: 80, UYU: 40.2 }, { RUB: '2026-08-05', UYU: '2026-08-06' }),
+  });
+  assert.deepEqual(context.fx.rates, { EUR: 0.86, RUB: 80, UYU: 40.2 });
+  assert.equal(context.fx.as_of, '2026-08-05');
+});
+
+test('saved browser rates fill individual holes before bundled fallback', async () => {
+  const storage = memoryStorage([row('UYU', 39.5, '2020-01-01')]);
+  const context = await loadCalculationContext({
+    currencies: ['EUR', 'UYU'],
+    fetchImpl: async () => response([row('EUR', 0.86)]),
+    bundledFallback: bundled({ UYU: 40.2 }),
+    now: NOW,
+    storage,
+    logger: { warn() {} },
+  });
+  assert.deepEqual(context.fx.rates, { EUR: 0.86, UYU: 39.5 });
+  assert.equal(context.fx.is_saved_fallback, true);
+  assert.equal(context.fx.is_bundled_fallback, false);
+  assert.equal(context.fx.as_of, '2020-01-01');
+});
+
+test('partial live refresh preserves an older saved row instead of erasing it', async () => {
+  const storage = memoryStorage([row('EUR', 0.8, '2026-08-01'), row('UYU', 39.5, '2026-08-02')]);
+  await loadCalculationContext({
+    currencies: ['EUR', 'UYU'],
+    fetchImpl: async () => response([row('EUR', 0.86, '2026-08-11')]),
+    bundledFallback: bundled({}),
+    now: NOW,
+    storage,
+    logger: { warn() {} },
+  });
+  assert.deepEqual(storage.snapshot().rows, [
+    row('EUR', 0.86, '2026-08-11'),
+    row('UYU', 39.5, '2026-08-02'),
+  ]);
+});
+
+test('a currency missing from live, saved, and bundled remains a local hole instead of failing the whole context', async () => {
+  const context = await load(['EUR', 'CLP'], [row('EUR', 0.86)], {
+    bundledFallback: bundled({ EUR: 0.8 }),
+  });
+  assert.deepEqual(context.fx.rates, { EUR: 0.86 });
+  assert.deepEqual(context.fx.missing_currencies, ['CLP']);
+  assert.equal(context.fx.source, 'Frankfurter');
+});
+
+test('invalid bundled fallback does not discard healthy live currencies', async () => {
+  const context = await load(['EUR', 'CLP'], [row('EUR', 0.86)], {
+    bundledFallback: { base_currency: 'EUR', rates: { CLP: 930 }, as_of: '2026-08-01' },
+  });
+  assert.deepEqual(context.fx.rates, { EUR: 0.86 });
+  assert.deepEqual(context.fx.missing_currencies, ['CLP']);
+});
+
+test('offline live source can merge saved and bundled currencies', async () => {
+  const storage = memoryStorage([row('EUR', 0.82, '2020-01-01')]);
+  const context = await loadCalculationContext({
+    currencies: ['EUR', 'UYU'],
+    fetchImpl: async () => { throw new Error('offline'); },
+    bundledFallback: bundled({ UYU: 40.2 }),
+    now: NOW,
+    storage,
+    logger: { warn() {} },
+  });
+  assert.deepEqual(context.fx.rates, { EUR: 0.82, UYU: 40.2 });
+  assert.equal(context.fx.source, 'Frankfurter — резервные курсы');
+  assert.deepEqual(context.fx.missing_currencies, []);
+});
+
+test('no requested quotes produces a valid USD-only context without network dependency', async () => {
+  let calls = 0;
+  const context = await loadCalculationContext({
+    currencies: ['USD'],
+    fetchImpl: async () => { calls += 1; throw new Error('should not fetch'); },
+    now: NOW,
+    storage: null,
+    logger: { warn() {} },
+  });
+  assert.equal(calls, 0);
+  assert.deepEqual(context.fx.rates, {});
+  assert.deepEqual(context.fx.requested_currencies, []);
+  assert.deepEqual(context.fx.missing_currencies, []);
+});
+
+test('per-country FX summary is not poisoned by an old fallback used by another country', async () => {
+  const context = await load(['EUR', 'UYU'], [row('EUR', 0.86, '2026-08-11')], {
+    bundledFallback: bundled({ UYU: 40.2 }, { UYU: '2021-01-01' }),
+  });
+  assert.equal(context.fx.as_of, '2021-01-01');
+  assert.deepEqual(summarizeFxContext(context.fx, ['EUR']), {
+    currencies: ['EUR'],
+    as_of: '2026-08-11',
+    source: 'Frankfurter',
+  });
+  assert.deepEqual(summarizeFxContext(context.fx, ['UYU']), {
+    currencies: ['UYU'],
+    as_of: '2021-01-01',
+    source: 'Frankfurter — резервный курс',
+  });
+  assert.deepEqual(summarizeFxContext(context.fx, ['EUR', 'UYU']), {
+    currencies: ['EUR', 'UYU'],
+    as_of: '2021-01-01',
+    source: 'Frankfurter + резервный курс',
   });
 });
 
-test('bundled fallback requires active-country MXN without changing live/cache semantics', async () => {
-  for (const currency of ['MXN']) {
-    const missing = bundled();
-    delete missing.rates[currency];
-    await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: missing, now: NOW }), (error) => {
-      assert.equal(error.code, 'CALCULATION_CONTEXT_INCOMPLETE');
-      assert.equal(error.details.currency, currency);
-      return true;
-    });
-    const malformed = bundled({ ...bundled().rates, [currency]: 0 });
-    await assert.rejects(() => loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: null, bundledFallback: malformed, now: NOW }), (error) => {
-      assert.equal(error.details.currency, currency);
-      return true;
-    });
+test('saved browser-only rates are labelled as saved fallback, never as live Frankfurter', async () => {
+  const storage = memoryStorage([row('EUR', 0.82, '2020-01-01')]);
+  const context = await loadCalculationContext({
+    currencies: ['EUR'],
+    fetchImpl: async () => { throw new Error('offline'); },
+    bundledFallback: bundled({}),
+    now: NOW,
+    storage,
+    logger: { warn() {} },
+  });
+  assert.equal(context.fx.source, 'Frankfurter — сохранённый курс');
+  assert.equal(context.fx.rate_sources.EUR, 'Frankfurter — сохранённый курс');
+  assert.deepEqual(summarizeFxContext(context.fx, ['EUR']), {
+    currencies: ['EUR'],
+    as_of: '2020-01-01',
+    source: 'Frankfurter — сохранённый курс',
+  });
+});
+
+test('complete FX outage is explicit and has no fake source or date', async () => {
+  const context = await loadCalculationContext({
+    currencies: ['EUR', 'RUB'],
+    fetchImpl: async () => { throw new Error('offline'); },
+    fallbackFetchImpl: async () => ({ ok: false, status: 503 }),
+    now: NOW,
+    storage: null,
+    logger: { warn() {} },
+  });
+  assert.deepEqual(context.fx.rates, {});
+  assert.deepEqual(context.fx.missing_currencies, ['EUR', 'RUB']);
+  assert.equal(context.fx.source, null);
+  assert.equal(context.fx.as_of, null);
+  assert.equal(hasCompleteFxOutage(context.fx), true);
+  assert.deepEqual(summarizeFxContext(context.fx, ['EUR']), { currencies: ['EUR'], as_of: null, source: null });
+});
+
+test('partial FX holes are not classified as complete outage', async () => {
+  const context = await load(['EUR', 'CLP'], [row('EUR', 0.86)], { bundledFallback: bundled({}) });
+  assert.equal(hasCompleteFxOutage(context.fx), false);
+});
+
+test('fallback refresh stores every current Frankfurter currency independently of RP4 inventory', async () => {
+  const script = await readFile(new URL('../scripts/refresh-fx-fallback.mjs', import.meta.url), 'utf8');
+  assert.match(script, /buildFxEndpoint\(\)/);
+  assert.match(script, /Object\.entries\(existing\?\.rates \|\| \{\}\)/);
+  assert.match(script, /for \(const row of Array\.isArray\(rows\) \? rows : \[\]\)/);
+  assert.match(script, /fetchedCount/);
+  assert.match(script, /Date\.parse\(date\) < Date\.parse\(dates\[currency\]\)/);
+  assert.doesNotMatch(script, /readdir\(dataRoot\)|collectCurrencyCodes|collectQuestionnaireCurrencyCodes|requestedCurrencies/);
+  assert.doesNotMatch(script, /REQUESTED_CURRENCIES|REQUIRED_CURRENCIES|Missing valid/);
+});
+
+test('committed FX fallback is a broad universal reserve rather than the current RP4 currency subset', async () => {
+  const fallback = JSON.parse(await readFile(new URL('../data/fx-fallback.json', import.meta.url), 'utf8'));
+  const currencies = Object.keys(fallback.rates || {});
+  assert.equal(fallback.base_currency, 'USD');
+  assert.ok(currencies.length > 100, `expected broad Frankfurter reserve, got ${currencies.length} currencies`);
+  for (const currency of ['ARS', 'BRL', 'CLP', 'COP', 'CRC', 'EUR', 'MXN', 'PYG', 'RUB', 'THB', 'UYU']) {
+    assert.ok(Number(fallback.rates?.[currency]) > 0, `missing fallback rate for ${currency}`);
+    assert.ok(Number.isFinite(Date.parse(fallback.dates?.[currency])), `missing fallback date for ${currency}`);
   }
-  const liveWithoutOptional = await network(requiredRows());
-  assert.equal(liveWithoutOptional.fx.source, 'Frankfurter');
-  const savedWithoutOptional = await loadCalculationContext({ fetchImpl: async () => { throw new Error('offline'); }, storage: storageWith(requiredRows('2020-01-01')), bundledFallback: bundled(), now: NOW });
-  assert.equal(savedWithoutOptional.fx.is_saved_fallback, true);
 });
