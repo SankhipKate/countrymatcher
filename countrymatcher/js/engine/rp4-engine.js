@@ -647,20 +647,32 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
     memberResults: [], conditions: [], linkedRouteIds: [], dataContractProblems: [],
   };
   const routeIds = new Set(packageRoutes.map((item) => item.route_id));
+  const familyPathSortRank = ({ scenario }) => {
+    if (!scenario) return 3;
+    if (['AFTER_INITIAL_RESIDENCE', 'AFTER_PR', 'AFTER_CITIZENSHIP'].includes(scenario.join_stage)
+      || scenario.simultaneous_move === 'NO') return 2;
+    if (scenario.join_stage === 'SEPARATE_ROUTE' || scenario.separate_route_required === true) return 1;
+    return 0;
+  };
   const memberResults = members.map((member) => {
     const applicable = scenariosForMember(scenarios, member);
     if (!applicable.length) return { memberId: member.id, memberType: member.type, state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, applicableScenarioIds: [], problems: ['no applicable family scenario'] };
     const paths = applicable.map((scenario) => familyPathResult(scenario, member, family, routeIds));
     const preferredState = paths.some(({ state }) => state === FAMILY_STATES.PASS) ? FAMILY_STATES.PASS
       : paths.some(({ state }) => state === FAMILY_STATES.CONDITION) ? FAMILY_STATES.CONDITION : FAMILY_STATES.DATA_CONTRACT_PROBLEM;
-    const selected = paths.filter(({ state }) => state === preferredState);
+    const preferredPaths = paths.filter(({ state }) => state === preferredState);
+    const bestFamilyRank = preferredState === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 3
+      : Math.min(...preferredPaths.map(familyPathSortRank));
+    const selected = preferredPaths.filter((path) => familyPathSortRank(path) === bestFamilyRank);
     return {
       memberId: member.id, memberType: member.type, age: member.age ?? null, state: preferredState,
+      sortRank: bestFamilyRank,
       applicableScenarioIds: selected.map(({ scenario }) => scenario.scenario_id),
       conditions: selected.flatMap(({ conditions = [] }) => conditions),
       classifications: selected.map(({ classification }) => classification).filter(Boolean),
       linkedRouteIds: selected.map(({ scenario }) => scenario.linked_route_id).filter(Boolean),
       joinStages: selected.map(({ scenario }) => scenario.join_stage),
+      simultaneousMoves: selected.map(({ scenario }) => scenario.simultaneous_move),
       separationMonthsMin: selected.map(({ scenario }) => scenario.separation_months_min).filter((value) => value != null),
       separationMonthsMax: selected.map(({ scenario }) => scenario.separation_months_max).filter((value) => value != null),
       memberLongTermPaths: selected.map(({ scenario }) => scenario.member_long_term_path).filter(Boolean),
@@ -675,12 +687,16 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
     : classifications.includes('SEPARATE_LINKED_ROUTE') ? 'SEPARATE_LINKED_ROUTE'
       : classifications.includes('LATER_JOIN') ? 'LATER_JOIN'
         : classifications.includes('CONDITIONAL_SIMULTANEOUS') ? 'CONDITIONAL_SIMULTANEOUS' : 'SIMULTANEOUS';
+  const sortRank = state === FAMILY_STATES.NOT_APPLICABLE ? 0
+    : state === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 3
+      : Math.max(0, ...memberResults.map((member) => Number.isInteger(member.sortRank) ? member.sortRank : 3));
   return {
-    state, classification, memberResults,
+    state, classification, sortRank, memberResults,
     applicableScenarioIds: [...new Set(memberResults.flatMap((member) => member.applicableScenarioIds || []))],
     conditions: [...new Set(memberResults.flatMap((member) => member.conditions || []))],
     linkedRouteIds: [...new Set(memberResults.flatMap((member) => member.linkedRouteIds || []))],
     joinStages: [...new Set(memberResults.flatMap((member) => member.joinStages || []))],
+    simultaneousMoves: [...new Set(memberResults.flatMap((member) => member.simultaneousMoves || []))],
     separationMonthsMin: memberResults.flatMap((member) => member.separationMonthsMin || []),
     separationMonthsMax: memberResults.flatMap((member) => member.separationMonthsMax || []),
     memberLongTermPaths: memberResults.flatMap((member) => member.memberLongTermPaths || []),
@@ -949,6 +965,9 @@ export function calculateActiveCountry(profile, pkg, context) {
       if (!calculated.blockers.length && calculated.conditions.length) calculated.routeStatus = ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS;
       calculated.conditionsCount = calculated.conditions.length;
     }
+    calculated.familyFit = familyEvaluation.state === FAMILY_STATES.NOT_APPLICABLE ? GOAL_FITS.NOT_APPLICABLE
+      : familyEvaluation.sortRank <= 1 ? GOAL_FITS.MEETS
+        : familyEvaluation.sortRank === 2 ? GOAL_FITS.DOES_NOT_MEET : GOAL_FITS.UNKNOWN;
     return { route, calculated, familyEvaluation };
   });
   const excludedRoutes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state === FAMILY_STATES.DATA_CONTRACT_PROBLEM)
@@ -956,14 +975,28 @@ export function calculateActiveCountry(profile, pkg, context) {
   const routes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state !== FAMILY_STATES.DATA_CONTRACT_PROBLEM)
     .map(({ route, calculated, familyEvaluation }) => ({ ...presentRoute(route, calculated, sourceIndex, countryContext), familyEvaluation }));
   const fitRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  const comparableOfficialProcessingDifference = (a, b) => {
+    const leftDays = a.processing?.officialDays;
+    const rightDays = b.processing?.officialDays;
+    if (!Number.isFinite(leftDays) || !Number.isFinite(rightDays)) return 0;
+    const leftRule = String(a.processing?.officialRule || '').trim();
+    const rightRule = String(b.processing?.officialRule || '').trim();
+    if (!leftRule || leftRule !== rightRule) return 0;
+    return leftDays - rightDays;
+  };
   const bestRoute = [...routes].map((route, originalIndex) => ({ route, originalIndex })).sort((left, right) => {
     const a = left.route;
     const b = right.route;
     const statusDifference = (ROUTE_PRESENTATION_RANK[a.presentationGroup] ?? 99)
       - (ROUTE_PRESENTATION_RANK[b.presentationGroup] ?? 99);
     if (statusDifference) return statusDifference;
+    const familyDifference = (a.familyEvaluation?.sortRank ?? fitRank[a.familyFit] ?? 1)
+      - (b.familyEvaluation?.sortRank ?? fitRank[b.familyFit] ?? 1);
+    if (familyDifference) return familyDifference;
     const goalDifference = (fitRank[a.goalFit] ?? 1) - (fitRank[b.goalFit] ?? 1);
     if (goalDifference) return goalDifference;
+    const processingDifference = comparableOfficialProcessingDifference(a, b);
+    if (processingDifference) return processingDifference;
     return left.originalIndex - right.originalIndex;
   })[0]?.route || null;
   const applicantIncome = applicantSources(profile).reduce((sum, item) => sum + convertAmount(

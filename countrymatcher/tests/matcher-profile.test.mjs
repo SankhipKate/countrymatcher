@@ -447,6 +447,28 @@ test('routes of the same status prefer simultaneous family fit and fewer conditi
   assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['family-few', 'family-many', 'separate']);
 });
 
+
+test('route display sorting uses the real family migration class before long-term goal', () => {
+  const routes = [
+    { routeId: 'later-but-goal', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'DOES_NOT_MEET', familyEvaluation: { sortRank: 2 }, goalFit: 'MEETS', conditions: ['A'] },
+    { routeId: 'combination', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank: 1 }, goalFit: 'UNKNOWN', conditions: ['A'] },
+    { routeId: 'direct', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank: 0 }, goalFit: 'UNKNOWN', conditions: ['A'] },
+  ];
+  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['direct', 'combination', 'later-but-goal']);
+});
+
+test('country display sorting distinguishes direct family move from route combination and later join', () => {
+  const country = (countryId, sortRank, goalFit = 'UNKNOWN') => ({
+    country: { countryId, group: 'SUITABLE_WITH_CONDITIONS' },
+    bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank }, goalFit },
+  });
+  assert.deepEqual(sortCountriesForDisplay([
+    country('LATER', 2, 'MEETS'),
+    country('COMBO', 1),
+    country('DIRECT', 0),
+  ]).map(({ country: item }) => item.countryId), ['DIRECT', 'COMBO', 'LATER']);
+});
+
 test('countries are stably ordered by the status of their best route', () => {
   const countries = [
     { country: { countryId: 'ES', group: 'SUITABLE' }, bestRoute: { routeStatus: 'UNSUITABLE' } },

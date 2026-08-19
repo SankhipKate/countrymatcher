@@ -183,6 +183,74 @@ test('best-route selection prefers a route that closes the mandatory long-term g
   assert.equal(result.bestRoute.routeId, 'MEETS_PR');
 });
 
+
+test('family evaluator chooses the best same-state path by Canon family order', () => {
+  const partner = profile({ adults: 2 });
+  const result = evaluateFamilyScenarios({ family_scenarios: [
+    familyScenario({ scenario_id: 'LATER', simultaneous_move: 'NO', join_stage: 'AFTER_INITIAL_RESIDENCE' }),
+    familyScenario({ scenario_id: 'COMBINATION', simultaneous_move: 'CONDITIONAL', join_stage: 'SEPARATE_ROUTE', separate_route_required: true, linked_route_id: 'LINKED' }),
+    familyScenario({ scenario_id: 'DIRECT', simultaneous_move: 'CONDITIONAL', join_stage: 'WITH_INITIAL_APPLICATION' }),
+  ] }, partner, [{ route_id: 'LINKED' }]);
+
+  assert.equal(result.state, 'CONDITION');
+  assert.equal(result.sortRank, 0);
+  assert.equal(result.classification, 'CONDITIONAL_SIMULTANEOUS');
+  assert.deepEqual(result.applicableScenarioIds, ['DIRECT']);
+});
+
+test('real Spain best-route selection applies family before long-term goal', () => {
+  const ids = ['ES_EMP', 'ES_STUDY', 'ES_REUN'];
+  const pkg = { ...spain, routes: ids.map((routeId) => spain.routes.find(({ route_id }) => route_id === routeId)) };
+  const result = calculateActiveCountry(profile({
+    applicantAmount: 6000,
+    savings: { amount: 100000, currency: 'EUR' },
+    adults: 2,
+    longTerm: 'PR_REQUIRED',
+  }), pkg, context);
+
+  const employment = result.routes.find(({ routeId }) => routeId === 'ES_EMP');
+  const study = result.routes.find(({ routeId }) => routeId === 'ES_STUDY');
+  assert.equal(employment.presentationGroup, 'REQUIRES_SEPARATE_BASIS');
+  assert.equal(study.presentationGroup, 'REQUIRES_SEPARATE_BASIS');
+  assert.equal(employment.familyEvaluation.sortRank, 2);
+  assert.equal(employment.familyFit, 'DOES_NOT_MEET');
+  assert.equal(employment.goalFit, 'MEETS');
+  assert.equal(study.familyEvaluation.sortRank, 0);
+  assert.equal(study.familyFit, 'MEETS');
+  assert.equal(study.goalFit, 'UNKNOWN');
+  assert.equal(result.bestRoute.routeId, 'ES_STUDY');
+});
+
+test('real Spain best-route selection applies long-term goal after equal family priority', () => {
+  const ids = ['ES_STUDY', 'ES_ENT'];
+  const pkg = { ...spain, routes: ids.map((routeId) => spain.routes.find(({ route_id }) => route_id === routeId)) };
+  const result = calculateActiveCountry(profile({
+    applicantAmount: 6000,
+    savings: { amount: 100000, currency: 'EUR' },
+    adults: 2,
+    longTerm: 'PR_REQUIRED',
+  }), pkg, context);
+
+  const study = result.routes.find(({ routeId }) => routeId === 'ES_STUDY');
+  const entrepreneur = result.routes.find(({ routeId }) => routeId === 'ES_ENT');
+  assert.equal(study.familyEvaluation.sortRank, 0);
+  assert.equal(entrepreneur.familyEvaluation.sortRank, 0);
+  assert.equal(study.goalFit, 'UNKNOWN');
+  assert.equal(entrepreneur.goalFit, 'MEETS');
+  assert.equal(result.bestRoute.routeId, 'ES_ENT');
+});
+
+test('best-route processing tie-break compares only the same official rule', () => {
+  const base = structuredClone(spain.routes.find(({ route_id }) => route_id === 'ES_DNV'));
+  const slow = { ...base, route_id: 'SLOW', processing_time: { ...base.processing_time, official_days: 30, official_rule_ru: 'Один и тот же норматив.' } };
+  const fast = { ...base, route_id: 'FAST', processing_time: { ...base.processing_time, official_days: 10, official_rule_ru: 'Один и тот же норматив.' } };
+  const differentMeaning = { ...base, route_id: 'DIFFERENT', processing_time: { ...base.processing_time, official_days: 1, official_rule_ru: 'Другой норматив.' } };
+  const input = profile({ applicantAmount: 6000, longTerm: 'PR_REQUIRED' });
+
+  assert.equal(calculateActiveCountry(input, { ...spain, routes: [slow, fast] }, context).bestRoute.routeId, 'FAST');
+  assert.equal(calculateActiveCountry(input, { ...spain, routes: [slow, differentMeaning] }, context).bestRoute.routeId, 'SLOW');
+});
+
 test('active contract accepts only Final Lock Research Package 4.0 without fallback', () => {
   assert.equal(ACTIVE_RESEARCH_SCHEMA_VERSION, '4.0');
   assert.equal(ACTIVE_CANON_REVISION, '2026-08-08-final-lock');
