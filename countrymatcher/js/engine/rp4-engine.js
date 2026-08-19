@@ -89,6 +89,48 @@ const PROFILE_PATHS = Object.freeze({
   KEEP_RUSSIAN_CITIZENSHIP: 'goal.keep_russian_citizenship',
 });
 
+const GOAL_FITS = Object.freeze({
+  MEETS: 'MEETS',
+  UNKNOWN: 'UNKNOWN',
+  DOES_NOT_MEET: 'DOES_NOT_MEET',
+  NOT_APPLICABLE: 'NOT_APPLICABLE',
+});
+
+export function evaluateLongTermGoal(route, profile) {
+  const goal = profile?.goal?.long_term;
+  if (!goal) return { fit: GOAL_FITS.UNKNOWN, blocker: null };
+  if (goal === 'TEMPORARY_RESIDENCE_SUFFICIENT') return { fit: GOAL_FITS.MEETS, blocker: null };
+
+  const path = route?.long_term_path;
+  if (!path) return { fit: GOAL_FITS.UNKNOWN, blocker: null };
+
+  if (goal === 'PR_REQUIRED') {
+    if (path.pr_path_status === 'DIRECT' || path.pr_path_status === 'AVAILABLE_AFTER_RESIDENCE') {
+      return { fit: GOAL_FITS.MEETS, blocker: null };
+    }
+    if (path.pr_path_status === 'NOT_AVAILABLE') {
+      return {
+        fit: GOAL_FITS.DOES_NOT_MEET,
+        blocker: path.pr_path_ru || 'Этот маршрут не даёт достижимого пути к ПМЖ.',
+      };
+    }
+    return { fit: GOAL_FITS.UNKNOWN, blocker: null };
+  }
+
+  if (goal === 'CITIZENSHIP_REQUIRED') {
+    if (path.citizenship_path_status === 'AVAILABLE') return { fit: GOAL_FITS.MEETS, blocker: null };
+    if (path.citizenship_path_status === 'NOT_AVAILABLE') {
+      return {
+        fit: GOAL_FITS.DOES_NOT_MEET,
+        blocker: path.citizenship_path_ru || 'Этот маршрут не даёт достижимого пути к гражданству.',
+      };
+    }
+    return { fit: GOAL_FITS.UNKNOWN, blocker: null };
+  }
+
+  return { fit: GOAL_FITS.UNKNOWN, blocker: null };
+}
+
 export function evaluateEngineRule(rule, value) {
   const operator = rule?.operator;
   if (value === undefined || value === null) return 'UNKNOWN';
@@ -416,6 +458,8 @@ export function evaluateRoute(route, profile, context, countryId) {
     }
     requirementResults.push({ requirement, ...evaluation, effect });
   }
+  const longTermGoal = evaluateLongTermGoal(route, profile);
+  if (longTermGoal.blocker && !blockers.includes(longTermGoal.blocker)) blockers.push(longTermGoal.blocker);
   const routeStatus = blockers.length ? ROUTE_STATUSES.UNSUITABLE
     : conditions.length ? ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS : ROUTE_STATUSES.SUITABLE;
   return {
@@ -430,7 +474,7 @@ export function evaluateRoute(route, profile, context, countryId) {
     displayOnlyRequirements: displayOnlyRequirements.filter((item) => item.timing !== 'AFTER_APPROVAL'),
     requirementResults,
     familyFit: 'NOT_APPLICABLE',
-    goalFit: 'NOT_APPLICABLE',
+    goalFit: longTermGoal.fit,
     applicationFit: 'NOT_APPLICABLE',
     incomeFit: 'NOT_APPLICABLE',
     incomeTypeFit: 'NOT_APPLICABLE',
@@ -911,8 +955,17 @@ export function calculateActiveCountry(profile, pkg, context) {
     .map(({ route, familyEvaluation }) => ({ routeId: route.route_id, reason: 'FAMILY_DATA_CONTRACT_PROBLEM', problems: familyEvaluation.dataContractProblems }));
   const routes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state !== FAMILY_STATES.DATA_CONTRACT_PROBLEM)
     .map(({ route, calculated, familyEvaluation }) => ({ ...presentRoute(route, calculated, sourceIndex, countryContext), familyEvaluation }));
-  const bestRoute = [...routes].sort((a, b) =>
-    (ROUTE_PRESENTATION_RANK[a.presentationGroup] ?? 99) - (ROUTE_PRESENTATION_RANK[b.presentationGroup] ?? 99))[0] || null;
+  const fitRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
+  const bestRoute = [...routes].map((route, originalIndex) => ({ route, originalIndex })).sort((left, right) => {
+    const a = left.route;
+    const b = right.route;
+    const statusDifference = (ROUTE_PRESENTATION_RANK[a.presentationGroup] ?? 99)
+      - (ROUTE_PRESENTATION_RANK[b.presentationGroup] ?? 99);
+    if (statusDifference) return statusDifference;
+    const goalDifference = (fitRank[a.goalFit] ?? 1) - (fitRank[b.goalFit] ?? 1);
+    if (goalDifference) return goalDifference;
+    return left.originalIndex - right.originalIndex;
+  })[0]?.route || null;
   const applicantIncome = applicantSources(profile).reduce((sum, item) => sum + convertAmount(
     item.monthly_provable?.amount || 0,
     item.monthly_provable?.currency || pkg.country_currency,
