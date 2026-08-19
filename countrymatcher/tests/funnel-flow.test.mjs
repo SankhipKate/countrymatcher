@@ -176,6 +176,38 @@ test('free preview selects the first eligible country using generic display sort
   )));
 });
 
+test('country-scoped FX errors survive the free preview without invalidating healthy country results', () => {
+  const calculation = syntheticCalculation();
+  calculation.errors = [{ countryId: 'CL', countryName: 'Чили', code: 'FX_RATE_MISSING', currencies: ['CLP'] }];
+  const presentation = deriveFunnelPresentation(calculation, sortCountriesForDisplay);
+  assert.equal(presentation.state, FUNNEL_STATES.FREE_COUNTRY);
+  assert.deepEqual(presentation.errors, calculation.errors);
+  assert.deepEqual(presentation.previewCalculation.errors, calculation.errors);
+  assert.equal(presentation.previewCalculation.results.length, 1);
+});
+
+test('an all-FX-failure calculation keeps its country errors in the ERROR state', () => {
+  const errors = [{ countryId: 'CL', countryName: 'Чили', code: 'FX_RATE_MISSING', currencies: ['CLP'] }];
+  assert.deepEqual(
+    deriveFunnelPresentation({ results: [], errors }, sortCountriesForDisplay),
+    { state: FUNNEL_STATES.ERROR, errors },
+  );
+});
+
+test('partial calculation with no eligible healthy country and a country error is ERROR rather than ZERO_MATCH', () => {
+  const calculation = syntheticCalculation();
+  calculation.results.forEach((result) => {
+    result.bestRoute.routeStatus = 'UNSUITABLE';
+    result.routes.forEach((route) => { route.routeStatus = 'UNSUITABLE'; });
+  });
+  calculation.errors = [{ countryId: 'CL', countryName: 'Чили', code: 'FX_RATE_MISSING', currencies: ['CLP'] }];
+
+  assert.deepEqual(
+    deriveFunnelPresentation(calculation, sortCountriesForDisplay),
+    { state: FUNNEL_STATES.ERROR, errors: calculation.errors },
+  );
+});
+
 test('only suitable and suitable-with-conditions best routes are eligible for the free country', () => {
   const calculation = syntheticCalculation();
   calculation.results[0].bestRoute.routeStatus = 'UNSUITABLE';

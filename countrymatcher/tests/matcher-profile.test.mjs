@@ -117,7 +117,19 @@ test('persistent calculation availability error is separate from step validation
   assert.doesNotMatch(validateStepSource, /calculationAvailabilityError/);
   assert.doesNotMatch(showStepSource, /calculationAvailabilityError/);
   assert.match(appSource, /if \(!activeResearchPackages\.length \|\| !calculationContext\) \{[\s\S]*?calculationAvailabilityError[\s\S]*?return;/);
+  assert.match(appSource, /hasCompleteFxOutage\(context\.fx\)[\s\S]*?Курсы валют сейчас недоступны/);
   assert.doesNotMatch(appSource, /!calculationContext\) return;/);
+});
+
+test('result FX note is country-specific and guarded when no rate metadata was used', async () => {
+  const appSource = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const noteSource = appSource.slice(appSource.indexOf('function calculationNoteHtml'), appSource.indexOf('function renderResult'));
+  const resultSource = appSource.slice(appSource.indexOf('function renderResult'), appSource.indexOf('function switchToResult'));
+  assert.match(noteSource, /summarizeFxContext\(calculationContext\.fx, country\?\.fxUsedCurrencies \|\| \[\]\)/);
+  assert.match(noteSource, /fxSummary\.as_of && fxSummary\.source/);
+  assert.match(resultSource, /countryById/);
+  assert.match(resultSource, /calculationResultNote/);
+  assert.match(resultSource, /calculationNoteHtml\(countryById\.get\(countryId\)\)/);
 });
 
 test('five presentation groups have distinct semantic UI classes and stable responsive badges', async () => {

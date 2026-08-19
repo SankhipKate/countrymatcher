@@ -21,6 +21,16 @@ export class Rp4EvaluationUnsupportedError extends Error {
   }
 }
 
+export class MissingFxRateError extends Error {
+  constructor(currencies) {
+    const missing = [...new Set((currencies || []).filter(Boolean))];
+    super(`Missing FX rate for ${missing.join('/')}.`);
+    this.name = 'MissingFxRateError';
+    this.code = 'FX_RATE_MISSING';
+    this.details = { currencies: missing };
+  }
+}
+
 export const ACTIVE_ENGINE_FINANCIAL_CAPABILITIES = Object.freeze({
   models: Object.freeze([
     'INCOME_ONLY',
@@ -112,7 +122,15 @@ function convertAmount(amount, from, to, context) {
   const rate = (currency) => currency === base ? 1 : Number(context?.fx?.rates?.[currency]);
   const fromRate = rate(from);
   const toRate = rate(to);
-  if (!(fromRate > 0) || !(toRate > 0)) throw new Error(`Missing FX rate for ${from}/${to}.`);
+  const missing = [];
+  if (!(fromRate > 0)) missing.push(from);
+  if (!(toRate > 0)) missing.push(to);
+  if (missing.length) throw new MissingFxRateError(missing);
+  const usage = context?.fx?.usage_currencies;
+  if (usage?.add) {
+    if (from && from !== base) usage.add(from);
+    if (to && to !== base) usage.add(to);
+  }
   return Number(amount) / fromRate * toRate;
 }
 
@@ -875,10 +893,12 @@ function presentLgbt(pkg, profile) {
 
 export function calculateActiveCountry(profile, pkg, context) {
   assertActiveResearchPackage(pkg);
+  const fxUsage = new Set();
+  const countryContext = { ...context, fx: { ...(context?.fx || {}), usage_currencies: fxUsage } };
   const sourceIndex = new Map((pkg.sources || []).map((source) => [source.source_id, source]));
   const publishableRoutes = pkg.routes.filter((route) => route.publishable === true);
   const evaluated = publishableRoutes.map((route) => {
-    const calculated = evaluateRoute(route, profile, context, pkg.country_id);
+    const calculated = evaluateRoute(route, profile, countryContext, pkg.country_id);
     const familyEvaluation = evaluateFamilyScenarios(route, profile, pkg.routes);
     if (familyEvaluation.state === FAMILY_STATES.CONDITION) {
       for (const text of familyEvaluation.conditions) if (text && !calculated.conditions.includes(text)) calculated.conditions.push(text);
@@ -890,14 +910,14 @@ export function calculateActiveCountry(profile, pkg, context) {
   const excludedRoutes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state === FAMILY_STATES.DATA_CONTRACT_PROBLEM)
     .map(({ route, familyEvaluation }) => ({ routeId: route.route_id, reason: 'FAMILY_DATA_CONTRACT_PROBLEM', problems: familyEvaluation.dataContractProblems }));
   const routes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state !== FAMILY_STATES.DATA_CONTRACT_PROBLEM)
-    .map(({ route, calculated, familyEvaluation }) => ({ ...presentRoute(route, calculated, sourceIndex, context), familyEvaluation }));
+    .map(({ route, calculated, familyEvaluation }) => ({ ...presentRoute(route, calculated, sourceIndex, countryContext), familyEvaluation }));
   const bestRoute = [...routes].sort((a, b) =>
     (ROUTE_PRESENTATION_RANK[a.presentationGroup] ?? 99) - (ROUTE_PRESENTATION_RANK[b.presentationGroup] ?? 99))[0] || null;
   const applicantIncome = applicantSources(profile).reduce((sum, item) => sum + convertAmount(
     item.monthly_provable?.amount || 0,
     item.monthly_provable?.currency || pkg.country_currency,
     pkg.country_currency,
-    context,
+    countryContext,
   ), 0);
   return {
     calculatedAt: new Date().toISOString(),
@@ -910,21 +930,38 @@ export function calculateActiveCountry(profile, pkg, context) {
     applicantProvableIncome: {
       amount: applicantIncome,
       currency: pkg.country_currency,
-      amountUsd: pkg.country_currency === 'USD' ? null : convertAmount(applicantIncome, pkg.country_currency, 'USD', context),
+      amountUsd: pkg.country_currency === 'USD' ? null : convertAmount(applicantIncome, pkg.country_currency, 'USD', countryContext),
       conversions: [],
     },
     entryForRussianCitizen: presentEntry(pkg),
-    cities: presentCities(pkg, context),
+    cities: presentCities(pkg, countryContext),
     lgbt: presentLgbt(pkg, profile),
-    schoolPresentation: presentSchools(pkg, profile, context),
+    schoolPresentation: presentSchools(pkg, profile, countryContext),
     petPresentation: presentPets(pkg, profile),
     taxPresentation: presentTaxes(pkg),
     sources: [],
     practicalMissing: [],
+    fxUsedCurrencies: [...fxUsage].sort(),
   };
 }
 
 export function calculateActiveMatcher(profile, packages, context) {
   if (!Array.isArray(packages)) throw new TypeError('Active RP4 packages must be an array.');
-  return { calculatedAt: new Date().toISOString(), results: packages.map((pkg) => calculateActiveCountry(profile, pkg, context)), errors: [] };
+  const results = [];
+  const errors = [];
+  for (const pkg of packages) {
+    try {
+      results.push(calculateActiveCountry(profile, pkg, context));
+    } catch (error) {
+      if (!(error instanceof MissingFxRateError)) throw error;
+      errors.push({
+        countryId: pkg.country_id,
+        countryName: pkg.country_name_ru,
+        code: error.code,
+        currencies: error.details.currencies,
+        message: `Расчёт для страны «${pkg.country_name_ru}» временно недоступен: нет курса ${error.details.currencies.join(', ')}.`,
+      });
+    }
+  }
+  return { calculatedAt: new Date().toISOString(), results, errors };
 }
