@@ -379,7 +379,7 @@ function renderSchoolPresentation(calculation) {
         ? `${currency(rule.tuition.amount, rule.tuition.currency)} ${schoolTuitionPeriodLabel(rule.tuition.period)}`.trim()
         : 'платно'
       : 'не подтверждено';
-    return `<div class="school-rule"><h5>${html(rule.jurisdiction)}</h5><p><b>Доступ иностранным детям:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательное обучение:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
+    return `<div class="school-rule"><p><b>Доступ иностранным детям:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательное обучение:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
   }).join('');
   const international = school.international.status === 'AVAILABLE'
     ? school.international.cities.length

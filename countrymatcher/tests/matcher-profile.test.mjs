@@ -804,6 +804,7 @@ test('school UI renders international tuition range without exposing legacy tari
   } });
   const annual = renderSchool(presentation('ANNUAL'));
   assert.match(annual, /Государственные школы/);
+  assert.doesNotMatch(annual, /Тестовая юрисдикция/);
   assert.match(annual, /1200 EUR \/год/);
   assert.match(annual, /Международные школы с обучением на английском/);
   assert.match(annual, /Подтверждены в: Тестовый город\./);
