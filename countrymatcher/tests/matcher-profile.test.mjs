@@ -21,13 +21,13 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.2.0');
+  assert.equal(packageJson.version, '8.0.0');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.2\.0'/);
+  assert.match(fxContext, /engine_version: '8\.0\.0'/);
 });
 
 test('country flags are derived generically from ISO alpha-2 codes', () => {
@@ -447,6 +447,28 @@ test('routes of the same status prefer simultaneous family fit and fewer conditi
   assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['family-few', 'family-many', 'separate']);
 });
 
+
+test('route display sorting uses the real family migration class before long-term goal', () => {
+  const routes = [
+    { routeId: 'later-but-goal', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'DOES_NOT_MEET', familyEvaluation: { sortRank: 2 }, goalFit: 'MEETS', conditions: ['A'] },
+    { routeId: 'combination', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank: 1 }, goalFit: 'UNKNOWN', conditions: ['A'] },
+    { routeId: 'direct', routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank: 0 }, goalFit: 'UNKNOWN', conditions: ['A'] },
+  ];
+  assert.deepEqual(sortRoutesForDisplay(routes).map(({ routeId }) => routeId), ['direct', 'combination', 'later-but-goal']);
+});
+
+test('country display sorting distinguishes direct family move from route combination and later join', () => {
+  const country = (countryId, sortRank, goalFit = 'UNKNOWN') => ({
+    country: { countryId, group: 'SUITABLE_WITH_CONDITIONS' },
+    bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS', familyFit: 'MEETS', familyEvaluation: { sortRank }, goalFit },
+  });
+  assert.deepEqual(sortCountriesForDisplay([
+    country('LATER', 2, 'MEETS'),
+    country('COMBO', 1),
+    country('DIRECT', 0),
+  ]).map(({ country: item }) => item.countryId), ['DIRECT', 'COMBO', 'LATER']);
+});
+
 test('countries are stably ordered by the status of their best route', () => {
   const countries = [
     { country: { countryId: 'ES', group: 'SUITABLE' }, bestRoute: { routeStatus: 'UNSUITABLE' } },
@@ -782,6 +804,7 @@ test('school UI renders international tuition range without exposing legacy tari
   } });
   const annual = renderSchool(presentation('ANNUAL'));
   assert.match(annual, /Государственные школы/);
+  assert.doesNotMatch(annual, /Тестовая юрисдикция/);
   assert.match(annual, /1200 EUR \/год/);
   assert.match(annual, /Международные школы с обучением на английском/);
   assert.match(annual, /Подтверждены в: Тестовый город\./);
@@ -1112,6 +1135,38 @@ test('every questionnaire answer enforced by step validation is visibly marked r
     'Какую часть дохода можете подтвердить документами? *',
     'Какую сумму сможете подтвердить? *',
   ]) assert.ok(app.includes(label), label);
+});
+
+test('financial amounts embedded in corrective text use runtime FX without duplicate thresholds', async () => {
+  const app = await readFile(
+    new URL('../matcher/app.js', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(
+    app,
+    /withDynamicFinancialTextEquivalents/u,
+  );
+
+  assert.match(
+    app,
+    /localAmount\s*\*\s*anchor\.thresholdUsd\s*\/\s*anchor\.threshold/u,
+  );
+
+  assert.match(
+    app,
+    /currency\(amountUsd,\s*'USD'\)/u,
+  );
+
+  assert.match(
+    app,
+    /thresholdsAlreadyExplained/u,
+  );
+
+  assert.match(
+    app,
+    /compactActionText\.includes/u,
+  );
 });
 
 test('result UI reserves corrective actions for conditional routes', async () => {

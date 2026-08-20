@@ -254,6 +254,9 @@ export function describeResultIntro(routes, changed = false) {
   };
 }
 
+const routeFamilySortRank = (route, fallbackRank) => Number.isInteger(route?.familyEvaluation?.sortRank)
+  ? route.familyEvaluation.sortRank : (fallbackRank[route?.familyFit] ?? 1);
+
 export function sortRoutesForDisplay(routes = []) {
   const familyRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
   const goalRank = { MEETS: 0, NOT_APPLICABLE: 0, UNKNOWN: 1, DOES_NOT_MEET: 2 };
@@ -265,7 +268,7 @@ export function sortRoutesForDisplay(routes = []) {
       const statusDifference = (ROUTE_PRESENTATION_RANK[routePresentationGroup(a)] ?? 99)
         - (ROUTE_PRESENTATION_RANK[routePresentationGroup(b)] ?? 99);
       if (statusDifference) return statusDifference;
-      const familyDifference = (familyRank[a.familyFit] ?? 1) - (familyRank[b.familyFit] ?? 1);
+      const familyDifference = routeFamilySortRank(a, familyRank) - routeFamilySortRank(b, familyRank);
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[a.goalFit] ?? 1) - (goalRank[b.goalFit] ?? 1);
       if (goalDifference) return goalDifference;
@@ -292,7 +295,7 @@ export function sortCountriesForDisplay(countries = []) {
       if (leftRank !== rightRank) return leftRank - rightRank;
       const leftBest = left.country?.bestRoute;
       const rightBest = right.country?.bestRoute;
-      const familyDifference = (familyRank[leftBest?.familyFit] ?? 1) - (familyRank[rightBest?.familyFit] ?? 1);
+      const familyDifference = routeFamilySortRank(leftBest, familyRank) - routeFamilySortRank(rightBest, familyRank);
       if (familyDifference) return familyDifference;
       const goalDifference = (goalRank[leftBest?.goalFit] ?? 1) - (goalRank[rightBest?.goalFit] ?? 1);
       if (goalDifference) return goalDifference;

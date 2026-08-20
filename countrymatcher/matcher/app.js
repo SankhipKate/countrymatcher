@@ -1,17 +1,17 @@
-import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.2.0';
-import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.2.0';
-import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=7.2.0';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.2.0';
-import { formatCurrency } from './format.js?v=7.2.0';
+import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=8.0.0';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=8.0.0';
+import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=8.0.0';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=8.0.0';
+import { formatCurrency } from './format.js?v=8.0.0';
 import {
   ACCESS_GRANTED_EVENT,
   ACCESS_STATES,
   hideAccessGate,
   resolveAccessState,
   showAccessTeaser,
-} from './access-gate.js?v=7.2.0';
-import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=7.2.0';
-import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.2.0';
+} from './access-gate.js?v=8.0.0';
+import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=8.0.0';
+import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=8.0.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -28,6 +28,7 @@ const ACTIVE_RP4_PACKAGES = [
   'PT-research-v4.0.json',
   'MX-research-v4.0.json',
   'PY-research-v4.0.json',
+  'CO-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 let currentStep = 1;
@@ -378,7 +379,7 @@ function renderSchoolPresentation(calculation) {
         ? `${currency(rule.tuition.amount, rule.tuition.currency)} ${schoolTuitionPeriodLabel(rule.tuition.period)}`.trim()
         : 'платно'
       : 'не подтверждено';
-    return `<div class="school-rule"><h5>${html(rule.jurisdiction)}</h5><p><b>Доступ иностранным детям:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательное обучение:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
+    return `<div class="school-rule"><p><b>Доступ иностранным детям:</b> ${html(publicSchoolAccessLabel(rule.foreignChildAccess))}</p><p><b>Язык обучения:</b> ${html(rule.language)}</p><p><b>Обязательное обучение:</b> ${html(age)}</p><p><b>Стоимость:</b> ${html(fee)}</p></div>`;
   }).join('');
   const international = school.international.status === 'AVAILABLE'
     ? school.international.cities.length
@@ -446,6 +447,49 @@ function routeCard(route, countryName, main = false) {
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
     return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${official}${equivalent}`.trim();
   };
+  const withDynamicFinancialTextEquivalents = (text, financialSummary) => {
+    const source = String(text ?? '');
+    const alternatives = financialSummary?.alternatives || [];
+
+    const anchors = new Map();
+
+    for (const item of alternatives) {
+      if (
+        item.currency
+        && Number.isFinite(item.threshold)
+        && item.threshold > 0
+        && Number.isFinite(item.thresholdUsd)
+        && item.thresholdUsd > 0
+        && !anchors.has(item.currency)
+      ) {
+        anchors.set(item.currency, item);
+      }
+    }
+
+    return source.replace(
+      /([\d][\d\s\u00a0]*)\s+([A-Z]{3})\b/gu,
+      (match, rawAmount, currencyCode) => {
+        if (currencyCode === 'USD') return match;
+
+        const anchor = anchors.get(currencyCode);
+        if (!anchor) return match;
+
+        const localAmount = Number(
+          String(rawAmount).replace(/\s/gu, ''),
+        );
+
+        if (!Number.isFinite(localAmount) || localAmount <= 0) {
+          return match;
+        }
+
+        const amountUsd =
+          localAmount * anchor.thresholdUsd / anchor.threshold;
+
+        return `${match} (≈ ${currency(amountUsd, 'USD')})`;
+      },
+    );
+  };
+
   const conditionActions = route.conditionActions?.length
     ? route.conditionActions
     : (route.conditions || []).map((text) => ({ text, requirementId: null, financialSummary: null }));
@@ -454,9 +498,26 @@ function routeCard(route, countryName, main = false) {
     const alternatives = action.requirementId && !financialActionSeen.has(action.requirementId)
       ? action.financialSummary?.alternatives?.filter((item) => item.threshold != null) || [] : [];
     if (alternatives.length) financialActionSeen.add(action.requirementId);
-    return alternatives.length
-      ? `${String(action.text).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`
-      : action.text;
+
+    const actionText = withDynamicFinancialTextEquivalents(
+      action.text,
+      action.financialSummary,
+    );
+
+    if (!alternatives.length) return actionText;
+
+    const compactActionText = String(actionText).replace(/[\s\u00a0]/gu, '');
+
+    const thresholdsAlreadyExplained = alternatives.every((item) =>
+      item.threshold != null
+      && item.currency
+      && compactActionText.includes(
+        `${Math.round(item.threshold)}${item.currency}`,
+      ));
+
+    if (thresholdsAlreadyExplained) return actionText;
+
+    return `${String(actionText).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`;
   });
   const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && actionItems.length
     ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
@@ -883,14 +944,14 @@ async function init() {
   try {
     const [packages, schemaResponse, editorial] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(new URL(`${filename}?v=7.2.0`, DATA_BASE));
+        const response = await fetch(new URL(`${filename}?v=8.0.0`, DATA_BASE));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
         const pkg = await response.json();
         assertActiveResearchPackage(pkg);
         return pkg;
       })),
-      fetch(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', DATA_BASE)),
-      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=7.2.0`, DATA_BASE))
+      fetch(new URL('schemas/user-profile-v1.schema.json?v=8.0.0', DATA_BASE)),
+      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=8.0.0`, DATA_BASE))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
     ]);

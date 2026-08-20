@@ -552,6 +552,20 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
         roles_seen.update(
             role for role in (city.get("structural_roles") or []) if isinstance(role, str)
         )
+
+        city_size_roles = [
+            role
+            for role in (city.get("structural_roles") or [])
+            if role in {"LARGE", "MEDIUM", "SMALL"}
+        ]
+        if len(city_size_roles) != 1:
+            fail(
+                f"$.cities[{i}].structural_roles: every city requires exactly one "
+                "size role from LARGE, MEDIUM, SMALL; "
+                f"found {city_size_roles or 'none'}",
+                errors,
+            )
+
         if not (city.get("cost_components") or []):
             if ready_status in {"READY", "PARTIAL"}:
                 fail(

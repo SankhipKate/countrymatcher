@@ -2,7 +2,7 @@ import {
   CLARITY_EVENTS,
   trackClarityEvent,
   trackPayPalFundingSource,
-} from "./clarity-analytics.js?v=7.2.0";
+} from "./clarity-analytics.js?v=8.0.0";
 
 import {
   assertAllowedPaymentHost,
@@ -19,7 +19,7 @@ import {
   recoverUrl,
   savePendingOrder,
   workerUrlFor,
-} from "../payment-config.js?v=7.2.0";
+} from "../payment-config.js?v=8.0.0";
 
 export {
   TOKEN_STORAGE_KEY,

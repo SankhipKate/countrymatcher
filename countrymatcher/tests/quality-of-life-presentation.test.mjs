@@ -50,6 +50,73 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.PY.score, 5.9);
   assert.ok(editorial.countries.PY.narrative_ru.length >= 6);
   assert.match(editorial.countries.PY.formula_ru, /Низкая стоимость жизни/);
+  assert.equal(editorial.countries.CO.score, 6.3);
+  assert.ok(editorial.countries.CO.narrative_ru.length >= 6);
+  assert.match(editorial.countries.CO.formula_ru, /Разнообразие городов/);
+});
+
+
+test('every active RP4 country has a complete quality-of-life editorial entry', async () => {
+  const [matcher, editorialText] = await Promise.all([
+    text('matcher/app.js'),
+    text('data/quality-of-life-ru.json'),
+  ]);
+
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+
+  const filenames = [...declaration[1].matchAll(/'([^']+-research-v4\.0\.json)'/g)]
+    .map((match) => match[1]);
+
+  assert.ok(filenames.length > 0, 'active RP4 package list must not be empty');
+
+  const packages = await Promise.all(
+    filenames.map(async (filename) =>
+      JSON.parse(await text(`data/${filename}`))),
+  );
+
+  const activeCountryIds = packages.map((pkg) => pkg.country_id);
+  const editorial = JSON.parse(editorialText);
+  const editorialCountries = editorial.countries || {};
+
+  const missing = activeCountryIds.filter(
+    (countryId) => !Object.hasOwn(editorialCountries, countryId),
+  );
+
+  assert.deepEqual(
+    missing,
+    [],
+    `active RP4 countries missing quality-of-life editorial: ${missing.join(', ')}`,
+  );
+
+  for (const countryId of activeCountryIds) {
+    const entry = editorialCountries[countryId];
+
+    assert.ok(
+      Number.isFinite(entry.score) && entry.score >= 0 && entry.score <= 10,
+      `${countryId}: QoL score must be a number from 0 to 10`,
+    );
+
+    assert.ok(
+      Array.isArray(entry.narrative_ru) &&
+        entry.narrative_ru.length >= 6 &&
+        entry.narrative_ru.every(
+          (paragraph) => typeof paragraph === 'string' && paragraph.trim().length > 0,
+        ),
+      `${countryId}: QoL narrative must contain at least 6 non-empty paragraphs`,
+    );
+
+    assert.ok(
+      typeof entry.formula_ru === 'string' && entry.formula_ru.trim().length > 0,
+      `${countryId}: QoL formula is required`,
+    );
+
+    assert.match(
+      String(entry.updated_at || ''),
+      /^\d{4}-\d{2}-\d{2}$/,
+      `${countryId}: QoL updated_at must be YYYY-MM-DD`,
+    );
+  }
 });
 
 test('Pages artifact includes quality-of-life editorial data', async () => {
