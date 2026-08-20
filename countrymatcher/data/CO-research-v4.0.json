@@ -4673,7 +4673,34 @@
         ]
       }
     ],
-    "international_school_tuition_observations": []
+    "international_school_tuition_observations": [
+      {
+        "school_name_ru": "St. Matthew School",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 39444300,
+          "currency": "COP",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-20"
+        },
+        "source_ids": [
+          "CO_SRC_SCHOOL_ST_MATTHEW_PAYMENT_COUNT_2026"
+        ]
+      },
+      {
+        "school_name_ru": "Colegio Anglo Colombiano",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 45990000,
+          "currency": "COP",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-20"
+        },
+        "source_ids": [
+          "CO_SRC_SCHOOL_ANGLO_FEES_2026"
+        ]
+      }
+    ]
   },
   "pets": {
     "import_restrictions": {
@@ -5276,6 +5303,30 @@
       "confidence": "MEDIUM",
       "published_or_updated_at": null,
       "language": "en"
+    },
+    {
+      "source_id": "CO_SRC_SCHOOL_ST_MATTHEW_PAYMENT_COUNT_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Doris",
+      "title_ru": "St. Matthew School — тарифы 2026–2027",
+      "url": "https://www.doris.school/schools/colombia/st-matthew-school/fees",
+      "supports_ru": "Для K4–Grade 1 указана месячная pensión 3 287 025 COP и 12 ежемесячных платежей. Matrícula 3 652 250 COP указана отдельно и в tuition observation не включается.",
+      "checked_at": "2026-08-20",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "CO_SRC_SCHOOL_ANGLO_FEES_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Colegio Anglo Colombiano",
+      "title_ru": "Colegio Anglo Colombiano — тарифы 2026–2027",
+      "url": "https://recursos.anglocolombiano.edu.co/docs/Matriculas_2627/Tarifas_2026_-_2027.pdf",
+      "supports_ru": "Официальная таблица тарифов 2026–2027: G11 pensión 5 110 000 COP; tuition оплачивается 9 раз в год. Matrícula, seguro, anuario, cafeteria и transporte указаны отдельно и в tuition observation не включены. Опубликованные тарифы отмечены школой как подлежащие утверждению Secretaría de Educación.",
+      "checked_at": "2026-08-20",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
     }
   ],
   "pending_changes": []
