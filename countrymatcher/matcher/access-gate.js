@@ -10,8 +10,8 @@ import {
   isVerifiedPermanentAccess,
   migrateLegacyAccess,
   workerUrlFor,
-} from "../payment-config.js?v=7.2.0";
-import { additionalCountriesText } from "./funnel.js?v=7.2.0";
+} from "../payment-config.js?v=8.0.0";
+import { additionalCountriesText } from "./funnel.js?v=8.0.0";
 
 export {
   LEGACY_STORAGE_KEY,

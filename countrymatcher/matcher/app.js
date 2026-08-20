@@ -1,17 +1,17 @@
-import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=7.2.0';
-import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=7.2.0';
-import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=7.2.0';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=7.2.0';
-import { formatCurrency } from './format.js?v=7.2.0';
+import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=8.0.0';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=8.0.0';
+import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=8.0.0';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=8.0.0';
+import { formatCurrency } from './format.js?v=8.0.0';
 import {
   ACCESS_GRANTED_EVENT,
   ACCESS_STATES,
   hideAccessGate,
   resolveAccessState,
   showAccessTeaser,
-} from './access-gate.js?v=7.2.0';
-import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=7.2.0';
-import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=7.2.0';
+} from './access-gate.js?v=8.0.0';
+import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=8.0.0';
+import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=8.0.0';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -28,6 +28,7 @@ const ACTIVE_RP4_PACKAGES = [
   'PT-research-v4.0.json',
   'MX-research-v4.0.json',
   'PY-research-v4.0.json',
+  'CO-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 let currentStep = 1;
@@ -883,14 +884,14 @@ async function init() {
   try {
     const [packages, schemaResponse, editorial] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(new URL(`${filename}?v=7.2.0`, DATA_BASE));
+        const response = await fetch(new URL(`${filename}?v=8.0.0`, DATA_BASE));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
         const pkg = await response.json();
         assertActiveResearchPackage(pkg);
         return pkg;
       })),
-      fetch(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', DATA_BASE)),
-      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=7.2.0`, DATA_BASE))
+      fetch(new URL('schemas/user-profile-v1.schema.json?v=8.0.0', DATA_BASE)),
+      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=8.0.0`, DATA_BASE))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
     ]);

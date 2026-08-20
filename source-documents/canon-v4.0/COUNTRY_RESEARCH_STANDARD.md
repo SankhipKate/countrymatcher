@@ -2,7 +2,7 @@
 
 Версия: 4.0
 Дата: 2026-08-18
-Статус: **CURRENT CANON 4.0 — используется в production 7.2.0**
+Статус: **CURRENT CANON 4.0 — используется в production 8.0.0**
 
 ## Final Lock 4.0
 

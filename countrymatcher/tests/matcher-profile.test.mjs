@@ -21,13 +21,13 @@ test('visible matcher version matches package version', async () => {
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
   assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '7.2.0');
+  assert.equal(packageJson.version, '8.0.0');
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '7\.2\.0'/);
+  assert.match(fxContext, /engine_version: '8\.0\.0'/);
 });
 
 test('country flags are derived generically from ISO alpha-2 codes', () => {

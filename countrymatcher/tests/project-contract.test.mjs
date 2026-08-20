@@ -81,7 +81,7 @@ test('current Canon never requires a school-type preference for international sc
   assert.match(canon, /school_needed[^\n]+не выбирает/u);
 });
 
-test('maintained project documents describe the production 7.2.0 questionnaire and funnel', async () => {
+test('maintained project documents describe the production 8.0.0 questionnaire and funnel', async () => {
   const sourceDocumentsRoot = new URL('../../source-documents/', import.meta.url);
   const [readme, deployment, researchReadme, questionnaire, overview, roadmap, matchingStandard] = await Promise.all([
     readFile(new URL('../README.md', import.meta.url), 'utf8'),
@@ -126,11 +126,11 @@ test('root index is the application and matcher has no user page or redirect', a
   assert.match(html, /<link rel="canonical" href="https:\/\/sankhipkate\.github\.io\/countrymatcher\/">/);
 
   const assets = [
-    './matcher/access-gate.css?v=7.2.0',
-    './pilot/styles.css?v=7.2.0',
-    './matcher/styles.css?v=7.2.0',
-    './matcher/access-gate.js?v=7.2.0',
-    './matcher/app.js?v=7.2.0',
+    './matcher/access-gate.css?v=8.0.0',
+    './pilot/styles.css?v=8.0.0',
+    './matcher/styles.css?v=8.0.0',
+    './matcher/access-gate.js?v=8.0.0',
+    './matcher/app.js?v=8.0.0',
   ];
   for (const asset of assets) {
     assert.ok(html.includes(`"${asset}"`), asset);
@@ -175,7 +175,7 @@ test('Pages artifact is a positive runtime allowlist', async () => {
     for (const required of [
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json',
       'data/quality-of-life-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
@@ -240,7 +240,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
   assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
   const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json']);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json']);
   for (const filename of filenames) {
     assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
@@ -261,15 +261,15 @@ test('runtime data URLs are module-relative and remain valid under a project sub
   ]);
   assert.match(matcher, /const DATA_BASE = new URL\('\.\.\/data\/', import\.meta\.url\)/);
   assert.doesNotMatch(matcher, /fetch\(['"]\.\.\/data/);
-  assert.match(matcher, /new URL\(`\$\{filename\}\?v=7\.2\.0`, DATA_BASE\)/);
-  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=7\.2\.0', DATA_BASE\)/);
+  assert.match(matcher, /new URL\(`\$\{filename\}\?v=8\.0\.0`, DATA_BASE\)/);
+  assert.match(matcher, /new URL\('schemas\/user-profile-v1\.schema\.json\?v=8\.0\.0', DATA_BASE\)/);
   assert.match(fx, /new URL\('\.\.\/data\/fx-fallback\.json', import\.meta\.url\)/);
   const deploymentRoot = new URL('https://example.test/future/project-subpath/');
   const matcherModule = new URL('matcher/app.js', deploymentRoot);
   const pilotModule = new URL('pilot/fx-context.js', deploymentRoot);
   const dataBase = new URL('../data/', matcherModule);
-  assert.equal(new URL('ES-research-v4.0.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=7.2.0');
-  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=7.2.0', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=7.2.0');
+  assert.equal(new URL('ES-research-v4.0.json?v=8.0.0', dataBase).href, 'https://example.test/future/project-subpath/data/ES-research-v4.0.json?v=8.0.0');
+  assert.equal(new URL('schemas/user-profile-v1.schema.json?v=8.0.0', dataBase).href, 'https://example.test/future/project-subpath/data/schemas/user-profile-v1.schema.json?v=8.0.0');
   assert.equal(new URL('../data/fx-fallback.json', pilotModule).href, 'https://example.test/future/project-subpath/data/fx-fallback.json');
   assert.doesNotMatch(`${matcher}\n${fx}`, /sankhipkate\.github\.io|github\.io\/countrymatcher/);
 });
