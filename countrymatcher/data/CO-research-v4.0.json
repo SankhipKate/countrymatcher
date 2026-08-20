@@ -4290,7 +4290,8 @@
       "city_id": "CO_BOGOTA",
       "name_ru": "Богота",
       "structural_roles": [
-        "CAPITAL"
+        "CAPITAL",
+        "LARGE"
       ],
       "population_municipality": 8030000,
       "population_agglomeration": null,

@@ -2910,7 +2910,8 @@
       "city_id": "BR_BRASILIA",
       "name_ru": "Бразилиа",
       "structural_roles": [
-        "CAPITAL"
+        "CAPITAL",
+        "LARGE"
       ],
       "population_municipality": null,
       "population_agglomeration": null,

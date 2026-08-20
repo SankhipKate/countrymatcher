@@ -372,7 +372,7 @@ test('Colombia city comparison uses the same four-component one-person basket in
   assert.deepEqual(
     colombia.cities.map(({ city_id, structural_roles }) => [city_id, structural_roles]),
     [
-      ['CO_BOGOTA', ['CAPITAL']],
+      ['CO_BOGOTA', ['CAPITAL', 'LARGE']],
       ['CO_MEDELLIN', ['LARGE']],
       ['CO_PEREIRA', ['MEDIUM']],
       ['CO_TUNJA', ['SMALL']],
