@@ -230,6 +230,46 @@ test('Colombia independent professional route keeps 5 SMLMV income separate from
   assert.equal(below.routeStatus, 'UNSUITABLE');
 });
 
+test('Colombia investor explains SMLMV in user-facing terms', () => {
+  const requirement = requirementData(
+    'CO_M_INVERSIONISTA',
+    'CO_INVEST_CAPITAL',
+  );
+
+  assert.match(
+    requirement.condition_ru,
+    /SMLMV — минимальная месячная зарплата в Колумбии/u,
+  );
+  assert.match(
+    requirement.condition_ru,
+    /прямые иностранные инвестиции свыше 650 SMLMV — 1\s*138\s*088\s*250 COP/u,
+  );
+  assert.match(
+    requirement.condition_ru,
+    /недвижимость стоимостью не менее 350 SMLMV — 612\s*816\s*750 COP/u,
+  );
+  assert.match(
+    requirement.condition_ru,
+    /1 SMLMV = 1\s*750\s*905 COP/u,
+  );
+  assert.doesNotMatch(
+    requirement.condition_ru,
+    /\$|USD|COP\s*\(≈/u,
+  );
+  assert.match(
+    requirement.condition_ru,
+    /свыше 650 SMLMV/u,
+  );
+  assert.match(
+    requirement.condition_ru,
+    /не менее 350 SMLMV/u,
+  );
+  assert.doesNotMatch(
+    requirement.condition_ru,
+    /investment thresholds|FDI|qualifying property|savings balance/iu,
+  );
+});
+
 test('Colombia capital routes never treat current savings or questionnaire capital as an already-established legal basis', () => {
   const result = calculate({
     type: 'NO_REGULAR_INCOME',

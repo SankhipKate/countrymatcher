@@ -1137,6 +1137,38 @@ test('every questionnaire answer enforced by step validation is visibly marked r
   ]) assert.ok(app.includes(label), label);
 });
 
+test('financial amounts embedded in corrective text use runtime FX without duplicate thresholds', async () => {
+  const app = await readFile(
+    new URL('../matcher/app.js', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(
+    app,
+    /withDynamicFinancialTextEquivalents/u,
+  );
+
+  assert.match(
+    app,
+    /localAmount\s*\*\s*anchor\.thresholdUsd\s*\/\s*anchor\.threshold/u,
+  );
+
+  assert.match(
+    app,
+    /currency\(amountUsd,\s*'USD'\)/u,
+  );
+
+  assert.match(
+    app,
+    /thresholdsAlreadyExplained/u,
+  );
+
+  assert.match(
+    app,
+    /compactActionText\.includes/u,
+  );
+});
+
 test('result UI reserves corrective actions for conditional routes', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.equal(app.includes('Что должно измениться для повторной оценки'), false);

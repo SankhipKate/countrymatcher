@@ -2149,7 +2149,7 @@
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Нужен один из официальных investment thresholds: FDI >650 SMLMV либо qualifying property >=350 SMLMV. Это отдельный капитал, а не текущий savings balance пользователя.",
+          "condition_ru": "Нужен один из двух вариантов: прямые иностранные инвестиции свыше 650 SMLMV — 1 138 088 250 COP, либо недвижимость стоимостью не менее 350 SMLMV — 612 816 750 COP. SMLMV — минимальная месячная зарплата в Колумбии: 1 SMLMV = 1 750 905 COP. Это отдельный инвестиционный капитал, а не текущие накопления.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION",
             "CO_SRC_SMLMV_2026"

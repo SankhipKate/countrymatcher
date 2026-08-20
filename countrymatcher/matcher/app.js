@@ -447,6 +447,49 @@ function routeCard(route, countryName, main = false) {
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
     return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${official}${equivalent}`.trim();
   };
+  const withDynamicFinancialTextEquivalents = (text, financialSummary) => {
+    const source = String(text ?? '');
+    const alternatives = financialSummary?.alternatives || [];
+
+    const anchors = new Map();
+
+    for (const item of alternatives) {
+      if (
+        item.currency
+        && Number.isFinite(item.threshold)
+        && item.threshold > 0
+        && Number.isFinite(item.thresholdUsd)
+        && item.thresholdUsd > 0
+        && !anchors.has(item.currency)
+      ) {
+        anchors.set(item.currency, item);
+      }
+    }
+
+    return source.replace(
+      /([\d][\d\s\u00a0]*)\s+([A-Z]{3})\b/gu,
+      (match, rawAmount, currencyCode) => {
+        if (currencyCode === 'USD') return match;
+
+        const anchor = anchors.get(currencyCode);
+        if (!anchor) return match;
+
+        const localAmount = Number(
+          String(rawAmount).replace(/\s/gu, ''),
+        );
+
+        if (!Number.isFinite(localAmount) || localAmount <= 0) {
+          return match;
+        }
+
+        const amountUsd =
+          localAmount * anchor.thresholdUsd / anchor.threshold;
+
+        return `${match} (≈ ${currency(amountUsd, 'USD')})`;
+      },
+    );
+  };
+
   const conditionActions = route.conditionActions?.length
     ? route.conditionActions
     : (route.conditions || []).map((text) => ({ text, requirementId: null, financialSummary: null }));
@@ -455,9 +498,26 @@ function routeCard(route, countryName, main = false) {
     const alternatives = action.requirementId && !financialActionSeen.has(action.requirementId)
       ? action.financialSummary?.alternatives?.filter((item) => item.threshold != null) || [] : [];
     if (alternatives.length) financialActionSeen.add(action.requirementId);
-    return alternatives.length
-      ? `${String(action.text).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`
-      : action.text;
+
+    const actionText = withDynamicFinancialTextEquivalents(
+      action.text,
+      action.financialSummary,
+    );
+
+    if (!alternatives.length) return actionText;
+
+    const compactActionText = String(actionText).replace(/[\s\u00a0]/gu, '');
+
+    const thresholdsAlreadyExplained = alternatives.every((item) =>
+      item.threshold != null
+      && item.currency
+      && compactActionText.includes(
+        `${Math.round(item.threshold)}${item.currency}`,
+      ));
+
+    if (thresholdsAlreadyExplained) return actionText;
+
+    return `${String(actionText).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`;
   });
   const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && actionItems.length
     ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
