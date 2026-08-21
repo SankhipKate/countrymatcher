@@ -6,8 +6,8 @@
   <meta name="description" content="COUNTRY MATCHER — персональный навигатор переезда для граждан РФ"><meta name="theme-color" content="#071e3d">
   <link rel="canonical" href="https://sankhipkate.github.io/countrymatcher/">
   <title>COUNTRY MATCHER</title>
-  <link rel="stylesheet" href="./matcher/access-gate.css?v=8.0.0">
-  <link rel="stylesheet" href="./pilot/styles.css?v=8.0.0"><link rel="stylesheet" href="./matcher/styles.css?v=8.0.0">
+  <link rel="stylesheet" href="./matcher/access-gate.css">
+  <link rel="stylesheet" href="./pilot/styles.css"><link rel="stylesheet" href="./matcher/styles.css">
 </head>
 <body>
   <header class="site-header"><div class="nav-shell"><a class="brand" href="./" aria-label="COUNTRY MATCHER"><img class="brand-logo" src="./assets/images/countrymatcher-logo.png" alt="COUNTRY MATCHER"></a><div class="secure-note"><span aria-hidden="true">◇</span> Ответы анкеты остаются в вашем браузере.</div></div></header>
@@ -68,9 +68,9 @@
     <section id="accessGate" class="access-gate" aria-labelledby="accessTitle" hidden><div class="access-card"><h1 id="accessTitle">Результат расчёта</h1><p id="accessTeaser" class="access-teaser"></p><div id="accessBreakdown" class="access-breakdown" hidden></div><p id="accessFreeCountry" class="access-free-country" hidden></p><p id="accessLockedCountries" class="access-locked-countries" hidden></p><a id="accessPaymentLink" class="access-payment" href="./landing/#payment">Открыть все результаты</a><p class="access-trust">Ответы анкеты остаются в вашем браузере.</p><p id="accessStatus" class="access-status" role="status" aria-live="polite">Проверяем оплату и открываем доступ…</p><button id="accessRetry" class="access-retry" type="button" hidden>Проверить ещё раз</button></div></section>
     <section id="resultView" class="result-layout result-layout-single" hidden><div id="result" class="surface result-main"></div><aside id="previewBottomCta" class="preview-bottom-cta surface" hidden><h2>Что откроется после оплаты</h2><ul><li id="previewLockedCountries"></li><li>Возможность менять ответы на вопросы анкеты и пересчитывать результаты</li></ul><a id="previewBottomPaymentLink" class="access-payment" href="./landing/#payment">Открыть все результаты</a><p>Ответы анкеты остаются в вашем браузере.</p></aside></section>
     <section id="manualAccess" class="manual-access surface" hidden><button id="manualAccessToggle" class="manual-access-toggle" type="button" aria-expanded="false" aria-controls="accessForm">Уже есть код доступа?</button><form id="accessForm" hidden><label for="accessCode">Код доступа</label><input id="accessCode" type="text" autocomplete="one-time-code" spellcheck="false" required><p class="access-code-help">Код, который вы получили после оплаты.</p><p id="accessError" class="access-error" role="alert" hidden>Код не подошёл. Проверьте символы и попробуйте ещё раз.</p><button type="submit">Открыть результаты</button></form><p class="access-help">После активации доступ сохранится в этом браузере.</p></section>
-    <footer class="version-footer" aria-label="Версия приложения">COUNTRY MATCHER · версия 8.0.0</footer>
+    <footer class="version-footer" aria-label="Версия приложения">COUNTRY MATCHER · версия <span data-app-version>dev</span></footer>
   </main>
-  <script type="module" src="./matcher/access-gate.js?v=8.0.0"></script>
-  <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./matcher/app.js?v=8.0.0"></script>
+  <script type="module" src="./matcher/access-gate.js"></script>
+  <datalist id="countryOptions"></datalist><div id="toast" class="toast" role="status" hidden></div><script type="module" src="./matcher/app.js"></script>
 </body>
 </html>

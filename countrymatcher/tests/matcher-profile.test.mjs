@@ -14,20 +14,18 @@ const universalProfiles = JSON.parse(await readFile(new URL('./fixtures/universa
 const spainResearch = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguayResearch = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
 
-test('visible matcher version matches package version', async () => {
-  const [matcherHtml, packageJson, fxContext] = await Promise.all([
+test('visible matcher keeps a build-injected product-version hook', async () => {
+  const [matcherHtml, fxContext] = await Promise.all([
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
-    readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
     readFile(new URL('../pilot/fx-context.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(matcherHtml, new RegExp(`версия ${packageJson.version.replaceAll('.', '\\.')}`));
-  assert.equal(packageJson.version, '8.0.0');
+  assert.match(matcherHtml, /версия <span data-app-version>dev<\/span>/);
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
   assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);
-  assert.match(fxContext, /engine_version: '8\.0\.0'/);
+  assert.doesNotMatch(fxContext, /engine_version/);
 });
 
 test('country flags are derived generically from ISO alpha-2 codes', () => {
@@ -1251,30 +1249,27 @@ test('income controls align and share one control radius', async () => {
   assert.match(styles, /\.money-combo\{[^}]*border-radius:var\(--control-radius\)/);
 });
 
-test('matcher cache keys include the current release for code and country data', async () => {
-  const [matcher, app, packageJson] = await Promise.all([
+test('matcher source delegates cache busting to build id wiring', async () => {
+  const [matcher, app] = await Promise.all([
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
-    readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
   ]);
-  const version = packageJson.version.replaceAll('.', '\\.');
-  assert.match(matcher, new RegExp(`styles\\.css\\?v=${version}`));
-  assert.match(matcher, new RegExp(`app\\.js\\?v=${version}`));
+  assert.doesNotMatch(matcher, /\?v=/);
   assert.match(app, /'ES-research-v4\.0\.json'/);
-  assert.match(app, new RegExp(`fetch\\(new URL\\(\`\\$\\{filename\\}\\?v=${version}\`, DATA_BASE\\)\\)`));
+  assert.match(app, /function currentBuildId\(\)/);
+  assert.match(app, /versioned\.searchParams\.set\('v', buildId\)/);
+  assert.match(app, /fetch\(withBuildId\(new URL\(filename, DATA_BASE\), buildId\)\)/);
+  assert.match(app, /fallbackUrl: withBuildId\(FX_FALLBACK_URL, buildId\)/);
   assert.equal(app.includes("-research-v3.0.json"), false);
   assert.equal(app.includes("-adapter.js"), false);
 });
 
 test('README describes the live matcher and maintenance rule', async () => {
-  const [readme, packageJson] = await Promise.all([
-    readFile(new URL('../README.md', import.meta.url), 'utf8'),
-    readFile(new URL('../package.json', import.meta.url), 'utf8').then(JSON.parse),
-  ]);
+  const readme = await readFile(new URL('../README.md', import.meta.url), 'utf8');
   assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\//);
   assert.match(readme, /sankhipkate\.github\.io\/countrymatcher\/landing\//);
   assert.match(readme, /README обновляется при каждом изменении/);
-  assert.ok(readme.includes(packageJson.version));
+  assert.match(readme, /\[`VERSION`\]\(VERSION\)/);
   assert.match(readme, /Испания/);
   assert.equal(readme.includes('Рабочий пилот Испании'), false);
 });

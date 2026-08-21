@@ -79,11 +79,6 @@ test("PayPal and card clicks are recorded separately", () => {
 });
 
 test("checkout contains the purchase-funnel analytics hooks", async () => {
-  const packageJson = JSON.parse(
-    await readFile(new URL("../package.json", import.meta.url), "utf8"),
-  );
-  const version = packageJson.version.replaceAll(".", "\\.");
-
   const landing = await readFile(
     new URL("../landing/index.html", import.meta.url),
     "utf8",
@@ -97,14 +92,10 @@ test("checkout contains the purchase-funnel analytics hooks", async () => {
     "utf8",
   );
 
-  assert.match(
-    landing,
-    new RegExp(`paypal-checkout\\.js\\?v=${version}`),
-  );
-  assert.match(
-    checkout,
-    new RegExp(`clarity-analytics\\.js\\?v=${version}`),
-  );
+  assert.match(landing, /paypal-checkout\.js/);
+  assert.doesNotMatch(landing, /paypal-checkout\.js\?v=/);
+  assert.match(checkout, /clarity-analytics\.js/);
+  assert.doesNotMatch(checkout, /clarity-analytics\.js\?v=/);
   assert.match(
     checkout,
     /trackPayPalFundingSource\(data\?\.fundingSource\)/,

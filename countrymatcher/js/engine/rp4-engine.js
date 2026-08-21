@@ -1,4 +1,4 @@
-import { ROUTE_STATUSES } from './status-contract.js?v=8.0.0';
+import { ROUTE_STATUSES } from './status-contract.js';
 import { ROUTE_PRESENTATION_GROUPS, ROUTE_PRESENTATION_RANK } from './route-presentation-contract.js';
 
 export const ACTIVE_RESEARCH_SCHEMA_VERSION = '4.0';
