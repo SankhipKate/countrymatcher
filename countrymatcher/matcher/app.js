@@ -1,17 +1,17 @@
-import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js?v=8.0.0';
-import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js?v=8.0.0';
-import { collectCurrencyCodes, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js?v=8.0.0';
-import { countryOptions, parseCountryCode, searchCountries } from './countries.js?v=8.0.0';
-import { formatCurrency } from './format.js?v=8.0.0';
+import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js';
+import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js';
+import { collectCurrencyCodes, FX_FALLBACK_URL, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js';
+import { countryOptions, parseCountryCode, searchCountries } from './countries.js';
+import { formatCurrency } from './format.js';
 import {
   ACCESS_GRANTED_EVENT,
   ACCESS_STATES,
   hideAccessGate,
   resolveAccessState,
   showAccessTeaser,
-} from './access-gate.js?v=8.0.0';
-import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js?v=8.0.0';
-import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js?v=8.0.0';
+} from './access-gate.js';
+import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
+import { applicationPresentationText, buildUserProfile, cityCategories, citySizeLabel, countryFlag, deduplicatedWorkRights, describeCityCostBasket, describeIncomeRequirement, describeResultIntro, formatCityTemperatureRange, nextCitySortState, reorderCityComparisonRows, resolveProvableAmount, russianMonths, sortCountriesForDisplay, sortRoutesForDisplay, uniqueRouteActions, validateAgainstSchema, validateUserProfile } from './profile.js';
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -20,6 +20,16 @@ const steps = $$('.wizard-step');
 const TOTAL_STEPS = steps.length;
 const DRAFT_KEY = 'immigration-matcher-universal-draft-v3';
 const DATA_BASE = new URL('../data/', import.meta.url);
+
+function currentBuildId() {
+  return document.querySelector('meta[name="countrymatcher-build-id"]')?.content?.trim() || 'dev';
+}
+
+function withBuildId(url, buildId = currentBuildId()) {
+  const versioned = new URL(url);
+  versioned.searchParams.set('v', buildId);
+  return versioned;
+}
 const ACTIVE_RP4_PACKAGES = [
   'ES-research-v4.0.json',
   'AR-research-v4.0.json',
@@ -942,22 +952,26 @@ async function init() {
   const restoredDraft = restoreDraft();
   syncChildren(); syncConditional(); showStep(1, false);
   try {
+    const buildId = currentBuildId();
     const [packages, schemaResponse, editorial] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(new URL(`${filename}?v=8.0.0`, DATA_BASE));
+        const response = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
         const pkg = await response.json();
         assertActiveResearchPackage(pkg);
         return pkg;
       })),
-      fetch(new URL('schemas/user-profile-v1.schema.json?v=8.0.0', DATA_BASE)),
-      fetch(new URL(`${QUALITY_OF_LIFE_EDITORIAL_FILE}?v=8.0.0`, DATA_BASE))
+      fetch(withBuildId(new URL('schemas/user-profile-v1.schema.json', DATA_BASE), buildId)),
+      fetch(withBuildId(new URL(QUALITY_OF_LIFE_EDITORIAL_FILE, DATA_BASE), buildId))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
     const fxCurrencies = [...new Set([...collectCurrencyCodes(packages), ...questionnaireCurrencies()])];
-    const context = await loadCalculationContext({ currencies: fxCurrencies });
+    const context = await loadCalculationContext({
+      currencies: fxCurrencies,
+      fallbackUrl: withBuildId(FX_FALLBACK_URL, buildId),
+    });
     activeResearchPackages = packages;
     profileSchema = await schemaResponse.json();
     calculationContext = context;

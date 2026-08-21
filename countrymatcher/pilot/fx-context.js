@@ -264,7 +264,6 @@ export async function loadCalculationContext({
   const missingCurrencies = requestedCurrencies.filter((currency) => !(rates[currency] > 0));
   return {
     calculation_date: now.toISOString(),
-    engine_version: '8.0.0',
     fx: {
       base_currency: FX_BASE_CURRENCY,
       rates,
