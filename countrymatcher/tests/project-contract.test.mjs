@@ -3,9 +3,14 @@ import assert from 'node:assert/strict';
 import { access, mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 const execFileAsync = promisify(execFile);
+
+function filesystemEntryUrl(rootUrl, name) {
+  return pathToFileURL(join(fileURLToPath(rootUrl), name));
+}
 
 const repositoryRoot = new URL('../../', import.meta.url);
 const appRoot = new URL('../', import.meta.url);
@@ -199,6 +204,21 @@ test('CI and Pages validate every RP4 package before completion or deploy', asyn
   assert.ok(pages.indexOf('validate-v4.0.py') < pages.indexOf('actions/upload-pages-artifact@v3'));
 });
 
+test('filesystem entry names remain paths instead of URL fragments or queries', () => {
+  const root = pathToFileURL('/tmp/source-documents/');
+  const hashName = '#U041f-file.md';
+  const queryName = 'README.md?draft';
+  const hashUrl = filesystemEntryUrl(root, hashName);
+  const queryUrl = filesystemEntryUrl(root, queryName);
+
+  assert.equal(hashUrl.hash, '');
+  assert.equal(hashUrl.search, '');
+  assert.ok(decodeURIComponent(hashUrl.pathname).endsWith(`/${hashName}`));
+  assert.equal(queryUrl.hash, '');
+  assert.equal(queryUrl.search, '');
+  assert.ok(decodeURIComponent(queryUrl.pathname).endsWith(`/${queryName}`));
+});
+
 test('schema ids and maintained public documents use canonical addresses', async () => {
   const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
   const profileSchema = JSON.parse(await readFile(new URL('../data/schemas/user-profile-v1.schema.json', import.meta.url), 'utf8'));
@@ -213,7 +233,7 @@ test('schema ids and maintained public documents use canonical addresses', async
     new URL('../README.md', import.meta.url),
     new URL('../DEPLOYMENT.md', import.meta.url),
     new URL('../docs/research/README.md', import.meta.url),
-    ...sourceMarkdown.map((name) => new URL(name, sourceDocumentsRoot)),
+    ...sourceMarkdown.map((name) => filesystemEntryUrl(sourceDocumentsRoot, name)),
   ];
   for (const file of maintainedFiles) {
     const contents = await readFile(file, 'utf8');
