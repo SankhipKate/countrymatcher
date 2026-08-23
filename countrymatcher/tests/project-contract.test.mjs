@@ -228,6 +228,12 @@ test('CI and Pages validate every RP4 package before completion or deploy', asyn
   for (const workflow of workflows) {
     assert.match(workflow, /actions\/setup-python@v5/);
     assert.match(workflow, /pip install -r countrymatcher\/requirements\.txt/);
+    const installPosition = workflow.indexOf('pip install -r countrymatcher/requirements.txt');
+    const npmTestPosition = workflow.indexOf('run: npm test');
+    assert.ok(
+      installPosition > -1 && npmTestPosition > -1 && installPosition < npmTestPosition,
+      'validator dependencies must be installed before npm test',
+    );
     assert.match(workflow, /packages=\(countrymatcher\/data\/\*-research-v4\.0\.json\)/);
     assert.match(workflow, /if \[ \$\{#packages\[@\]\} -eq 0 \]/);
     assert.match(workflow, /python3 countrymatcher\/data\/validate-v4\.0\.py "\$package"/);
