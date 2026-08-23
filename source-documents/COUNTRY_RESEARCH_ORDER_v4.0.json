@@ -1,6 +1,6 @@
 {
   "schema_version": "4.0",
-  "updated_at": "2026-08-19",
+  "updated_at": "2026-08-21",
   "countries": [
     {
       "overall_rank": 1,
@@ -539,7 +539,7 @@
       "country": "Черногория",
       "region": "Другое",
       "category": "Частично признаны права пары",
-      "research_status": "В очереди"
+      "research_status": "Подключена"
     },
     {
       "overall_rank": 78,

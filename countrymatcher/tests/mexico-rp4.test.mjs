@@ -351,3 +351,21 @@ test('Mexico pets remain origin-sensitive rather than applying the US screwworm 
     /не распространяются автоматически/i,
   );
 });
+
+test('Mexico regression fixture pins accepted administrative-only family behavior', async () => {
+  const fixture = JSON.parse(await readFile(new URL('./fixtures/MX_REGRESSION_EXPECTATIONS_v4.0.json', import.meta.url), 'utf8'));
+  assert.equal(fixture.country_id, 'MX');
+  assert.equal(fixture.rules_version, '4.0');
+  assert.equal(fixture.canonical_version, '4.0');
+  assert.equal(fixture.canon_revision, '2026-08-08-final-lock');
+  for (const item of fixture.cases) {
+    const result = calculateActiveCountry(profile(item.profile), mexico, context);
+    const route = routeById(result, item.route_id);
+    assert.ok(route, item.route_id);
+    assert.equal(route.routeStatus, item.expected.route_status, item.route_id);
+    assert.equal(route.familyEvaluation.state, item.expected.family_state, item.route_id);
+    assert.equal(route.familyEvaluation.classification, item.expected.family_classification, item.route_id);
+    assert.equal(route.familyEvaluation.sortRank, item.expected.family_sort_rank, item.route_id);
+    assert.equal(route.conditions?.length || 0, item.expected.conditions_count, item.route_id);
+  }
+});

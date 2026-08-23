@@ -43,6 +43,13 @@ export const ACTIVE_ENGINE_FINANCIAL_CAPABILITIES = Object.freeze({
   ]),
   alternativeKinds: Object.freeze(['INCOME', 'SAVINGS', 'CAPITAL']),
   comparisons: Object.freeze(['AT_LEAST', 'MORE_THAN', 'EXACT', 'NO_FIXED_THRESHOLD']),
+  alternativeApplicabilityModels: Object.freeze([
+    'INCOME_ONLY',
+    'SAVINGS_ONLY',
+    'INCOME_OR_SAVINGS',
+    'INVESTMENT_CAPITAL',
+    'SPONSOR_OR_SCHOLARSHIP',
+  ]),
 });
 
 function assertActiveEngineFinancialCapabilities(route, requirement) {
@@ -50,6 +57,15 @@ function assertActiveEngineFinancialCapabilities(route, requirement) {
   const unsupported = [];
   if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.models.includes(financial.model)) {
     unsupported.push({ semantic: 'financial.model', value: financial.model });
+  }
+  if (
+    (financial.alternatives || []).some((alternative) => alternative.applies_if)
+    && !ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.alternativeApplicabilityModels.includes(financial.model)
+  ) {
+    unsupported.push({
+      semantic: 'financial.alternativeApplicabilityModel',
+      value: financial.model,
+    });
   }
   (financial.alternatives || []).forEach((alternative, index) => {
     if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.alternativeKinds.includes(alternative.kind)) {
@@ -95,6 +111,97 @@ const GOAL_FITS = Object.freeze({
   DOES_NOT_MEET: 'DOES_NOT_MEET',
   NOT_APPLICABLE: 'NOT_APPLICABLE',
 });
+
+export const APPLICABILITY_STATES = Object.freeze({
+  TRUE: 'TRUE',
+  FALSE: 'FALSE',
+  UNKNOWN: 'UNKNOWN',
+});
+
+function routeSpecificQuestionMap(route) {
+  const questions = route?.route_specific_questions || [];
+  const map = new Map();
+
+  for (const question of questions) {
+    if (map.has(question.question_id)) {
+      throw new Rp4EvaluationUnsupportedError(
+        `Duplicate route-specific question ${question.question_id}.`,
+        { routeId: route?.route_id, questionId: question.question_id },
+      );
+    }
+    map.set(question.question_id, question);
+  }
+
+  return map;
+}
+
+export function evaluateApplicability(appliesIf, profile, route) {
+  if (!appliesIf) return APPLICABILITY_STATES.TRUE;
+
+  if (!route?.route_id) {
+    throw new Rp4EvaluationUnsupportedError(
+      'Route-specific applicability requires a route context.',
+      {},
+    );
+  }
+
+  const questions = routeSpecificQuestionMap(route);
+  const question = questions.get(appliesIf.question_id);
+
+  if (!question) {
+    throw new Rp4EvaluationUnsupportedError(
+      `Unknown route-specific question ${appliesIf.question_id}.`,
+      { routeId: route.route_id, questionId: appliesIf.question_id },
+    );
+  }
+
+  const optionValues = new Set();
+  for (const option of question.options || []) {
+    if (optionValues.has(option.value)) {
+      throw new Rp4EvaluationUnsupportedError(
+        `Duplicate option ${option.value} for route-specific question ${question.question_id}.`,
+        { routeId: route.route_id, questionId: question.question_id, value: option.value },
+      );
+    }
+    optionValues.add(option.value);
+  }
+
+  for (const value of appliesIf.values || []) {
+    if (!optionValues.has(value)) {
+      throw new Rp4EvaluationUnsupportedError(
+        `Applicability value ${value} is not an option of ${question.question_id}.`,
+        { routeId: route.route_id, questionId: question.question_id, value },
+      );
+    }
+  }
+
+  const answer = profile?.route_specific_answers?.[route.route_id]?.[question.question_id];
+
+  if (answer === undefined || answer === null || answer === '') {
+    return APPLICABILITY_STATES.UNKNOWN;
+  }
+
+  if (!optionValues.has(answer)) {
+    return APPLICABILITY_STATES.UNKNOWN;
+  }
+
+  if (appliesIf.operator === 'EQUALS') {
+    return answer === appliesIf.values?.[0]
+      ? APPLICABILITY_STATES.TRUE
+      : APPLICABILITY_STATES.FALSE;
+  }
+
+  if (appliesIf.operator === 'IN') {
+    return appliesIf.values?.includes(answer)
+      ? APPLICABILITY_STATES.TRUE
+      : APPLICABILITY_STATES.FALSE;
+  }
+
+  throw new Rp4EvaluationUnsupportedError(
+    `Unsupported applicability operator ${appliesIf.operator}.`,
+    { routeId: route.route_id, questionId: question.question_id },
+  );
+}
 
 export function evaluateLongTermGoal(route, profile) {
   const goal = profile?.goal?.long_term;
@@ -202,6 +309,7 @@ function incomeGeographyState(researchGeography, source, countryId) {
   const recognized = ['SINGLE_COUNTRY', 'MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER'].includes(profileGeography);
   if (!recognized) return 'UNKNOWN';
   if (researchGeography === 'ANY' || researchGeography === 'NOT_APPLICABLE' || researchGeography === 'MIXED_ALLOWED') return 'PASS';
+  if (researchGeography === 'FOREIGN' && profileGeography === 'NO_STABLE_PAYER') return 'PASS';
   if (profileGeography !== 'SINGLE_COUNTRY' || !source.country_id) return 'UNKNOWN';
   if (researchGeography === 'FOREIGN') return source.country_id === countryId ? 'FAIL' : 'PASS';
   if (researchGeography === 'DESTINATION_COUNTRY') return source.country_id === countryId ? 'PASS' : 'FAIL';
@@ -214,32 +322,42 @@ function geographyCondition(researchGeography) {
   return null;
 }
 
+const FOREIGN_NO_STABLE_PAYER_NOTICE = 'Для этого маршрута учитываются только выплаты из-за пределов страны назначения. Доход без постоянного плательщика в подборе считается подходящим по географии; при подготовке документов учитывайте только такие выплаты.';
+
 function incomeAlternative(alternative, profile, context, countryId) {
   if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative };
   if (alternative.income_owners?.includes('SPONSOR')) return { state: 'UNKNOWN', alternative };
   const sources = sourcesForOwners(profile, alternative.income_owners || []);
   const allowed = new Set(alternative.allowed_income_types || []);
+  let foreignNoStablePayerAccepted = false;
   if (alternative.comparison === 'NO_FIXED_THRESHOLD') {
     let hasConfirmedSource = false;
     let hasUnknownGeography = false;
+    let hasAllowedIncomeType = false;
     for (const source of sources) {
       if (allowed.size && !allowed.has(source.type)) continue;
+      hasAllowedIncomeType = true;
       const geographyState = incomeGeographyState(alternative.source_geography, source, countryId);
-      if (geographyState === 'PASS') hasConfirmedSource = true;
-      else if (geographyState === 'UNKNOWN') hasUnknownGeography = true;
+      if (geographyState === 'PASS') {
+        hasConfirmedSource = true;
+        if (source.source_geography === 'NO_STABLE_PAYER') foreignNoStablePayerAccepted = true;
+      } else if (geographyState === 'UNKNOWN') hasUnknownGeography = true;
     }
     const screening = alternative.practical_screening_threshold;
     if (hasConfirmedSource && screening) {
       const threshold = calculateFamilyThreshold({ amount: screening.amount ?? null, family_formula: screening.family_formula }, profile);
       let confirmedAmount = 0;
       let unknownGeographyAmount = 0;
+      let screeningForeignNoStablePayerAccepted = false;
       for (const source of sources) {
         if (allowed.size && !allowed.has(source.type)) continue;
         if (source.monthly_provable?.amount == null) continue;
         const converted = convertAmount(source.monthly_provable.amount, source.monthly_provable.currency, screening.currency, context);
         const geographyState = incomeGeographyState(alternative.source_geography, source, countryId);
-        if (geographyState === 'PASS') confirmedAmount += converted;
-        else if (geographyState === 'UNKNOWN') unknownGeographyAmount += converted;
+        if (geographyState === 'PASS') {
+          confirmedAmount += converted;
+          if (source.source_geography === 'NO_STABLE_PAYER') screeningForeignNoStablePayerAccepted = true;
+        } else if (geographyState === 'UNKNOWN') unknownGeographyAmount += converted;
       }
       const periodMultiplier = screening.period === 'ANNUAL' ? 12 : 1;
       confirmedAmount *= periodMultiplier;
@@ -254,6 +372,7 @@ function incomeAlternative(alternative, profile, context, countryId) {
         threshold: null, currency: null, practicalScreeningThreshold: threshold,
         practicalScreeningCurrency: screening.currency, practicalScreeningPeriod: screening.period,
         incomeEligibility: 'ELIGIBLE_SOURCE',
+        ...(screeningForeignNoStablePayerAccepted ? { foreignNoStablePayerAccepted: true } : {}),
       };
     }
     const state = hasConfirmedSource ? 'PASS' : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
@@ -262,7 +381,10 @@ function incomeAlternative(alternative, profile, context, countryId) {
       unknownGeographyAmount: null, potentialAmount: null,
       unknownReason: state === 'UNKNOWN' ? 'GEOGRAPHY' : null,
       hasUnknownGeography, threshold: null, currency: null,
-      incomeEligibility: hasConfirmedSource ? 'ELIGIBLE_SOURCE' : hasUnknownGeography ? 'GEOGRAPHY_UNKNOWN' : 'NO_ELIGIBLE_SOURCE',
+      incomeEligibility: hasConfirmedSource ? 'ELIGIBLE_SOURCE'
+        : hasUnknownGeography ? 'GEOGRAPHY_UNKNOWN'
+          : hasAllowedIncomeType ? 'GEOGRAPHY_REJECTED' : 'NO_ELIGIBLE_SOURCE',
+      ...(foreignNoStablePayerAccepted ? { foreignNoStablePayerAccepted: true } : {}),
     };
   }
   const threshold = calculateFamilyThreshold(alternative, profile);
@@ -276,8 +398,10 @@ function incomeAlternative(alternative, profile, context, countryId) {
     hasAllowedIncomeType = true;
     const converted = convertAmount(source.monthly_provable.amount, source.monthly_provable.currency, alternative.currency, context);
     const geographyState = incomeGeographyState(alternative.source_geography, source, countryId);
-    if (geographyState === 'PASS') confirmedAmount += converted;
-    else if (geographyState === 'UNKNOWN') unknownGeographyAmount += converted;
+    if (geographyState === 'PASS') {
+      confirmedAmount += converted;
+      if (source.source_geography === 'NO_STABLE_PAYER') foreignNoStablePayerAccepted = true;
+    } else if (geographyState === 'UNKNOWN') unknownGeographyAmount += converted;
   }
   const periodMultiplier = alternative.period === 'ANNUAL' ? 12 : 1;
   confirmedAmount *= periodMultiplier;
@@ -293,12 +417,32 @@ function incomeAlternative(alternative, profile, context, countryId) {
     threshold, currency: alternative.currency,
     incomeEligibility: confirmedAmount > 0 || unknownGeographyAmount > 0 ? 'ELIGIBLE_SOURCE'
       : hasAllowedIncomeType ? 'GEOGRAPHY_REJECTED' : 'NO_ELIGIBLE_SOURCE',
+    ...(foreignNoStablePayerAccepted ? { foreignNoStablePayerAccepted: true } : {}),
   };
 }
 
 function assetAlternative(alternative, profile, context) {
-  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile), currency: alternative.currency };
   const field = alternative.kind === 'SAVINGS' ? profile?.income?.savings : profile?.investment_capital;
+  if (alternative.comparison === 'NO_FIXED_THRESHOLD') {
+    const screening = alternative.practical_screening_threshold;
+    const practicalThreshold = screening
+      ? calculateFamilyThreshold({ amount: screening.amount ?? null, family_formula: screening.family_formula }, profile)
+      : null;
+    const practical = {
+      practicalScreeningThreshold: practicalThreshold,
+      practicalScreeningCurrency: screening?.currency ?? null,
+      practicalScreeningPeriod: screening?.period ?? null,
+    };
+    if (!alternative.asked_in_questionnaire || !screening || field?.amount == null || practicalThreshold == null) {
+      return { state: 'UNKNOWN', alternative, threshold: null, currency: null, ...practical };
+    }
+    const amount = convertAmount(field.amount, field.currency, screening.currency, context);
+    return {
+      state: compareFinancialAmount(screening.comparison, amount, practicalThreshold),
+      alternative, amount, threshold: null, currency: null, ...practical,
+    };
+  }
+  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile), currency: alternative.currency };
   const threshold = calculateFamilyThreshold(alternative, profile);
   if (field?.amount == null || threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency };
   const amount = convertAmount(field.amount, field.currency, alternative.currency, context);
@@ -319,9 +463,46 @@ function combineOr(items) {
 
 export const combineFinancialAlternatives = combineOr;
 
-export function evaluateFinancialRequirement(requirement, profile, context, countryId) {
+export function evaluateFinancialRequirement(requirement, profile, context, countryId, route = null) {
   const financial = requirement.financial;
-  const alternatives = financial.alternatives.map((item) => evaluateAlternative(item, profile, context, countryId));
+  const hasAlternativeGates = financial.alternatives.some((item) => item.applies_if);
+
+  if (
+    hasAlternativeGates
+    && !ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.alternativeApplicabilityModels.includes(financial.model)
+  ) {
+    throw new Rp4EvaluationUnsupportedError(
+      `Alternative-level applies_if is unsupported for financial model ${financial.model}.`,
+      { routeId: route?.route_id, requirementId: requirement.requirement_id, model: financial.model },
+    );
+  }
+
+  const alternatives = financial.alternatives.map((item) => {
+    const applicability = evaluateApplicability(item.applies_if, profile, route);
+
+    if (applicability === APPLICABILITY_STATES.FALSE) {
+      return { state: 'NOT_APPLICABLE', alternative: item, applicability };
+    }
+
+    if (applicability === APPLICABILITY_STATES.UNKNOWN) {
+      return { state: 'UNKNOWN', alternative: item, applicability };
+    }
+
+    return {
+      ...evaluateAlternative(item, profile, context, countryId),
+      applicability,
+    };
+  });
+
+  const activeAlternatives = alternatives.filter(({ state }) => state !== 'NOT_APPLICABLE');
+
+  if (hasAlternativeGates && activeAlternatives.length === 0) {
+    throw new Rp4EvaluationUnsupportedError(
+      `All gated financial alternatives are NOT_APPLICABLE for ${requirement.requirement_id}.`,
+      { routeId: route?.route_id, requirementId: requirement.requirement_id },
+    );
+  }
+
   let state;
   switch (financial.model) {
     case 'INCOME_ONLY':
@@ -329,7 +510,7 @@ export function evaluateFinancialRequirement(requirement, profile, context, coun
     case 'INVESTMENT_CAPITAL':
     case 'SPONSOR_OR_SCHOLARSHIP':
     case 'INCOME_OR_SAVINGS':
-      state = combineOr(alternatives);
+      state = combineOr(activeAlternatives);
       break;
     case 'INCOME_AND_SAVINGS':
       state = alternatives.some((item) => item.state === 'FAIL') ? 'FAIL'
@@ -363,12 +544,21 @@ export function evaluateFinancialRequirement(requirement, profile, context, coun
     }
     default: throw new TypeError(`Unsupported financial model: ${financial.model}`);
   }
-  const geographyAlternative = alternatives.find((item) => item.hasUnknownGeography && state === 'UNKNOWN');
+  const geographyAlternative = activeAlternatives.find((item) => item.hasUnknownGeography && state === 'UNKNOWN');
   return {
     state, model: financial.model, alternatives,
     condition: geographyAlternative ? geographyCondition(geographyAlternative.alternative.source_geography) : null,
     unsupported: alternatives.some((item) => item.state === 'UNSUPPORTED' || item.unsupported),
   };
+}
+
+function practicalScreeningPeriodRu(period) {
+  return {
+    MONTHLY: 'в месяц',
+    ANNUAL: 'в год',
+    ONE_TIME: 'единовременно',
+    ACADEMIC_YEAR: 'за учебный год',
+  }[period] || '';
 }
 
 function financialBlockerReason(evaluation, profile) {
@@ -379,20 +569,64 @@ function financialBlockerReason(evaluation, profile) {
     const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
     return `Для вашего состава семьи требуется ${number(savings.threshold)} ${savings.currency} подтверждаемых средств. Ваши подтверждаемые накопления — около ${number(savings.amount)} ${savings.currency}.`;
   }
+
+  const practicalAsset = evaluation?.alternatives?.find((item) =>
+    ['SAVINGS', 'CAPITAL'].includes(item.alternative?.kind)
+    && item.state === 'FAIL'
+    && item.practicalScreeningThreshold != null
+    && item.amount != null
+    && item.practicalScreeningCurrency);
+
+  if (practicalAsset) {
+    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+    const label = practicalAsset.alternative.kind === 'SAVINGS'
+      ? 'Подтверждаемые накопления'
+      : 'Инвестиционный капитал';
+    const period = practicalScreeningPeriodRu(practicalAsset.practicalScreeningPeriod);
+    const suffix = period ? ` ${period}` : '';
+    return `${label} ниже практического ориентира Country Matcher: требуется не менее ${number(practicalAsset.practicalScreeningThreshold)} ${practicalAsset.practicalScreeningCurrency}${suffix}. Указано около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}. Это практический продуктовый порог, а не официальный минимальный порог.`;
+  }
+
   if (income?.incomeEligibility === 'NO_ELIGIBLE_SOURCE') {
     const noIncome = profile?.income?.primary?.type === 'NO_REGULAR_INCOME';
     const shortfallModel = evaluation.model === 'INCOME_WITH_SAVINGS_SHORTFALL';
     if (noIncome) return shortfallModel
-      ? 'Для этого маршрута нужен действующий доход от удалённой работы или другой допустимой удалённой профессиональной деятельности. Вы указали, что регулярного дохода сейчас нет. Накопления не заменяют требуемый источник дохода.'
-      : 'Для этого маршрута нужно подтвердить регулярный законный источник средств к существованию. Вы указали, что регулярного дохода сейчас нет.';
+      ? 'Для этого маршрута нужен действующий доход от удалённой работы или другой допустимой удалённой профессиональной деятельности. Накопления не заменяют требуемый источник дохода.'
+      : 'Для этого маршрута нужно подтвердить регулярный законный источник средств к существованию.';
     return shortfallModel
       ? 'Выбранный тип дохода не принимается для этого маршрута. Накопления не заменяют требуемый источник дохода.'
       : 'Выбранный тип дохода не соответствует требованиям этого маршрута.';
   }
+
+  if (income?.incomeEligibility === 'GEOGRAPHY_REJECTED' && income.alternative?.comparison === 'NO_FIXED_THRESHOLD') {
+    if (income.alternative.source_geography === 'FOREIGN') {
+      return 'Тип дохода подходит, но его география не соответствует требованиям маршрута: учитываемый доход должен поступать из-за пределов страны назначения.';
+    }
+    if (income.alternative.source_geography === 'DESTINATION_COUNTRY') {
+      return 'Тип дохода подходит, но его география не соответствует требованиям маршрута: учитываемый доход должен относиться к источнику в стране назначения.';
+    }
+  }
+
   if (income?.practicalScreeningThreshold != null && income.confirmedAmount != null) {
     const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
     const scope = income.alternative.practical_screening_threshold?.family_formula ? 'для вашего состава семьи' : 'для этого маршрута';
-    return `Подтверждаемый доход ниже практического ориентира ${scope}: около ${number(income.practicalScreeningThreshold)} ${income.practicalScreeningCurrency} в месяц. Вы указали ${number(income.confirmedAmount)} ${income.practicalScreeningCurrency} в месяц.`;
+    const period = practicalScreeningPeriodRu(income.practicalScreeningPeriod);
+    const suffix = period ? ` ${period}` : '';
+    return `Подтверждаемый доход ниже практического ориентира ${scope}: около ${number(income.practicalScreeningThreshold)} ${income.practicalScreeningCurrency}${suffix}. По подтверждаемым данным — около ${number(income.confirmedAmount)} ${income.practicalScreeningCurrency}${suffix}. Это практический продуктовый порог, а не официальный минимальный порог.`;
+  }
+
+  if (income?.state === 'FAIL' && income.incomeEligibility === 'ELIGIBLE_SOURCE'
+    && income.threshold != null && income.confirmedAmount != null && income.currency) {
+    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+    const hasFamilyFormula = Boolean(income.alternative.family_formula || income.alternative.family_formula_ordered);
+    const scope = hasFamilyFormula ? 'Для вашего состава семьи требуется' : 'Для этого маршрута требуется';
+    const period = practicalScreeningPeriodRu(income.alternative.period);
+    const suffix = period ? ` ${period}` : '';
+    const amounts = `${scope} ${number(income.threshold)} ${income.currency}${suffix}. По подтверждаемым данным — около ${number(income.confirmedAmount)} ${income.currency}${suffix}.`;
+    if (evaluation.model === 'INCOME_WITH_SAVINGS_SHORTFALL' && income.shortfall != null) {
+      return `${amounts} Дефицит можно покрыть подтверждаемыми накоплениями; при указанном доходе требуется около ${number(income.shortfall)} ${income.currency} накоплений за установленный период покрытия.`;
+    }
+    return amounts;
   }
   return null;
 }
@@ -401,6 +635,16 @@ function statusEffect(requirement, state) {
   if (state === 'PASS' || requirement.unmet_effect === 'NONE') return 'NONE';
   if (state === 'UNKNOWN') return 'CONDITION';
   return requirement.unmet_effect === 'BLOCKS' ? 'BLOCKER' : 'CONDITION';
+}
+
+function practicalScreeningPresentation(alternative, profile) {
+  const screening = alternative?.practical_screening_threshold;
+  if (!screening) return {};
+  return {
+    practicalScreeningThreshold: calculateFamilyThreshold(screening, profile),
+    practicalScreeningCurrency: screening.currency ?? null,
+    practicalScreeningPeriod: screening.period ?? null,
+  };
 }
 
 function presentUnaskedFinancialRequirement(requirement, profile) {
@@ -412,6 +656,22 @@ function presentUnaskedFinancialRequirement(requirement, profile) {
       alternative,
       threshold: calculateFamilyThreshold(alternative, profile),
       currency: alternative.currency,
+      ...practicalScreeningPresentation(alternative, profile),
+    })),
+  };
+}
+
+function presentNotApplicableFinancialRequirement(requirement, profile) {
+  return {
+    state: 'NOT_APPLICABLE',
+    model: requirement.financial.model,
+    alternatives: requirement.financial.alternatives.map((alternative) => ({
+      state: 'NOT_APPLICABLE',
+      alternative,
+      applicability: APPLICABILITY_STATES.FALSE,
+      threshold: calculateFamilyThreshold(alternative, profile),
+      currency: alternative.currency,
+      ...practicalScreeningPresentation(alternative, profile),
     })),
   };
 }
@@ -423,9 +683,88 @@ export function evaluateRoute(route, profile, context, countryId) {
   const displayOnlyRequirements = [];
   const requirementResults = [];
   for (const requirement of route.requirements || []) {
+    if (requirement.applies_if && requirement.evaluation_mode === 'DISPLAY_ONLY') {
+      throw new Rp4EvaluationUnsupportedError(
+        `DISPLAY_ONLY requirement ${requirement.requirement_id} cannot use applies_if.`,
+        { routeId: route.route_id, requirementId: requirement.requirement_id },
+      );
+    }
+
+    if (
+      requirement.type === 'FINANCIAL'
+      && requirement.evaluation_mode !== 'ENGINE'
+      && requirement.financial?.alternatives?.some((alternative) => alternative.applies_if)
+    ) {
+      throw new Rp4EvaluationUnsupportedError(
+        `Alternative-level applies_if requires FINANCIAL ENGINE for ${requirement.requirement_id}.`,
+        { routeId: route.route_id, requirementId: requirement.requirement_id },
+      );
+    }
+
+    const applicability = evaluateApplicability(requirement.applies_if, profile, route);
+
+    if (applicability === APPLICABILITY_STATES.FALSE) {
+      const notApplicable = requirement.type === 'FINANCIAL'
+        ? presentNotApplicableFinancialRequirement(requirement, profile)
+        : { state: 'NOT_APPLICABLE' };
+
+      requirementResults.push({
+        requirement,
+        ...notApplicable,
+        applicability,
+        effect: 'NONE',
+      });
+      continue;
+    }
+
+    if (applicability === APPLICABILITY_STATES.UNKNOWN) {
+      const unresolved = requirement.type === 'FINANCIAL'
+        ? presentUnaskedFinancialRequirement(requirement, profile)
+        : { state: 'UNKNOWN' };
+
+      const effect = 'CONDITION';
+
+      if (requirement.condition_ru && !conditions.includes(requirement.condition_ru)) {
+        conditions.push(requirement.condition_ru);
+      }
+
+      if (
+        requirement.condition_ru
+        && !conditionActions.some(
+          (action) =>
+            action.requirementId === requirement.requirement_id
+            && action.text === requirement.condition_ru
+        )
+      ) {
+        conditionActions.push({
+          requirementId: requirement.requirement_id,
+          requirementType: requirement.type,
+          text: requirement.condition_ru,
+        });
+      }
+
+      requirementResults.push({
+        requirement,
+        ...unresolved,
+        applicability,
+        effect,
+      });
+      continue;
+    }
+
     if (requirement.evaluation_mode === 'DISPLAY_ONLY') {
       displayOnlyRequirements.push(requirement);
-      requirementResults.push({ requirement, state: 'DISPLAY_ONLY', effect: 'NONE' });
+      const presentationOnlyFinancial = requirement.type === 'FINANCIAL' ? {
+        model: requirement.financial.model,
+        alternatives: requirement.financial.alternatives.map((alternative) => ({
+          state: 'DISPLAY_ONLY',
+          alternative,
+          threshold: null,
+          currency: null,
+          ...practicalScreeningPresentation(alternative, profile),
+        })),
+      } : {};
+      requirementResults.push({ requirement, ...presentationOnlyFinancial, state: 'DISPLAY_ONLY', applicability, effect: 'NONE' });
       continue;
     }
     let evaluation;
@@ -433,7 +772,7 @@ export function evaluateRoute(route, profile, context, countryId) {
       ? presentUnaskedFinancialRequirement(requirement, profile) : { state: 'UNKNOWN' };
     else if (requirement.type === 'FINANCIAL') {
       assertActiveEngineFinancialCapabilities(route, requirement);
-      evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId);
+      evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId, route);
     }
     else evaluation = { state: evaluateEngineRule(requirement.engine_rule, getPath(profile, PROFILE_PATHS[requirement.profile_path] || requirement.profile_path)) };
     if (evaluation.unsupported || evaluation.state === 'UNSUPPORTED') {
@@ -456,7 +795,7 @@ export function evaluateRoute(route, profile, context, countryId) {
         }
       }
     }
-    requirementResults.push({ requirement, ...evaluation, effect });
+    requirementResults.push({ requirement, ...evaluation, applicability, effect });
   }
   const longTermGoal = evaluateLongTermGoal(route, profile);
   if (longTermGoal.blocker && !blockers.includes(longTermGoal.blocker)) blockers.push(longTermGoal.blocker);
@@ -522,14 +861,18 @@ function presentPracticalGuidance(guidance, sources) {
 }
 
 function presentEvaluatedFinancial(evaluated, context, sources = null) {
+  const applicableAlternatives = (evaluated.alternatives || [])
+    .filter((item) => item.state !== 'NOT_APPLICABLE');
+
   return {
     model: evaluated.model,
     state: evaluated.state,
-    alternatives: (evaluated.alternatives || []).map((item) => ({
+    alternatives: applicableAlternatives.map((item) => ({
       requirementLabel: evaluated.requirement.condition_ru,
       kind: item.alternative.kind,
       kindLabel: FINANCIAL_KIND_LABELS_RU[item.alternative.kind],
       state: item.state,
+      ...(item.foreignNoStablePayerAccepted ? { geographyNotice: FOREIGN_NO_STABLE_PAYER_NOTICE } : {}),
       amount: item.amount ?? null,
       threshold: item.threshold ?? null,
       currency: item.currency ?? null,
@@ -548,12 +891,22 @@ function presentEvaluatedFinancial(evaluated, context, sources = null) {
 }
 
 function presentFinancial(requirementResults, context, sources = null) {
-  const evaluated = requirementResults.find(({ requirement }) => requirement.type === 'FINANCIAL');
+  const evaluated = requirementResults.find(
+    ({ requirement, state }) =>
+      requirement.type === 'FINANCIAL'
+      && state !== 'NOT_APPLICABLE'
+  );
   return evaluated ? presentEvaluatedFinancial(evaluated, context, sources) : null;
 }
 
 function presentFinancialRequirements(requirementResults, context, sources = null) {
-  return requirementResults.filter(({ requirement }) => requirement.type === 'FINANCIAL').map((evaluated) => ({
+  return requirementResults
+    .filter(
+      ({ requirement, state }) =>
+        requirement.type === 'FINANCIAL'
+        && state !== 'NOT_APPLICABLE'
+    )
+    .map((evaluated) => ({
     requirementId: evaluated.requirement.requirement_id,
     effect: evaluated.effect,
     summary: presentEvaluatedFinancial(evaluated, context, sources),
@@ -600,8 +953,14 @@ function familyPathResult(scenario, member, profileFamily, routeIds) {
   }
   const later = ['AFTER_INITIAL_RESIDENCE', 'AFTER_PR', 'AFTER_CITIZENSHIP'].includes(scenario.join_stage);
   const administrativeOnly = scenario.administrative_separate_filing === true;
+  const administrativeSequenceOnly = administrativeOnly
+    && scenario.separate_route_required === false
+    && scenario.simultaneous_move !== 'NO'
+    && scenario.join_stage === 'AFTER_INITIAL_RESIDENCE';
   const operationalCondition = (scenario.simultaneous_move === 'CONDITIONAL' && !administrativeOnly)
-    || scenario.simultaneous_move === 'NO' || later || scenario.join_stage === 'SEPARATE_ROUTE'
+    || scenario.simultaneous_move === 'NO'
+    || (later && !administrativeSequenceOnly)
+    || scenario.join_stage === 'SEPARATE_ROUTE'
     || scenario.separate_route_required === true;
   if (operationalCondition && !scenario.condition_ru?.trim()) return { state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, scenario, problems: ['conditional family path has no condition_ru'] };
   const conditions = [relationshipCondition, operationalCondition ? scenario.condition_ru : null].filter(Boolean);
@@ -610,8 +969,8 @@ function familyPathResult(scenario, member, profileFamily, routeIds) {
     scenario,
     conditions,
     classification: scenario.join_stage === 'SEPARATE_ROUTE' || scenario.separate_route_required === true ? 'SEPARATE_LINKED_ROUTE'
-      : later || scenario.simultaneous_move === 'NO' ? 'LATER_JOIN'
-        : scenario.simultaneous_move === 'CONDITIONAL' ? 'CONDITIONAL_SIMULTANEOUS' : 'SIMULTANEOUS',
+      : (later && !administrativeSequenceOnly) || scenario.simultaneous_move === 'NO' ? 'LATER_JOIN'
+        : scenario.simultaneous_move === 'CONDITIONAL' && !administrativeOnly ? 'CONDITIONAL_SIMULTANEOUS' : 'SIMULTANEOUS',
   };
 }
 
@@ -649,9 +1008,17 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
   const routeIds = new Set(packageRoutes.map((item) => item.route_id));
   const familyPathSortRank = ({ scenario }) => {
     if (!scenario) return 3;
-    if (['AFTER_INITIAL_RESIDENCE', 'AFTER_PR', 'AFTER_CITIZENSHIP'].includes(scenario.join_stage)
-      || scenario.simultaneous_move === 'NO') return 2;
+
+    const administrativeOnly = scenario.administrative_separate_filing === true;
+    const administrativeSequenceOnly = administrativeOnly
+      && scenario.separate_route_required === false
+      && scenario.simultaneous_move !== 'NO'
+      && scenario.join_stage === 'AFTER_INITIAL_RESIDENCE';
+    const later = ['AFTER_INITIAL_RESIDENCE', 'AFTER_PR', 'AFTER_CITIZENSHIP'].includes(scenario.join_stage);
+
+    if (scenario.simultaneous_move === 'NO' || (later && !administrativeSequenceOnly)) return 2;
     if (scenario.join_stage === 'SEPARATE_ROUTE' || scenario.separate_route_required === true) return 1;
+    if (scenario.linked_route_id) return 1;
     return 0;
   };
   const memberResults = members.map((member) => {
@@ -716,6 +1083,53 @@ export function deriveRoutePresentationGroup(route, evaluated) {
   return hasSeparateBasisCondition ? ROUTE_PRESENTATION_GROUPS.REQUIRES_SEPARATE_BASIS : evaluated.routeStatus;
 }
 
+export function deriveRouteSpecificFollowUps(route, evaluated) {
+  if (evaluated?.routeStatus === ROUTE_STATUSES.UNSUITABLE) return [];
+
+  const questionIds = new Set();
+
+  for (const result of evaluated?.requirementResults || []) {
+    if (result.effect !== 'CONDITION') continue;
+
+    if (
+      result.applicability === APPLICABILITY_STATES.UNKNOWN
+      && result.requirement?.applies_if?.question_id
+    ) {
+      questionIds.add(result.requirement.applies_if.question_id);
+    }
+
+    if (
+      result.requirement?.type !== 'FINANCIAL'
+      || result.state !== 'UNKNOWN'
+    ) {
+      continue;
+    }
+
+    for (const alternative of result.alternatives || []) {
+      if (
+        alternative.applicability === APPLICABILITY_STATES.UNKNOWN
+        && alternative.alternative?.applies_if?.question_id
+      ) {
+        questionIds.add(alternative.alternative.applies_if.question_id);
+      }
+    }
+  }
+
+  if (!questionIds.size) return [];
+
+  return (route.route_specific_questions || [])
+    .filter((question) => questionIds.has(question.question_id))
+    .map((question) => ({
+      questionId: question.question_id,
+      prompt: question.prompt_ru,
+      answerType: question.answer_type,
+      options: (question.options || []).map((option) => ({
+        value: option.value,
+        label: option.label_ru,
+      })),
+    }));
+}
+
 function presentRoute(route, evaluated, sources, context) {
   const source = sources.get(route.official_source_id) || null;
   const financialRequirements = presentFinancialRequirements(evaluated.requirementResults, context, sources);
@@ -741,6 +1155,7 @@ function presentRoute(route, evaluated, sources, context) {
     financialSummary: presentFinancial(evaluated.requirementResults, context, sources),
     financialRequirements,
     conditionActions,
+    routeSpecificFollowUps: deriveRouteSpecificFollowUps(route, evaluated),
     application: (route.application_methods || []).filter(({ availability }) => availability === 'AVAILABLE').map((item) => ({
       method: item.method, methodLabel: APPLICATION_METHOD_LABELS_RU[item.method],
       guidance: item.condition_ru, entryGuidance: item.entry_condition_ru,
@@ -894,8 +1309,24 @@ function presentSchools(pkg, profile, context) {
   };
 }
 
-function presentEntry(pkg) {
-  const entry = pkg.entry_for_russian_citizen;
+export function resolveEntryForRussianCitizen(entry, calculationDate) {
+  if (!entry) return null;
+  const calculationTime = Date.parse(calculationDate);
+  if (!Number.isFinite(calculationTime) || !Array.isArray(entry.scheduled_rules)) return entry;
+
+  const applicable = entry.scheduled_rules
+    .map((rule, index) => ({ rule, index, effectiveTime: Date.parse(rule.effective_at) }))
+    .filter(({ effectiveTime }) => Number.isFinite(effectiveTime) && effectiveTime <= calculationTime)
+    .sort((left, right) => left.effectiveTime - right.effectiveTime || left.index - right.index)
+    .at(-1)?.rule;
+
+  if (!applicable) return entry;
+  const { effective_at: _effectiveAt, ...resolved } = applicable;
+  return resolved;
+}
+
+function presentEntry(pkg, context) {
+  const entry = resolveEntryForRussianCitizen(pkg.entry_for_russian_citizen, context?.calculation_date);
   if (!entry) return null;
   return {
     visaRequired: entry.visa_required,
@@ -1019,7 +1450,7 @@ export function calculateActiveCountry(profile, pkg, context) {
       amountUsd: pkg.country_currency === 'USD' ? null : convertAmount(applicantIncome, pkg.country_currency, 'USD', countryContext),
       conversions: [],
     },
-    entryForRussianCitizen: presentEntry(pkg),
+    entryForRussianCitizen: presentEntry(pkg, countryContext),
     cities: presentCities(pkg, countryContext),
     lgbt: presentLgbt(pkg, profile),
     schoolPresentation: presentSchools(pkg, profile, countryContext),

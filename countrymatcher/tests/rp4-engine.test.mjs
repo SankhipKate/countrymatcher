@@ -32,6 +32,7 @@ const arFixture = JSON.parse(arFixtureBytes);
 const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json', import.meta.url), 'utf8'));
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
+const portugal = JSON.parse(await readFile(new URL('../data/PT-research-v4.0.json', import.meta.url), 'utf8'));
 const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, UYU: 40, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
@@ -572,7 +573,8 @@ test('UY practical screening uses approved 1500 + 500 adult + 500 child formula 
   }
   const noIncome = permanent(profile({ applicantAmount: 0, applicantCurrency: 'USD', applicantType: 'NO_REGULAR_INCOME' }));
   assert.equal(noIncome.routeStatus, 'UNSUITABLE');
-  assert.match(noIncome.blockers[0], /регулярного дохода сейчас нет/u);
+  assert.match(noIncome.blockers[0], /регулярный законный источник средств к существованию/u);
+  assert.doesNotMatch(noIncome.blockers[0], /Вы указали/u);
 
   const changedGuidance = structuredClone(uruguay);
   const alternative = changedGuidance.routes.find(({ route_id }) => route_id === 'UY_PERMANENT_COMMON')
@@ -597,7 +599,10 @@ test('savings cannot replace a structurally required DNV income source', () => {
   const insufficient = dnv(profile({ applicantAmount: 200, applicantCurrency: 'USD', applicantCountryId: 'US', savings: { amount: 0, currency: 'EUR' } }));
   assert.equal(insufficient.routeStatus, 'UNSUITABLE');
   assert.equal(insufficient.financialSummary.state, 'FAIL');
-  assert.match(insufficient.blockers[0], /финансовое требование DNV не выполнено/u);
+  assert.equal(
+    insufficient.blockers[0],
+    'Для вашего состава семьи требуется 2 442 EUR в месяц. По подтверждаемым данным — около 180 EUR в месяц. Дефицит можно покрыть подтверждаемыми накоплениями; при указанном доходе требуется около 81 432 EUR накоплений за установленный период покрытия.',
+  );
 
   const threshold = dnv(profile({ applicantAmount: 2442, savings: { amount: 0, currency: 'EUR' } }));
   assert.equal(threshold.financialSummary.state, 'PASS');
@@ -616,14 +621,14 @@ test('AR and UY digital nomads use separate practical screening while official t
     assert.equal(route.routeStatus, expected);
     const income = route.financialSummary.alternatives[0];
     assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 1500 });
-    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 1 500 USD в месяц. Вы указали 200 USD в месяц.');
+    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 1 500 USD в месяц. По подтверждаемым данным — около 200 USD в месяц. Это практический продуктовый порог, а не официальный минимальный порог.');
   }
   for (const [amount, expected] of [[200, 'UNSUITABLE'], [1999, 'UNSUITABLE'], [2000, 'SUITABLE'], [2500, 'SUITABLE']]) {
     const route = nomad(argentina, 'AR_NOMAD', amount);
     assert.equal(route.routeStatus, expected);
     const income = route.financialSummary.alternatives[0];
     assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 2000 });
-    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 2 000 USD в месяц. Вы указали 200 USD в месяц.');
+    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 2 000 USD в месяц. По подтверждаемым данным — около 200 USD в месяц. Это практический продуктовый порог, а не официальный минимальный порог.');
   }
   for (const [pkg, routeId] of [[uruguay, 'UY_DIGITAL_NOMAD'], [argentina, 'AR_NOMAD']]) {
     const route = nomad(pkg, routeId, 2500, pkg === uruguay ? uyuContext : context);
@@ -640,6 +645,59 @@ test('known NLV savings below threshold produce a concrete savings blocker', () 
   assert.equal(nlv.routeStatus, 'UNSUITABLE');
   assert.equal(nlv.blockers[0], 'Для вашего состава семьи требуется 36 000 EUR подтверждаемых средств. Ваши подтверждаемые накопления — около 34 600 EUR.');
   assert.doesNotMatch(nlv.blockers.join(' '), /если накопления не подтверждены|доход/u);
+});
+
+test('official income blockers show required and confirmed amounts in the official currency', () => {
+  const rentista = calculateActiveCountry(profile({
+    applicantAmount: 100,
+    applicantCurrency: 'USD',
+    applicantType: 'PASSIVE_INCOME',
+    applicantCountryId: 'US',
+  }), argentina, context).routes.find(({ routeId }) => routeId === 'AR_RENTISTA');
+
+  assert.equal(rentista.routeStatus, 'UNSUITABLE');
+  assert.equal(
+    rentista.blockers[0],
+    'Для этого маршрута требуется 1 883 000 ARS в месяц. По подтверждаемым данным — около 150 000 ARS в месяц.',
+  );
+});
+
+test('official income blockers use the family-adjusted threshold', () => {
+  const ownIncome = calculateActiveCountry(profile({
+    applicantAmount: 100,
+    applicantCurrency: 'EUR',
+    applicantType: 'PENSION',
+    applicantCountryId: 'RU',
+    adults: 2,
+    children: 1,
+  }), portugal, context).routes.find(({ routeId }) => routeId === 'PT_OWN_INCOME');
+
+  assert.equal(ownIncome.routeStatus, 'UNSUITABLE');
+  assert.equal(
+    ownIncome.blockers[0],
+    'Для вашего состава семьи требуется 1 656 EUR в месяц. По подтверждаемым данным — около 100 EUR в месяц.',
+  );
+});
+
+test('NO_FIXED_THRESHOLD geography failure is not mislabeled as an income-type failure', () => {
+  const cases = [
+    [argentina, 'AR_NOMAD', 'AR', context],
+    [uruguay, 'UY_DIGITAL_NOMAD', 'UY', { fx: { ...context.fx, rates: { ...context.fx.rates, UYU: 40 } } }],
+  ];
+
+  for (const [pkg, routeId, sourceCountry, calculationContext] of cases) {
+    const result = calculateActiveCountry(profile({
+      applicantAmount: 2500,
+      applicantCurrency: 'USD',
+      applicantType: 'REMOTE_EMPLOYMENT',
+      applicantCountryId: sourceCountry,
+    }), pkg, calculationContext).routes.find((route) => route.routeId === routeId);
+
+    assert.equal(result.routeStatus, 'UNSUITABLE');
+    assert.match(result.blockers[0], /география не соответствует/u);
+    assert.match(result.blockers[0], /предел/u);
+    assert.doesNotMatch(result.blockers[0], /тип дохода не соответствует|тип дохода не принимается/u);
+  }
 });
 
 test('administrative family filing alone does not downgrade UY permanent residence', () => {
@@ -765,12 +823,150 @@ test('NO_FIXED_THRESHOLD checks income type and geography without inventing a nu
   const unknown = financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantGeography: 'MULTIPLE_COUNTRIES', applicantCountryId: null }));
   assert.equal(unknown.state, 'UNKNOWN');
   assert.match(unknown.condition, /предел/);
+
+  const noStablePayer = financialState('INCOME_ONLY', [noThreshold], profile({ applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantGeography: 'NO_STABLE_PAYER', applicantCountryId: null }));
+  assert.equal(noStablePayer.state, 'PASS');
+  assert.equal(noStablePayer.condition, null);
 });
 
 test('SAVINGS_ONLY matrix covers PASS, FAIL, and UNKNOWN', () => {
   assert.equal(financialState('SAVINGS_ONLY', [alternative('SAVINGS')], profile({ savings: { amount: 2000, currency: 'EUR' } })).state, 'PASS');
   assert.equal(financialState('SAVINGS_ONLY', [alternative('SAVINGS')], profile({ savings: { amount: 500, currency: 'EUR' } })).state, 'FAIL');
   assert.equal(financialState('SAVINGS_ONLY', [alternative('SAVINGS')]).state, 'UNKNOWN');
+});
+
+test('practical screening evaluates asked savings while unasked savings remain UNKNOWN', () => {
+  const practicalGuidance = {
+    evaluation_mode: 'DISPLAY_ONLY',
+    status: 'FOUND',
+    summary_ru: 'Практический ориентир.',
+    figures: [{
+      amount: 1500,
+      currency: 'USD',
+      period: 'ONE_TIME',
+      family_context_ru: 'Один заявитель',
+      evidence: [{
+        source_id: 'SRC',
+        source_date: '2026-08-21',
+        evidence_type: 'PRACTITIONER_GUIDANCE',
+      }],
+      note_ru: 'Тестовый практический ориентир.',
+    }],
+    disclaimer_ru: 'Это не официальный минимум.',
+  };
+
+  const screened = alternative('SAVINGS', true, {
+    amount: null,
+    currency: null,
+    period: 'ONE_TIME',
+    comparison: 'NO_FIXED_THRESHOLD',
+    practical_financial_guidance: practicalGuidance,
+    practical_screening_threshold: {
+      comparison: 'AT_LEAST',
+      currency: 'USD',
+      period: 'ONE_TIME',
+      amount: 1500,
+      source_ids: ['SRC'],
+    },
+  });
+
+  const below = financialState(
+    'SAVINGS_ONLY',
+    [screened],
+    profile({ savings: { amount: 1499, currency: 'USD' } }),
+  );
+  assert.equal(below.state, 'FAIL');
+  assert.equal(below.alternatives[0].practicalScreeningThreshold, 1500);
+  assert.equal(below.alternatives[0].threshold, null);
+
+  const exact = financialState(
+    'SAVINGS_ONLY',
+    [screened],
+    profile({ savings: { amount: 1500, currency: 'USD' } }),
+  );
+  assert.equal(exact.state, 'PASS');
+
+  const unaskedRequirement = finance(
+    'SAVINGS_ONLY',
+    [{ ...screened, asked_in_questionnaire: false }],
+    {},
+    {
+      evaluation_mode: 'UNASKED_CONDITION',
+      unmet_effect: 'BECOMES_CONDITION',
+      condition_ru: 'Нужно подтвердить самостоятельный финансовый факт.',
+    },
+  );
+
+  const unasked = evaluateRoute(
+    route([unaskedRequirement]),
+    profile({ savings: { amount: 0, currency: 'USD' } }),
+    context,
+    'ES',
+  );
+
+  assert.equal(unasked.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.deepEqual(
+    unasked.conditions,
+    ['Нужно подтвердить самостоятельный финансовый факт.'],
+  );
+  assert.equal(
+    unasked.requirementResults[0].alternatives[0].practicalScreeningThreshold,
+    1500,
+  );
+  assert.equal(
+    unasked.requirementResults[0].alternatives[0].state,
+    'UNKNOWN',
+  );
+
+  const displayOnlyRequirement = finance(
+    'SAVINGS_ONLY',
+    [{ ...screened, asked_in_questionnaire: false }],
+    {},
+    {
+      evaluation_mode: 'DISPLAY_ONLY',
+      unmet_effect: 'NONE',
+      condition_ru: 'Практический финансовый ориентир.',
+    },
+  );
+
+  const displayOnly = evaluateRoute(
+    route([displayOnlyRequirement]),
+    profile({ savings: { amount: 0, currency: 'USD' } }),
+    context,
+    'ES',
+  );
+
+  assert.equal(displayOnly.routeStatus, 'SUITABLE');
+  assert.equal(
+    displayOnly.requirementResults[0].alternatives[0].practicalScreeningThreshold,
+    1500,
+  );
+  assert.equal(
+    displayOnly.requirementResults[0].alternatives[0].state,
+    'DISPLAY_ONLY',
+  );
+
+  const blocked = evaluateRoute(
+    route([
+      finance(
+        'SAVINGS_ONLY',
+        [screened],
+        {},
+        {
+          evaluation_mode: 'ENGINE',
+          unmet_effect: 'BLOCKS',
+          condition_ru: 'Нужны подтверждаемые накопления.',
+        },
+      ),
+    ]),
+    profile({ savings: { amount: 1499, currency: 'USD' } }),
+    context,
+    'ES',
+  );
+
+  assert.equal(blocked.routeStatus, 'UNSUITABLE');
+  assert.match(blocked.blockers[0], /1\s*500 USD/);
+  assert.match(blocked.blockers[0], /не официальный минимальный порог/);
 });
 
 test('INCOME_OR_SAVINGS implements complete OR matrix', () => {
@@ -830,7 +1026,7 @@ test('income geography matrix is explicit for all research values', () => {
   assert.equal(state('FOREIGN', 'SINGLE_COUNTRY', 'US'), 'PASS');
   assert.equal(state('FOREIGN', 'SINGLE_COUNTRY', 'ES'), 'FAIL');
   assert.equal(state('FOREIGN', 'MULTIPLE_COUNTRIES'), 'UNKNOWN');
-  assert.equal(state('FOREIGN', 'NO_STABLE_PAYER'), 'UNKNOWN');
+  assert.equal(state('FOREIGN', 'NO_STABLE_PAYER'), 'PASS');
   assert.equal(state('DESTINATION_COUNTRY', 'SINGLE_COUNTRY', 'ES'), 'PASS');
   assert.equal(state('DESTINATION_COUNTRY', 'SINGLE_COUNTRY', 'US'), 'FAIL');
   assert.equal(state('DESTINATION_COUNTRY', 'MULTIPLE_COUNTRIES'), 'UNKNOWN');
@@ -912,11 +1108,16 @@ test('Spain DNV distinguishes known and unknown income geography', () => {
   const spanishSource = dnv(profile({ applicantAmount: 10000, applicantCountryId: 'ES', savings: { amount: 1000000, currency: 'EUR' } }));
   assert.equal(spanishSource.routeStatus, 'UNSUITABLE');
   assert.match(spanishSource.blockers[0], /нужен допустимый удалённый доход от источников вне Испании/u);
-  for (const geography of ['MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER']) {
-    const result = dnv(profile({ applicantAmount: 6000, applicantGeography: geography, applicantCountryId: null }));
-    assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-    assert.ok(result.conditions.includes('Подтвердить, что учитываемые для финансового требования выплаты поступают из-за пределов страны назначения.'));
-  }
+  const multipleCountries = dnv(profile({ applicantAmount: 6000, applicantGeography: 'MULTIPLE_COUNTRIES', applicantCountryId: null }));
+  assert.equal(multipleCountries.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.ok(multipleCountries.conditions.includes('Подтвердить, что учитываемые для финансового требования выплаты поступают из-за пределов страны назначения.'));
+
+  const noStablePayer = dnv(profile({ applicantAmount: 6000, applicantGeography: 'NO_STABLE_PAYER', applicantCountryId: null }));
+  assert.equal(noStablePayer.routeStatus, 'SUITABLE');
+  assert.deepEqual(noStablePayer.conditions, []);
+  const noStableIncome = noStablePayer.financialSummary.alternatives.find(({ kind }) => kind === 'INCOME');
+  assert.match(noStableIncome.geographyNotice, /без постоянного плательщика/u);
+  assert.match(noStableIncome.geographyNotice, /из-за пределов страны назначения/u);
   const materiallyUnknown = dnv(profile({
     applicantAmount: 1000,
     applicantCountryId: 'US',

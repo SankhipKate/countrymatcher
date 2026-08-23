@@ -56,7 +56,9 @@ html,body{max-width:100%;overflow-x:clip}
 .route-result p{margin:6px 0;color:#46596e}
 .route-result ul{margin:8px 0;padding-left:20px}
 .follow-up-card{margin:20px 0;padding:20px;border:1px solid #e6c47f;border-radius:16px;background:#fff9ed}
-.follow-up-card h3{margin:0 0 6px}
+.follow-up-card h3,.follow-up-card h4{margin:0 0 6px}
+.follow-up-card .route-follow-up-question{margin:14px 0 0}
+.route-follow-up-options{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
 .follow-up-card .primary-button{margin-top:14px}
 .alternative-routes{display:grid;gap:10px}
 .alternative-routes .route-result{margin:0}

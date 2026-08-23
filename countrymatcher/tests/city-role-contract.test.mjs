@@ -51,6 +51,42 @@ test('every RP4 city has exactly one LARGE, MEDIUM, or SMALL size role', async (
   }
 });
 
+test('schema itself requires exactly one LARGE, MEDIUM, or SMALL size role', async () => {
+  const colombia = await loadPackage('CO-research-v4.0.json');
+
+  const schemaErrors = (pkg) => {
+    const script = [
+      "import importlib.util,json,sys",
+      "spec=importlib.util.spec_from_file_location('validator','data/validate-v4.0.py')",
+      "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)",
+      "print('\\n'.join(module.validate_schema(json.load(sys.stdin))))",
+    ].join(';');
+
+    const result = spawnSync('python3', ['-c', script], {
+      cwd: new URL('..', import.meta.url),
+      input: JSON.stringify(pkg),
+      encoding: 'utf8',
+    });
+
+    assert.equal(result.status, 0, result.stderr);
+    return result.stdout.trim();
+  };
+
+  const capitalOnly = structuredClone(colombia);
+  capitalOnly.cities.find((city) => city.city_id === 'CO_BOGOTA').structural_roles = ['CAPITAL'];
+  assert.match(schemaErrors(capitalOnly), /structural_roles/);
+
+  const multipleSizes = structuredClone(colombia);
+  multipleSizes.cities.find((city) => city.city_id === 'CO_BOGOTA').structural_roles =
+    ['CAPITAL', 'LARGE', 'MEDIUM'];
+  assert.match(schemaErrors(multipleSizes), /structural_roles/);
+
+  const valid = structuredClone(colombia);
+  valid.cities.find((city) => city.city_id === 'CO_BOGOTA').structural_roles =
+    ['CAPITAL', 'LARGE'];
+  assert.equal(schemaErrors(valid), '');
+});
+
 test('validator rejects a CAPITAL-only city without a size role', async () => {
   const colombia = await loadPackage('CO-research-v4.0.json');
   const broken = structuredClone(colombia);

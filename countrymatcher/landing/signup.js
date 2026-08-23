@@ -1,24 +1,42 @@
-const BREVO_FORM_ENDPOINT =
-  "https://c2230e4f.sibforms.com/serve/MUIFAOJp3uexo2J9VcbDAfs30aRdkFIk40I2FpHG0wrikEllHdqV_1G27lvXY46KExUV90P0XIi5wpfqDXHdfE_cOVLgYiq8l86IzIEzEHTBhgyHdov6iKnTkUBYo9wj6himrFL6_kQc3__6OjHtWUtEldL8dyLo2wF3auqC63vYqCCev8TqMLP3Z_2iP97B77pgXfRUsNS_WdKB8A==";
+const BREVO_FORM_ENDPOINT = 'https://c2230e4f.sibforms.com/serve/MUIFAOJp3uexo2J9VcbDAfs30aRdkFIk40I2FpHG0wrikEllHdqV_1G27lvXY46KExUV90P0XIi5wpfqDXHdfE_cOVLgYiq8l86IzIEzEHTBhgyHdov6iKnTkUBYo9wj6himrFL6_kQc3__6OjHtWUtEldL8dyLo2wF3auqC63vYqCCev8TqMLP3Z_2iP97B77pgXfRUsNS_WdKB8A==';
 
 const form = document.querySelector("#updates-form");
-const message = form?.querySelector(".form-message");
-const button = form?.querySelector("button");
+const message = document.querySelector("#updates-message");
+const button = form?.querySelector('button[type="submit"]');
 const emailInput = form?.querySelector('input[type="email"]');
+const consentInput = form?.querySelector("#updates-marketing-consent");
+
+function setMessage(text, isError = false) {
+  if (!message) return;
+  message.textContent = text;
+  message.dataset.state = isError ? "error" : "ok";
+}
 
 form?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const email = emailInput?.value.trim();
+  const email = emailInput?.value.trim() || "";
 
   if (!email) {
-    message.textContent = "Введите email.";
-    message.className = "form-message error";
+    setMessage("Введите email.", true);
     emailInput?.focus();
     return;
   }
 
+  if (!emailInput.checkValidity()) {
+    setMessage("Проверьте формат email.", true);
+    emailInput.focus();
+    return;
+  }
+
+  if (!consentInput?.checked) {
+    setMessage("Для подписки нужно подтвердить согласие на email-обновления.", true);
+    consentInput?.focus();
+    return;
+  }
+
   button.disabled = true;
+  const previousLabel = button.textContent;
   button.textContent = "Сохраняем…";
 
   const body = new URLSearchParams({
@@ -36,30 +54,11 @@ form?.addEventListener("submit", async (event) => {
     });
 
     form.reset();
-    message.textContent =
-      "Готово! Сообщим, когда появятся новые страны и возможности.";
-    message.className = "form-message success";
+    setMessage("Готово! Email принят. Вы сможете отписаться в любой момент.");
   } catch {
-    message.textContent = "Попробуйте ещё раз чуть позже.";
-    message.className = "form-message error";
+    setMessage("Попробуйте ещё раз чуть позже.", true);
   } finally {
     button.disabled = false;
-    button.textContent = "Получать обновления →";
+    button.textContent = previousLabel;
   }
-});
-
-const paymentModal = document.querySelector("#payment-modal");
-const paymentModalTriggers = document.querySelectorAll(
-  ".payment-modal-trigger",
-);
-const paymentModalClose = paymentModal?.querySelector(".payment-modal-close");
-
-paymentModalTriggers.forEach((trigger) => {
-  trigger.addEventListener("click", () => paymentModal?.showModal());
-});
-
-paymentModalClose?.addEventListener("click", () => paymentModal.close());
-
-paymentModal?.addEventListener("click", (event) => {
-  if (event.target === paymentModal) paymentModal.close();
 });

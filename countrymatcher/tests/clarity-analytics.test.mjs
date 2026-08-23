@@ -8,7 +8,7 @@ import {
   trackPayPalFundingSource,
 } from "../landing/clarity-analytics.js";
 
-test("Clarity is installed only on the landing page", async () => {
+test("Clarity stays static on landing and loads in matcher only through the free-result analytics module", async () => {
   const landing = await readFile(
     new URL("../landing/index.html", import.meta.url),
     "utf8",
@@ -17,8 +17,16 @@ test("Clarity is installed only on the landing page", async () => {
     new URL("../index.html", import.meta.url),
     "utf8",
   );
+  const app = await readFile(
+    new URL("../matcher/app.js", import.meta.url),
+    "utf8",
+  );
   const gate = await readFile(
     new URL("../matcher/access-gate.js", import.meta.url),
+    "utf8",
+  );
+  const matcherAnalytics = await readFile(
+    new URL("../matcher/clarity-analytics.js", import.meta.url),
     "utf8",
   );
 
@@ -32,10 +40,29 @@ test("Clarity is installed only on the landing page", async () => {
     1,
   );
 
+  // Matcher HTML never loads Clarity eagerly.
   assert.doesNotMatch(
     matcher,
-    /clarity\.ms|xz08tpk4d1|clarity-analytics/i,
+    /clarity\.ms\/tag\/|xz08tpk4d1/,
   );
+
+  // The app explicitly invokes the isolated free-result module.
+  assert.match(
+    app,
+    /from '\.\/clarity-analytics\.js'/,
+  );
+  assert.match(
+    app,
+    /initializeMatcherAnalytics\(\)/,
+  );
+
+  assert.match(
+    matcherAnalytics,
+    /https:\/\/www\.clarity\.ms\/tag\//,
+  );
+  assert.match(matcherAnalytics, /xz08tpk4d1/);
+
+  // Access logic remains analytics-free.
   assert.doesNotMatch(
     gate,
     /clarity\.ms|xz08tpk4d1|clarity-analytics/i,
@@ -103,8 +130,10 @@ test("checkout contains the purchase-funnel analytics hooks", async () => {
 
   for (const eventName of [
     "payment_section_view",
-    "cta_get_access_nav",
-    "cta_get_access_hero",
+    "cta_questionnaire_nav",
+    "cta_questionnaire_comparison",
+    "cta_questionnaire_development",
+    "cta_questionnaire_hero",
     "other_payments_open",
     "manual_payment_telegram",
     "payment_paypal_click",

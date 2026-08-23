@@ -20,7 +20,7 @@
 
 - универсальная анкета формирует профиль `user-profile-v1`;
 - активный matcher загружает RP4-пакеты перечисленных ниже активных стран;
-- активные страны: Испания, Аргентина, Уругвай, Бразилия, Португалия, Мексика, Парагвай и Колумбия;
+- активные страны: Испания, Аргентина, Уругвай, Бразилия, Португалия, Мексика, Парагвай, Колумбия и Черногория;
 - generic Canon 4.0 engine проверяет `requirements[]`, включая финансовые модели, family scenarios, application methods и long-term path;
 - маршруты с `publishable: false` исключаются до evaluation;
 - анкета доступна без оплаты;
@@ -65,7 +65,7 @@
 - `matcher/profile.js` — формирование и проверка `user-profile-v1`;
 - `matcher/funnel.js` — бесплатный preview и состояния результата до подтверждения полного доступа;
 - `js/engine/rp4-engine.js` — единственный активный generic evaluator Research Package 4.0;
-- `data/{ES,AR,UY,BR,PT,MX,PY,CO}-research-v4.0.json` — активные Research Package;
+- `data/{ES,AR,UY,BR,PT,MX,PY,CO,ME}-research-v4.0.json` — активные Research Package;
 - `data/quality-of-life-ru.json` — отдельный presentation-only editorial слой качества жизни;
 - `data/*-research-v3.0.json` — архивные инертные исследования, не входящие в runtime;
 - `data/research-package-v4.0.schema.json` — текущий контракт Research Package;

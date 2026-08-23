@@ -1,7 +1,7 @@
 # Country Matcher — промпт для исследования новой страны
 
 Версия: 4.0
-Дата: 2026-08-12
+Дата: 2026-08-21
 
 Этот файл не является отдельным нормативным стандартом. Единственные правила находятся в:
 
@@ -130,7 +130,7 @@ family_formula и family_formula_ordered не используются одно�
 
 ГОРОДА И СТОИМОСТЬ ЖИЗНИ
 
-Исследуй CAPITAL, LARGE, MEDIUM и SMALL либо зафиксируй объективное отсутствие категории в open_items.
+Исследуй столицу и size coverage LARGE, MEDIUM и SMALL либо зафиксируй объективное отсутствие категории в open_items. Каждый `cities[]` должен иметь ровно одну size-role `LARGE`/`MEDIUM`/`SMALL`; `CAPITAL` — независимая дополнительная роль и не заменяет size-role.
 
 Не записывай готовые бюджеты один/пара/семья и никакие USD-поля. Сохраняй прямые cost_components с суммой, валютой, периодом, основой PER_HOUSEHOLD / PER_ADULT / PER_CHILD / PER_PERSON, датой цены и источником.
 
@@ -144,7 +144,7 @@ family_formula и family_formula_ordered не используются одно�
 
 Если официального числового порога нет, после проверки официальных источников обязательно ищи практические суммы и кейсы в сети и сохраняй результат в `financial.alternatives[].practical_financial_guidance` (`DISPLAY_ONLY`, `FOUND` либо `NOT_FOUND`). Не превращай их в официальный threshold. В `figures[]` фиксируй `amount` либо прямо опубликованный `amount_min`/`amount_max`, `currency`, `period`, `family_context_ru`, `note_ru` и непустой `evidence[]`; каждая evidence-запись содержит собственные `source_id`, `source_date` и `evidence_type` (`PRACTITIONER_GUIDANCE`, `REPORTED_PRACTICE` или `INDIVIDUAL_CASE`). Одну и ту же сумму, подтверждённую несколькими источниками, храни одной figure с несколькими evidence records. Разные single amounts храни отдельными figures и не превращай автоматически в synthetic range; расхождение можно обобщить в `summary_ru`. Всегда помечай, что это практический ориентир или отдельный кейс, а не обязательный минимум; при отсутствии надёжной цифры используй `NOT_FOUND` с пустым `figures` и ничего не придумывай.
 
-Исследователь не выбирает и не изобретает `practical_screening_threshold`. Отсутствие официального числового минимума не даёт права самостоятельно превратить одну из practical figures в screening boundary. Такое поле добавляется только после отдельного явного продуктового решения, которое утверждает конкретную сумму или семейную формулу; `practical_financial_guidance` при этом остаётся DISPLAY_ONLY. Для утверждённого screening threshold обязательны непустые разрешимые `source_ids`, прямо ведущие к supporting practical evidence.
+Если practical pass даёт достаточно защищаемую рабочую сумму или семейную формулу, вынеси предложение для `practical_screening_threshold` в Research -> Canon reconciliation. Не выбирай boundary произвольно и не превращай отдельный кейс в типичный минимум. После подтверждения reconciliation screening threshold хранится отдельно от official `amount/currency`, требует `practical_financial_guidance.status = FOUND` и непустые разрешимые `source_ids`, прямо ведущие к supporting practical evidence. Он может относиться к INCOME, SAVINGS, CAPITAL, SPONSOR или SCHOLARSHIP, но влияет на matching только для реально evaluable `ENGINE`-факта; у `UNASKED_CONDITION`/`DISPLAY_ONLY` остаётся presentation-only и не создаёт false FAIL.
 
 Для `INCOME_WITH_SAVINGS_SHORTFALL` накопления могут покрывать только числовой дефицит после подтверждения допустимого источника дохода. Не используй накопления как замену отсутствующему источнику, недопустимому типу или требуемой географии дохода.
 
@@ -258,5 +258,5 @@ completeness обязан содержать ровно 14 блоков из с�
 - детских садов нет ни в данных, ни в отчёте;
 - отчёт, JSON, open_items и completeness не противоречат друг другу.
 
-Если любой из трёх нормативных файлов не удалось прочитать полностью, остановись и сообщи об этом. Не начинай исследование по памяти или по альтернативной методике.
+Если любой из двух нормативных документов или обязательную JSON Schema не удалось прочитать полностью, остановись и сообщи об этом. Не начинай исследование по памяти или по альтернативной методике.
 ```

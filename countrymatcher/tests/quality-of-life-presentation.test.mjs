@@ -53,6 +53,9 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.CO.score, 6.3);
   assert.ok(editorial.countries.CO.narrative_ru.length >= 6);
   assert.match(editorial.countries.CO.formula_ru, /Разнообразие городов/);
+  assert.equal(editorial.countries.ME.score, 7.4);
+  assert.ok(editorial.countries.ME.narrative_ru.length >= 6);
+  assert.match(editorial.countries.ME.formula_ru, /Море/);
 });
 
 

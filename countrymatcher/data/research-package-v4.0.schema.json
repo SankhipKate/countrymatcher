@@ -590,7 +590,7 @@
       "properties": {
         "comparison": { "const": "AT_LEAST" },
         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-        "period": { "enum": ["MONTHLY", "ANNUAL"] },
+        "period": { "enum": ["MONTHLY", "ANNUAL", "ONE_TIME", "ACADEMIC_YEAR"] },
         "amount": { "type": "number", "exclusiveMinimum": 0 },
         "family_formula": { "$ref": "#/$defs/familyFormula" },
         "source_ids": {
@@ -655,7 +655,7 @@
         "amount_min": { "type": "number", "exclusiveMinimum": 0 },
         "amount_max": { "type": "number", "exclusiveMinimum": 0 },
         "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
-        "period": { "enum": ["MONTHLY", "YEARLY", "ONE_TIME", "OTHER"] },
+        "period": { "enum": ["MONTHLY", "YEARLY", "ONE_TIME", "ACADEMIC_YEAR", "OTHER"] },
         "family_context_ru": { "type": "string", "minLength": 1 },
         "evidence": {
           "type": "array",
@@ -694,6 +694,84 @@
         }
       ]
     },
+    "applicabilityCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question_id", "operator", "values"],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "operator": {
+          "enum": ["EQUALS", "IN"]
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z0-9_]+$"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "operator": { "const": "EQUALS" }
+            },
+            "required": ["operator"]
+          },
+          "then": {
+            "properties": {
+              "values": { "maxItems": 1 }
+            }
+          }
+        }
+      ]
+    },
+    "routeSpecificQuestionOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "label_ru"],
+      "properties": {
+        "value": {
+          "type": "string",
+          "pattern": "^[A-Z0-9_]+$"
+        },
+        "label_ru": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "routeSpecificQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["question_id", "prompt_ru", "answer_type", "options"],
+      "properties": {
+        "question_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "prompt_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "answer_type": {
+          "const": "SINGLE_SELECT"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/routeSpecificQuestionOption"
+          }
+        }
+      }
+    },
     "financialAlternative": {
       "type": "object",
       "additionalProperties": false,
@@ -723,6 +801,9 @@
         },
         "asked_in_questionnaire": {
           "type": "boolean"
+        },
+        "applies_if": {
+          "$ref": "#/$defs/applicabilityCondition"
         },
         "amount": {
           "type": [
@@ -889,10 +970,14 @@
           "then": {
             "required": ["practical_financial_guidance"],
             "properties": {
-              "kind": { "const": "INCOME" },
               "comparison": { "const": "NO_FIXED_THRESHOLD" },
               "amount": { "type": "null" },
-              "currency": { "type": "null" }
+              "currency": { "type": "null" },
+              "practical_financial_guidance": {
+                "properties": {
+                  "status": { "const": "FOUND" }
+                }
+              }
             }
           }
         }
@@ -1020,6 +1105,9 @@
         "requires_separate_basis": {
           "const": true
         },
+        "applies_if": {
+          "$ref": "#/$defs/applicabilityCondition"
+        },
         "condition_ru": {
           "type": "string",
           "minLength": 1
@@ -1069,6 +1157,45 @@
         }
       },
       "allOf": [
+        {
+          "if": {
+            "required": ["applies_if"]
+          },
+          "then": {
+            "properties": {
+              "evaluation_mode": {
+                "enum": ["ENGINE", "UNASKED_CONDITION"]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "FINANCIAL"
+              },
+              "financial": {
+                "properties": {
+                  "alternatives": {
+                    "contains": {
+                      "required": ["applies_if"]
+                    }
+                  }
+                },
+                "required": ["alternatives"]
+              }
+            },
+            "required": ["type", "financial"]
+          },
+          "then": {
+            "properties": {
+              "evaluation_mode": {
+                "const": "ENGINE"
+              }
+            }
+          }
+        },
         {
           "if": {
             "required": [
@@ -2179,6 +2306,13 @@
         "publishable": {
           "type": "boolean"
         },
+        "route_specific_questions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/routeSpecificQuestion"
+          }
+        },
         "requirements": {
           "type": "array",
           "items": {
@@ -2350,6 +2484,13 @@
             "type": "string",
             "minLength": 1
           }
+        },
+        "scheduled_rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/scheduledEntryRule"
+          }
         }
       },
       "allOf": [
@@ -2381,6 +2522,74 @@
           }
         }
       ]
+    },
+    "scheduledEntryRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "effective_at",
+        "entry_type",
+        "visa_required",
+        "rule_ru",
+        "authorization_validity_days",
+        "maximum_stay_days",
+        "processing_time_ru",
+        "source_ids"
+      ],
+      "properties": {
+        "effective_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entry_type": {
+          "enum": [
+            "VISA_FREE",
+            "ETA",
+            "E_VISA",
+            "CONSULAR_VISA",
+            "OTHER"
+          ]
+        },
+        "visa_required": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "rule_ru": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authorization_validity_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "maximum_stay_days": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "processing_time_ru": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
     },
     "costComponent": {
       "type": "object",
@@ -2598,6 +2807,15 @@
           "type": "array",
           "minItems": 1,
           "uniqueItems": true,
+          "contains": {
+            "enum": [
+              "LARGE",
+              "MEDIUM",
+              "SMALL"
+            ]
+          },
+          "minContains": 1,
+          "maxContains": 1,
           "items": {
             "enum": [
               "CAPITAL",
