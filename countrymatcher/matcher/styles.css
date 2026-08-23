@@ -99,6 +99,9 @@ html,body{max-width:100%;overflow-x:clip}
 .country-info-pets{background:#f3faf6;border-color:#c9e2d3}
 .country-info-taxes{background:#fff9ee;border-color:#e8d7ae}
 .country-info-quality-of-life{background:#f6f8f5;border-color:#d4ddd0}
+.country-info-consultant{background:#eef6ff;border-color:#bfd4ef}
+.consultant-partner-text{margin:0;color:#334155;line-height:1.65}
+.consultant-telegram-button{display:inline-flex;align-items:center;justify-content:center;margin-top:16px}
 .country-fx-errors{margin-top:16px;background:#fff8f4;border-color:#e7cdbd}.country-fx-error{display:grid;gap:3px;padding:10px 0;border-top:1px solid #ead8cd}.country-fx-error:first-of-type{border-top:0}.country-fx-error span{color:var(--muted);line-height:1.45}
 .quality-of-life-score{margin:0 0 12px;font-size:17px;line-height:1.5}
 .quality-of-life-disclaimer{margin:0 0 18px;padding:12px;border-radius:10px;background:#eef2ec;color:#465246;line-height:1.5}
@@ -128,6 +131,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-comparison-body{padding:22px}
 .country-comparison-body>section{margin-top:22px}
 @media(max-width:1100px){.matcher-layout{grid-template-columns:1fr}}
+@media(max-width:760px){.consultant-telegram-button{width:100%}}
 @media(max-width:760px){.site-header{height:68px}.nav-shell{padding:0 12px}.brand-logo{height:auto;max-height:58px;max-width:min(58vw,220px)}.secure-note{right:12px}.matcher-layout{display:block}.two-choice,.segmented.four{grid-template-columns:1fr 1fr}.eligibility-gate{padding:20px}.income-block{padding:14px}.route-result,.country-comparison-body{padding:15px}.country-result-banner{align-items:flex-start;flex-wrap:wrap;padding:15px}.country-result-banner .status-pill{margin-left:auto}.country-toggle{display:block;margin-left:auto;font-size:28px;line-height:1}.kpi-grid.three{grid-template-columns:minmax(0,1fr)}.kpi,.route-result,.route-card-body,.alternative-routes{min-width:0;overflow-wrap:anywhere}.route-card-heading{flex-direction:column}.route-card-heading>.status-pill{flex:0 0 auto;width:auto}.cities-comparison{border:0;background:transparent;overflow:visible}.cities-comparison table,.cities-comparison thead,.cities-comparison tbody,.cities-comparison tr,.cities-comparison th,.cities-comparison td{display:block;width:auto!important}.cities-comparison thead tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-bottom:8px}.cities-comparison thead th:first-child{display:none}.cities-comparison th{padding:7px 5px;border:1px solid var(--line);border-radius:8px;background:#fff;text-align:center}.cities-comparison th button{justify-content:center;width:100%;font-size:12px}.cities-comparison tbody tr{display:grid;grid-template-columns:1fr 1fr;gap:7px 14px;margin-top:10px;padding:13px;border:1px solid var(--line);border-radius:12px;background:#fff}.cities-comparison td{padding:0;border:0}.cities-comparison td:first-child{grid-column:1/-1}.cities-comparison td::before{content:attr(data-label);display:block;margin-bottom:2px;color:var(--muted);font-size:11px;font-weight:700}.cities-comparison td:first-child::before{display:none}.city-cost{white-space:normal}.lgbt-row{grid-template-columns:1fr;gap:7px}.country-info-card{padding:15px}}
 @media(max-width:600px){.secure-note{display:none}}
 @media(max-width:430px){.two-choice,.segmented.four{grid-template-columns:1fr}.money-combo{grid-template-columns:minmax(0,1fr) 82px}}

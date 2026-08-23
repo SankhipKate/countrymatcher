@@ -13,6 +13,7 @@ import {
 import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
 import { DRAFT_VERSION, prepareDraftForRestore } from './draft-state.js';
 import { mergeRouteSpecificAnswer, renderRouteSpecificFollowUps } from './route-specific-follow-up.js';
+import { activeConsultantsForCountry, telegramConsultantUrl } from './consultants.js';
 import {
   MATCHER_CLARITY_EVENTS,
   initializeMatcherAnalytics,
@@ -49,9 +50,11 @@ const ACTIVE_RP4_PACKAGES = [
   'ME-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
+const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';
 let currentStep = 1;
 let activeResearchPackages = [];
 let qualityOfLifeEditorial = { countries: {} };
+let countryConsultants = { countries: {} };
 let calculationContext;
 let currentProfile;
 let currentAnswers;
@@ -689,7 +692,7 @@ function renderCountryResult(calculation, changed = false, active = false) {
     ${entryBlock}
     <section class="country-info-card country-info-cities"><div class="section-title-row"><div><h3>Города, климат и расходы</h3></div></div>${citySection}</section>
     ${renderSchoolPresentation(calculation)}
-    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}</div></article>`;
+    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}${renderConsultantCollaboration(calculation)}</div></article>`;
 }
 
 function renderQualityOfLife(calculation) {
@@ -706,6 +709,37 @@ function renderQualityOfLife(calculation) {
   const disclaimer = 'Оценка отражает общее качество повседневной жизни в стране. Она не показывает, насколько эта страна подходит именно вам, насколько легко получить ВНЖ, ПМЖ или гражданство, насколько легко интегрироваться в общество или стоит ли вам туда переезжать.';
   const formulaBlock = formula ? `<p class="quality-of-life-formula"><b>Формула страны:</b> ${html(formula)}</p>` : '';
   return `<section class="country-info-card country-info-quality-of-life"><div class="section-title-row"><div><h3>Качество жизни в стране</h3></div></div>${scoreBlock}<p class="quality-of-life-disclaimer">${html(disclaimer)}</p><div class="quality-of-life-narrative">${paragraphs}</div>${formulaBlock}</section>`;
+}
+
+
+function renderConsultantCollaboration(calculation) {
+  const consultants = activeConsultantsForCountry(
+    countryConsultants,
+    calculation.country.countryId,
+  ).map((consultant) => ({
+    consultant,
+    url: telegramConsultantUrl(consultant),
+  })).filter(({ url }) => url);
+
+  if (!consultants.length) return '';
+
+  return consultants.map(({ consultant, url }) => {
+    const heading = String(consultant.heading_ru || 'Нужна помощь с переездом?').trim();
+    const name = String(consultant.name || '').trim();
+    const text = String(consultant.text_ru || '').trim();
+    const buttonLabel = name ? `Написать ${name} в Telegram` : 'Написать в Telegram';
+
+    return `<section class="country-info-card country-info-consultant">
+      <div class="section-title-row"><div><h3>${html(heading)}</h3></div></div>
+      ${text ? `<p class="consultant-partner-text">${html(text)}</p>` : ''}
+      <a
+        class="primary-button consultant-telegram-button"
+        href="${html(url)}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >${html(buttonLabel)}</a>
+    </section>`;
+  }).join('');
 }
 
 function calculateActiveCountries() {
@@ -1709,7 +1743,7 @@ async function init() {
   syncChildren(); syncConditional(); showStep(1, false);
   try {
     const buildId = currentBuildId();
-    const [packages, schemaResponse, editorial] = await Promise.all([
+    const [packages, schemaResponse, editorial, consultants] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
         const response = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
@@ -1719,6 +1753,9 @@ async function init() {
       })),
       fetch(withBuildId(new URL('schemas/user-profile-v1.schema.json', DATA_BASE), buildId)),
       fetch(withBuildId(new URL(QUALITY_OF_LIFE_EDITORIAL_FILE, DATA_BASE), buildId))
+        .then((response) => response.ok ? response.json() : { countries: {} })
+        .catch(() => ({ countries: {} })),
+      fetch(withBuildId(new URL(COUNTRY_CONSULTANTS_FILE, DATA_BASE), buildId))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
     ]);
@@ -1732,6 +1769,7 @@ async function init() {
     profileSchema = await schemaResponse.json();
     calculationContext = context;
     qualityOfLifeEditorial = editorial?.countries && typeof editorial.countries === 'object' ? editorial : { countries: {} };
+    countryConsultants = consultants?.countries && typeof consultants.countries === 'object' ? consultants : { countries: {} };
     const availabilityError = $('#calculationAvailabilityError');
     if (hasCompleteFxOutage(context.fx)) {
       availabilityError.hidden = false;
