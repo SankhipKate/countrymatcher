@@ -569,7 +569,7 @@ function routeCard(route, countryName, main = false) {
         const label = practicalEvidenceLabel[evidence.evidence_type];
         const sourceDate = formatPracticalSourceDate(evidence.source_date);
         const source = evidence.sourceUrl
-          ? ` · <a href="${html(evidence.sourceUrl)}" target="_blank" rel="noopener">${html(evidence.sourceTitle || 'Источник')}</a>` : '';
+          ? `<span class="route-evidence-source"> · <a href="${html(evidence.sourceUrl)}" target="_blank" rel="noopener">${html(evidence.sourceTitle || 'Источник')}</a></span>` : '';
         return `${html(label)} · Дата источника: ${html(sourceDate)}${source}.`;
       }).join('<br>');
       return `<li><b>${html(value)}${html(period)}</b> — ${html(figure.family_context_ru)}.<br>${evidenceLines}<br>${html(figure.note_ru)}</li>`;
@@ -589,7 +589,7 @@ function routeCard(route, countryName, main = false) {
   const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(presentationGroup)}">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
   const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
   const body = `${descriptionBlock}${financeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
-  return `<article class="route-result ${main ? 'best' : 'compact'}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
+  return `<article class="route-result ${main ? 'best' : 'compact'}" data-route-group="${html(presentationGroup)}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
 }
 
 function countryPresentation(calculation) {
@@ -766,6 +766,7 @@ function switchToResult(calculation, changed = false) {
   $('#heroTitle').textContent = 'Ваш результат';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'По вашим ответам рассчитаны доступные варианты переезда и условия для семьи.';
+  $('#saveResult').hidden = false;
   $('#editProfile').hidden = false;
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -780,6 +781,7 @@ function showUnpaidResult(presentation, accessState, changed = false) {
   $('#heroTitle').textContent = 'Результат расчёта';
   $('#heroSubtitle').textContent = '';
   $('#heroSubtitle').hidden = true;
+  $('#saveResult').hidden = true;
   $('#editProfile').hidden = true;
   const fxErrorText = !hasFreeCountry && presentation.errors?.length ? calculationErrorText(presentation.errors) : '';
   showAccessTeaser({
@@ -803,6 +805,8 @@ function showCalculationFailure(errors = []) {
   $('#heroTitle').textContent = 'Подберём вариант иммиграции';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
+  $('#saveResult').hidden = true;
+  $('#editProfile').hidden = true;
   $('#formError').hidden = false;
   $('#formError').textContent = calculationErrorText(errors);
 }
@@ -844,9 +848,582 @@ function returnToQuestionnaire() {
   $('#heroTitle').textContent = 'Подберём вариант иммиграции';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
+  $('#saveResult').hidden = true;
   $('#editProfile').hidden = true;
   showStep(1);
 }
+
+function resultCountriesForSave() {
+  return $$('[data-country-tab]', $('#result')).map((tab) => ({
+    countryId: tab.dataset.countryTab,
+    name:
+      $('.country-tab-copy strong', tab)?.textContent?.trim()
+      || tab.dataset.countryTab,
+    flag:
+      $('.country-tab-flag', tab)?.textContent?.trim()
+      || '',
+  }));
+}
+
+function syncAllCountriesCheckbox() {
+  const all = $('#saveAllCountries');
+  const boxes = $$(
+    'input[name="saveCountry"]',
+    $('#saveResultCountries'),
+  );
+
+  if (!all || !boxes.length) return;
+
+  const selected =
+    boxes.filter((box) => box.checked).length;
+
+  all.checked = selected === boxes.length;
+  all.indeterminate =
+    selected > 0 && selected < boxes.length;
+}
+
+function selectedCountryIdsInSaveDialog() {
+  return $$(
+    'input[name="saveCountry"]:checked',
+    $('#saveResultDialog'),
+  ).map((input) => input.value);
+}
+
+function selectedRouteGroupsInSaveDialog() {
+  return new Set(
+    $$(
+      'input[name="saveRouteGroup"]:checked',
+      $('#saveResultDialog'),
+    ).map((input) => input.value),
+  );
+}
+
+function countryHasSelectedRouteGroup(
+  countryId,
+  routeGroups,
+) {
+  const panel = $(
+    `[data-country-panel="${CSS.escape(countryId)}"]`,
+    $('#result'),
+  );
+
+  if (!panel) return false;
+
+  return $$('.route-result', panel).some(
+    (route) =>
+      routeGroups.has(
+        route.dataset.routeGroup,
+      ),
+  );
+}
+
+function countriesWithoutSelectedRoutes(
+  countryIds,
+  routeGroups,
+) {
+  if (!routeGroups.size) return [];
+
+  return countryIds.filter(
+    (countryId) =>
+      !countryHasSelectedRouteGroup(
+        countryId,
+        routeGroups,
+      ),
+  );
+}
+
+function russianCountryAbsenceMessage(count) {
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  if (
+    mod10 === 1
+    && mod100 !== 11
+  ) {
+    return `В ${count} выбранной стране нет маршрутов выбранных категорий.`;
+  }
+
+  if (
+    mod10 >= 2
+    && mod10 <= 4
+    && !(mod100 >= 12 && mod100 <= 14)
+  ) {
+    return `В ${count} выбранных странах нет маршрутов выбранных категорий.`;
+  }
+
+  return `В ${count} выбранных странах нет маршрутов выбранных категорий.`;
+}
+
+function syncCountriesWithoutSelectedRoutesOption() {
+  const notice =
+    $('#saveNoMatchingRoutes');
+
+  const text =
+    $('#saveNoMatchingRoutesText');
+
+  const countryIds =
+    selectedCountryIdsInSaveDialog();
+
+  const routeGroups =
+    selectedRouteGroupsInSaveDialog();
+
+  const withoutRoutes =
+    countriesWithoutSelectedRoutes(
+      countryIds,
+      routeGroups,
+    );
+
+  const shouldShow =
+    routeGroups.size > 0
+    && withoutRoutes.length > 0;
+
+  notice.hidden = !shouldShow;
+
+  if (!shouldShow) {
+    text.textContent = '';
+    return;
+  }
+
+  text.textContent =
+    russianCountryAbsenceMessage(
+      withoutRoutes.length,
+    );
+}
+
+function openSaveResultDialog() {
+  if (!verifiedAccessActive || $('#resultView').hidden) return;
+
+  const dialog = $('#saveResultDialog');
+
+  $('#saveResultForm').reset();
+  $('#saveResultError').hidden = true;
+
+  const container = $('#saveResultCountries');
+
+  container.replaceChildren(
+    ...resultCountriesForSave().map((country) => {
+      const label = document.createElement('label');
+      label.className = 'save-result-option';
+
+      const input = document.createElement('input');
+      input.type = 'checkbox';
+      input.name = 'saveCountry';
+      input.value = country.countryId;
+      input.checked = true;
+
+      const copy = document.createElement('span');
+      copy.textContent =
+        `${country.flag ? `${country.flag} ` : ''}${country.name}`;
+
+      label.append(input, copy);
+
+      return label;
+    }),
+  );
+
+  $('#saveSectionSchoolsRow').hidden =
+    !(currentProfile?.family?.children?.length > 0);
+
+  const hasPets =
+    currentAnswers?.petTypes?.some(
+      (type) => type && type !== 'NONE',
+    );
+
+  $('#saveSectionPetsRow').hidden = !hasPets;
+
+  $('#saveSectionLgbtRow').hidden =
+    !(
+      currentAnswers?.lgbtEnabled
+      && $('.country-info-lgbt', $('#result'))
+    );
+
+  syncAllCountriesCheckbox();
+  syncCountriesWithoutSelectedRoutesOption();
+
+  dialog.showModal();
+}
+
+function selectedSaveOptions() {
+  const dialog = $('#saveResultDialog');
+
+  const selectedCountryIds =
+    selectedCountryIdsInSaveDialog();
+
+  const routeGroups =
+    selectedRouteGroupsInSaveDialog();
+
+  const includeCountriesWithoutRoutes =
+    $('#saveCountriesWithoutSelectedRoutes').checked;
+
+  const excludedCountryIds =
+    includeCountriesWithoutRoutes
+      ? []
+      : countriesWithoutSelectedRoutes(
+          selectedCountryIds,
+          routeGroups,
+        );
+
+  const excluded =
+    new Set(excludedCountryIds);
+
+  return {
+    countryIds:
+      selectedCountryIds.filter(
+        (countryId) =>
+          !excluded.has(countryId),
+      ),
+
+    routeGroups,
+
+    sections: new Set(
+      $$(
+        'input[name="saveSection"]:checked',
+        dialog,
+      )
+        .filter(
+          (input) =>
+            !input.closest('label')?.hidden,
+        )
+        .map((input) => input.value),
+    ),
+  };
+}
+
+function extractExportSources(page, includeSources) {
+  const links = $$(
+    '.route-source a, .route-evidence-source a',
+    page,
+  );
+
+  const sources = [];
+  const seen = new Set();
+
+  links.forEach((link) => {
+    const href = link.href;
+
+    if (!href || seen.has(href)) return;
+
+    seen.add(href);
+
+    sources.push({
+      href,
+      label:
+        link.textContent.trim()
+        || href,
+    });
+  });
+
+  $$('.route-source, .route-evidence-source', page)
+    .forEach((node) => node.remove());
+
+  if (!includeSources || !sources.length) {
+    return null;
+  }
+
+  const section = document.createElement('section');
+
+  section.className =
+    'country-info-card country-info-export-sources';
+
+  section.innerHTML =
+    '<div class="section-title-row"><div><h3>Источники</h3></div></div>';
+
+  const list = document.createElement('ol');
+  list.className = 'export-source-list';
+
+  sources.forEach((source) => {
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+
+    link.href = source.href;
+    link.textContent = source.label;
+
+    item.append(link);
+    list.append(item);
+  });
+
+  section.append(list);
+
+  return section;
+}
+
+function buildExportCountryPage(countryId, options) {
+  const source = $(
+    `[data-country-panel="${CSS.escape(countryId)}"]`,
+    $('#result'),
+  );
+
+  if (!source) {
+    throw new Error(
+      `Не найден результат страны ${countryId}.`,
+    );
+  }
+
+  const page = source.cloneNode(true);
+
+  page.hidden = false;
+  page.removeAttribute('hidden');
+  page.removeAttribute('id');
+  page.removeAttribute('role');
+  page.classList.add('result-export-country-page');
+
+  $$('[id]', page)
+    .forEach((node) => node.removeAttribute('id'));
+
+  $$('.route-result', page).forEach((route) => {
+    if (
+      !options.routeGroups.has(
+        route.dataset.routeGroup,
+      )
+    ) {
+      route.remove();
+      return;
+    }
+
+    const details = $('details', route);
+
+    if (details) details.open = true;
+
+    $('.route-expand-label', route)?.remove();
+  });
+
+  const routeList = $('.alternative-routes', page);
+
+  if (routeList && !routeList.children.length) {
+    routeList.closest('section')?.remove();
+  }
+
+  const body =
+    $('.country-comparison-body', page);
+
+  const entry =
+    $('.country-comparison-body > .route-requirements.practical-warning', page);
+
+  if (!options.routeGroups.size) {
+    entry?.remove();
+  }
+
+  const cities =
+    $('.country-info-cities', page);
+
+  const schools =
+    $('.country-info-schools', page);
+
+  const pets =
+    $('.country-info-pets', page);
+
+  const taxes =
+    $('.country-info-taxes', page);
+
+  const lgbt =
+    $('.country-info-lgbt', page);
+
+  const quality =
+    $('.country-info-quality-of-life', page);
+
+  const sections = {
+    cities,
+    schools,
+    pets,
+    taxes,
+    lgbt,
+    quality,
+  };
+
+  for (const [key, node] of Object.entries(sections)) {
+    if (
+      node
+      && !options.sections.has(key)
+    ) {
+      node.remove();
+    }
+  }
+
+  const sources = extractExportSources(
+    page,
+    options.sections.has('sources'),
+  );
+
+  /*
+   * Saved-result order:
+   * routes
+   * cities
+   * schools
+   * pets
+   * taxes
+   * LGBT
+   * sources
+   * quality of life
+   *
+   * Quality of life is deliberately final.
+   */
+  for (const node of [
+    cities,
+    schools,
+    pets,
+    taxes,
+    lgbt,
+    sources,
+    quality,
+  ]) {
+    if (!node || !body) continue;
+
+    if (
+      node === sources
+      || page.contains(node)
+    ) {
+      body.append(node);
+    }
+  }
+
+  $$('[data-city-sort]', page)
+    .forEach((button) => {
+      const label =
+        document.createElement('span');
+
+      label.textContent =
+        button.textContent
+          .replace(/[↕↑↓]/g, '')
+          .trim();
+
+      button.replaceWith(label);
+    });
+
+  return page;
+}
+
+function buildPrintExportStage(options) {
+  const stage =
+    document.createElement('div');
+
+  stage.className =
+    'result-print-stage';
+
+  options.countryIds.forEach(
+    (countryId) => {
+      const wrapper =
+        document.createElement('section');
+
+      wrapper.className =
+        'result-print-country';
+
+      wrapper.append(
+        buildExportCountryPage(
+          countryId,
+          options,
+        ),
+      );
+
+      stage.append(wrapper);
+    },
+  );
+
+  return stage;
+}
+
+async function printSelectedResult() {
+  if (
+    !verifiedAccessActive
+    || $('#resultView').hidden
+  ) {
+    return;
+  }
+
+  const error =
+    $('#saveResultError');
+
+  const button =
+    $('#confirmSaveResult');
+
+  const options =
+    selectedSaveOptions();
+
+  if (!options.countryIds.length) {
+    error.textContent =
+      'Выберите хотя бы одну страну.';
+
+    error.hidden = false;
+    return;
+  }
+
+  if (
+    !options.routeGroups.size
+    && !options.sections.size
+  ) {
+    error.textContent =
+      'Выберите хотя бы один раздел результата.';
+
+    error.hidden = false;
+    return;
+  }
+
+  error.hidden = true;
+  button.disabled = true;
+
+  const originalLabel =
+    button.textContent;
+
+  button.textContent =
+    'Открываем печать…';
+
+  const stage =
+    buildPrintExportStage(options);
+
+  document.body.append(stage);
+
+  document.body.classList.add(
+    'result-printing',
+  );
+
+  try {
+    await document.fonts?.ready;
+
+    await new Promise(
+      (resolve) =>
+        requestAnimationFrame(
+          () =>
+            requestAnimationFrame(resolve),
+        ),
+    );
+
+    $('#saveResultDialog').close();
+
+    const originalTitle =
+      document.title;
+
+    document.title =
+      `Country Matcher — результат — ${
+        new Date()
+          .toISOString()
+          .slice(0, 10)
+      }`;
+
+    try {
+      window.print();
+    } finally {
+      document.title =
+        originalTitle;
+    }
+  } catch (printError) {
+    console.error(printError);
+
+    error.textContent =
+      'Не удалось открыть печать. Обновите страницу и попробуйте ещё раз.';
+
+    error.hidden = false;
+  } finally {
+    stage.remove();
+
+    document.body.classList.remove(
+      'result-printing',
+    );
+
+    button.disabled = false;
+    button.textContent =
+      originalLabel;
+  }
+}
+
 
 function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.hidden = false; clearTimeout(showToast.timer); showToast.timer = setTimeout(() => { toast.hidden = true; }, 2600); }
 
@@ -908,7 +1485,57 @@ form.addEventListener('submit', async (event) => {
 });
 $('#saveDraft').addEventListener('click', () => { localStorage.setItem(DRAFT_KEY, JSON.stringify(draft())); showToast('Ответы сохранены только в этом браузере. Можно вернуться позже.'); });
 $('#clearDraft').addEventListener('click', clearAll);
+$('#saveResult').addEventListener('click', openSaveResultDialog);
 $('#editProfile').addEventListener('click', returnToQuestionnaire);
+
+$('#closeSaveResult').addEventListener(
+  'click',
+  () => $('#saveResultDialog').close(),
+);
+
+$('#cancelSaveResult').addEventListener(
+  'click',
+  () => $('#saveResultDialog').close(),
+);
+
+$('#confirmSaveResult').addEventListener(
+  'click',
+  printSelectedResult,
+);
+
+$('#saveAllCountries').addEventListener(
+  'change',
+  (event) => {
+    $$(
+      'input[name="saveCountry"]',
+      $('#saveResultCountries'),
+    ).forEach((input) => {
+      input.checked =
+        event.target.checked;
+    });
+
+    syncAllCountriesCheckbox();
+    syncCountriesWithoutSelectedRoutesOption();
+  },
+);
+
+$('#saveResultCountries').addEventListener(
+  'change',
+  () => {
+    syncAllCountriesCheckbox();
+    syncCountriesWithoutSelectedRoutesOption();
+  },
+);
+
+$$(
+  'input[name="saveRouteGroup"]',
+  $('#saveResultDialog'),
+).forEach((input) => {
+  input.addEventListener(
+    'change',
+    syncCountriesWithoutSelectedRoutesOption,
+  );
+});
 window.addEventListener(ACCESS_GRANTED_EVENT, () => {
   verifiedAccessActive = true;
   if (!pendingCalculation) return;
