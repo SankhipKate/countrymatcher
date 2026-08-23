@@ -30,12 +30,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Install RP4 validator dependencies
+        run: python3 -m pip install -r countrymatcher/requirements.txt
       - run: npm ci
         working-directory: countrymatcher
       - run: npm test
         working-directory: countrymatcher
-      - name: Install RP4 validator dependencies
-        run: python3 -m pip install -r countrymatcher/requirements.txt
       - name: Validate all RP4 research packages
         shell: bash
         run: |
