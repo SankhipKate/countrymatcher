@@ -27,6 +27,7 @@
 - после расчёта первая страна с лучшим маршрутом `SUITABLE` или `SUITABLE_WITH_CONDITIONS` открывается полностью бесплатно;
 - остальные найденные подходящие или условно подходящие страны открываются после подтверждённого полного доступа;
 - Quality of Life для активных стран выводится отдельным editorial-слоем после налогового блока и не влияет на matching, статусы или сортировку.
+- для стран с настроенной коллаборацией после Quality of Life может показываться отдельный presentation-only блок миграционного консультанта; сейчас для Черногории подключён ResidencyNow с переходом в Telegram и заранее подготовленным сообщением.
 
 ## Контракт активного runtime
 
@@ -67,6 +68,8 @@
 - `js/engine/rp4-engine.js` — единственный активный generic evaluator Research Package 4.0;
 - `data/{ES,AR,UY,BR,PT,MX,PY,CO,ME}-research-v4.0.json` — активные Research Package;
 - `data/quality-of-life-ru.json` — отдельный presentation-only editorial слой качества жизни;
+- `data/country-consultants-ru.json` — country-configured presentation-only коллаборации с миграционными консультантами; они не участвуют в matching, статусах или сортировке;
+- `matcher/consultants.js` — generic helper для выбора активных консультантов страны и формирования outbound Telegram URL;
 - `data/*-research-v3.0.json` — архивные инертные исследования, не входящие в runtime;
 - `data/research-package-v4.0.schema.json` — текущий контракт Research Package;
 - `../source-documents/canon-v4.0/COUNTRY_RESEARCH_STANDARD.md` — единственный действующий стандарт исследования страны;
