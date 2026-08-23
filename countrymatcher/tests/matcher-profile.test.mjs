@@ -60,18 +60,36 @@ test('active questionnaire enums match the Final Lock profile schema', async () 
   }
 });
 
-test('active draft contract is v3 and does not restore v2', async () => {
+test('active draft contract is v4 and does not restore older draft versions', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(app, /immigration-matcher-universal-draft-v3/);
-  assert.match(app, /version:\s*3/);
-  assert.match(app, /stored\?\.version !== 3/);
+  const draftState = await readFile(new URL('../matcher/draft-state.js', import.meta.url), 'utf8');
+
+  assert.match(app, /immigration-matcher-universal-draft-v4/);
+  assert.doesNotMatch(app, /immigration-matcher-universal-draft-v3/);
   assert.doesNotMatch(app, /immigration-matcher-universal-draft-v2/);
+
+  assert.match(app, /prepareDraftForRestore/);
+  assert.match(draftState, /DRAFT_VERSION\s*=\s*4/);
+  assert.match(draftState, /stored\.version\s*!==\s*DRAFT_VERSION/);
+  assert.doesNotMatch(draftState, /stored\.version\s*!==\s*3/);
+
+  const restoreSource = app.slice(
+    app.indexOf('function restoreDraft()'),
+    app.indexOf('function clearAll()'),
+  );
+
+  assert.match(restoreSource, /currentRaw == null/);
+  assert.doesNotMatch(restoreSource, /LEGACY_DRAFT_KEY/);
+  assert.match(
+    restoreSource,
+    /localStorage\.removeItem\(DRAFT_KEY\)/,
+  );
 });
 
 const answers = (overrides = {}) => ({
   currentCountry: 'PH', currentStatus: 'TOURIST_OR_VISA_FREE', applicationMethods: ['ANY'],
   hasPartner: false, partnerIncluded: false, relationshipType: '', lgbtEnabled: false, childAges: [], schoolNeeded: false,
-  primaryType: 'REMOTE_EMPLOYMENT', primarySourceCountry: 'US', primaryBankCountry: 'GE', primaryTotalAmount: '4000', primaryAmount: '4000', primaryCurrency: 'USD', primaryEvidence: 'FULL',
+  primaryType: 'REMOTE_EMPLOYMENT', primarySourceScope: 'SINGLE_COUNTRY', primarySourceCountry: 'US', primaryBankCountry: 'GE', primaryTotalAmount: '4000', primaryAmount: '4000', primaryCurrency: 'USD', primaryEvidence: 'FULL',
   savingsAmount: '0', savingsCurrency: 'USD',
   hasAdditionalIncome: false, partnerHasIncome: false,
   longTermGoal: 'TEMPORARY_RESIDENCE_SUFFICIENT', keepRuCitizenship: 'REQUIRED',
@@ -248,7 +266,7 @@ test('public status labels expose exactly the three agreed statuses', () => {
 });
 
 test('freelance income does not invent a source country', () => {
-  const profile = buildUserProfile(answers({ primaryType: 'FREELANCE_OR_SELF_EMPLOYED', primarySourceCountry: '' }));
+  const profile = buildUserProfile(answers({ primaryType: 'FREELANCE_OR_SELF_EMPLOYED', primarySourceScope: 'NO_STABLE_PAYER', primarySourceCountry: '' }));
   assert.equal(profile.income.primary.country_id, null);
   assert.equal(validateUserProfile(profile).valid, true);
   assert.deepEqual(validateAgainstSchema(profile, profileSchema), []);
@@ -294,19 +312,38 @@ test('adult ages are optional and retained when provided', () => {
   assert.equal(validateUserProfile(withPartner).valid, true);
 });
 
-test('income geography supports one country, several countries, or no permanent payer without a bank-country answer', () => {
+test('income geography supports one country or no permanent payer without a bank-country answer', () => {
   const one = buildUserProfile(answers({ primarySourceScope: 'SINGLE_COUNTRY', primarySourceCountry: 'US', primaryBankCountry: '' }));
   assert.equal(one.income.primary.country_id, 'US');
   assert.equal('source_country' in one.income.primary, false);
   assert.equal(one.income.primary.bank_country, null);
-  const several = buildUserProfile(answers({ primarySourceScope: 'MULTIPLE_COUNTRIES', primarySourceCountry: '', primaryBankCountry: '' }));
-  assert.equal(several.income.primary.country_id, null);
-  assert.equal(several.income.primary.source_geography, 'MULTIPLE_COUNTRIES');
-  assert.equal(validateUserProfile(several).valid, true);
+
+  const noStable = buildUserProfile(answers({ primarySourceScope: 'NO_STABLE_PAYER', primarySourceCountry: '', primaryBankCountry: '' }));
+  assert.equal(noStable.income.primary.country_id, null);
+  assert.equal(noStable.income.primary.source_geography, 'NO_STABLE_PAYER');
+  assert.equal(validateUserProfile(noStable).valid, true);
+});
+
+test('profile builder never infers source geography from country or missing answers', () => {
+  const missing = buildUserProfile(answers({
+    primarySourceScope: '',
+    primarySourceCountry: '',
+  }));
+  assert.equal(missing.income.primary.source_geography, null);
+  assert.equal(missing.income.primary.country_id, null);
+  assert.equal(validateUserProfile(missing).valid, false);
+  assert.ok(validateUserProfile(missing).errors.some(({ field }) => field === 'primarySourceScope'));
+
+  const staleCountry = buildUserProfile(answers({
+    primarySourceScope: '',
+    primarySourceCountry: 'US',
+  }));
+  assert.equal(staleCountry.income.primary.source_geography, null);
+  assert.equal(staleCountry.income.primary.country_id, null);
+  assert.equal(validateUserProfile(staleCountry).valid, false);
 });
 
 test('canonical profile clears stale country and normalizes no regular income geography', () => {
-  assert.equal(buildUserProfile(answers({ primarySourceScope: 'MULTIPLE_COUNTRIES', primarySourceCountry: 'US' })).income.primary.country_id, null);
   assert.equal(buildUserProfile(answers({ primarySourceScope: 'NO_STABLE_PAYER', primarySourceCountry: 'US' })).income.primary.country_id, null);
   const none = buildUserProfile(answers({ primaryType: 'NO_REGULAR_INCOME', primarySourceScope: 'SINGLE_COUNTRY', primarySourceCountry: 'US' })).income.primary;
   assert.equal(none.source_geography, 'NO_STABLE_PAYER');
@@ -318,11 +355,19 @@ test('profile schema requires country_id only for SINGLE_COUNTRY geography', () 
   const single = buildUserProfile(answers({ primarySourceScope: 'SINGLE_COUNTRY', primarySourceCountry: 'US' }));
   single.income.primary.country_id = null;
   assert.ok(validateAgainstSchema(single, profileSchema).some(({ path }) => path === '$.income.primary.country_id'));
-  for (const source_geography of ['MULTIPLE_COUNTRIES', 'NO_STABLE_PAYER']) {
-    const value = buildUserProfile(answers({ primarySourceScope: source_geography, primarySourceCountry: 'US' }));
-    assert.equal(value.income.primary.country_id, null);
-    assert.deepEqual(validateAgainstSchema(value, profileSchema), []);
-  }
+  const noStable = buildUserProfile(answers({ primarySourceScope: 'NO_STABLE_PAYER', primarySourceCountry: 'US' }));
+  assert.equal(noStable.income.primary.country_id, null);
+  assert.deepEqual(validateAgainstSchema(noStable, profileSchema), []);
+
+  const removed = buildUserProfile(answers({
+    primarySourceScope: 'MULTIPLE_COUNTRIES',
+    primarySourceCountry: '',
+  }));
+  assert.equal(validateUserProfile(removed).valid, false);
+  assert.ok(
+    validateAgainstSchema(removed, profileSchema)
+      .some(({ path }) => path === '$.income.primary.source_geography'),
+  );
 });
 
 test('universal profile samples satisfy the active canonical schema', () => {
@@ -858,7 +903,7 @@ test('route cards deduplicate financial actions by requirement identity', async 
   const renderRoute = Function(
     'ROUTE_PRESENTATION_LABELS_RU', 'routePresentationGroup', 'statusClass', 'html', 'currency', 'officialFinancialPeriodSuffix',
     'applicationPresentationText', 'russianMonths', 'deduplicatedWorkRights',
-    `${routeSource}; return routeCard;`,
+    `const renderRouteSpecificFollowUps = () => ''; ${routeSource}; return routeCard;`,
   )(
     ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup, () => 'status', (value) => String(value),
     (amount, code = 'USD') => `${amount} ${code}`, (period) => ({ MONTHLY: '/мес', ANNUAL: '/год' })[period] || '',
@@ -1281,4 +1326,17 @@ test('country KPI uses applicant provable income instead of the selected route i
   assert.equal(app.includes("incomeCurrency === 'EUR' ? best?.incomeEur : best?.incomeUsd"), false);
   assert.equal(app.includes('Не применяется к этому маршруту'), false);
   assert.equal(app.includes('Не рассчитан'), false);
+});
+
+
+test('MULTIPLE_COUNTRIES is absent from the active questionnaire', async () => {
+  const [matcher, app] = await Promise.all([
+    readFile(new URL('../index.html', import.meta.url), 'utf8'),
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+  ]);
+
+  assert.doesNotMatch(matcher, /value="MULTIPLE_COUNTRIES"/u);
+  assert.doesNotMatch(app, /value="MULTIPLE_COUNTRIES"/u);
+  assert.doesNotMatch(matcher, /Несколько стран/u);
+  assert.doesNotMatch(app, /Несколько стран/u);
 });

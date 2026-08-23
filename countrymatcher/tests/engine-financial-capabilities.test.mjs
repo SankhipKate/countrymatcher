@@ -75,6 +75,13 @@ test('actual engine exports an immutable JSON capability contract', () => {
     models: ['INCOME_ONLY', 'SAVINGS_ONLY', 'INCOME_OR_SAVINGS', 'INCOME_AND_SAVINGS', 'INCOME_WITH_SAVINGS_SHORTFALL', 'INVESTMENT_CAPITAL', 'SPONSOR_OR_SCHOLARSHIP'],
     alternativeKinds: ['INCOME', 'SAVINGS', 'CAPITAL'],
     comparisons: ['AT_LEAST', 'MORE_THAN', 'EXACT', 'NO_FIXED_THRESHOLD'],
+    alternativeApplicabilityModels: [
+      'INCOME_ONLY',
+      'SAVINGS_ONLY',
+      'INCOME_OR_SAVINGS',
+      'INVESTMENT_CAPITAL',
+      'SPONSOR_OR_SCHOLARSHIP',
+    ],
   });
   assert.equal(Object.isFrozen(ACTIVE_ENGINE_FINANCIAL_CAPABILITIES), true);
   for (const values of Object.values(ACTIVE_ENGINE_FINANCIAL_CAPABILITIES)) assert.equal(Object.isFrozen(values), true);

@@ -415,7 +415,7 @@
           "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }],
           "description": "Страна источника может быть null для фриланса или самозанятости без единого иностранного заказчика."
         },
-        "source_geography": { "enum": ["SINGLE_COUNTRY", "MULTIPLE_COUNTRIES", "NO_STABLE_PAYER"] },
+        "source_geography": { "enum": ["SINGLE_COUNTRY", "NO_STABLE_PAYER"] },
         "bank_country": { "anyOf": [{ "$ref": "#/$defs/countryCode" }, { "type": "null" }] },
         "monthly_total": { "$ref": "#/$defs/money" },
         "monthly_provable": { "$ref": "#/$defs/money" },

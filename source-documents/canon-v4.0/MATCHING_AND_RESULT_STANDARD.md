@@ -1,7 +1,7 @@
 # Country Matcher — стандарт сопоставления и результата
 
 Версия: 4.0
-Дата: 2026-08-18
+Дата: 2026-08-21
 Статус: **CURRENT CANON 4.0**
 
 ## Final Lock 4.0
@@ -94,7 +94,6 @@
 География каждого дохода в профиле имеет закрытую форму:
 
 - `SINGLE_COUNTRY` + обязательный `country_id`;
-- `MULTIPLE_COUNTRIES`;
 - `NO_STABLE_PAYER`.
 
 Это значения ответа пользователя. Они сопоставляются с отдельным правилом Research Package `financial.alternatives[].source_geography`; одно поле не подменяет другое.
@@ -182,6 +181,34 @@ Research Package **не хранит** готовый `role: PASS/CONDITION/BLOC
 
 Для финансового `ENGINE` сначала вычисляется результат всей `financial.model`. `unmet_effect` применяется только после окончательного провала модели. Неизвестная допустимая альтернатива не считается проваленной и может давать конкретное `condition` подтвердить эту альтернативу.
 
+### Route-specific applicability
+
+Уточняющие ответы конкретного маршрута хранятся отдельно от основной анкеты в `route_specific_answers[route_id]`. Первый matching-прогон не предполагает ответов на эти вопросы.
+
+`applies_if` вычисляется как `TRUE / FALSE / UNKNOWN`.
+
+Requirement-level:
+
+- `TRUE` → обычная оценка требования;
+- `FALSE` → `NOT_APPLICABLE`, effect `NONE`;
+- `UNKNOWN` → требование не оценивается оптимистично; для `ENGINE` и `UNASKED_CONDITION` возникает `condition`.
+
+Financial alternative-level:
+
+1. `FALSE`-альтернативы исключаются до financial combinator.
+2. `UNKNOWN` applicability даёт alternative state `UNKNOWN`; сумма, доход или иной финансовый факт не могут превратить такую ветку в `PASS`.
+3. Подтверждённая применимая `PASS`-ветка имеет приоритет над другой UNKNOWN-веткой в OR-модели.
+4. Если `PASS` нет, но UNKNOWN-ветка ещё может выполнить OR-модель, итог финансового требования — `UNKNOWN`.
+5. `FAIL` допустим только когда все оставшиеся применимые ветки известны и провалены.
+6. Все gated alternatives = `FALSE` без иной применимой ветки — data-contract error. Неприменимость всего требования моделируется requirement-level gate.
+7. Если есть ungated alternative, она остаётся baseline и статическое полное покрытие gated branches не требуется.
+8. Если gated являются все alternatives, они должны ссылаться на один route-specific вопрос и совокупно покрывать все его options; неполное покрытие является data-contract error до публикации.
+9. Alternative-level gating разрешён только внутри финансового `ENGINE`; active engine support для моделей задаётся единым machine-readable capability contract. Текущий набор: `INCOME_ONLY`, `SAVINGS_ONLY`, `INCOME_OR_SAVINGS`, `INVESTMENT_CAPITAL`, `SPONSOR_OR_SCHOLARSHIP`.
+10. `INCOME_AND_SAVINGS` и `INCOME_WITH_SAVINGS_SHORTFALL` пока не поддерживают alternative-level gating.
+11. Requirement или alternative со state `NOT_APPLICABLE` исключается из пользовательской financial presentation; неприменимый порог не показывается как требование пользователя.
+
+Это отдельная семантика от `family_scenarios[]`: family resolver не переиспользует route-specific tri-state автоматически.
+
 `met_ru` и `unmet_ru` обязательны и дают пользовательский текст результата.
 
 Для нефинансового `ENGINE` обязательно структурированное `engine_rule` с минимальным набором операторов `EQUALS / IN / AT_LEAST / AT_MOST / NON_EMPTY`. `profile_path` — закрытый enum анкеты, а не строковый путь по объекту; `accepted_values` в Canon 4.0 не используется.
@@ -234,7 +261,7 @@ Route-level `is_humanitarian: true` отмечает гуманитарный м
 3. `NO_REGULAR_INCOME` означает нулевой текущий доход, но не нулевые накопления.
 4. Учитываются только разрешённые типы дохода и правило географии источника конкретного маршрута.
 5. Для `source_geography = FOREIGN`: `SINGLE_COUNTRY` выполняет критерий, если `country_id` отличается от страны назначения; если известная единственная страна совпадает со страной назначения, соответствующий доход не является допустимым иностранным доходом.
-6. `MULTIPLE_COUNTRIES` и `NO_STABLE_PAYER` сами по себе не создают отказ по требованию `FOREIGN`. Если анкета не доказывает географию каждой выплаты, маршрут получает конкретное условие подтвердить, что учитываемые выплаты поступают из-за пределов страны назначения.
+6. Для `source_geography = FOREIGN` значение `NO_STABLE_PAYER` выполняет критерий продуктового matching и само по себе не понижает статус маршрута. В карточке при этом остаётся информационное пояснение, что для конкретного маршрута учитываются выплаты из-за пределов страны назначения.
 7. Для `source_geography = DESTINATION_COUNTRY` известная единственная страна назначения выполняет критерий; неизвестная смешанная география не считается автоматически подходящей или неподходящей.
 8. Для `source_geography = ANY` география не ограничивает финансовый критерий. `NOT_APPLICABLE` не сравнивается с географией профиля.
 9. Допустимые собственные доходы суммируются.
@@ -316,13 +343,13 @@ Route-level `is_humanitarian: true` отмечает гуманитарный м
 
 `allowed_income_types` отвечает на вопрос, какой текущий доход подходит для получения маршрута.
 
-Если `comparison = NO_FIXED_THRESHOLD`, числовой порог не изобретается: `amount = null`, `currency = null`. Для `INCOME`-альтернативы движок проверяет наличие уже указанного в анкете источника допустимого `allowed_income_types` и его `source_geography`. Подтверждённо допустимый источник → `PASS`; подходящий тип с неопределимой по анкете географией → `UNKNOWN` и конкретное условие подтвердить географию; отсутствие подходящего типа либо подтверждённо недопустимая география → `FAIL`. Сумма дохода при таком правиле сама по себе не является порогом.
+Если `comparison = NO_FIXED_THRESHOLD`, официальный числовой порог не изобретается: `amount = null`, `currency = null`. Для `INCOME`-альтернативы без product screening движок проверяет наличие уже указанного в анкете источника допустимого `allowed_income_types` и его `source_geography`. Подтверждённо допустимый источник → `PASS`; подходящий тип с неопределимой по анкете географией → `UNKNOWN` и конкретное условие подтвердить географию; отсутствие подходящего типа либо подтверждённо недопустимая география → `FAIL`. `practical_financial_guidance` само никогда не участвует в numeric comparison или PASS/FAIL.
 
-Engine semantics `NO_FIXED_THRESHOLD` при наличии только `financial.alternatives[].practical_financial_guidance` не меняется. Matching использует подтверждённые machine-readable критерии: допустимые типы дохода, владельцев дохода, географию источника и иные структурированные правила маршрута. `practical_financial_guidance` с `evaluation_mode = DISPLAY_ONLY` является только presentation context и само никогда не участвует в numeric comparison или PASS/FAIL.
+Отдельное `practical_screening_threshold` хранит продуктовый screening-ориентир, выбранный и обоснованный по practical evidence после Research -> Canon reconciliation. Он не является legal threshold, не подменяет null official amount/currency и обязан иметь разрешимые `source_ids`; соответствующий `practical_financial_guidance` должен иметь `status = FOUND`.
 
-Опциональное `practical_screening_threshold` — отдельное, явно утверждённое продуктовое правило Country Matcher для recommendation screening при отсутствии универсального официального числового минимума. Оно может участвовать в PASS/FAIL, но не является legal threshold, не подменяет null official amount/currency и не возникает автоматически из practical guidance. При его наличии движок сначала подтверждает допустимый источник дохода по type/owner/geography, затем сравнивает подтверждённую сумму с отдельно сохранённой screening-формулой.
+Screening threshold участвует в PASS/FAIL только при `evaluation_mode = ENGINE`, `asked_in_questionnaire = true` и поддерживаемом engine kind. Для `INCOME` движок сначала проверяет допустимый источник по type/owner/geography и только затем сравнивает подтверждённую сумму с screening threshold. Для evaluable `SAVINGS` или `CAPITAL` используется соответствующий известный финансовый факт и screening currency/period. Если screening присутствует у `UNASKED_CONDITION` или `DISPLAY_ONLY`, он не оценивает неизвестный факт и не меняет status: практическая сумма остаётся presentation guidance.
 
-Official legal rule, researched `practical_financial_guidance` и product-approved `practical_screening_threshold` всегда остаются тремя отдельными сущностями. Screening threshold обязан иметь разрешимые `source_ids`. Процедурная отдельная подача членов семьи, явно маркированная как administrative-only, показывается в полной карточке, но сама по себе не понижает подходящий маршрут; любые самостоятельные eligibility uncertainty продолжают создавать CONDITION.
+Official legal rule, researched `practical_financial_guidance` и `practical_screening_threshold` всегда остаются тремя отдельными сущностями. Наличие practical threshold не делает неизвестный sponsor, scholarship, investment capital или другой не спрашиваемый факт отрицательным. Процедурная отдельная подача членов семьи, явно маркированная как administrative-only, показывается в полной карточке, но сама по себе не понижает подходящий маршрут; любые самостоятельные eligibility uncertainty продолжают создавать CONDITION. Для family sorting и status `AFTER_INITIAL_RESIDENCE` не считается реальным поздним присоединением, когда одновременно выполняются `administrative_separate_filing = true`, `separate_route_required = false` и `simultaneous_move != NO`; это административная последовательность оформления. `AFTER_PR`, `AFTER_CITIZENSHIP`, `SEPARATE_ROUTE`, `separate_route_required = true` и `simultaneous_move = NO` сохраняют обычную conditional-семантику.
 
 Каждая `figures[]` описывает одну опубликованную сумму или один прямо опубликованный диапазон, а `figures[].evidence[]` сохраняет для каждого подтверждающего источника собственные `source_id`, `source_date` и `evidence_type`. Несколько источников одной и той же figure не теряют отдельную атрибуцию. Разные single amounts остаются разными figures; `summary_ru` может обобщить их для пользователя, но matching и presentation не создают из них synthetic source range.
 
@@ -670,12 +697,7 @@ Research Package хранит только исходную сумму, валю
 
 ## 27. Города и стоимость жизни
 
-Структурно Research Package хранит четыре роли:
-
-- `CAPITAL`;
-- `LARGE`;
-- `MEDIUM`;
-- `SMALL`.
+Структурно Research Package хранит три взаимоисключающие size-role — `LARGE`, `MEDIUM`, `SMALL` — и независимую дополнительную роль `CAPITAL`. Каждый город имеет ровно одну size-role; `CAPITAL` может сочетаться с любой одной из них и не заменяет размерную категорию.
 
 Пользовательские сравнительные метки вычисляются движком из полного отображаемого набора:
 

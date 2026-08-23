@@ -56,7 +56,9 @@ html,body{max-width:100%;overflow-x:clip}
 .route-result p{margin:6px 0;color:#46596e}
 .route-result ul{margin:8px 0;padding-left:20px}
 .follow-up-card{margin:20px 0;padding:20px;border:1px solid #e6c47f;border-radius:16px;background:#fff9ed}
-.follow-up-card h3{margin:0 0 6px}
+.follow-up-card h3,.follow-up-card h4{margin:0 0 6px}
+.follow-up-card .route-follow-up-question{margin:14px 0 0}
+.route-follow-up-options{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
 .follow-up-card .primary-button{margin-top:14px}
 .alternative-routes{display:grid;gap:10px}
 .alternative-routes .route-result{margin:0}
@@ -132,8 +134,9 @@ html,body{max-width:100%;overflow-x:clip}
 
 .hero-content-row{display:flex;align-items:flex-start;justify-content:space-between;gap:28px}
 .hero-copy{min-width:0}
-.result-edit-button{flex:0 0 auto;margin-top:4px;border-color:rgba(255,255,255,.58);background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
-.result-edit-button:hover,.result-edit-button:focus-visible{border-color:#fff;background:rgba(255,255,255,.18);outline:none}
+.result-actions{display:flex;flex:0 0 auto;gap:10px;align-items:flex-start}
+.result-save-button,.result-edit-button{margin-top:4px;border-color:rgba(255,255,255,.58);background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
+.result-save-button:hover,.result-save-button:focus-visible,.result-edit-button:hover,.result-edit-button:focus-visible{border-color:#fff;background:rgba(255,255,255,.18);outline:none}
 .result-layout.result-layout-single{display:block}
 .result-layout-single .result-main{width:100%}
 
@@ -152,8 +155,8 @@ html,body{max-width:100%;overflow-x:clip}
 .country-result-banner{cursor:default;border-radius:0}
 @media(max-width:900px){.country-workspace{grid-template-columns:1fr}.country-tabs{position:sticky;z-index:5;top:0;display:flex;max-height:none;padding:8px 0;overflow-x:auto;background:#fff}.country-tab{flex:0 0 min(280px,82vw)}.country-detail-pane{min-width:0}}
 
-@media(max-width:760px){.hero-content-row{display:block}.result-edit-button{width:auto;margin-top:18px}}
-@media(max-width:430px){.result-edit-button{width:100%}}
+@media(max-width:760px){.hero-content-row{display:block}.result-actions{margin-top:18px;flex-wrap:wrap}.result-save-button,.result-edit-button{width:auto;margin-top:0}}
+@media(max-width:430px){.result-actions{display:grid;grid-template-columns:1fr}.result-save-button,.result-edit-button{width:100%}}
 
 
 /* v0.12.5 form and result refinements */
@@ -190,3 +193,307 @@ html,body{max-width:100%;overflow-x:clip}
   padding-right:38px;
 }
 .country-workspace{scroll-margin-top:16px}
+
+
+/* Paid saved-result PDF */
+
+.save-result-dialog{
+  width:min(760px,calc(100vw - 32px));
+  max-height:min(860px,calc(100vh - 32px));
+  padding:0;
+  border:0;
+  border-radius:22px;
+  background:transparent;
+  box-shadow:0 24px 70px rgba(7,30,61,.28)
+}
+
+.save-result-dialog::backdrop{
+  background:rgba(7,30,61,.56);
+  backdrop-filter:blur(3px)
+}
+
+.save-result-card{
+  display:grid;
+  gap:20px;
+  max-height:inherit;
+  padding:26px;
+  overflow:auto;
+  background:#fff;
+  color:var(--ink)
+}
+
+.save-result-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px
+}
+
+.save-result-head h2{
+  margin:0;
+  font-size:26px
+}
+
+.save-result-head p{
+  margin:7px 0 0;
+  color:var(--muted);
+  line-height:1.5
+}
+
+.save-result-close{
+  flex:0 0 auto;
+  width:38px;
+  height:38px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:#fff;
+  color:var(--ink);
+  font:inherit;
+  font-size:26px;
+  line-height:1;
+  cursor:pointer
+}
+
+.save-result-groups{
+  display:grid;
+  gap:16px
+}
+
+.save-result-group{
+  margin:0;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:16px
+}
+
+.save-result-group legend{
+  padding:0 7px;
+  font-weight:800
+}
+
+.save-result-options{
+  display:grid;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+  gap:10px 16px
+}
+
+.save-result-countries{
+  margin-top:10px
+}
+
+.save-result-option{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  min-width:0;
+  line-height:1.4;
+  cursor:pointer
+}
+
+.save-result-option input{
+  flex:0 0 auto;
+  width:18px;
+  height:18px;
+  margin:1px 0 0
+}
+
+.save-result-option-all{
+  margin-bottom:2px;
+  font-weight:700
+}
+
+.save-result-error{
+  margin:0;
+  padding:11px 13px;
+  border-radius:10px;
+  background:#fff1f2;
+  color:#9f1239
+}
+
+.save-result-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px
+}
+
+.save-result-actions button{
+  min-width:150px
+}
+
+/*
+  Clean DOM used only while native browser printing is active.
+  The normal application stays untouched on screen.
+*/
+.result-print-stage{
+  display:none
+}
+
+.result-export-country-page{
+  display:block!important;
+  width:auto!important;
+  max-width:none!important;
+  margin:0!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#fff!important;
+  box-shadow:none!important;
+  color:var(--ink)
+}
+
+.result-export-country-page
+.country-result-banner{
+  border-radius:0
+}
+
+.result-export-country-page
+.country-comparison-body{
+  padding:24px!important
+}
+
+.result-export-country-page
+.route-expand-label{
+  display:none!important
+}
+
+.result-export-country-page
+details>summary{
+  cursor:default
+}
+
+.result-export-country-page
+.cities-comparison{
+  overflow:visible
+}
+
+.result-export-country-page
+.cities-comparison table{
+  width:100%;
+  min-width:0
+}
+
+.result-export-country-page
+.sort-direction{
+  display:none!important
+}
+
+.result-export-country-page
+.country-info-quality-of-life{
+  margin-bottom:0
+}
+
+.country-info-export-sources{
+  background:#fbfcfe
+}
+
+.export-source-list{
+  margin:0;
+  padding-left:22px
+}
+
+.export-source-list li+li{
+  margin-top:8px
+}
+
+.export-source-list a{
+  overflow-wrap:anywhere
+}
+
+@page{
+  size:A4 portrait;
+  margin:11mm
+}
+
+@media print{
+  html,
+  body{
+    max-width:none!important;
+    overflow:visible!important;
+    background:#fff!important
+  }
+
+  body.result-printing{
+    margin:0!important;
+    color:var(--ink);
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact
+  }
+
+  body.result-printing>
+  :not(.result-print-stage){
+    display:none!important
+  }
+
+  body.result-printing>
+  .result-print-stage{
+    display:block!important;
+    position:static!important;
+    width:auto!important;
+    margin:0!important;
+    padding:0!important;
+    background:#fff!important
+  }
+
+  /*
+    Safari/WebKit print pagination:
+    countries start on new pages while internal
+    export content remains freely fragmentable.
+  */
+  .result-print-country+
+  .result-print-country{
+    break-before:page;
+    page-break-before:always
+  }
+
+  .result-print-stage *{
+    break-inside:auto!important;
+    page-break-inside:auto!important
+  }
+
+  .result-print-country,
+  .result-export-country-page,
+  .result-export-country-page
+  .country-comparison{
+    overflow:visible!important
+  }
+
+  .result-export-country-page a{
+    color:inherit;
+    text-decoration:underline
+  }
+}
+
+@media(max-width:640px){
+  .save-result-options{
+    grid-template-columns:1fr
+  }
+
+  .save-result-actions{
+    display:grid;
+    grid-template-columns:1fr
+  }
+
+  .save-result-actions button{
+    width:100%
+  }
+}
+
+
+.save-no-matching-routes{
+  margin-top:16px;
+  padding:13px 14px;
+  border:1px solid #f2cf84;
+  border-radius:12px;
+  background:#fff9e8
+}
+
+.save-no-matching-routes p{
+  margin:0 0 10px;
+  font-weight:700;
+  line-height:1.45
+}
+
+.save-no-matching-routes[hidden]{
+  display:none!important
+}

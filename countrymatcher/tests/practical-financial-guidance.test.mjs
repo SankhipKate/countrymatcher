@@ -75,7 +75,7 @@ test('RP4 schema rejects malformed practical figures and guidance on an official
   }
 });
 
-test('practical screening is separate, requires DISPLAY_ONLY guidance, and rejects malformed contracts', () => {
+test('practical screening is separate from legal thresholds and requires FOUND practical guidance', () => {
   const screened = structuredClone(alternative);
   screened.practical_screening_threshold = {
     comparison: 'AT_LEAST', currency: 'USD', period: 'MONTHLY',
@@ -96,6 +96,79 @@ test('practical screening is separate, requires DISPLAY_ONLY guidance, and rejec
     const invalid = structuredClone(screened); mutate(invalid);
     assert.equal(validate(invalid), false);
   }
+});
+
+test('schema allows practical screening for non-income alternatives without making them legal thresholds', () => {
+  for (const [kind, period] of [
+    ['SAVINGS', 'ONE_TIME'],
+    ['CAPITAL', 'ONE_TIME'],
+    ['SPONSOR', 'MONTHLY'],
+    ['SCHOLARSHIP', 'ACADEMIC_YEAR'],
+  ]) {
+    const item = structuredClone(alternative);
+    item.kind = kind;
+    item.asked_in_questionnaire = false;
+    delete item.income_owners;
+    item.allowed_income_types = null;
+    item.source_geography = 'NOT_APPLICABLE';
+    item.period = period;
+    item.practical_screening_threshold = {
+      comparison: 'AT_LEAST',
+      currency: 'USD',
+      period,
+      amount: 1500,
+      source_ids: ['SRC_1'],
+    };
+
+    assert.equal(validate(item), true, `${kind}: ${JSON.stringify(validate.errors)}`);
+    assert.equal(item.amount, null);
+    assert.equal(item.currency, null);
+  }
+});
+
+test('schema accepts academic-year practical evidence and requires FOUND guidance for screening', () => {
+  const academic = structuredClone(alternative);
+  academic.practical_financial_guidance.figures[0].period = 'ACADEMIC_YEAR';
+  assert.equal(validate(academic), true, JSON.stringify(validate.errors));
+
+  const screened = structuredClone(alternative);
+  screened.practical_screening_threshold = {
+    comparison: 'AT_LEAST',
+    currency: 'USD',
+    period: 'MONTHLY',
+    amount: 1500,
+    source_ids: ['SRC_1'],
+  };
+  screened.practical_financial_guidance.status = 'NOT_FOUND';
+  screened.practical_financial_guidance.figures = [];
+
+  assert.equal(validate(screened), false);
+});
+
+test('RP4 integrity validator accepts ACADEMIC_YEAR practical evidence', async () => {
+  const pkg = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
+  const item = pkg.routes.find(({ route_id }) => route_id === 'AR_NOMAD').requirements
+    .find(({ type }) => type === 'FINANCIAL').financial.alternatives
+    .find(({ comparison }) => comparison === 'NO_FIXED_THRESHOLD');
+
+  assert.ok(item.practical_financial_guidance?.figures?.length);
+  item.practical_financial_guidance.figures[0].period = 'ACADEMIC_YEAR';
+
+  const script = [
+    "import importlib.util,json,sys",
+    "spec=importlib.util.spec_from_file_location('validator','data/validate-v4.0.py')",
+    "module=importlib.util.module_from_spec(spec); spec.loader.exec_module(module)",
+    "print('\\n'.join(module.validate_integrity(json.load(sys.stdin))))",
+  ].join(';');
+
+  const result = spawnSync('python3', ['-c', script], {
+    cwd: new URL('..', import.meta.url),
+    input: JSON.stringify(pkg),
+    encoding: 'utf8',
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stdout.trim(), '');
 });
 
 test('RP4 integrity validator rejects descending ranges and unresolved practical source IDs', async () => {

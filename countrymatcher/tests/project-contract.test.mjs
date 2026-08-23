@@ -71,6 +71,38 @@ test('repository has one application folder, one backlog, and one source-documen
   assert.match(manifest, /Только эти два документа являются normative standards Canon 4\.0\./);
 });
 
+test('current Canon keeps two normative standards and generalized practical screening semantics', async () => {
+  const sourceDocumentsRoot = new URL('../../source-documents/canon-v4.0/', import.meta.url);
+  const [manifest, research, matching, prompt] = await Promise.all([
+    'CANON_MANIFEST.md',
+    'COUNTRY_RESEARCH_STANDARD.md',
+    'MATCHING_AND_RESULT_STANDARD.md',
+    'NEW_COUNTRY_RESEARCH_PROMPT.md',
+  ].map((path) => readFile(new URL(path, sourceDocumentsRoot), 'utf8')));
+
+  assert.match(
+    manifest,
+    /Только эти два документа являются normative standards Canon 4\.0/u,
+  );
+  assert.match(
+    prompt,
+    /двух нормативных документов или обязательную JSON Schema/u,
+  );
+  assert.doesNotMatch(prompt, /трёх нормативных файлов/u);
+  assert.match(
+    research,
+    /practical_screening_threshold` допустим рядом с любой финансовой альтернативой `NO_FIXED_THRESHOLD`/u,
+  );
+  assert.match(
+    research,
+    /ровно одну из этих трёх size-role/u,
+  );
+  assert.match(
+    matching,
+    /Screening threshold участвует в PASS\/FAIL только при `evaluation_mode = ENGINE`/u,
+  );
+});
+
 test('current Canon never requires a school-type preference for international school presentation', async () => {
   const sourceDocumentsRoot = new URL('../../source-documents/canon-v4.0/', import.meta.url);
   const documents = await Promise.all([
@@ -180,7 +212,7 @@ test('Pages artifact is a positive runtime allowlist', async () => {
     for (const required of [
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json',
       'data/quality-of-life-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
@@ -260,7 +292,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
   assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
   const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json']);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json', 'ME-research-v4.0.json']);
   for (const filename of filenames) {
     assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
@@ -303,6 +335,8 @@ test('runtime data URLs are module-relative and remain valid under a project sub
 test('matcher renders practical financial guidance separately from official numeric thresholds', async () => {
   const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   assert.match(matcher, /\.filter\(\(item\) => item\.threshold != null\)/);
+  assert.doesNotMatch(matcher, /Практический финансовый порог Country Matcher/);
+  assert.doesNotMatch(matcher, /const practicalScreeningBlock =/);
   assert.match(matcher, /const practicalGuidanceBlock =/);
   assert.match(matcher, /item\.practicalGuidance/);
   assert.match(matcher, /practicalGuidanceItems = financialRequirements\.flatMap[\s\S]*?\.filter\(\(item\) => item\.practicalGuidance\)[\s\S]*?\.map\(\(item\) => item\.practicalGuidance\)/);
@@ -315,7 +349,6 @@ test('matcher renders practical financial guidance separately from official nume
   assert.match(matcher, /formatPracticalSourceDate\(evidence\.source_date\)/);
   assert.doesNotMatch(matcher, /figure\.(?:evidence_type|source_date|source_ids)/);
   assert.match(matcher, /Дата источника:/);
-  assert.match(matcher, /Это не официальный минимальный порог\./);
   assert.match(matcher, /надёжную практическую сумму найти не удалось/);
   assert.doesNotMatch(matcher, /thresholdUsd[^\n]+practicalGuidance|practicalGuidance[^\n]+thresholdUsd/);
   const numericFinancialItems = matcher.match(/const financialItems =[\s\S]*?summary\.alternatives[\s\S]*?\);/);
@@ -336,4 +369,61 @@ test('research order connected status matches the active RP4 matcher and ignores
   assert.deepEqual([...connectedNames].sort(), [...activeCountryNames].sort());
   const archivedV3 = (await readdir(dataRoot)).filter((name) => name.endsWith('-research-v3.0.json'));
   assert.ok(archivedV3.length > 0);
+});
+
+test('landing active-country manifest matches active RP4 packages', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+
+  const filenames = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
+    .map((match) => match[1]);
+
+  const activeCountries = await Promise.all(
+    filenames.map(async (filename) => {
+      const pkg = JSON.parse(
+        await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'),
+      );
+      return {
+        code: pkg.country_id,
+        name: pkg.country_name_ru,
+      };
+    }),
+  );
+
+  const manifest = JSON.parse(
+    await readFile(
+      new URL('../data/active-countries.json', import.meta.url),
+      'utf8',
+    ),
+  );
+
+  assert.equal(Array.isArray(manifest), true);
+  assert.equal(manifest.length, filenames.length);
+
+  assert.deepEqual(
+    manifest.map(({ code, name }) => ({ code, name })),
+    activeCountries,
+  );
+
+  for (const country of manifest) {
+    assert.match(country.region, /\S+/);
+  }
+
+  const landing = await readFile(
+    new URL('../landing/index.html', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(
+    landing,
+    /fetch\('\.\.\/data\/active-countries\.json'/,
+  );
+
+  const build = await readFile(
+    new URL('../scripts/build-pages-artifact.mjs', import.meta.url),
+    'utf8',
+  );
+
+  assert.match(build, /'data\/active-countries\.json'/);
 });

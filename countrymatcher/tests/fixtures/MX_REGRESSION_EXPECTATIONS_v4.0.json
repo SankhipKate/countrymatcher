@@ -1,0 +1,45 @@
+{
+  "country_id": "MX",
+  "rules_version": "4.0",
+  "cases": [
+    {
+      "case_id": "PR_RETIREE_ADMIN_FAMILY_SEQUENCE",
+      "route_id": "MX_PR_RETIREE",
+      "profile_summary": "Два взрослых, брак; административно отдельная семейная подача сама по себе не создаёт family CONDITION.",
+      "profile": {
+        "applicantType": "PENSION",
+        "applicantAmount": 1000000,
+        "adults": 2,
+        "relationshipType": "MARRIED"
+      },
+      "expected": {
+        "route_status": "SUITABLE_WITH_CONDITIONS",
+        "family_state": "PASS",
+        "family_classification": "SIMULTANEOUS",
+        "family_sort_rank": 1,
+        "conditions_count": 2
+      }
+    },
+    {
+      "case_id": "HUMANITARIAN_ADMIN_FAMILY_SEQUENCE",
+      "route_id": "MX_HUMANITARIAN",
+      "profile_summary": "Два взрослых, брак; административно отдельная семейная подача сама по себе не создаёт family CONDITION.",
+      "profile": {
+        "applicantType": "REMOTE_EMPLOYMENT",
+        "applicantAmount": 80000,
+        "adults": 2,
+        "relationshipType": "MARRIED"
+      },
+      "expected": {
+        "route_status": "SUITABLE_WITH_CONDITIONS",
+        "family_state": "PASS",
+        "family_classification": "SIMULTANEOUS",
+        "family_sort_rank": 0,
+        "conditions_count": 1
+      }
+    }
+  ],
+  "note_ru": "Фикстура добавлена после family-engine clarification в релизе Montenegro 9.0.0 и фиксирует принятый эффект administrative-only family sequence для MX_PR_RETIREE и MX_HUMANITARIAN.",
+  "canonical_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock"
+}

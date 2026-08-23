@@ -48,7 +48,7 @@ process.stdout.write(JSON.stringify(engine.ACTIVE_ENGINE_FINANCIAL_CAPABILITIES)
     if not isinstance(capabilities, dict) or any(
         not isinstance(capabilities.get(key), list)
         or not all(isinstance(value, str) for value in capabilities[key])
-        for key in ("models", "alternativeKinds", "comparisons")
+        for key in ("models", "alternativeKinds", "comparisons", "alternativeApplicabilityModels")
     ):
         raise RuntimeError(f"Invalid active ENGINE financial capability shape from {engine_path}")
     return capabilities
@@ -88,6 +88,161 @@ def walk_source_refs(value: Any, path: str = "$"):
         for i, child in enumerate(value):
             yield from walk_source_refs(child, f"{path}[{i}]")
 
+
+
+def validate_route_specific_applicability(
+    route_id: str,
+    route: dict[str, Any],
+    errors: list[str],
+) -> None:
+    questions = route.get("route_specific_questions") or []
+    question_options: dict[str, set[str]] = {}
+    question_ids: list[str] = []
+
+    for q, question in enumerate(questions):
+        if not isinstance(question, dict):
+            continue
+
+        question_id = question.get("question_id")
+        if not isinstance(question_id, str):
+            continue
+
+        question_ids.append(question_id)
+
+        values = [
+            option.get("value")
+            for option in (question.get("options") or [])
+            if isinstance(option, dict) and isinstance(option.get("value"), str)
+        ]
+
+        for value in sorted(duplicates(values)):
+            fail(
+                f"$.routes[{route_id}].route_specific_questions[{q}].options: "
+                f"duplicate value {value}",
+                errors,
+            )
+
+        question_options[question_id] = set(values)
+
+    for question_id in sorted(duplicates(question_ids)):
+        fail(
+            f"$.routes[{route_id}].route_specific_questions: "
+            f"duplicate question_id {question_id}",
+            errors,
+        )
+
+    def check(condition: Any, path: str) -> None:
+        if not isinstance(condition, dict):
+            return
+
+        question_id = condition.get("question_id")
+        if question_id not in question_options:
+            fail(
+                f"{path}.question_id: unknown route-specific question {question_id}",
+                errors,
+            )
+            return
+
+        for value in condition.get("values") or []:
+            if isinstance(value, str) and value not in question_options[question_id]:
+                fail(
+                    f"{path}.values: {value} is not an option of {question_id}",
+                    errors,
+                )
+
+    for r, requirement in enumerate(route.get("requirements") or []):
+        if not isinstance(requirement, dict):
+            continue
+
+        requirement_path = f"$.routes[{route_id}].requirements[{r}]"
+        check(requirement.get("applies_if"), f"{requirement_path}.applies_if")
+
+        financial = requirement.get("financial") or {}
+        if not isinstance(financial, dict):
+            continue
+
+        alternatives = [
+            alternative
+            for alternative in (financial.get("alternatives") or [])
+            if isinstance(alternative, dict)
+        ]
+
+        gated_conditions: list[dict[str, Any]] = []
+        ungated_count = 0
+
+        for a, alternative in enumerate(alternatives):
+            condition = alternative.get("applies_if")
+
+            check(
+                condition,
+                f"{requirement_path}.financial.alternatives[{a}].applies_if",
+            )
+
+            if isinstance(condition, dict):
+                gated_conditions.append(condition)
+            else:
+                ungated_count += 1
+
+        if not gated_conditions:
+            continue
+
+        if requirement.get("evaluation_mode") != "ENGINE":
+            fail(
+                f"{requirement_path}.financial.alternatives: "
+                "alternative-level applies_if requires evaluation_mode=ENGINE",
+                errors,
+            )
+
+        model = financial.get("model")
+        if model not in ACTIVE_ENGINE_FINANCIAL_CAPABILITIES["alternativeApplicabilityModels"]:
+            fail(
+                f"{requirement_path}.financial.model: "
+                f"alternative-level applies_if is unsupported for active ENGINE model {model}",
+                errors,
+            )
+
+        # If at least one branch is ungated, it is an always-applicable baseline,
+        # so all gated branches may legitimately be FALSE for a known answer.
+        if ungated_count:
+            continue
+
+        question_ids_for_gates = {
+            condition.get("question_id")
+            for condition in gated_conditions
+            if isinstance(condition.get("question_id"), str)
+        }
+
+        if len(question_ids_for_gates) != 1:
+            fail(
+                f"{requirement_path}.financial.alternatives: "
+                "when every alternative is gated, all applies_if conditions "
+                "must reference one route-specific question",
+                errors,
+            )
+            continue
+
+        question_id = next(iter(question_ids_for_gates))
+
+        if question_id not in question_options:
+            # The unresolved reference has already been reported above.
+            continue
+
+        covered_values: set[str] = set()
+
+        for condition in gated_conditions:
+            for value in condition.get("values") or []:
+                if isinstance(value, str):
+                    covered_values.add(value)
+
+        missing_values = sorted(question_options[question_id] - covered_values)
+
+        if missing_values:
+            fail(
+                f"{requirement_path}.financial.alternatives: "
+                f"all-gated alternatives must cover every option of {question_id}; "
+                f"missing {', '.join(missing_values)}",
+                errors,
+            )
 
 def validate_schema(data: dict[str, Any]) -> list[str]:
     try:
@@ -224,6 +379,8 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                     errors,
                 )
 
+        validate_route_specific_applicability(route_id, route, errors)
+
         for j, scenario in enumerate(route.get("family_scenarios", [])):
             if not isinstance(scenario, dict):
                 continue
@@ -344,19 +501,23 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                         screening = alternative.get("practical_screening_threshold")
                         if screening is not None:
                             alternative_path = f"$.routes[{route_id}].requirements[{k}].financial.alternatives[{a}]"
-                            if mode != "ENGINE" or alternative.get("kind") != "INCOME":
-                                fail(f"{alternative_path}.practical_screening_threshold: allowed only on active ENGINE INCOME alternatives", errors)
                             if alternative.get("comparison") != "NO_FIXED_THRESHOLD" or alternative.get("amount") is not None or alternative.get("currency") is not None:
                                 fail(f"{alternative_path}.practical_screening_threshold: requires NO_FIXED_THRESHOLD and null legal amount/currency", errors)
                             if guidance is None:
                                 fail(f"{alternative_path}.practical_screening_threshold: requires practical_financial_guidance", errors)
+                            elif isinstance(guidance, dict) and guidance.get("status") != "FOUND":
+                                fail(f"{alternative_path}.practical_screening_threshold: requires practical_financial_guidance.status FOUND", errors)
                             if isinstance(screening, dict):
                                 if screening.get("comparison") != "AT_LEAST":
                                     fail(f"{alternative_path}.practical_screening_threshold.comparison: expected AT_LEAST", errors)
                                 if not isinstance(screening.get("currency"), str) or len(screening.get("currency", "")) != 3:
                                     fail(f"{alternative_path}.practical_screening_threshold.currency: invalid or missing", errors)
-                                if screening.get("period") not in {"MONTHLY", "ANNUAL"}:
+                                if screening.get("period") not in {"MONTHLY", "ANNUAL", "ONE_TIME", "ACADEMIC_YEAR"}:
                                     fail(f"{alternative_path}.practical_screening_threshold.period: invalid or missing", errors)
+                                if mode == "ENGINE" and alternative.get("kind") == "INCOME" and screening.get("period") not in {"MONTHLY", "ANNUAL"}:
+                                    fail(f"{alternative_path}.practical_screening_threshold.period: ENGINE INCOME supports MONTHLY or ANNUAL", errors)
+                                if mode == "ENGINE" and alternative.get("kind") in {"SAVINGS", "CAPITAL"} and screening.get("period") != "ONE_TIME":
+                                    fail(f"{alternative_path}.practical_screening_threshold.period: ENGINE {alternative.get('kind')} requires ONE_TIME", errors)
                                 amount = screening.get("amount")
                                 formula = screening.get("family_formula")
                                 if (amount is None) == (formula is None):
@@ -408,7 +569,7 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                                         )
                                     if not isinstance(figure.get("currency"), str):
                                         fail(f"{figure_path}.currency: required", errors)
-                                    if figure.get("period") not in {"MONTHLY", "YEARLY", "ONE_TIME", "OTHER"}:
+                                    if figure.get("period") not in {"MONTHLY", "YEARLY", "ONE_TIME", "ACADEMIC_YEAR", "OTHER"}:
                                         fail(f"{figure_path}.period: invalid or missing", errors)
                                     evidence = figure.get("evidence")
                                     if not isinstance(evidence, list) or not evidence:

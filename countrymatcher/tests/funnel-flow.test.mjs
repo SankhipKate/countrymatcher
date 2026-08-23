@@ -538,8 +538,8 @@ test('manual access and verified permanent token both produce ACTIVE state', asy
 
 test('landing primary CTAs open the free questionnaire while payment section remains intact', async () => {
   const landing = await readFile(new URL('../landing/index.html', import.meta.url), 'utf8');
-  assert.match(landing, /<a class="nav-cta" href="\.\.\/">Пройти анкету бесплатно<\/a>/);
-  assert.match(landing, /<div class="hero-actions">\s*<a class="button" href="\.\.\/">Пройти анкету бесплатно<\/a>/);
+  assert.match(landing, /<a class="nav-cta nav-cta-quiet" data-cta-location="nav" href="\.\.\/">[\s\S]*?Пройти анкету[\s\S]*?<\/a>/);
+  assert.match(landing, /<div class="hero-actions">\s*<a class="button" data-cta-location="hero" href="\.\.\/">Пройти анкету<\/a>/);
   assert.match(landing, /<section class="section payment" id="payment">/);
   assert.match(landing, /id="paypal-checkout-container"/);
   assert.match(landing, /Другие способы оплаты/);
