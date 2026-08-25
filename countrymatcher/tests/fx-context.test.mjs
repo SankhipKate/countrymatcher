@@ -92,6 +92,34 @@ test('complete live response is used directly', async () => {
   assert.equal(context.fx.is_bundled_fallback, false);
 });
 
+
+test('indexed monetary units derive a USD rate through their quoted currency', async () => {
+  const context = await loadCalculationContext({
+    currencies: ['CLP', 'CLF'],
+    fetchImpl: async () => response([row('CLP', 900)]),
+    bundledFallback: bundled({}),
+    indexedUnits: {
+      units: {
+        CLF: {
+          quote_currency: 'CLP',
+          quote_amount: 40865.87,
+          as_of: '2026-08-12',
+          source: 'SII — Unidad de Fomento',
+        },
+      },
+    },
+    now: NOW,
+    storage: null,
+    logger: { warn() {} },
+  });
+
+  assert.ok(Math.abs(context.fx.rates.CLF - (900 / 40865.87)) < 1e-12);
+  assert.deepEqual(context.fx.missing_currencies, []);
+  assert.equal(context.fx.rate_source_kinds.CLF, 'derived');
+  assert.match(context.fx.rate_sources.CLF, /SII/);
+  assert.equal(context.fx.rate_dates.CLF, '2026-08-11');
+});
+
 test('one missing live currency is filled from bundled fallback without discarding healthy live rates', async () => {
   const context = await load(['EUR', 'UYU'], [row('EUR', 0.86)], {
     bundledFallback: bundled({ EUR: 0.80, UYU: 40.1 }),

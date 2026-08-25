@@ -121,7 +121,8 @@ function oldestDate(dates) {
   return valid.sort((left, right) => Date.parse(left) - Date.parse(right))[0];
 }
 
-function sourceLabel(sourceKinds, savedSource = SAVED_SOURCE, bundledSource = BUNDLED_SOURCE) {
+function sourceLabel(sourceKinds, savedSource = SAVED_SOURCE, bundledSource = BUNDLED_SOURCE, derivedSource = null) {
+  if (sourceKinds.has('derived') && derivedSource) return derivedSource;
   if (sourceKinds.size === 1 && sourceKinds.has('live')) return LIVE_SOURCE;
   if (sourceKinds.size === 1 && sourceKinds.has('saved')) return savedSource;
   if (sourceKinds.size === 1 && sourceKinds.has('bundled')) return bundledSource;
@@ -157,6 +158,7 @@ export function summarizeFxContext(fx = {}, currencies = []) {
   const kinds = new Set();
   let savedSource = SAVED_SOURCE;
   let bundledSource = BUNDLED_SOURCE;
+  let derivedSource = null;
   for (const currency of usedCurrencies) {
     const date = fx.rate_dates?.[currency];
     if (date && Number.isFinite(Date.parse(date))) dates[currency] = date;
@@ -165,13 +167,14 @@ export function summarizeFxContext(fx = {}, currencies = []) {
     const label = fx.rate_sources?.[currency];
     if (kind === 'saved' && label) savedSource = label;
     if (kind === 'bundled' && label) bundledSource = label;
+    if (kind === 'derived' && label) derivedSource = label;
   }
 
   const hasDetailedMetadata = Object.keys(fx.rate_dates || {}).length > 0 || Object.keys(fx.rate_source_kinds || {}).length > 0;
   return {
     currencies: usedCurrencies,
     as_of: oldestDate(dates) ?? (!hasDetailedMetadata ? fx.as_of ?? null : null),
-    source: sourceLabel(kinds, savedSource, bundledSource) ?? (!hasDetailedMetadata ? fx.source ?? null : null),
+    source: sourceLabel(kinds, savedSource, bundledSource, derivedSource) ?? (!hasDetailedMetadata ? fx.source ?? null : null),
   };
 }
 
@@ -187,6 +190,7 @@ export async function loadCalculationContext({
   fallbackFetchImpl = globalThis.fetch,
   fallbackUrl = FX_FALLBACK_URL,
   bundledFallback,
+  indexedUnits,
   now = new Date(),
   maxAgeHours = 96,
   storage,
@@ -239,6 +243,7 @@ export async function loadCalculationContext({
   const rateSources = {};
   const rateSourceKinds = {};
   const sourceKinds = new Set();
+  let derivedSource = null;
   for (const currency of requestedCurrencies) {
     if (live.rates[currency] > 0) {
       rates[currency] = live.rates[currency];
@@ -261,13 +266,31 @@ export async function loadCalculationContext({
     }
   }
 
+  const indexedUnitMap = indexedUnits?.units && typeof indexedUnits.units === 'object' ? indexedUnits.units : {};
+  for (const currency of requestedCurrencies) {
+    if (rates[currency] > 0) continue;
+    const unit = indexedUnitMap[currency];
+    const quoteCurrency = unit?.quote_currency;
+    const quoteAmount = Number(unit?.quote_amount);
+    const quoteRate = quoteCurrency === FX_BASE_CURRENCY ? 1 : Number(rates[quoteCurrency]);
+    if (!(quoteAmount > 0) || !(quoteRate > 0) || !Number.isFinite(Date.parse(unit?.as_of))) continue;
+    rates[currency] = quoteRate / quoteAmount;
+    const quoteDate = quoteCurrency === FX_BASE_CURRENCY ? unit.as_of : dates[quoteCurrency];
+    dates[currency] = oldestDate({ unit: unit.as_of, quote: quoteDate }) || unit.as_of;
+    const quoteSource = quoteCurrency === FX_BASE_CURRENCY ? 'USD' : rateSources[quoteCurrency];
+    rateSources[currency] = [unit.source, quoteSource].filter(Boolean).join(' + ');
+    rateSourceKinds[currency] = 'derived';
+    sourceKinds.add('derived');
+    derivedSource = rateSources[currency];
+  }
+
   const missingCurrencies = requestedCurrencies.filter((currency) => !(rates[currency] > 0));
   return {
     calculation_date: now.toISOString(),
     fx: {
       base_currency: FX_BASE_CURRENCY,
       rates,
-      source: sourceLabel(sourceKinds, saved.source, bundled.source),
+      source: sourceLabel(sourceKinds, saved.source, bundled.source, derivedSource),
       as_of: oldestDate(dates),
       rate_dates: dates,
       rate_sources: rateSources,

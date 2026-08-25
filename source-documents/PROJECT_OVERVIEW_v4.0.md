@@ -16,7 +16,8 @@ Country Matcher — браузерный сервис для граждан Ро
 - Мексика;
 - Парагвай;
 - Колумбия;
-- Черногория.
+- Черногория;
+- Чили.
 
 Сервис не заменяет миграционного юриста и не обещает выдачу визы или ВНЖ. Он показывает:
 
@@ -45,7 +46,7 @@ Country Matcher — браузерный сервис для граждан Ро
 
 Активные страновые данные находятся в:
 
-- `countrymatcher/data/{ES,AR,UY,BR,PT,MX,PY,CO,ME}-research-v4.0.json`.
+- `countrymatcher/data/{ES,AR,UY,BR,PT,MX,PY,CO,ME,CL}-research-v4.0.json`.
 
 Quality of Life хранится отдельно в `countrymatcher/data/quality-of-life-ru.json` и не является Research Package.
 

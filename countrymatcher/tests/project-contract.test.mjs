@@ -282,11 +282,66 @@ test('Pages artifact is a positive runtime allowlist', async () => {
     for (const required of [
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json',
-      'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json',
+      'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json', 'data/CL-research-v4.0.json',
+      'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
       await assert.rejects(access(join(output, excluded)), excluded);
+    }
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
+});
+
+test('active RP4 user-facing Russian copy never explains internal questionnaire coverage', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+  const activePackages = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
+    .map((match) => match[1]);
+
+  const forbidden = /(?:анкета|questionnaire)/iu;
+  const collectRussianCopy = (value, path = '') => {
+    const rows = [];
+    if (Array.isArray(value)) {
+      value.forEach((item, index) => rows.push(...collectRussianCopy(item, `${path}[${index}]`)));
+      return rows;
+    }
+    if (value && typeof value === 'object') {
+      for (const [key, item] of Object.entries(value)) {
+        const nextPath = path ? `${path}.${key}` : key;
+        if (key.endsWith('_ru') && typeof item === 'string') rows.push([nextPath, item]);
+        else rows.push(...collectRussianCopy(item, nextPath));
+      }
+    }
+    return rows;
+  };
+
+  for (const filename of activePackages) {
+    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+    for (const [path, copy] of collectRussianCopy(pkg)) {
+      assert.doesNotMatch(copy, forbidden, `${filename}:${path}`);
+    }
+  }
+});
+
+test('every active RP4 package is present in the built Pages artifact', async () => {
+  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+  const activePackages = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
+    .map((match) => match[1]);
+  assert.ok(activePackages.length > 0, 'at least one active RP4 package is required');
+
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-active-pages-'));
+  const output = join(temporaryRoot, 'artifact');
+  try {
+    await execFileAsync(
+      process.execPath,
+      [new URL('../scripts/build-pages-artifact.mjs', import.meta.url).pathname, output],
+    );
+    for (const filename of activePackages) {
+      await access(join(output, 'data', filename));
     }
   } finally {
     await rm(temporaryRoot, { recursive: true, force: true });
@@ -449,7 +504,7 @@ test('active matcher declares a non-empty list of Final Lock RP4 packages', asyn
   const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
   assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
   const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json', 'ME-research-v4.0.json']);
+  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json', 'ME-research-v4.0.json', 'CL-research-v4.0.json']);
   for (const filename of filenames) {
     assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
     const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
@@ -473,6 +528,8 @@ test('runtime data URLs are module-relative and remain valid under a project sub
   assert.match(matcher, /fetch\(withBuildId\(new URL\(filename, DATA_BASE\), buildId\)\)/);
   assert.match(matcher, /fetch\(withBuildId\(new URL\('schemas\/user-profile-v1\.schema\.json', DATA_BASE\), buildId\)\)/);
   assert.match(matcher, /fetch\(withBuildId\(new URL\(QUALITY_OF_LIFE_EDITORIAL_FILE, DATA_BASE\), buildId\)\)/);
+  assert.match(matcher, /fetch\(withBuildId\(new URL\(INDEXED_UNIT_RATES_FILE, DATA_BASE\), buildId\)\)/);
+  assert.match(matcher, /indexedUnits,/);
   assert.match(matcher, /fallbackUrl: withBuildId\(FX_FALLBACK_URL, buildId\)/);
   assert.match(fx, /new URL\('\.\.\/data\/fx-fallback\.json', import\.meta\.url\)/);
   const deploymentRoot = new URL('https://example.test/future/project-subpath/');
