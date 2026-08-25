@@ -2205,7 +2205,8 @@
           "unmet_effect": "NONE",
           "condition_ru": "Дополнительно требуются банковские выписки за последние 3 месяца, подтверждающие solvency для пребывания; универсальный числовой минимум в норме не задан.",
           "source_ids": [
-            "CO_SRC_VISA_RESOLUTION"
+            "CO_SRC_VISA_RESOLUTION",
+            "CO_SRC_INVEST_CURRENT_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -2223,9 +2224,17 @@
                 "source_geography": "NOT_APPLICABLE",
                 "family_formula_ru": "Фиксированного числового порога дополнительной bank solvency нет.",
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_INVEST_CURRENT_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Само инвестиционное основание имеет официальные суммы 650 SMLMV для прямой инвестиции или 350 SMLMV для недвижимости (SMLMV — действующая установленная законом месячная минимальная зарплата). Дополнительная финансовая состоятельность для проживания подтверждается отдельно банковскими выписками за последние 3 месяца. Ни текущая официальная процедура, ни отдельный практический поиск не подтверждают для этой дополнительной состоятельности устойчивый числовой минимум — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не использовать 650/350 SMLMV повторно как порог финансовой состоятельности: это суммы самого инвестиционного основания. Также не переносить 3/5/10 SMLMV из других категорий колумбийских виз."
+                }
               }
             ]
           }
@@ -2473,10 +2482,11 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Финансовая норма имеет альтернативные ветки: при self/natural-person support применяется Art. 31 с 10 SMLMV; при legal-entity support применяется Art. 32 с ответственностью и solvency юридического лица. Текущий flat financial matcher не выражает это условие без ложного FAIL по одной из альтернатив.",
+          "condition_ru": "Финансовая норма имеет разные ветки. При self/natural-person support применяется 10 SMLMV. При legal-entity support юридическое лицо подтверждает собственную solvency выписками за 3 месяца, а заявитель в любом случае должен показать банковские доходы минимум 3 SMLMV; flat matcher не выражает эту составную ветку без ложного вывода.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION",
-            "CO_SRC_SMLMV_2026"
+            "CO_SRC_SMLMV_2026",
+            "CO_SRC_VISA_STUDENT_CURRENT_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -2524,11 +2534,19 @@
                 "history_months": 3,
                 "allowed_income_types": null,
                 "source_geography": "NOT_APPLICABLE",
-                "family_formula_ru": "Альтернативная ветка Art. 32: юридическое лицо принимает финансовую ответственность и подтверждает собственную solvency за предыдущие 3 месяца; универсальный числовой минимум дохода заявителя этой веткой не установлен.",
+                "family_formula_ru": "Ветка legal-entity support: у solvency самого юридического лица отдельного универсального числового floor не опубликовано; оно показывает выписки за 3 месяца. Отдельно заявитель в любом случае должен показать минимум 3 SMLMV по банковским выпискам.",
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_VISA_STUDENT_CURRENT_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "При поддержке юридическим лицом текущая официальная процедура требует банковские выписки самого юридического лица за 3 месяца, но не устанавливает для него отдельный числовой минимум. Это не пробел в пороге заявителя: сам заявитель при этой ветке отдельно обязан показать минимум 3 SMLMV (три действующие установленные законом месячные минимальные зарплаты). Практический поиск не подтвердил устойчивый числовой минимум именно для финансовой состоятельности юридического лица — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "NOT_FOUND относится только к дополнительной финансовой состоятельности поддерживающего юридического лица. Не подменять её порогом 3 SMLMV для заявителя, 10 SMLMV при собственном финансировании/поддержке физическим лицом или суммами из других институциональных категорий."
+                }
               }
             ]
           }
@@ -3476,7 +3494,9 @@
           "unmet_effect": "NONE",
           "condition_ru": "Нужно продемонстрировать solvency через средние показатели банковских выписок за последние 6 месяцев и источник дохода; фиксированный числовой минимум не установлен.",
           "source_ids": [
-            "CO_SRC_VISA_RESOLUTION"
+            "CO_SRC_VISA_RESOLUTION",
+            "CO_SRC_PARENT_BIRTH_CURRENT_2026",
+            "CO_SRC_PARENT_PRACTICE"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -3505,12 +3525,21 @@
                 "source_geography": "ANY",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_PARENT_BIRTH_CURRENT_2026",
+                  "CO_SRC_PARENT_PRACTICE"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Текущая Cancillería (Министерство иностранных дел Колумбии) требует подтвердить финансовую состоятельность средними показателями банковских выписок за 6 месяцев и источником дохода. Отдельная практическая проверка, включая профильное юридическое описание визы для родителя гражданина Колумбии по рождению, не выявила опубликованного устойчивого числового минимума — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не переносить 3, 5 или 10 SMLMV (действующих установленных законом месячных минимальных зарплат) из других категорий виз: для этой родительской визы такого числового минимального порога не опубликовано, а надёжная практика его не подтверждает."
+                }
               },
               {
                 "kind": "SAVINGS",
@@ -3524,9 +3553,18 @@
                 "source_geography": "NOT_APPLICABLE",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_PARENT_BIRTH_CURRENT_2026",
+                  "CO_SRC_PARENT_PRACTICE"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Текущая Cancillería (Министерство иностранных дел Колумбии) требует подтвердить финансовую состоятельность средними показателями банковских выписок за 6 месяцев и источником дохода. Отдельная практическая проверка, включая профильное юридическое описание визы для родителя гражданина Колумбии по рождению, не выявила опубликованного устойчивого числового минимума — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не переносить 3, 5 или 10 SMLMV (действующих установленных законом месячных минимальных зарплат) из других категорий виз: для этой родительской визы такого числового минимального порога не опубликовано, а надёжная практика его не подтверждает."
+                }
               }
             ]
           }
@@ -3788,7 +3826,9 @@
           "unmet_effect": "NONE",
           "condition_ru": "Нужно продемонстрировать solvency через средние показатели банковских выписок за последние 6 месяцев и источник дохода; фиксированный числовой минимум не установлен.",
           "source_ids": [
-            "CO_SRC_VISA_RESOLUTION"
+            "CO_SRC_VISA_RESOLUTION",
+            "CO_SRC_PARENT_ADOPTION_CURRENT_2026",
+            "CO_SRC_PARENT_ADOPTION_PRACTICE"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -3817,12 +3857,21 @@
                 "source_geography": "ANY",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_PARENT_ADOPTION_CURRENT_2026",
+                  "CO_SRC_PARENT_ADOPTION_PRACTICE"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Текущая Cancillería (Министерство иностранных дел Колумбии) требует подтвердить финансовую состоятельность средними показателями банковских выписок за 6 месяцев и источником дохода. Отдельная практическая проверка именно категории для родителя/ребёнка гражданина Колумбии по натурализации повторяет эту документальную модель, но не публикует устойчивого числового минимума — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не переносить 3, 5 или 10 SMLMV (действующих установленных законом месячных минимальных зарплат) из других категорий виз: для этой семейной визы такого числового минимального порога не опубликовано, а надёжная практика его не подтверждает."
+                }
               },
               {
                 "kind": "SAVINGS",
@@ -3836,9 +3885,18 @@
                 "source_geography": "NOT_APPLICABLE",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "CO_SRC_VISA_RESOLUTION"
+                  "CO_SRC_VISA_RESOLUTION",
+                  "CO_SRC_PARENT_ADOPTION_CURRENT_2026",
+                  "CO_SRC_PARENT_ADOPTION_PRACTICE"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Текущая Cancillería (Министерство иностранных дел Колумбии) требует подтвердить финансовую состоятельность средними показателями банковских выписок за 6 месяцев и источником дохода. Отдельная практическая проверка именно категории для родителя/ребёнка гражданина Колумбии по натурализации повторяет эту документальную модель, но не публикует устойчивого числового минимума — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не переносить 3, 5 или 10 SMLMV (действующих установленных законом месячных минимальных зарплат) из других категорий виз: для этой семейной визы такого числового минимального порога не опубликовано, а надёжная практика его не подтверждает."
+                }
               }
             ]
           }
@@ -5325,6 +5383,78 @@
       "url": "https://recursos.anglocolombiano.edu.co/docs/Matriculas_2627/Tarifas_2026_-_2027.pdf",
       "supports_ru": "Официальная таблица тарифов 2026–2027: G11 pensión 5 110 000 COP; tuition оплачивается 9 раз в год. Matrícula, seguro, anuario, cafeteria и transporte указаны отдельно и в tuition observation не включены. Опубликованные тарифы отмечены школой как подлежащие утверждению Secretaría de Educación.",
       "checked_at": "2026-08-20",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_VISA_STUDENT_CURRENT_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores de Colombia",
+      "title_ru": "Visa V Estudiante — текущие требования",
+      "url": "https://www.cancilleria.gov.co/node/26940",
+      "supports_ru": "Для legal-entity support юридическое лицо подтверждает solvency выписками за 3 месяца, а заявитель в любом случае показывает минимум 3 SMLMV по банковским выпискам.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_INVEST_CURRENT_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores de Colombia",
+      "title_ru": "Visa M Inversionista — текущие требования",
+      "url": "https://www.cancilleria.gov.co/node/26979",
+      "supports_ru": "Отдельно от инвестиционного основания 650/350 SMLMV заявитель подтверждает финансовую состоятельность банковскими выписками за 3 месяца; для этой дополнительной состоятельности отдельная сумма не опубликована.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_PARENT_BIRTH_CURRENT_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores de Colombia",
+      "title_ru": "Visa M — родитель гражданина Колумбии по рождению",
+      "url": "https://www.cancilleria.gov.co/node/26967",
+      "supports_ru": "Текущая процедура требует средние показатели банковских выписок за 6 месяцев и источник дохода, без опубликованного числового минимума.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_PARENT_ADOPTION_CURRENT_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Relaciones Exteriores de Colombia",
+      "title_ru": "Visa M — родитель/ребёнок гражданина Колумбии по натурализации",
+      "url": "https://www.cancilleria.gov.co/node/26968",
+      "supports_ru": "Текущая процедура требует средние показатели банковских выписок за 6 месяцев и источник дохода, без опубликованного числового минимума.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_PARENT_PRACTICE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Castro & Salazar Law Group SAS",
+      "title_ru": "Практическое описание Visa M для родителя гражданина Колумбии",
+      "url": "https://cs-lawgroup.com/es/servicios/servicios-de-visa/visa-de-migrante-tipo-m/visa-tipo-m-padre-o-madre-de-nacionalidad-colombiana-por-nacimiento/",
+      "supports_ru": "Практическое описание повторяет требование 6-месячных банковских средних и источника дохода, но не публикует отдельный числовой минимум.",
+      "checked_at": "2026-08-24",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "CO_SRC_PARENT_ADOPTION_PRACTICE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Castro & Salazar Law Group SAS",
+      "title_ru": "Практическое описание Visa M для семьи гражданина Колумбии по натурализации/усыновлению",
+      "url": "https://cs-lawgroup.com/es/servicios/servicios-de-visa/visa-de-migrante-tipo-m/visa-m-para-familia-adoptiva/",
+      "supports_ru": "Практическое описание категории для семьи гражданина по натурализации повторяет требование средних показателей банковских выписок за 6 месяцев и источника дохода, но не публикует отдельный числовой минимум.",
+      "checked_at": "2026-08-24",
       "confidence": "MEDIUM",
       "published_or_updated_at": null,
       "language": "es"

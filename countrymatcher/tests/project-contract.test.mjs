@@ -71,6 +71,56 @@ test('repository has one application folder, one backlog, and one source-documen
   assert.match(manifest, /Только эти два документа являются normative standards Canon 4\.0\./);
 });
 
+test('every active NO_FIXED_THRESHOLD alternative records a completed practical research pass', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const activeBlock = app.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
+  assert.ok(activeBlock, 'ACTIVE_RP4_PACKAGES must exist');
+  const activeFiles = [...activeBlock[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
+
+  const missing = [];
+  for (const filename of activeFiles) {
+    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+    for (const route of pkg.routes || []) {
+      for (const requirement of route.requirements || []) {
+        for (const alternative of requirement.financial?.alternatives || []) {
+          if (alternative.comparison !== 'NO_FIXED_THRESHOLD') continue;
+          if (!['FOUND', 'NOT_FOUND'].includes(alternative.practical_financial_guidance?.status)) {
+            missing.push(`${pkg.country_id}/${route.route_id}/${requirement.requirement_id}/${alternative.kind}`);
+          }
+        }
+      }
+    }
+  }
+
+  assert.deepEqual(missing, []);
+});
+
+test('Brazil VITEM IV keeps the researched 1,000 USD/month consular screening without inventing an ENGINE verdict', async () => {
+  const brazil = JSON.parse(await readFile(new URL('../data/BR-research-v4.0.json', import.meta.url), 'utf8'));
+  const study = brazil.routes.find(({ route_id }) => route_id === 'BR_STUDY');
+  const financial = study?.requirements.find(({ requirement_id }) => requirement_id === 'BR_STUDY_FIN');
+
+  assert.equal(financial?.evaluation_mode, 'UNASKED_CONDITION');
+  assert.equal(financial?.unmet_effect, 'BECOMES_CONDITION');
+  assert.deepEqual(financial?.financial?.alternatives.map(({ kind }) => kind), [
+    'INCOME', 'SAVINGS', 'SPONSOR', 'SCHOLARSHIP',
+  ]);
+
+  for (const alternative of financial.financial.alternatives) {
+    assert.equal(alternative.comparison, 'NO_FIXED_THRESHOLD');
+    assert.equal(alternative.asked_in_questionnaire, false);
+    assert.equal(alternative.practical_financial_guidance?.status, 'FOUND');
+    assert.equal(alternative.practical_financial_guidance?.evaluation_mode, 'DISPLAY_ONLY');
+    assert.deepEqual(alternative.practical_screening_threshold, {
+      comparison: 'AT_LEAST',
+      currency: 'USD',
+      period: 'MONTHLY',
+      amount: 1000,
+      source_ids: ['BR_SRC_STUDY_MEXICO_2026'],
+    });
+  }
+});
+
 test('current Canon keeps two normative standards and generalized practical screening semantics', async () => {
   const sourceDocumentsRoot = new URL('../../source-documents/canon-v4.0/', import.meta.url);
   const [manifest, research, matching, prompt] = await Promise.all([
@@ -100,6 +150,26 @@ test('current Canon keeps two normative standards and generalized practical scre
   assert.match(
     matching,
     /Screening threshold участвует в PASS\/FAIL только при `evaluation_mode = ENGINE`/u,
+  );
+  assert.match(
+    matching,
+    /Research alternative `CAPITAL` также может быть `asked_in_questionnaire: true`/u,
+  );
+  assert.match(
+    matching,
+    /Результат маршрута не должен зависеть от порядка `requirements\[\]`/u,
+  );
+  assert.match(
+    matching,
+    /`practical_screening_threshold` сравнивается только с остатком после более приоритетных требований/u,
+  );
+  assert.match(
+    matching,
+    /gross amount, reserved amount и available amount отдельно/u,
+  );
+  assert.doesNotMatch(
+    matching,
+    /`CAPITAL`, инвестиционное намерение и специальные виды активов остаются отдельными неизвестными фактами и не выводятся из общего объёма сбережений/u,
   );
 });
 

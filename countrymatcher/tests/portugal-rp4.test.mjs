@@ -103,6 +103,15 @@ const requirementById = (routeId, requirementId) =>
     .requirements
     .find(({ requirement_id }) => requirement_id === requirementId);
 
+test('Portugal entrepreneur route exposes the recognizable D2 alias', () => {
+  const d2 = portugal.routes.find(({ route_id }) => route_id === 'PT_ENTREPRENEUR');
+  assert.equal(d2?.name_ru, 'Предпринимательский проект (D2)');
+  assert.equal(d2?.official_term_ru, 'Visto de residência para imigrantes empreendedores');
+  const presentedD2 = calculateActiveCountry(profile(), portugal, context)
+    .routes.find(({ routeId }) => routeId === 'PT_ENTREPRENEUR');
+  assert.equal(presentedD2?.routeName, 'Предпринимательский проект (D2)');
+});
+
 test('Portugal remote-work status is derived generically and Madeira uncertainty is informational', async () => {
   const remote = portugal.routes.find(
     ({ route_id }) => route_id === 'PT_REMOTE_WORK',

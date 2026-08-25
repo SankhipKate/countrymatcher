@@ -930,6 +930,24 @@ test('route cards deduplicate financial actions by requirement identity', async 
   assert.match(suitable, /Финансовое требование/u);
   assert.match(suitable, /Удовлетворённое требование/u);
 
+  const reservationNotice = 'Из 11 040 EUR 11 040 EUR уже учитываются для более приоритетного финансового требования; доступно 0 EUR.';
+  const reservedConditional = { requirementId: 'FIN_RESERVED', effect: 'CONDITION', summary: {
+    alternatives: [{ ...alternative('Практический капитал', 5000, 5550), reservationNotice }],
+  } };
+  const reservedRoute = renderRoute({
+    ...base,
+    routeStatus: 'SUITABLE_WITH_CONDITIONS',
+    conditions: ['Подтвердить финансирование проекта.'],
+    financialRequirements: [reservedConditional],
+    conditionActions: [{
+      text: 'Подтвердить финансирование проекта.',
+      requirementId: 'FIN_RESERVED',
+      financialSummary: reservedConditional.summary,
+    }],
+  }, 'Страна');
+  assert.match(reservedRoute, /Из 11 040 EUR 11 040 EUR уже учитываются/u);
+  assert.match(reservedRoute, /доступно 0 EUR/u);
+
   const guidance = {
     status: 'FOUND', summary_ru: 'Практические значения.', disclaimer_ru: 'Не официальный порог.',
     figures: [{ amount: 2500, currency: 'USD', period: 'MONTHLY', family_context_ru: 'Пара', note_ru: 'Отдельное значение.', evidence: [{ evidence_type: 'REPORTED_PRACTICE', source_date: '2026-08-10', sourceTitle: 'Практический источник', sourceUrl: 'https://example.test/practice' }] }],

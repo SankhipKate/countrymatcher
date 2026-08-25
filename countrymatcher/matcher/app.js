@@ -520,12 +520,21 @@ function routeCard(route, countryName, main = false) {
       ? action.financialSummary?.alternatives?.filter((item) => item.threshold != null) || [] : [];
     if (alternatives.length) financialActionSeen.add(action.requirementId);
 
+    const reservationNotices = [...new Set(
+      (action.financialSummary?.alternatives || [])
+        .map((item) => item.reservationNotice)
+        .filter(Boolean),
+    )];
+    const appendReservationNotices = (text) => reservationNotices.length
+      ? `${String(text).replace(/\s+$/u, '')} ${reservationNotices.join(' ')}`
+      : text;
+
     const actionText = withDynamicFinancialTextEquivalents(
       action.text,
       action.financialSummary,
     );
 
-    if (!alternatives.length) return actionText;
+    if (!alternatives.length) return appendReservationNotices(actionText);
 
     const compactActionText = String(actionText).replace(/[\s\u00a0]/gu, '');
 
@@ -536,9 +545,11 @@ function routeCard(route, countryName, main = false) {
         `${Math.round(item.threshold)}${item.currency}`,
       ));
 
-    if (thresholdsAlreadyExplained) return actionText;
+    if (thresholdsAlreadyExplained) return appendReservationNotices(actionText);
 
-    return `${String(actionText).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`;
+    return appendReservationNotices(
+      `${String(actionText).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`,
+    );
   });
   const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && actionItems.length
     ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
