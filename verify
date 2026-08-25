@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+VERIFIER="$ROOT/countrymatcher/scripts/verify-project.sh"
+
+if [[ ! -f "$VERIFIER" ]]; then
+  echo "FAIL: verifier not found: $VERIFIER" >&2
+  exit 1
+fi
+
+exec bash "$VERIFIER" "$@"

@@ -22,6 +22,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -30,26 +32,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - name: Install RP4 validator dependencies
-        run: python3 -m pip install -r countrymatcher/requirements.txt
-      - run: npm ci
-        working-directory: countrymatcher
-      - run: npm test
-        working-directory: countrymatcher
-      - name: Validate all RP4 research packages
-        shell: bash
-        run: |
-          set -euo pipefail
-          shopt -s nullglob
-          packages=(countrymatcher/data/*-research-v4.0.json)
-          if [ ${#packages[@]} -eq 0 ]; then
-            echo "No RP4 packages found"
-            exit 1
-          fi
-          for package in "${packages[@]}"; do
-            echo "Validating $package"
-            python3 countrymatcher/data/validate-v4.0.py "$package"
-          done
+      - name: Verify project
+        run: bash ./verify
       - name: Build allowlisted Pages artifact
         run: node countrymatcher/scripts/build-pages-artifact.mjs pages-artifact
       - name: Refresh artifact FX fallback when Frankfurter is available

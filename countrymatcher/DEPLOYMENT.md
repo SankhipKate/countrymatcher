@@ -99,11 +99,16 @@ Runtime JS/CSS и динамические data URL используют отд�
 
 ## Проверка перед merge
 
+Единственный канонический release gate запускается из корня репозитория:
+
 ```bash
-npm ci
-npm test
-find js matcher pilot -name '*.js' -print0 | xargs -0 -n1 node --check
-git diff --check
+bash ./verify
 ```
 
-README и этот документ обновляются вместе с изменениями публичных адресов, правил публикации или пользовательского поведения. Текущий номер продукта меняется только в `VERSION`.
+Корневой `verify` является только переносимой обёрткой и определяет корень относительно собственного расположения, а не текущего каталога или наличия `.git`. Вся логика проверки находится в `countrymatcher/scripts/verify-project.sh`. Поэтому тот же gate работает в обычном clone/worktree и в распакованном архиве без Git metadata; без `.git` пропускаются только Git-specific checks.
+
+Verifier сначала выполняет дешёвые проверки структуры и syntax, затем Git checks при доступной metadata, после чего подготавливает Node dependencies через чистый `npm ci`, создаёт/обновляет локальное изолированное Python-окружение `.verify-venv` по `requirements.txt`, валидирует все активные RP4-пакеты, запускает полный `npm test` и проверяет синтаксис JavaScript. В Git worktree проверяются unstaged, staged и последний committed diff. GitHub CI и Pages обязаны вызывать этот же root verifier вместо собственной дублирующей последовательности.
+
+`npm test` имеет dependency bootstrap и при отсутствующем или рассинхронизированном `node_modules` сначала выполняет `npm ci`. Прямой `node --test` не используется как release gate, потому что он обходит npm lifecycle и dependency bootstrap.
+
+README и этот документ обновляются вместе с изменениями публичных адресов, правил публикации, пользовательского поведения или канонического release gate. Текущий номер продукта меняется только в `VERSION`.
