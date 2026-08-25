@@ -1,5 +1,6 @@
 node_modules/
 countrymatcher/.pages-artifact/
+countrymatcher/.verify-venv/
 
 __pycache__/
 *.py[cod]

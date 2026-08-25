@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, mkdtemp, readdir, readFile, rm } from 'node:fs/promises';
+import { access, chmod, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -38,9 +38,9 @@ async function activeRp4CountryNames() {
   }));
 }
 
-test('repository has one application folder, one backlog, and one source-document folder', async () => {
+test('repository has one application folder, one backlog, one source-document folder, and the root verifier', async () => {
   const visible = (await readdir(repositoryRoot)).filter((name) => !name.startsWith('.')).sort();
-  assert.deepEqual(visible, ['countrymatcher', 'research-backlog', 'source-documents']);
+  assert.deepEqual(visible, ['countrymatcher', 'research-backlog', 'source-documents', 'verify']);
   const appChildren = await readdir(appRoot);
   assert.equal(appChildren.includes('research-backlog'), false);
   assert.equal(appChildren.includes('source-documents'), false);
@@ -268,10 +268,10 @@ test('Pages workflow tests before publishing only countrymatcher', async () => {
   assert.match(workflow, /path: pages-artifact/);
   assert.doesNotMatch(workflow, /^\s+path: countrymatcher\s*$/m);
   assert.equal(workflow.includes('path: .'), false);
-  const testPosition = workflow.indexOf('run: npm test');
+  const verifyPosition = workflow.indexOf('bash ./verify');
   const uploadPosition = workflow.indexOf('actions/upload-pages-artifact@v3');
   const deployPosition = workflow.indexOf('actions/deploy-pages@v4');
-  assert.ok(testPosition > -1 && testPosition < uploadPosition && uploadPosition < deployPosition);
+  assert.ok(verifyPosition > -1 && verifyPosition < uploadPosition && uploadPosition < deployPosition);
 });
 
 test('Pages artifact is a positive runtime allowlist', async () => {
@@ -293,23 +293,101 @@ test('Pages artifact is a positive runtime allowlist', async () => {
   }
 });
 
-test('CI and Pages validate every RP4 package before completion or deploy', async () => {
-  const workflows = await Promise.all(['test.yml', 'pages.yml'].map((name) => readFile(new URL(`../../.github/workflows/${name}`, import.meta.url), 'utf8')));
-  for (const workflow of workflows) {
+test('CI, Pages, and maintained release docs share one cwd-independent root verifier', async () => {
+  const [testWorkflow, pagesWorkflow, rootVerifier, verifier, ensureNodeDeps, packageJsonText, gitignore, readme, deployment] = await Promise.all([
+    readFile(new URL('../../.github/workflows/test.yml', import.meta.url), 'utf8'),
+    readFile(new URL('../../.github/workflows/pages.yml', import.meta.url), 'utf8'),
+    readFile(new URL('../../verify', import.meta.url), 'utf8'),
+    readFile(new URL('../scripts/verify-project.sh', import.meta.url), 'utf8'),
+    readFile(new URL('../scripts/ensure-node-deps.mjs', import.meta.url), 'utf8'),
+    readFile(new URL('../package.json', import.meta.url), 'utf8'),
+    readFile(new URL('../../.gitignore', import.meta.url), 'utf8'),
+    readFile(new URL('../README.md', import.meta.url), 'utf8'),
+    readFile(new URL('../DEPLOYMENT.md', import.meta.url), 'utf8'),
+  ]);
+
+  for (const workflow of [testWorkflow, pagesWorkflow]) {
+    assert.match(workflow, /actions\/checkout@v4\s*\n\s+with:\s*\n\s+fetch-depth: 2/);
+    assert.match(workflow, /actions\/setup-node@v4/);
     assert.match(workflow, /actions\/setup-python@v5/);
-    assert.match(workflow, /pip install -r countrymatcher\/requirements\.txt/);
-    const installPosition = workflow.indexOf('pip install -r countrymatcher/requirements.txt');
-    const npmTestPosition = workflow.indexOf('run: npm test');
-    assert.ok(
-      installPosition > -1 && npmTestPosition > -1 && installPosition < npmTestPosition,
-      'validator dependencies must be installed before npm test',
-    );
-    assert.match(workflow, /packages=\(countrymatcher\/data\/\*-research-v4\.0\.json\)/);
-    assert.match(workflow, /if \[ \$\{#packages\[@\]\} -eq 0 \]/);
-    assert.match(workflow, /python3 countrymatcher\/data\/validate-v4\.0\.py "\$package"/);
+    assert.match(workflow, /run: bash \.\/verify/);
+    assert.doesNotMatch(workflow, /countrymatcher\/scripts\/verify-project\.sh/);
+    assert.doesNotMatch(workflow, /run: npm test/);
+    assert.doesNotMatch(workflow, /pip install -r countrymatcher\/requirements\.txt/);
+    assert.doesNotMatch(workflow, /validate-v4\.0\.py/);
   }
-  const pages = workflows[1];
-  assert.ok(pages.indexOf('validate-v4.0.py') < pages.indexOf('actions/upload-pages-artifact@v3'));
+
+  const packageJson = JSON.parse(packageJsonText);
+  assert.equal(packageJson.scripts.pretest, 'node scripts/ensure-node-deps.mjs');
+  assert.equal(packageJson.scripts.test, 'node --test tests/*.test.mjs');
+  assert.equal(packageJson.scripts.verify, undefined, 'root bash ./verify must remain the only canonical full-project entrypoint');
+
+  assert.match(rootVerifier, /dirname "\$\{BASH_SOURCE\[0\]\}"/);
+  assert.match(rootVerifier, /countrymatcher\/scripts\/verify-project\.sh/);
+  assert.match(rootVerifier, /exec bash "\$VERIFIER" "\$@"/);
+  assert.doesNotMatch(rootVerifier, /npm (?:ci|test)/);
+  assert.doesNotMatch(rootVerifier, /validate-v4\.0\.py/);
+  assert.doesNotMatch(rootVerifier, /pip install/);
+
+  assert.match(ensureNodeDeps, /\['ls', '--depth=0', '--include=dev'\]/);
+  assert.match(ensureNodeDeps, /\['ci'\]/);
+  assert.match(verifier, /dirname "\$\{BASH_SOURCE\[0\]\}"/);
+  assert.match(verifier, /git -C "\$REPO_ROOT" rev-parse --is-inside-work-tree/);
+  assert.match(verifier, /Git metadata unavailable; Git-only checks skipped\./);
+  assert.match(verifier, /git -C "\$REPO_ROOT" diff --check/);
+  assert.match(verifier, /git -C "\$REPO_ROOT" diff --cached --check/);
+  assert.match(verifier, /git -C "\$REPO_ROOT" diff --check HEAD\^ HEAD/);
+  assert.match(verifier, /npm ci/);
+  assert.match(verifier, /-m venv/);
+  assert.match(verifier, /pip install --disable-pip-version-check -r/);
+  assert.match(verifier, /data\/\*-research-v4\.0\.json/);
+  assert.match(verifier, /validate-v4\.0\.py/);
+  assert.match(verifier, /npm test/);
+  assert.match(verifier, /find "\$APP_DIR\/js" "\$APP_DIR\/matcher" "\$APP_DIR\/pilot"/);
+  assert.match(verifier, /HEAD \$COMMIT_SHA/);
+  assert.match(gitignore, /countrymatcher\/\.verify-venv\//);
+
+  for (const maintainedDoc of [readme, deployment]) {
+    assert.match(maintainedDoc, /```bash\s*\nbash \.\/verify\s*\n```/);
+    assert.doesNotMatch(maintainedDoc, /```bash\s*\n(?:npm (?:ci|test|run verify)|node --test)/);
+    assert.doesNotMatch(maintainedDoc, /npm run verify/);
+  }
+  assert.match(readme, /распакованном архиве без `\.git`/u);
+  assert.match(deployment, /GitHub CI и Pages обязаны вызывать этот же root verifier/u);
+
+  const repoPath = fileURLToPath(repositoryRoot);
+  try {
+    await execFileAsync('git', ['-C', repoPath, 'rev-parse', '--is-inside-work-tree']);
+    const { stdout } = await execFileAsync('git', ['-C', repoPath, 'ls-files', '-s', '--', 'verify']);
+    const trackedMode = stdout.trim().split(/\s+/)[0] || '';
+    if (trackedMode) assert.equal(trackedMode, '100755', 'tracked root verify must keep executable mode');
+  } catch {
+    // ZIP/export without .git: Git index mode is intentionally not enforceable here.
+  }
+});
+
+test('npm test dependency bootstrap installs only when top-level dependencies are unavailable', async () => {
+  const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-fake-npm-'));
+  const fakeNpm = join(temporaryRoot, 'npm');
+  const logPath = join(temporaryRoot, 'calls.log');
+  const ensureScript = fileURLToPath(new URL('../scripts/ensure-node-deps.mjs', import.meta.url));
+  try {
+    await writeFile(fakeNpm, `#!/usr/bin/env bash\nprintf '%s\\n' "$*" >> "$FAKE_NPM_LOG"\nif [[ "$1" == "ls" ]]; then exit "\${FAKE_NPM_LS_STATUS:-0}"; fi\nif [[ "$1" == "ci" ]]; then exit "\${FAKE_NPM_CI_STATUS:-0}"; fi\nexit 99\n`);
+    await chmod(fakeNpm, 0o755);
+
+    const baseEnv = { ...process.env, PATH: `${temporaryRoot}:${process.env.PATH}`, FAKE_NPM_LOG: logPath };
+    await execFileAsync(process.execPath, [ensureScript], { env: { ...baseEnv, FAKE_NPM_LS_STATUS: '0' } });
+    assert.equal((await readFile(logPath, 'utf8')).trim(), 'ls --depth=0 --include=dev');
+
+    await writeFile(logPath, '');
+    await execFileAsync(process.execPath, [ensureScript], { env: { ...baseEnv, FAKE_NPM_LS_STATUS: '1', FAKE_NPM_CI_STATUS: '0' } });
+    assert.deepEqual((await readFile(logPath, 'utf8')).trim().split('\n'), [
+      'ls --depth=0 --include=dev',
+      'ci',
+    ]);
+  } finally {
+    await rm(temporaryRoot, { recursive: true, force: true });
+  }
 });
 
 test('filesystem entry names remain paths instead of URL fragments or queries', () => {
