@@ -967,14 +967,14 @@
     },
     {
       "route_id": "PT_ENTREPRENEUR",
-      "name_ru": "Предпринимательский проект",
+      "name_ru": "Предпринимательский проект (D2)",
       "official_term_ru": "Visto de residência para imigrantes empreendedores",
       "route_type": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
       "covers_categories": [
         "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Реальный предпринимательский проект в Португалии с подтверждением намерения и способности инвестировать; без универсального fixed minimum.",
+      "basis_ru": "Реальный предпринимательский проект в Португалии с подтверждением намерения и способности инвестировать; универсального fixed minimum business investment нет, а средства к существованию подтверждаются отдельно по официальной формуле.",
       "publishable": true,
       "requirements": [
         {
@@ -984,7 +984,7 @@
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подготовить реальный Portuguese business/investment project и доказать намерение/способность его реализовать. Универсального statutory minimum investment не подтверждено.",
+          "condition_ru": "Подготовить реальный Portuguese business/investment project и доказать намерение/способность его реализовать. Универсального statutory minimum investment не подтверждено; финансирование проекта оценивается отдельно от обязательных средств к существованию.",
           "source_ids": [
             "PT_SRC_01",
             "PT_SRC_04"
@@ -993,15 +993,99 @@
           "requires_separate_basis": true
         },
         {
+          "requirement_id": "PT_ENTREPRENEUR_MEANS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить отдельные средства к существованию по Portaria 1563/2007 минимум на 12 месяцев: в 2026 базово 920 EUR/мес. для первого взрослого, 460 EUR/мес. для дополнительного взрослого и 276 EUR/мес. на ребёнка/иждивенца.",
+          "met_ru": "Текущий подтверждаемый регулярный доход или известные подтверждаемые средства достигают официальной 2026 subsistence formula для заявленного состава семьи.",
+          "unmet_ru": "Для D2 нужно отдельно подтвердить средства к существованию минимум на 12 месяцев по официальной 2026 subsistence formula; бизнес-капитал не заменяет этот личный финансовый резерв.",
+          "profile_path": "INCOME_APPLICANT",
+          "source_ids": [
+            "PT_SRC_GOV_D2_2026",
+            "PT_SRC_MEANS_PORTARIA",
+            "PT_SRC_RMMG_2026"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 920,
+                "currency": "EUR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT",
+                  "CONTRACTOR",
+                  "FREELANCE_OR_SELF_EMPLOYED",
+                  "SOLE_PROPRIETOR",
+                  "COMPANY_OWNER",
+                  "PENSION",
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME",
+                  "OTHER_REGULAR_INCOME"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": "Официальная формула Portaria 1563/2007: 100% RMMG для первого взрослого, 50% для каждого дополнительного взрослого, 30% для ребёнка/несовершеннолетнего или совершеннолетнего иждивенца; в 2026 RMMG = 920 EUR/мес.",
+                "family_formula": {
+                  "base_applicant_amount": 920,
+                  "additional_adult_amount": 460,
+                  "child_amount": 276
+                },
+                "source_ids": [
+                  "PT_SRC_GOV_D2_2026",
+                  "PT_SRC_MEANS_PORTARIA",
+                  "PT_SRC_RMMG_2026"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": true,
+                "amount": 11040,
+                "currency": "EUR",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Эквивалент официальной формулы на 12 месяцев: 11 040 EUR для первого взрослого, 5 520 EUR для каждого дополнительного взрослого и 3 312 EUR для ребёнка/иждивенца в 2026.",
+                "family_formula": {
+                  "base_applicant_amount": 11040,
+                  "additional_adult_amount": 5520,
+                  "child_amount": 3312
+                },
+                "source_ids": [
+                  "PT_SRC_GOV_D2_2026",
+                  "PT_SRC_MEANS_PORTARIA",
+                  "PT_SRC_RMMG_2026"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        },
+        {
           "requirement_id": "PT_ENTREPRENEUR_CAPITAL",
           "type": "FINANCIAL",
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
-          "evaluation_mode": "DISPLAY_ONLY",
-          "unmet_effect": "NONE",
-          "condition_ru": "Официального универсального минимального business capital для ordinary entrepreneur basis не установлено; способность инвестировать оценивается по конкретному проекту.",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить реалистичное финансирование предпринимательского проекта. Country Matcher использует 5 000 EUR только как мягкий практический ориентир для небольшого бизнеса; это не официальный legal minimum, и проект может требовать другой суммы или допустимого финансирования.",
           "source_ids": [
-            "PT_SRC_01"
+            "PT_SRC_01",
+            "PT_SRC_D2_PRACTICE_2026",
+            "PT_SRC_D2_PRACTICE_COUNTER_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -1009,7 +1093,7 @@
             "alternatives": [
               {
                 "kind": "CAPITAL",
-                "asked_in_questionnaire": false,
+                "asked_in_questionnaire": true,
                 "amount": null,
                 "currency": null,
                 "period": "ONE_TIME",
@@ -1019,12 +1103,48 @@
                 "source_geography": "NOT_APPLICABLE",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "PT_SRC_01"
+                  "PT_SRC_01",
+                  "PT_SRC_D2_PRACTICE_2026",
+                  "PT_SRC_D2_PRACTICE_COUNTER_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Официального универсального minimum business capital для D2 нет. Visas.pt публикует ориентир 5 000 EUR для небольшого бизнеса; другая актуальная practitioner guidance прямо отвергает универсальный D2 benchmark. После product reconciliation Country Matcher использует 5 000 EUR только как мягкий screening-ориентир, а не как legal minimum или доказательство достаточности проекта.",
+                  "figures": [
+                    {
+                      "amount": 5000,
+                      "currency": "EUR",
+                      "period": "ONE_TIME",
+                      "family_context_ru": "Business capital для небольшого предпринимательского проекта",
+                      "evidence": [
+                        {
+                          "source_id": "PT_SRC_D2_PRACTICE_2026",
+                          "source_date": "2026-08-03",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Практический ориентир, а не официальный минимум; проект может объективно требовать больше капитала."
+                    }
+                  ],
+                  "disclaimer_ru": "Это не официальный порог D2. Сумма ниже 5 000 EUR не доказывает юридическую невозможность, а сумма на уровне или выше 5 000 EUR не доказывает достаточность проекта; учитываются бизнес-план, фактическая стоимость проекта и допустимые источники финансирования."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "EUR",
+                  "period": "ONE_TIME",
+                  "amount": 5000,
+                  "source_ids": [
+                    "PT_SRC_D2_PRACTICE_2026"
+                  ]
+                }
               }
             ]
-          }
+          },
+          "met_ru": "Известный объём доступных документируемых средств достигает мягкого практического ориентира Country Matcher для небольшого D2-проекта; это не подтверждает сам бизнес-проект и не заменяет отдельные средства к существованию.",
+          "unmet_ru": "Известный объём доступных документируемых средств ниже мягкого практического ориентира 5 000 EUR для небольшого D2-проекта; это не означает юридическую невозможность, но требует подтвердить иное реалистичное финансирование проекта.",
+          "profile_path": "INCOME_APPLICANT"
         }
       ],
       "processing_time": {
@@ -1942,10 +2062,12 @@
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подтвердить route-specific средства на проживание через допустимый applicant/sponsor/scholarship basis без подмены одним текущим-income screening.",
+          "condition_ru": "Подтвердить средства на проживание по официальной формуле Portaria 1563/2007: базово 100% RMMG для первого взрослого на 12 месяцев (920 EUR/мес. в 2026), с установленными семейными коэффициентами и возможными снижениями/освобождениями при обеспечении жильём, питанием, спонсором или допустимой стипендией.",
           "source_ids": [
             "PT_SRC_01",
-            "PT_SRC_05"
+            "PT_SRC_05",
+            "PT_SRC_MEANS_PORTARIA",
+            "PT_SRC_RMMG_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -1957,14 +2079,16 @@
                 "amount": null,
                 "currency": null,
                 "period": "MONTHLY",
-                "comparison": "NO_FIXED_THRESHOLD",
+                "comparison": "OFFICIAL_FORMULA",
                 "history_months": null,
                 "allowed_income_types": null,
                 "source_geography": "ANY",
-                "family_formula_ru": null,
+                "family_formula_ru": "Официальная база: первый взрослый — 100% RMMG (920 EUR/мес. в 2026), дополнительные взрослые — 50%, дети/иждивенцы — 30%; для study residence visa средства обычно подтверждаются на 12 месяцев, могут быть снижены до 50% при обеспеченном жилье и до 10% базового уровня при обеспеченных жилье и питании.",
                 "source_ids": [
                   "PT_SRC_01",
-                  "PT_SRC_05"
+                  "PT_SRC_05",
+                  "PT_SRC_MEANS_PORTARIA",
+                  "PT_SRC_RMMG_2026"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
@@ -1977,14 +2101,16 @@
                 "amount": null,
                 "currency": null,
                 "period": "OTHER",
-                "comparison": "NO_FIXED_THRESHOLD",
+                "comparison": "OFFICIAL_FORMULA",
                 "history_months": null,
                 "allowed_income_types": null,
                 "source_geography": "NOT_APPLICABLE",
-                "family_formula_ru": null,
+                "family_formula_ru": "Спонсор/termo de responsabilidade является допустимым способом подтверждения средств; достаточность соотносится с официальной формулой Portaria 1563/2007, если не применяется специальное освобождение.",
                 "source_ids": [
                   "PT_SRC_01",
-                  "PT_SRC_05"
+                  "PT_SRC_05",
+                  "PT_SRC_MEANS_PORTARIA",
+                  "PT_SRC_RMMG_2026"
                 ],
                 "confidence": "HIGH"
               },
@@ -1994,14 +2120,16 @@
                 "amount": null,
                 "currency": null,
                 "period": "OTHER",
-                "comparison": "NO_FIXED_THRESHOLD",
+                "comparison": "OFFICIAL_FORMULA",
                 "history_months": null,
                 "allowed_income_types": null,
                 "source_geography": "NOT_APPLICABLE",
-                "family_formula_ru": null,
+                "family_formula_ru": "Допустимая стипендия учитывается как финансовое обеспечение; специальные официальные exemptions могут освобождать отдельные категории студентов от обычного подтверждения средств.",
                 "source_ids": [
                   "PT_SRC_01",
-                  "PT_SRC_05"
+                  "PT_SRC_05",
+                  "PT_SRC_MEANS_PORTARIA",
+                  "PT_SRC_RMMG_2026"
                 ],
                 "confidence": "HIGH"
               }
@@ -5151,6 +5279,66 @@
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "en"
+    },
+    {
+      "source_id": "PT_SRC_MEANS_PORTARIA",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Diário da República",
+      "title_ru": "Portaria n.º 1563/2007 — meios de subsistência",
+      "url": "https://diariodarepublica.pt/dr/detalhe/portaria/1563-2007-628798",
+      "supports_ru": "Официальная формула средств: 100% RMMG для первого взрослого, 50% для дополнительных взрослых, 30% для детей; для residence visa study — 12 месяцев с предусмотренными снижениями при обеспеченном жилье/питании.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2007-12-11",
+      "language": "pt"
+    },
+    {
+      "source_id": "PT_SRC_RMMG_2026",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Diário da República",
+      "title_ru": "Decreto-Lei n.º 139/2025 — RMMG 2026",
+      "url": "https://diariodarepublica.pt/dr/detalhe/decreto-lei/139-2025-992879809",
+      "supports_ru": "С 1 января 2026 RMMG в материковой Португалии составляет 920 EUR в месяц.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-12-29",
+      "language": "pt"
+    },
+    {
+      "source_id": "PT_SRC_D2_PRACTICE_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Visas.pt",
+      "title_ru": "Portugal D2 Visa 2026 — practical business capital guidance",
+      "url": "https://visas.pt/news/portugal-d2-visa-complete-guide-entrepreneurs",
+      "supports_ru": "Подтверждает отсутствие официального minimum business investment и публикует практический ориентир минимум 5 000 EUR для небольшого бизнеса.",
+      "checked_at": "2026-08-24",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-08-03",
+      "language": "en"
+    },
+    {
+      "source_id": "PT_SRC_GOV_D2_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "gov.pt / Direção-Geral dos Assuntos Consulares e das Comunidades Portuguesas",
+      "title_ru": "Виза резидента для самостоятельной деятельности или предпринимателей",
+      "url": "https://www.gov.pt/servicos/pedir-visto-de-residencia-para-o-exercicio-de-atividade-profissional-independente-ou-para-imigrantes-empreendedores",
+      "supports_ru": "Актуальная официальная страница D2-категории (обновлена 25.05.2026) прямо отсылает к законодательству о средствах к существованию для этой residence visa.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-05-25",
+      "language": "pt"
+    },
+    {
+      "source_id": "PT_SRC_D2_PRACTICE_COUNTER_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Portugeasy",
+      "title_ru": "D2 entrepreneur visa — проверка инвестиционного минимума по первичным источникам",
+      "url": "https://portugeasy.pt/pt/immigration-guide/entrepreneur",
+      "supports_ru": "Подтверждает отсутствие установленного законом D2 minimum investment и прямо оспаривает 5 000 EUR как универсальный иммиграционный порог; сумма должна соответствовать конкретному проекту.",
+      "checked_at": "2026-08-24",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-13",
+      "language": "pt"
     }
   ],
   "pending_changes": []

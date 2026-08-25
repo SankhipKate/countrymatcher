@@ -33,6 +33,7 @@ const spain = JSON.parse(await readFile(new URL('../data/ES-research-v4.0.json',
 const argentina = JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8'));
 const uruguay = JSON.parse(await readFile(new URL('../data/UY-research-v4.0.json', import.meta.url), 'utf8'));
 const portugal = JSON.parse(await readFile(new URL('../data/PT-research-v4.0.json', import.meta.url), 'utf8'));
+const paraguay = JSON.parse(await readFile(new URL('../data/PY-research-v4.0.json', import.meta.url), 'utf8'));
 const context = { fx: { base_currency: 'USD', rates: { EUR: 0.9, ARS: 1500, UYU: 40, USD: 1 }, as_of: '2026-08-09', source: 'test' } };
 
 const canonicalCase = (caseId) => {
@@ -829,6 +830,53 @@ test('NO_FIXED_THRESHOLD checks income type and geography without inventing a nu
   assert.equal(noStablePayer.condition, null);
 });
 
+test('NO_FIXED_THRESHOLD with completed NOT_FOUND research stays UNKNOWN instead of optimistic PASS', () => {
+  const noThreshold = alternative('INCOME', true, {
+    amount: null, currency: null, comparison: 'NO_FIXED_THRESHOLD',
+    allowed_income_types: ['REMOTE_EMPLOYMENT'], source_geography: 'FOREIGN',
+    practical_financial_guidance: {
+      evaluation_mode: 'DISPLAY_ONLY', status: 'NOT_FOUND', summary_ru: 'Числовой ориентир не найден.',
+      figures: [], disclaimer_ru: 'Достаточность оценивается индивидуально.',
+    },
+  });
+  const matchingSource = financialState('INCOME_ONLY', [noThreshold], profile({
+    applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US',
+  }));
+  assert.equal(matchingSource.state, 'UNKNOWN');
+  assert.equal(matchingSource.alternatives[0].unknownReason, 'FINANCIAL_SUFFICIENCY');
+
+  const result = evaluateRoute(route([finance('INCOME_ONLY', [noThreshold])]), profile({
+    applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'REMOTE_EMPLOYMENT', applicantCountryId: 'US',
+  }), context, 'ES');
+  assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.deepEqual(result.blockers, []);
+  assert.deepEqual(result.conditions, ['Выполнить требование.']);
+
+  assert.equal(financialState('INCOME_ONLY', [noThreshold], profile({
+    applicantAmount: 999999, applicantCurrency: 'USD', applicantType: 'PENSION', applicantCountryId: 'US',
+  })).state, 'FAIL');
+});
+
+test('LONG_TERM financial requirements affect mandatory PR/citizenship goals but not temporary-only matching', () => {
+  const pyRoute = paraguay.routes.find(({ route_id }) => route_id === 'PY_GENERAL_TEMPORARY');
+  const financeId = 'PY_TEMP_PR_SOLVENCY_INFO';
+
+  const temporary = evaluateRoute(pyRoute, profile({ applicantAmount: 0, longTerm: 'TEMPORARY_RESIDENCE_SUFFICIENT' }), context, 'PY');
+  assert.equal(temporary.routeStatus, 'SUITABLE');
+  const temporaryFinance = temporary.requirementResults.find(({ requirement }) => requirement.requirement_id === financeId);
+  assert.equal(temporaryFinance.state, 'NOT_APPLICABLE');
+  assert.equal(temporaryFinance.effect, 'NONE');
+
+  for (const longTerm of ['PR_REQUIRED', 'CITIZENSHIP_REQUIRED']) {
+    const result = evaluateRoute(pyRoute, profile({ applicantAmount: 0, longTerm }), context, 'PY');
+    assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS', longTerm);
+    const financial = result.requirementResults.find(({ requirement }) => requirement.requirement_id === financeId);
+    assert.equal(financial.state, 'UNKNOWN', longTerm);
+    assert.equal(financial.effect, 'CONDITION', longTerm);
+    assert.match(result.conditions.join(' '), /solvency|Permanent Residence/u, longTerm);
+  }
+});
+
 test('SAVINGS_ONLY matrix covers PASS, FAIL, and UNKNOWN', () => {
   assert.equal(financialState('SAVINGS_ONLY', [alternative('SAVINGS')], profile({ savings: { amount: 2000, currency: 'EUR' } })).state, 'PASS');
   assert.equal(financialState('SAVINGS_ONLY', [alternative('SAVINGS')], profile({ savings: { amount: 500, currency: 'EUR' } })).state, 'FAIL');
@@ -1000,6 +1048,165 @@ test('INVESTMENT_CAPITAL matrix covers PASS, FAIL, and UNKNOWN', () => {
   assert.equal(financialState('INVESTMENT_CAPITAL', [alternative('CAPITAL')], profile({ capital: { amount: 2000, currency: 'EUR' } })).state, 'PASS');
   assert.equal(financialState('INVESTMENT_CAPITAL', [alternative('CAPITAL')], profile({ capital: { amount: 500, currency: 'EUR' } })).state, 'FAIL');
   assert.equal(financialState('INVESTMENT_CAPITAL', [alternative('CAPITAL')]).state, 'UNKNOWN');
+});
+
+
+test('asked CAPITAL can use known questionnaire savings while unasked CAPITAL remains a separate fact', () => {
+  const screenedCapital = alternative('CAPITAL', true, {
+    amount: null,
+    currency: null,
+    period: 'ONE_TIME',
+    comparison: 'NO_FIXED_THRESHOLD',
+    practical_financial_guidance: {
+      evaluation_mode: 'DISPLAY_ONLY',
+      status: 'FOUND',
+      summary_ru: 'Тестовый практический ориентир.',
+      figures: [{
+        amount: 5000, currency: 'EUR', period: 'ONE_TIME', family_context_ru: 'Один заявитель',
+        evidence: [{ source_id: 'SRC', source_date: '2026-08-24', evidence_type: 'PRACTITIONER_GUIDANCE' }],
+        note_ru: 'Не официальный минимум.',
+      }],
+      disclaimer_ru: 'Не официальный минимум.',
+    },
+    practical_screening_threshold: {
+      comparison: 'AT_LEAST', currency: 'EUR', period: 'ONE_TIME', amount: 5000, source_ids: ['SRC'],
+    },
+  });
+
+  const below = financialState('INVESTMENT_CAPITAL', [screenedCapital], profile({ savings: { amount: 4999, currency: 'EUR' } }));
+  assert.equal(below.state, 'FAIL');
+  assert.equal(below.alternatives[0].assetSourceKind, 'SAVINGS');
+  assert.equal(below.alternatives[0].amount, 4999);
+
+  const exact = financialState('INVESTMENT_CAPITAL', [screenedCapital], profile({ savings: { amount: 5000, currency: 'EUR' } }));
+  assert.equal(exact.state, 'PASS');
+  assert.equal(exact.alternatives[0].assetSourceKind, 'SAVINGS');
+
+  const explicitCapital = financialState('INVESTMENT_CAPITAL', [screenedCapital], profile({
+    savings: { amount: 1000, currency: 'EUR' },
+    capital: { amount: 6000, currency: 'EUR' },
+  }));
+  assert.equal(explicitCapital.state, 'PASS');
+  assert.equal(explicitCapital.alternatives[0].assetSourceKind, 'CAPITAL');
+
+  const unasked = financialState(
+    'INVESTMENT_CAPITAL',
+    [{ ...screenedCapital, asked_in_questionnaire: false }],
+    profile({ savings: { amount: 999999, currency: 'EUR' } }),
+  );
+  assert.equal(unasked.state, 'UNKNOWN');
+  assert.equal(unasked.alternatives[0].assetSourceKind, 'CAPITAL');
+});
+
+test('Portugal D2 separates official subsistence from soft business-capital screening', () => {
+  const d2 = portugal.routes.find(({ route_id }) => route_id === 'PT_ENTREPRENEUR');
+  const means = d2.requirements.find(({ requirement_id }) => requirement_id === 'PT_ENTREPRENEUR_MEANS');
+  const capital = d2.requirements.find(({ requirement_id }) => requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+
+  assert.equal(means.evaluation_mode, 'ENGINE');
+  assert.equal(means.unmet_effect, 'BLOCKS');
+  assert.equal(means.financial.model, 'INCOME_OR_SAVINGS');
+  const meansSavings = means.financial.alternatives.find(({ kind }) => kind === 'SAVINGS');
+  assert.equal(calculateFamilyThreshold(meansSavings, profile()), 11040);
+  assert.equal(calculateFamilyThreshold(meansSavings, profile({ adults: 2, children: 1 })), 19872);
+
+  assert.equal(capital.evaluation_mode, 'ENGINE');
+  assert.equal(capital.unmet_effect, 'BECOMES_CONDITION');
+  const capitalAlternative = capital.financial.alternatives[0];
+  assert.equal(capitalAlternative.asked_in_questionnaire, true);
+  assert.equal(capitalAlternative.practical_screening_threshold.amount, 5000);
+
+  const noMoney = evaluateRoute(
+    d2,
+    profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 0, currency: 'EUR' } }),
+    context,
+    'PT',
+  );
+  assert.equal(noMoney.routeStatus, 'UNSUITABLE');
+  assert.ok(noMoney.blockers.some((text) => /11[ \s]*040 EUR/u.test(text)), noMoney.blockers.join(' | '));
+  assert.ok(noMoney.conditions.some((text) => /5 000 EUR|5\s*000 EUR/u.test(text)));
+
+  const exactMeansOnly = evaluateRoute(
+    d2,
+    profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 11040, currency: 'EUR' } }),
+    context,
+    'PT',
+  );
+  assert.equal(exactMeansOnly.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  const exactMeansResult = exactMeansOnly.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_MEANS');
+  const exactMeansCapitalResult = exactMeansOnly.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+  assert.equal(exactMeansResult.state, 'PASS');
+  assert.equal(exactMeansCapitalResult.state, 'FAIL');
+  assert.equal(exactMeansCapitalResult.alternatives[0].assetSourceKind, 'SAVINGS');
+  assert.equal(exactMeansCapitalResult.alternatives[0].amount, 0);
+
+  const reversedFinancialOrder = structuredClone(d2);
+  const meansIndex = reversedFinancialOrder.requirements.findIndex(({ requirement_id }) => requirement_id === 'PT_ENTREPRENEUR_MEANS');
+  const capitalIndex = reversedFinancialOrder.requirements.findIndex(({ requirement_id }) => requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+  [reversedFinancialOrder.requirements[meansIndex], reversedFinancialOrder.requirements[capitalIndex]] = [
+    reversedFinancialOrder.requirements[capitalIndex],
+    reversedFinancialOrder.requirements[meansIndex],
+  ];
+  const reversedExactMeansOnly = evaluateRoute(
+    reversedFinancialOrder,
+    profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 11040, currency: 'EUR' } }),
+    context,
+    'PT',
+  );
+  assert.equal(reversedExactMeansOnly.routeStatus, exactMeansOnly.routeStatus);
+  const reversedMeansResult = reversedExactMeansOnly.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_MEANS');
+  const reversedCapitalResult = reversedExactMeansOnly.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+  assert.equal(reversedMeansResult.state, 'PASS');
+  assert.equal(reversedCapitalResult.state, 'FAIL');
+  assert.equal(reversedCapitalResult.alternatives[0].amount, 0);
+
+  const enoughSavingsForBoth = evaluateRoute(
+    d2,
+    profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 16040, currency: 'EUR' } }),
+    context,
+    'PT',
+  );
+  const enoughSavingsCapitalResult = enoughSavingsForBoth.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+  assert.equal(enoughSavingsCapitalResult.state, 'PASS');
+  assert.equal(enoughSavingsCapitalResult.alternatives[0].amount, 5000);
+
+  const enoughIncomeAndCapital = evaluateRoute(
+    d2,
+    profile({ applicantAmount: 920, applicantType: 'REMOTE_EMPLOYMENT', savings: { amount: 5000, currency: 'EUR' } }),
+    context,
+    'PT',
+  );
+  assert.equal(enoughIncomeAndCapital.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  const capitalResult = enoughIncomeAndCapital.requirementResults.find(({ requirement }) => requirement.requirement_id === 'PT_ENTREPRENEUR_CAPITAL');
+  assert.equal(capitalResult.state, 'PASS');
+  assert.equal(capitalResult.alternatives[0].assetSourceKind, 'SAVINGS');
+
+  const presentedD2 = calculateActiveCountry(
+    profile({ applicantAmount: 920, applicantType: 'REMOTE_EMPLOYMENT', savings: { amount: 5000, currency: 'EUR' } }),
+    portugal,
+    context,
+  ).routes.find(({ routeId }) => routeId === 'PT_ENTREPRENEUR');
+  const presentedCapital = presentedD2.financialRequirements
+    .find(({ requirementId }) => requirementId === 'PT_ENTREPRENEUR_CAPITAL')
+    .summary.alternatives[0];
+  assert.equal(presentedCapital.kind, 'CAPITAL');
+  assert.equal(presentedCapital.assetSourceKind, 'SAVINGS');
+  assert.equal(presentedCapital.kindLabel, 'Накопления');
+
+  const presentedExactMeansOnly = calculateActiveCountry(
+    profile({ applicantAmount: 0, applicantType: 'NO_REGULAR_INCOME', savings: { amount: 11040, currency: 'EUR' } }),
+    portugal,
+    context,
+  ).routes.find(({ routeId }) => routeId === 'PT_ENTREPRENEUR');
+  const presentedReservedCapital = presentedExactMeansOnly.financialRequirements
+    .find(({ requirementId }) => requirementId === 'PT_ENTREPRENEUR_CAPITAL')
+    .summary.alternatives[0];
+  assert.equal(presentedReservedCapital.amount, 11040);
+  assert.equal(presentedReservedCapital.grossAmount, 11040);
+  assert.equal(presentedReservedCapital.reservedAmount, 11040);
+  assert.equal(presentedReservedCapital.availableAmount, 0);
+  assert.equal(presentedReservedCapital.amountCurrency, 'EUR');
+  assert.match(presentedReservedCapital.reservationNotice, /11[ \s]*040 EUR/u);
 });
 
 test('SPONSOR_OR_SCHOLARSHIP is OR and absent structured facts never become FAIL', () => {

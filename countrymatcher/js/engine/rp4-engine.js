@@ -375,11 +375,16 @@ function incomeAlternative(alternative, profile, context, countryId) {
         ...(screeningForeignNoStablePayerAccepted ? { foreignNoStablePayerAccepted: true } : {}),
       };
     }
-    const state = hasConfirmedSource ? 'PASS' : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
+    const practicalResearchNotFound = alternative.practical_financial_guidance?.status === 'NOT_FOUND';
+    const state = hasConfirmedSource
+      ? practicalResearchNotFound ? 'UNKNOWN' : 'PASS'
+      : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
     return {
       state, alternative, amount: null, confirmedAmount: null,
       unknownGeographyAmount: null, potentialAmount: null,
-      unknownReason: state === 'UNKNOWN' ? 'GEOGRAPHY' : null,
+      unknownReason: state === 'UNKNOWN'
+        ? practicalResearchNotFound && hasConfirmedSource ? 'FINANCIAL_SUFFICIENCY' : 'GEOGRAPHY'
+        : null,
       hasUnknownGeography, threshold: null, currency: null,
       incomeEligibility: hasConfirmedSource ? 'ELIGIBLE_SOURCE'
         : hasUnknownGeography ? 'GEOGRAPHY_UNKNOWN'
@@ -421,8 +426,32 @@ function incomeAlternative(alternative, profile, context, countryId) {
   };
 }
 
-function assetAlternative(alternative, profile, context) {
-  const field = alternative.kind === 'SAVINGS' ? profile?.income?.savings : profile?.investment_capital;
+function assetFieldForAlternative(alternative, profile) {
+  if (alternative.kind === 'SAVINGS') {
+    return { field: profile?.income?.savings, assetSourceKind: 'SAVINGS' };
+  }
+  if (alternative.kind === 'CAPITAL') {
+    const explicitCapital = profile?.investment_capital;
+    if (explicitCapital?.amount != null) {
+      return { field: explicitCapital, assetSourceKind: 'CAPITAL' };
+    }
+    if (alternative.asked_in_questionnaire) {
+      return { field: profile?.income?.savings, assetSourceKind: 'SAVINGS' };
+    }
+    return { field: explicitCapital, assetSourceKind: 'CAPITAL' };
+  }
+  return { field: null, assetSourceKind: null };
+}
+
+function reservedSavingsInCurrency(resourceState, currency, context) {
+  return (resourceState?.reservedSavings || []).reduce((sum, claim) => {
+    if (claim?.amount == null || claim?.currency == null || currency == null) return sum;
+    return sum + convertAmount(claim.amount, claim.currency, currency, context);
+  }, 0);
+}
+
+function assetAlternative(alternative, profile, context, resourceState = null) {
+  const { field, assetSourceKind } = assetFieldForAlternative(alternative, profile);
   if (alternative.comparison === 'NO_FIXED_THRESHOLD') {
     const screening = alternative.practical_screening_threshold;
     const practicalThreshold = screening
@@ -434,24 +463,35 @@ function assetAlternative(alternative, profile, context) {
       practicalScreeningPeriod: screening?.period ?? null,
     };
     if (!alternative.asked_in_questionnaire || !screening || field?.amount == null || practicalThreshold == null) {
-      return { state: 'UNKNOWN', alternative, threshold: null, currency: null, ...practical };
+      return { state: 'UNKNOWN', alternative, threshold: null, currency: null, assetSourceKind, ...practical };
     }
-    const amount = convertAmount(field.amount, field.currency, screening.currency, context);
+    const grossAmount = convertAmount(field.amount, field.currency, screening.currency, context);
+    const reservedAmount = assetSourceKind === 'SAVINGS'
+      ? reservedSavingsInCurrency(resourceState, screening.currency, context)
+      : 0;
+    const amount = Math.max(0, grossAmount - reservedAmount);
     return {
       state: compareFinancialAmount(screening.comparison, amount, practicalThreshold),
-      alternative, amount, threshold: null, currency: null, ...practical,
+      alternative, amount, grossAmount, reservedAmount, threshold: null, currency: null, assetSourceKind, ...practical,
     };
   }
-  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile), currency: alternative.currency };
+  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile), currency: alternative.currency, assetSourceKind };
   const threshold = calculateFamilyThreshold(alternative, profile);
-  if (field?.amount == null || threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency };
-  const amount = convertAmount(field.amount, field.currency, alternative.currency, context);
-  return { state: compareFinancialAmount(alternative.comparison, amount, threshold), alternative, amount, threshold, currency: alternative.currency };
+  if (field?.amount == null || threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency, assetSourceKind };
+  const grossAmount = convertAmount(field.amount, field.currency, alternative.currency, context);
+  const reservedAmount = assetSourceKind === 'SAVINGS'
+    ? reservedSavingsInCurrency(resourceState, alternative.currency, context)
+    : 0;
+  const amount = Math.max(0, grossAmount - reservedAmount);
+  return {
+    state: compareFinancialAmount(alternative.comparison, amount, threshold),
+    alternative, amount, grossAmount, reservedAmount, threshold, currency: alternative.currency, assetSourceKind,
+  };
 }
 
-function evaluateAlternative(alternative, profile, context, countryId) {
+function evaluateAlternative(alternative, profile, context, countryId, resourceState = null) {
   if (alternative.kind === 'INCOME' || alternative.kind === 'PENSION') return incomeAlternative(alternative, profile, context, countryId);
-  if (alternative.kind === 'SAVINGS' || alternative.kind === 'CAPITAL') return assetAlternative(alternative, profile, context);
+  if (alternative.kind === 'SAVINGS' || alternative.kind === 'CAPITAL') return assetAlternative(alternative, profile, context, resourceState);
   return { state: 'UNKNOWN', alternative, unsupported: true };
 }
 
@@ -463,7 +503,7 @@ function combineOr(items) {
 
 export const combineFinancialAlternatives = combineOr;
 
-export function evaluateFinancialRequirement(requirement, profile, context, countryId, route = null) {
+export function evaluateFinancialRequirement(requirement, profile, context, countryId, route = null, resourceState = null) {
   const financial = requirement.financial;
   const hasAlternativeGates = financial.alternatives.some((item) => item.applies_if);
 
@@ -489,7 +529,7 @@ export function evaluateFinancialRequirement(requirement, profile, context, coun
     }
 
     return {
-      ...evaluateAlternative(item, profile, context, countryId),
+      ...evaluateAlternative(item, profile, context, countryId, resourceState),
       applicability,
     };
   });
@@ -529,7 +569,8 @@ export function evaluateFinancialRequirement(requirement, profile, context, coun
         const savings = profile?.income?.savings;
         if (savings?.amount == null) state = 'UNKNOWN';
         else {
-          const available = convertAmount(savings.amount, savings.currency, income.alternative.currency, context);
+          const grossAvailable = convertAmount(savings.amount, savings.currency, income.alternative.currency, context);
+          const available = Math.max(0, grossAvailable - reservedSavingsInCurrency(resourceState, income.alternative.currency, context));
           state = available >= maximumShortfall ? 'PASS'
             : available < minimumShortfall ? 'FAIL'
               : minimumShortfall < maximumShortfall ? 'UNKNOWN' : 'FAIL';
@@ -561,12 +602,57 @@ function practicalScreeningPeriodRu(period) {
   }[period] || '';
 }
 
+function alternativeUsesSavings(item) {
+  return item?.state === 'PASS' && (item?.alternative?.kind === 'SAVINGS' || item?.assetSourceKind === 'SAVINGS');
+}
+
+function savingsClaimForAlternative(item) {
+  if (!alternativeUsesSavings(item)) return null;
+  if (item.practicalScreeningThreshold != null && item.practicalScreeningCurrency) {
+    return { amount: item.practicalScreeningThreshold, currency: item.practicalScreeningCurrency };
+  }
+  if (item.threshold != null && item.currency) return { amount: item.threshold, currency: item.currency };
+  return null;
+}
+
+function reserveSavingsForFinancialEvaluation(evaluation, resourceState) {
+  if (!resourceState || evaluation?.state !== 'PASS') return;
+  const alternatives = evaluation.alternatives || [];
+  const passingNonSavings = alternatives.some((item) => item.state === 'PASS' && !alternativeUsesSavings(item));
+
+  if (evaluation.model === 'INCOME_WITH_SAVINGS_SHORTFALL') {
+    const income = alternatives.find(({ alternative }) => alternative?.kind === 'INCOME');
+    if (income?.state === 'PASS') return;
+    if (income?.shortfall > 0 && income?.alternative?.currency) {
+      resourceState.reservedSavings.push({ amount: income.shortfall, currency: income.alternative.currency });
+    }
+    return;
+  }
+
+  if (['INCOME_ONLY', 'SAVINGS_ONLY', 'INVESTMENT_CAPITAL', 'SPONSOR_OR_SCHOLARSHIP', 'INCOME_OR_SAVINGS'].includes(evaluation.model)) {
+    if (passingNonSavings) return;
+    const claim = alternatives.map(savingsClaimForAlternative).find(Boolean);
+    if (claim) resourceState.reservedSavings.push(claim);
+    return;
+  }
+
+  if (evaluation.model === 'INCOME_AND_SAVINGS') {
+    for (const item of alternatives) {
+      const claim = savingsClaimForAlternative(item);
+      if (claim) resourceState.reservedSavings.push(claim);
+    }
+  }
+}
+
 function financialBlockerReason(evaluation, profile) {
   const income = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'INCOME');
   if (evaluation?.state !== 'FAIL') return null;
   const savings = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'SAVINGS');
   if (savings?.state === 'FAIL' && savings.threshold != null && savings.amount != null && savings.currency) {
     const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
+    if (savings.reservedAmount > 0 && savings.grossAmount != null) {
+      return `Для вашего состава семьи требуется ${number(savings.threshold)} ${savings.currency} подтверждаемых средств. Указано около ${number(savings.grossAmount)} ${savings.currency}; из них ${number(savings.reservedAmount)} ${savings.currency} уже учитываются для более приоритетного финансового требования, поэтому здесь доступно около ${number(savings.amount)} ${savings.currency}.`;
+    }
     return `Для вашего состава семьи требуется ${number(savings.threshold)} ${savings.currency} подтверждаемых средств. Ваши подтверждаемые накопления — около ${number(savings.amount)} ${savings.currency}.`;
   }
 
@@ -579,12 +665,17 @@ function financialBlockerReason(evaluation, profile) {
 
   if (practicalAsset) {
     const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
-    const label = practicalAsset.alternative.kind === 'SAVINGS'
-      ? 'Подтверждаемые накопления'
-      : 'Инвестиционный капитал';
+    const label = practicalAsset.assetSourceKind === 'SAVINGS' && practicalAsset.alternative.kind === 'CAPITAL'
+      ? 'Подтверждаемые доступные средства'
+      : practicalAsset.alternative.kind === 'SAVINGS'
+        ? 'Подтверждаемые накопления'
+        : 'Инвестиционный капитал';
     const period = practicalScreeningPeriodRu(practicalAsset.practicalScreeningPeriod);
     const suffix = period ? ` ${period}` : '';
-    return `${label} ниже практического ориентира Country Matcher: требуется не менее ${number(practicalAsset.practicalScreeningThreshold)} ${practicalAsset.practicalScreeningCurrency}${suffix}. Указано около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}. Это практический продуктовый порог, а не официальный минимальный порог.`;
+    const availability = practicalAsset.reservedAmount > 0 && practicalAsset.grossAmount != null
+      ? ` Указано около ${number(practicalAsset.grossAmount)} ${practicalAsset.practicalScreeningCurrency}; из них ${number(practicalAsset.reservedAmount)} ${practicalAsset.practicalScreeningCurrency} уже учитываются для более приоритетного финансового требования, поэтому для этого ориентира доступно около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}.`
+      : ` Указано около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}.`;
+    return `${label} ниже практического ориентира Country Matcher: требуется не менее ${number(practicalAsset.practicalScreeningThreshold)} ${practicalAsset.practicalScreeningCurrency}${suffix}.${availability} Это практический продуктовый порог, а не официальный минимальный порог.`;
   }
 
   if (income?.incomeEligibility === 'NO_ELIGIBLE_SOURCE') {
@@ -676,13 +767,39 @@ function presentNotApplicableFinancialRequirement(requirement, profile) {
   };
 }
 
+function financialResourcePriority(requirement) {
+  if (requirement?.type !== 'FINANCIAL' || requirement?.evaluation_mode !== 'ENGINE') return null;
+  const alternatives = requirement.financial?.alternatives || [];
+  const usesPracticalScreening = alternatives.some((alternative) => alternative.practical_screening_threshold != null);
+  const effectPriority = requirement.unmet_effect === 'BLOCKS' ? 0
+    : requirement.unmet_effect === 'BECOMES_CONDITION' ? 1 : 2;
+  // Official/fixed requirements claim shared savings before practical screening.
+  return (usesPracticalScreening ? 10 : 0) + effectPriority;
+}
+
+function orderRequirementsForFinancialResources(requirements) {
+  const financial = requirements
+    .map((requirement, index) => ({ requirement, index, priority: financialResourcePriority(requirement) }))
+    .filter(({ priority }) => priority != null)
+    .sort((a, b) => a.priority - b.priority || a.index - b.index);
+  let financialIndex = 0;
+  return requirements.map((requirement) => {
+    if (financialResourcePriority(requirement) == null) return requirement;
+    return financial[financialIndex++].requirement;
+  });
+}
+
 export function evaluateRoute(route, profile, context, countryId) {
   const blockers = [];
   const conditions = [];
   const conditionActions = [];
   const displayOnlyRequirements = [];
   const requirementResults = [];
-  for (const requirement of route.requirements || []) {
+  const financialResourceState = { reservedSavings: [] };
+  const originalRequirements = route.requirements || [];
+  const originalRequirementIndex = new Map(originalRequirements.map((requirement, index) => [requirement, index]));
+  const evaluationRequirements = orderRequirementsForFinancialResources(originalRequirements);
+  for (const requirement of evaluationRequirements) {
     if (requirement.applies_if && requirement.evaluation_mode === 'DISPLAY_ONLY') {
       throw new Rp4EvaluationUnsupportedError(
         `DISPLAY_ONLY requirement ${requirement.requirement_id} cannot use applies_if.`,
@@ -699,6 +816,22 @@ export function evaluateRoute(route, profile, context, countryId) {
         `Alternative-level applies_if requires FINANCIAL ENGINE for ${requirement.requirement_id}.`,
         { routeId: route.route_id, requirementId: requirement.requirement_id },
       );
+    }
+
+    if (
+      requirement.timing === 'LONG_TERM'
+      && profile?.goal?.long_term === 'TEMPORARY_RESIDENCE_SUFFICIENT'
+    ) {
+      const notApplicable = requirement.type === 'FINANCIAL'
+        ? presentNotApplicableFinancialRequirement(requirement, profile)
+        : { state: 'NOT_APPLICABLE' };
+      requirementResults.push({
+        requirement,
+        ...notApplicable,
+        applicability: APPLICABILITY_STATES.FALSE,
+        effect: 'NONE',
+      });
+      continue;
     }
 
     const applicability = evaluateApplicability(requirement.applies_if, profile, route);
@@ -772,7 +905,7 @@ export function evaluateRoute(route, profile, context, countryId) {
       ? presentUnaskedFinancialRequirement(requirement, profile) : { state: 'UNKNOWN' };
     else if (requirement.type === 'FINANCIAL') {
       assertActiveEngineFinancialCapabilities(route, requirement);
-      evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId, route);
+      evaluation = evaluateFinancialRequirement(requirement, profile, context, countryId, route, financialResourceState);
     }
     else evaluation = { state: evaluateEngineRule(requirement.engine_rule, getPath(profile, PROFILE_PATHS[requirement.profile_path] || requirement.profile_path)) };
     if (evaluation.unsupported || evaluation.state === 'UNSUPPORTED') {
@@ -795,8 +928,21 @@ export function evaluateRoute(route, profile, context, countryId) {
         }
       }
     }
+    if (requirement.type === 'FINANCIAL' && requirement.evaluation_mode === 'ENGINE') {
+      reserveSavingsForFinancialEvaluation(evaluation, financialResourceState);
+    }
     requirementResults.push({ requirement, ...evaluation, applicability, effect });
   }
+  requirementResults.sort(
+    (a, b) => (originalRequirementIndex.get(a.requirement) ?? Number.MAX_SAFE_INTEGER)
+      - (originalRequirementIndex.get(b.requirement) ?? Number.MAX_SAFE_INTEGER),
+  );
+  conditionActions.sort(
+    (a, b) => (originalRequirements.findIndex((requirement) => requirement.requirement_id === a.requirementId))
+      - (originalRequirements.findIndex((requirement) => requirement.requirement_id === b.requirementId)),
+  );
+  const conditionOrder = new Map(conditionActions.map((action, index) => [action.text, index]));
+  conditions.sort((a, b) => (conditionOrder.get(a) ?? Number.MAX_SAFE_INTEGER) - (conditionOrder.get(b) ?? Number.MAX_SAFE_INTEGER));
   const longTermGoal = evaluateLongTermGoal(route, profile);
   if (longTermGoal.blocker && !blockers.includes(longTermGoal.blocker)) blockers.push(longTermGoal.blocker);
   const routeStatus = blockers.length ? ROUTE_STATUSES.UNSUITABLE
@@ -870,10 +1016,20 @@ function presentEvaluatedFinancial(evaluated, context, sources = null) {
     alternatives: applicableAlternatives.map((item) => ({
       requirementLabel: evaluated.requirement.condition_ru,
       kind: item.alternative.kind,
-      kindLabel: FINANCIAL_KIND_LABELS_RU[item.alternative.kind],
+      kindLabel: item.assetSourceKind === 'SAVINGS'
+        ? FINANCIAL_KIND_LABELS_RU.SAVINGS
+        : FINANCIAL_KIND_LABELS_RU[item.alternative.kind],
+      ...(item.assetSourceKind ? { assetSourceKind: item.assetSourceKind } : {}),
       state: item.state,
       ...(item.foreignNoStablePayerAccepted ? { geographyNotice: FOREIGN_NO_STABLE_PAYER_NOTICE } : {}),
-      amount: item.amount ?? null,
+      amount: item.reservedAmount > 0 && item.grossAmount != null ? item.grossAmount : item.amount ?? null,
+      ...(item.reservedAmount > 0 && item.grossAmount != null ? {
+        grossAmount: item.grossAmount,
+        reservedAmount: item.reservedAmount,
+        availableAmount: item.amount ?? null,
+        amountCurrency: item.currency ?? item.practicalScreeningCurrency ?? null,
+        reservationNotice: `Из ${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(item.grossAmount)} ${item.currency ?? item.practicalScreeningCurrency} ${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(item.reservedAmount)} ${item.currency ?? item.practicalScreeningCurrency} уже учитываются для более приоритетного финансового требования; доступно ${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(item.amount)} ${item.currency ?? item.practicalScreeningCurrency}.`,
+      } : {}),
       threshold: item.threshold ?? null,
       currency: item.currency ?? null,
       period: item.alternative.period,

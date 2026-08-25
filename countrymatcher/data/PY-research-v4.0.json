@@ -222,9 +222,9 @@
           "type": "FINANCIAL",
           "subject": "APPLICANT",
           "timing": "LONG_TERM",
-          "evaluation_mode": "DISPLAY_ONLY",
-          "unmet_effect": "NONE",
-          "condition_ru": "При последующем переходе на Permanent Residence нужно подтвердить достаточную и проверяемую solvencia económica; универсального фиксированного порога нет.",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Если ваша обязательная цель — ПМЖ или гражданство, при переходе к Permanent Residence нужно отдельно подтвердить реальную и проверяемую solvency по одной из 12 категорий Resolution DNM 407/2026; единого числового минимума не опубликовано.",
           "financial": {
             "model": "INCOME_ONLY",
             "alternatives": [
@@ -251,18 +251,29 @@
                 "source_geography": "MIXED_ALLOWED",
                 "family_formula_ru": "Универсального фиксированного минимума нет: DNM оценивает достаточные, реальные и проверяемые ресурсы по документальному профилю заявителя.",
                 "source_ids": [
-                  "PY_SRC_SOLVENCY"
+                  "PY_SRC_SOLVENCY",
+                  "PY_SRC_SOLVENCY_PRACTICE_2026",
+                  "PY_SRC_SOLVENCY_LAWFIRM_2026"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT",
                   "PARTNER"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Резолюция DNM 407/2026 (Dirección Nacional de Migraciones — Национальное управление миграции), действующая для новых заявлений на постоянное резидентство с 6 июля 2026 года, устанавливает 12 документальных категорий подтверждения финансовой состоятельности. Актуальная практика 2026 года также прямо сообщает, что единого минимального дохода не опубликовано. Старые ссылки на депозит или 350 jornales (дневных минимальных ставок оплаты труда) относятся к прежнему режиму и не используются как текущий практический порог — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не использовать устаревшие 350 jornales (дневных минимальных ставок оплаты труда) или банковский депозит как порог текущего перехода с временной на постоянную резиденцию. Для постоянного резидентства подтверждается реальная и проверяемая финансовая состоятельность по применимой категории Резолюции 407/2026; опубликованного универсального числового минимума сейчас нет."
+                }
               }
             ]
           },
           "source_ids": [
-            "PY_SRC_SOLVENCY"
+            "PY_SRC_SOLVENCY",
+            "PY_SRC_SOLVENCY_PRACTICE_2026",
+            "PY_SRC_SOLVENCY_LAWFIRM_2026"
           ],
           "confidence": "HIGH"
         }
@@ -2140,6 +2151,30 @@
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_SOLVENCY_PRACTICE_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Sol Paraguay",
+      "title_ru": "Практика применения Resolution 407/2026: подтверждение доходов для ПМЖ",
+      "url": "https://solparaguay.com/es/ingresos-locales-residencia-permanente-paraguay/",
+      "supports_ru": "Практика после 6 июля 2026: опубликованного минимального дохода нет; DNM оценивает solvency по документам применимой категории.",
+      "checked_at": "2026-08-24",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-22",
+      "language": "es"
+    },
+    {
+      "source_id": "PY_SRC_SOLVENCY_LAWFIRM_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "MERSAN",
+      "title_ru": "Новые критерии solvency для Permanent Residence по Resolution 407/2026",
+      "url": "https://www.mersanlaw.com/en/whats-new/new-criteria-for-demonstrating-financial-solvency-for-permanent-residency/",
+      "supports_ru": "Подтверждает 12 категорий документальной solvency и отсутствие универсального минимального инвестиционного/депозитного значения.",
+      "checked_at": "2026-08-24",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-30",
+      "language": "en"
     }
   ],
   "pending_changes": []

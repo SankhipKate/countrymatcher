@@ -1775,7 +1775,9 @@
           "condition_ru": "Подтвердить достаточные средства без универсального национального числового минимума: собственные средства, накопления, допустимый спонсор или стипендия.",
           "source_ids": [
             "BR_SRC_STUDY_RULE",
-            "BR_SRC_STUDY_GUIDE"
+            "BR_SRC_STUDY_GUIDE",
+            "BR_SRC_STUDY_MEXICO_2026",
+            "BR_SRC_STUDY_ORLANDO_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -1794,12 +1796,45 @@
                 "family_formula_ru": null,
                 "source_ids": [
                   "BR_SRC_STUDY_RULE",
-                  "BR_SRC_STUDY_GUIDE"
+                  "BR_SRC_STUDY_GUIDE",
+                  "BR_SRC_STUDY_MEXICO_2026",
+                  "BR_SRC_STUDY_ORLANDO_2026"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Универсального федерального числового порога для VITEM IV (временной учебной визы) не найдено. В актуальной официальной консульской практике Бразилии в Мексике используется 1 000 USD за каждый месяц пребывания; другой актуальный консульский пост требует достаточные средства на весь срок, но фиксированную сумму не публикует. Для практической продуктовой оценки сохраняется 1 000 USD/мес. как мягкий консульский ориентир, а не федеральный минимум.",
+                  "figures": [
+                    {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один студент; требование конкретной консульской юрисдикции",
+                      "evidence": [
+                        {
+                          "source_id": "BR_SRC_STUDY_MEXICO_2026",
+                          "source_date": "2026-05-19",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Консульство Мексики принимает собственные доступные средства из расчёта 1 000 USD на каждый месяц пребывания."
+                    }
+                  ],
+                  "disclaimer_ru": "1 000 USD/мес. — практический ориентир конкретной актуальной консульской практики, а не универсальный юридический порог. Требование остаётся условием, которое анкета напрямую не проверяет: она не фиксирует длительность учебной программы и не спрашивает отдельно о спонсорстве или стипендии. Поэтому ориентир показывается пользователю, но не создаёт ложный результат «выполнено/не выполнено» из известных общих сбережений."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1000,
+                  "source_ids": [
+                    "BR_SRC_STUDY_MEXICO_2026"
+                  ]
+                }
               },
               {
                 "kind": "SAVINGS",
@@ -1814,9 +1849,42 @@
                 "family_formula_ru": null,
                 "source_ids": [
                   "BR_SRC_STUDY_RULE",
-                  "BR_SRC_STUDY_GUIDE"
+                  "BR_SRC_STUDY_GUIDE",
+                  "BR_SRC_STUDY_MEXICO_2026",
+                  "BR_SRC_STUDY_ORLANDO_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Универсального федерального числового порога для VITEM IV (временной учебной визы) не найдено. В актуальной официальной консульской практике Бразилии в Мексике используется 1 000 USD за каждый месяц пребывания; другой актуальный консульский пост требует достаточные средства на весь срок, но фиксированную сумму не публикует. Для практической продуктовой оценки сохраняется 1 000 USD/мес. как мягкий консульский ориентир, а не федеральный минимум.",
+                  "figures": [
+                    {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один студент; требование конкретной консульской юрисдикции",
+                      "evidence": [
+                        {
+                          "source_id": "BR_SRC_STUDY_MEXICO_2026",
+                          "source_date": "2026-05-19",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Консульство Мексики требует доступный остаток из расчёта 1 000 USD на каждый месяц пребывания."
+                    }
+                  ],
+                  "disclaimer_ru": "1 000 USD/мес. — практический ориентир конкретной актуальной консульской практики, а не универсальный юридический порог. Требование остаётся условием, которое анкета напрямую не проверяет: она не фиксирует длительность учебной программы и не спрашивает отдельно о спонсорстве или стипендии. Поэтому ориентир показывается пользователю, но не создаёт ложный результат «выполнено/не выполнено» из известных общих сбережений."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1000,
+                  "source_ids": [
+                    "BR_SRC_STUDY_MEXICO_2026"
+                  ]
+                }
               },
               {
                 "kind": "SPONSOR",
@@ -1831,9 +1899,42 @@
                 "family_formula_ru": null,
                 "source_ids": [
                   "BR_SRC_STUDY_RULE",
-                  "BR_SRC_STUDY_GUIDE"
+                  "BR_SRC_STUDY_GUIDE",
+                  "BR_SRC_STUDY_MEXICO_2026",
+                  "BR_SRC_STUDY_ORLANDO_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Универсального федерального числового порога для VITEM IV (временной учебной визы) не найдено. В актуальной официальной консульской практике Бразилии в Мексике используется 1 000 USD за каждый месяц пребывания; другой актуальный консульский пост требует достаточные средства на весь срок, но фиксированную сумму не публикует. Для практической продуктовой оценки сохраняется 1 000 USD/мес. как мягкий консульский ориентир, а не федеральный минимум.",
+                  "figures": [
+                    {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один студент; требование конкретной консульской юрисдикции",
+                      "evidence": [
+                        {
+                          "source_id": "BR_SRC_STUDY_MEXICO_2026",
+                          "source_date": "2026-05-19",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Для финансового обязательства родителя/опекуна/близкого родственника консульство Мексики использует тот же ориентир 1 000 USD на каждый месяц пребывания."
+                    }
+                  ],
+                  "disclaimer_ru": "1 000 USD/мес. — практический ориентир конкретной актуальной консульской практики, а не универсальный юридический порог. Требование остаётся условием, которое анкета напрямую не проверяет: она не фиксирует длительность учебной программы и не спрашивает отдельно о спонсорстве или стипендии. Поэтому ориентир показывается пользователю, но не создаёт ложный результат «выполнено/не выполнено» из известных общих сбережений."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1000,
+                  "source_ids": [
+                    "BR_SRC_STUDY_MEXICO_2026"
+                  ]
+                }
               },
               {
                 "kind": "SCHOLARSHIP",
@@ -1848,9 +1949,42 @@
                 "family_formula_ru": null,
                 "source_ids": [
                   "BR_SRC_STUDY_RULE",
-                  "BR_SRC_STUDY_GUIDE"
+                  "BR_SRC_STUDY_GUIDE",
+                  "BR_SRC_STUDY_MEXICO_2026",
+                  "BR_SRC_STUDY_ORLANDO_2026"
                 ],
-                "confidence": "HIGH"
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Универсального федерального числового порога для VITEM IV (временной учебной визы) не найдено. В актуальной официальной консульской практике Бразилии в Мексике используется 1 000 USD за каждый месяц пребывания; другой актуальный консульский пост требует достаточные средства на весь срок, но фиксированную сумму не публикует. Для практической продуктовой оценки сохраняется 1 000 USD/мес. как мягкий консульский ориентир, а не федеральный минимум.",
+                  "figures": [
+                    {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "period": "MONTHLY",
+                      "family_context_ru": "Один студент; требование конкретной консульской юрисдикции",
+                      "evidence": [
+                        {
+                          "source_id": "BR_SRC_STUDY_MEXICO_2026",
+                          "source_date": "2026-05-19",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Если стипендия ниже 1 000 USD в месяц, консульство Мексики требует дополнительное подтверждение solvency."
+                    }
+                  ],
+                  "disclaimer_ru": "1 000 USD/мес. — практический ориентир конкретной актуальной консульской практики, а не универсальный юридический порог. Требование остаётся условием, которое анкета напрямую не проверяет: она не фиксирует длительность учебной программы и не спрашивает отдельно о спонсорстве или стипендии. Поэтому ориентир показывается пользователю, но не создаёт ложный результат «выполнено/не выполнено» из известных общих сбережений."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "amount": 1000,
+                  "source_ids": [
+                    "BR_SRC_STUDY_MEXICO_2026"
+                  ]
+                }
               }
             ]
           }
@@ -2439,7 +2573,8 @@
           "unmet_effect": "BECOMES_CONDITION",
           "condition_ru": "Если процедура требует финансовое обеспечение, подтвердить его документально; универсального числового порога в исследованном основании не установлено.",
           "source_ids": [
-            "BR_SRC_RN20"
+            "BR_SRC_RN20",
+            "BR_SRC_RN20_MONTEVIDEO_2026"
           ],
           "confidence": "HIGH",
           "financial": {
@@ -2457,12 +2592,20 @@
                 "source_geography": "ANY",
                 "family_formula_ru": null,
                 "source_ids": [
-                  "BR_SRC_RN20"
+                  "BR_SRC_RN20",
+                  "BR_SRC_RN20_MONTEVIDEO_2026"
                 ],
                 "confidence": "HIGH",
                 "income_owners": [
                   "APPLICANT"
-                ]
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Для долгосрочного VITEM I (временной визы для исследований/преподавания) без трудовой связи актуальные официальные источники описывают допустимое основание, принимающую организацию и документы по конкретной академической или исследовательской деятельности, но не публикуют универсальный денежный минимум. Отдельный поиск по актуальным консульским материалам не выявил устойчивого числового порога, общего для маршрута — NOT_FOUND.",
+                  "figures": [],
+                  "disclaimer_ru": "Не переносить суммы из VITEM IV (учебной визы), краткосрочной гостевой визы VIVIS, грантов или отдельных программ на долгосрочный VITEM I: это другие основания или индивидуальные источники финансирования. Если конкретная принимающая организация или программа устанавливает свою сумму, она относится к конкретному случаю, а не к универсальному миграционному порогу маршрута."
+                }
               }
             ]
           }
@@ -3986,6 +4129,42 @@
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_STUDY_MEXICO_2026",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Consulado-Geral do Brasil no México",
+      "title_ru": "VITEM IV — финансовая состоятельность студента",
+      "url": "https://www.gov.br/mre/pt-br/consulado-geral-do-brasil-mexico/servicios-para-extranjeros/visa-para-estudiantes-vitem-iv",
+      "supports_ru": "Консульская практика: доступные средства 1 000 USD за каждый месяц пребывания; тот же ориентир применяется к sponsor support, а стипендия ниже 1 000 USD/мес. требует дополнительного подтверждения средств.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-05-19",
+      "language": "es"
+    },
+    {
+      "source_id": "BR_SRC_STUDY_ORLANDO_2026",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Consulado-Geral do Brasil em Orlando",
+      "title_ru": "VITEM IV — текущие требования к финансовым средствам без опубликованной суммы",
+      "url": "https://www.gov.br/mre/pt-br/consulado-orlando/visa-section/types-of-visa/temporary-visa-vitem/study-vitem-iv",
+      "supports_ru": "Другой актуальный консульский пост требует средства на весь период обучения и допускает банковские выписки, расчётные листки о зарплате и финансирование, но не публикует универсальную сумму; это подтверждает, что 1 000 USD/мес. из Мексики — практический консульский ориентир, а не федеральный минимум.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-27",
+      "language": "en"
+    },
+    {
+      "source_id": "BR_SRC_RN20_MONTEVIDEO_2026",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Consulado-Geral do Brasil em Montevidéu",
+      "title_ru": "VITEM I — исследователь/профессор, текущие требования 2026",
+      "url": "https://www.gov.br/mre/pt-br/consulado-montevideu/servicos-consulares/servicos-para-estrangeiros/visas/visa-para-cientifico-profesor-e-investigador-vitem-i",
+      "supports_ru": "Актуальная инструкция для VITEM I по исследованию/преподаванию свыше 90 дней на основании RN 20/2017 (Resolução Normativa — Нормативная резолюция № 20); универсальный денежный минимум для долгосрочного VITEM I не публикуется.",
+      "checked_at": "2026-08-24",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-15",
+      "language": "es"
     }
   ],
   "pending_changes": []
