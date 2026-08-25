@@ -104,7 +104,7 @@ done
 
 echo
 echo "=== VERIFY 6/7: NODE TEST SUITE ==="
-npm test
+PATH="$VERIFY_VENV/bin:$PATH" npm test
 
 echo
 echo "=== VERIFY 7/7: JAVASCRIPT SYNTAX ==="

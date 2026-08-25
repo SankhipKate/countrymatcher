@@ -342,7 +342,10 @@ test('CI, Pages, and maintained release docs share one cwd-independent root veri
   assert.match(verifier, /pip install --disable-pip-version-check -r/);
   assert.match(verifier, /data\/\*-research-v4\.0\.json/);
   assert.match(verifier, /validate-v4\.0\.py/);
-  assert.match(verifier, /npm test/);
+  assert.match(
+    verifier,
+    /PATH="\$VERIFY_VENV\/bin:\$PATH" npm test/,
+  );
   assert.match(verifier, /find "\$APP_DIR\/js" "\$APP_DIR\/matcher" "\$APP_DIR\/pilot"/);
   assert.match(verifier, /HEAD \$COMMIT_SHA/);
   assert.match(gitignore, /countrymatcher\/\.verify-venv\//);
