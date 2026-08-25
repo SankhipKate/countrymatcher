@@ -264,7 +264,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "При подаче потребуется документально подтвердить требуемый иностранный доход за предыдущие 12 месяцев. Это требование к доказательствам уже существующего дохода: анкета Country Matcher отдельно не проверяет историю дохода и это само по себе не понижает статус маршрута.",
+          "condition_ru": "При подаче потребуется документально подтвердить требуемый иностранный доход за предыдущие 12 месяцев.",
           "source_ids": [
             "ME_SRC_06",
             "ME_SRC_07",
@@ -4723,7 +4723,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Наличие индивидуальных qualifying protection facts и protected-ground/serious-harm analysis; Country Matcher questionnaire их полностью не собирает.",
+          "condition_ru": "Нужны индивидуальные факты, подтверждающие основания международной защиты, включая риск преследования или серьёзного вреда.",
           "source_ids": [
             "ME_SRC_10"
           ],

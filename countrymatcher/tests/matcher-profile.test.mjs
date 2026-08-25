@@ -655,6 +655,8 @@ test('currency formatter preserves positive sub-100 amounts and removes large-va
   assert.equal(small.includes('0 €'), false);
   assert.match(formatCurrency(0.001, 'EUR'), /0,01/);
   assert.equal(formatCurrency(3680.42, 'EUR').includes(',42'), false);
+  assert.match(formatCurrency(514, 'CLF'), /514[\s\u00A0]UF/);
+  assert.equal(formatCurrency(514, 'CLF').includes('CLF'), false);
 });
 
 test('city size is the first approved category and uses the complete city label', () => {
@@ -859,6 +861,10 @@ test('school UI renders international tuition range without exposing legacy tari
   const equal = renderSchool(presentation('ANNUAL', { tuitionRangeUsd: { minimum: 15000, maximum: 15000 } }));
   assert.match(equal, /Стоимость обучения: 15000 USD в год\./);
   assert.doesNotMatch(equal, /15000 USD–15000 USD/);
+  const original = renderSchool(presentation('ANNUAL', {
+    tuitionRangeOriginal: { minimum: 514, maximum: 531, currency: 'CLF', period: 'ACADEMIC_YEAR' },
+  }));
+  assert.match(original, /Стоимость обучения: 514 CLF–531 CLF за учебный год\./);
 
   const available = renderSchool(presentation('ANNUAL', { cities: [] }));
   assert.match(available, /Наличие подтверждено\./);

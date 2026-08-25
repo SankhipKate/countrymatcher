@@ -1547,6 +1547,9 @@ test('international tuition range is status-gated, coherent, and converted throu
 
   const missingFx = calculateActiveCountry(profile({ children: 1 }), pkg, context).schoolPresentation.international;
   assert.equal(missingFx.tuitionRangeUsd, undefined);
+  assert.deepEqual(missingFx.tuitionRangeOriginal, {
+    minimum: 50000, maximum: 100000, currency: 'BRL',
+  });
   assert.equal(missingFx.status, available.status);
   assert.deepEqual(missingFx.cities, available.cities);
 
@@ -1556,12 +1559,14 @@ test('international tuition range is status-gated, coherent, and converted throu
     const presentation = calculateActiveCountry(profile({ children: 1 }), contradictory, brlContext).schoolPresentation.international;
     assert.equal(presentation.status, status);
     assert.equal(presentation.tuitionRangeUsd, undefined);
+    assert.equal(presentation.tuitionRangeOriginal, undefined);
   }
 
   const inverted = structuredClone(pkg);
   inverted.schools.international_school_tuition_observations[0].tuition.amount = 150000;
   const invertedPresentation = calculateActiveCountry(profile({ children: 1 }), inverted, brlContext).schoolPresentation.international;
   assert.equal(invertedPresentation.tuitionRangeUsd, undefined);
+  assert.equal(invertedPresentation.tuitionRangeOriginal, undefined);
   assert.equal(invertedPresentation.status, 'AVAILABLE');
   assert.deepEqual(invertedPresentation.cities, available.cities);
 });

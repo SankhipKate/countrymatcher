@@ -208,7 +208,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Банковские выписки должны подтверждать уровень дохода не ниже 3 SMLMV в течение последних 3 месяцев; questionnaire не устанавливает длительность уже существующего дохода.",
+          "condition_ru": "Банковские выписки должны подтверждать уровень дохода не ниже 3 SMLMV в течение последних 3 месяцев.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION"
           ],
@@ -1580,7 +1580,7 @@
           "timing": "BEFORE_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Доля/зарегистрированная инвестиция должна достигать не менее 100 SMLMV. Капитал является отдельным будущим investment basis и не равен текущим savings в анкете.",
+          "condition_ru": "Доля или зарегистрированная инвестиция должна достигать не менее 100 SMLMV. Инвестиционный капитал является отдельным основанием и не равен обычным текущим сбережениям.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION",
             "CO_SRC_SMLMV_2026"
@@ -1857,7 +1857,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Банковская сертификация должна показывать средний saldo/movimiento и доход за последние 6 месяцев; questionnaire не устанавливает длительность уже существующего дохода.",
+          "condition_ru": "Банковская сертификация должна показывать средний остаток и движение средств, а также доход за последние 6 месяцев.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION"
           ],

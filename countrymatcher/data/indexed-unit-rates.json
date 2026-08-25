@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-08-25",
+  "units": {
+    "CLF": {
+      "display_name_ru": "Чилийская расчётная единица Unidad de Fomento (UF)",
+      "quote_currency": "CLP",
+      "quote_amount": 40865.87,
+      "as_of": "2026-08-25",
+      "source": "SII — Unidad de Fomento",
+      "source_url": "https://www.sii.cl/valores_y_fechas/uf/uf2026.htm"
+    }
+  }
+}

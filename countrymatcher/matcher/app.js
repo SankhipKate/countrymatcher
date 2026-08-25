@@ -48,9 +48,11 @@ const ACTIVE_RP4_PACKAGES = [
   'PY-research-v4.0.json',
   'CO-research-v4.0.json',
   'ME-research-v4.0.json',
+  'CL-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';
+const INDEXED_UNIT_RATES_FILE = 'indexed-unit-rates.json';
 let currentStep = 1;
 let activeResearchPackages = [];
 let qualityOfLifeEditorial = { countries: {} };
@@ -409,12 +411,25 @@ function renderSchoolPresentation(calculation) {
     : school.international.status === 'RESEARCHED_NONE_FOUND'
       ? 'В ходе исследования международные школы с обучением на английском не найдены.'
       : 'Данных о международных школах с обучением на английском пока недостаточно.';
-  const tuition = school.international.tuitionRangeUsd;
-  const tuitionAmount = tuition ? tuition.minimum === tuition.maximum
-    ? currency(tuition.minimum, 'USD')
-    : `${currency(tuition.minimum, 'USD')}–${currency(tuition.maximum, 'USD')}` : null;
+  const tuitionUsd = school.international.tuitionRangeUsd;
+  const tuitionOriginal = school.international.tuitionRangeOriginal;
+  const tuition = tuitionUsd || tuitionOriginal;
+  const tuitionCurrency = tuitionUsd ? 'USD' : tuitionOriginal?.currency;
+  const tuitionAmount = tuition && tuitionCurrency ? tuition.minimum === tuition.maximum
+    ? currency(tuition.minimum, tuitionCurrency)
+    : `${currency(tuition.minimum, tuitionCurrency)}–${currency(tuition.maximum, tuitionCurrency)}` : null;
+  const tuitionPeriod = tuitionUsd ? 'в год' : ({
+    ONE_TIME: 'единовременно',
+    MONTHLY: 'в месяц',
+    ANNUAL: 'в год',
+    ACADEMIC_YEAR: 'за учебный год',
+    SEMESTER: 'за семестр',
+    TERM: 'за учебный период',
+    WEEKLY: 'в неделю',
+    DAILY: 'в день',
+  })[tuitionOriginal?.period] || 'в год';
   const tuitionLines = tuitionAmount
-    ? `<p>Стоимость обучения: ${html(tuitionAmount)} в год.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
+    ? `<p>Стоимость обучения: ${html(tuitionAmount)} ${html(tuitionPeriod)}.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
   return `<section class="country-info-card country-info-schools school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p>${tuitionLines}</div></section>`;
 }
 
@@ -1754,7 +1769,7 @@ async function init() {
   syncChildren(); syncConditional(); showStep(1, false);
   try {
     const buildId = currentBuildId();
-    const [packages, schemaResponse, editorial, consultants] = await Promise.all([
+    const [packages, schemaResponse, editorial, consultants, indexedUnits] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
         const response = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
@@ -1769,12 +1784,16 @@ async function init() {
       fetch(withBuildId(new URL(COUNTRY_CONSULTANTS_FILE, DATA_BASE), buildId))
         .then((response) => response.ok ? response.json() : { countries: {} })
         .catch(() => ({ countries: {} })),
+      fetch(withBuildId(new URL(INDEXED_UNIT_RATES_FILE, DATA_BASE), buildId))
+        .then((response) => response.ok ? response.json() : { units: {} })
+        .catch(() => ({ units: {} })),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
     const fxCurrencies = [...new Set([...collectCurrencyCodes(packages), ...questionnaireCurrencies()])];
     const context = await loadCalculationContext({
       currencies: fxCurrencies,
       fallbackUrl: withBuildId(FX_FALLBACK_URL, buildId),
+      indexedUnits,
     });
     activeResearchPackages = packages;
     profileSchema = await schemaResponse.json();

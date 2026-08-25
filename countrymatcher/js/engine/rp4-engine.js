@@ -1429,6 +1429,32 @@ function presentSchools(pkg, profile, context) {
     : (schools.international_schools || []).map((school) => legacyCityNames.get(school.city_id)).filter(Boolean);
   const tuitionObservations = schools.international_school_status === 'AVAILABLE'
     ? schools.international_school_tuition_observations || [] : [];
+  const tuitionOriginalByStage = tuitionObservations.reduce((result, observation) => {
+    const stage = observation?.grade_stage;
+    const amount = Number(observation?.tuition?.amount);
+    const currency = observation?.tuition?.currency;
+    const period = observation?.tuition?.period;
+    if (Number.isFinite(amount) && amount > 0 && typeof currency === 'string'
+      && ['FIRST_GRADE', 'FINAL_GRADE'].includes(stage)) {
+      result[stage].push({ amount, currency, period });
+    }
+    return result;
+  }, { FIRST_GRADE: [], FINAL_GRADE: [] });
+  const originalTuitionItems = [...tuitionOriginalByStage.FIRST_GRADE, ...tuitionOriginalByStage.FINAL_GRADE];
+  const originalCurrencies = new Set(originalTuitionItems.map(({ currency }) => currency));
+  const originalPeriods = new Set(originalTuitionItems.map(({ period }) => period).filter(Boolean));
+  const minimumTuitionOriginal = tuitionOriginalByStage.FIRST_GRADE.length
+    ? Math.min(...tuitionOriginalByStage.FIRST_GRADE.map(({ amount }) => amount)) : null;
+  const maximumTuitionOriginal = tuitionOriginalByStage.FINAL_GRADE.length
+    ? Math.max(...tuitionOriginalByStage.FINAL_GRADE.map(({ amount }) => amount)) : null;
+  const tuitionRangeOriginal = minimumTuitionOriginal != null && maximumTuitionOriginal != null
+    && minimumTuitionOriginal <= maximumTuitionOriginal && originalCurrencies.size === 1
+    ? {
+      minimum: minimumTuitionOriginal,
+      maximum: maximumTuitionOriginal,
+      currency: [...originalCurrencies][0],
+      ...(originalPeriods.size === 1 ? { period: [...originalPeriods][0] } : {}),
+    } : null;
   const tuitionByStage = tuitionObservations.reduce((result, observation) => {
     try {
       const amountUsd = convertAmount(observation?.tuition?.amount, observation?.tuition?.currency, 'USD', context);
@@ -1436,7 +1462,7 @@ function presentSchools(pkg, profile, context) {
         result[observation.grade_stage].push(amountUsd);
       }
     } catch {
-      // An unavailable FX rate suppresses the incomplete display-only range.
+      // An unavailable FX rate suppresses only the converted display range; source values remain usable.
     }
     return result;
   }, { FIRST_GRADE: [], FINAL_GRADE: [] });
@@ -1461,6 +1487,7 @@ function presentSchools(pkg, profile, context) {
       status: schools.international_school_status,
       cities: [...new Set(cityNames)],
       ...(tuitionRangeUsd ? { tuitionRangeUsd } : {}),
+      ...(tuitionRangeOriginal ? { tuitionRangeOriginal } : {}),
     },
   };
 }
