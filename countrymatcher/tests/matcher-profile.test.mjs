@@ -1124,6 +1124,9 @@ test('official financial periods render consistently in route cards and the best
   assert.match(app, /const officialFinancialPeriodSuffix = \(period\) => \(\{ MONTHLY: '\/мес', ANNUAL: '\/год' \}\)\[period\] \|\| ''/);
   assert.match(app, /currency\(item\.threshold, item\.currency\).*officialFinancialPeriodSuffix\(item\.period\)/);
   assert.match(app, /currency\(primaryFinancial\.threshold, primaryFinancial\.currency\).*officialFinancialPeriodSuffix\(primaryFinancial\.period\)/);
+  assert.match(app, /Подтверждение финансовой состоятельности не требуется/);
+  assert.match(app, /Числовой порог не установлен/);
+  assert.doesNotMatch(app, /Числовой порог не применяется/);
   assert.match(app, /currency\(item\.thresholdUsd, "USD"\).*officialFinancialPeriodSuffix\(item\.period\)/);
   assert.equal((app.match(/officialFinancialPeriodSuffix\(/g) || []).length, 3);
 });

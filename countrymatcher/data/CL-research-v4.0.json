@@ -1030,6 +1030,20 @@
                     }
                   ],
                   "disclaimer_ru": "Это практические ориентиры частных консультантских источников, а не официальный минимальный порог. SERMIG (Национальная миграционная служба Чили) оценивает достаточность и стабильность средств индивидуально."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "family_formula": {
+                    "base_applicant_amount": 1000,
+                    "additional_adult_amount": 500,
+                    "child_amount": 500
+                  },
+                  "source_ids": [
+                    "CL_SRC_EXPAT_PENSION",
+                    "CL_SRC_GLOBAL_FINANCE"
+                  ]
                 }
               }
             ]
@@ -1415,6 +1429,20 @@
                     }
                   ],
                   "disclaimer_ru": "Это практические ориентиры частных консультантских источников, а не официальный минимальный порог. SERMIG (Национальная миграционная служба Чили) оценивает достаточность и стабильность средств индивидуально."
+                },
+                "practical_screening_threshold": {
+                  "comparison": "AT_LEAST",
+                  "currency": "USD",
+                  "period": "MONTHLY",
+                  "family_formula": {
+                    "base_applicant_amount": 1000,
+                    "additional_adult_amount": 500,
+                    "child_amount": 500
+                  },
+                  "source_ids": [
+                    "CL_SRC_EXPAT_RENTISTA",
+                    "CL_SRC_GLOBAL_FINANCE"
+                  ]
                 }
               }
             ]

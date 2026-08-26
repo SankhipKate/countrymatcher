@@ -326,7 +326,7 @@ test('Colombia employment and internationalization remain future separate bases 
   }
 });
 
-test('Colombia family timing keeps beneficiary visas after the principal while protection can move together', () => {
+test('Colombia digital-nomad beneficiary sequencing is administrative and does not force later family join', () => {
   const married = calculate({
     amount: 6_000_000,
     partnerIncluded: true,
@@ -335,9 +335,15 @@ test('Colombia family timing keeps beneficiary visas after the principal while p
   const digitalNomad = routeResult(married, 'CO_V_DIGITAL_NOMAD');
   const protection = routeResult(married, 'CO_INTERNATIONAL_PROTECTION');
 
-  assert.equal(digitalNomad.familyEvaluation.state, 'CONDITION');
-  assert.match(digitalNomad.familyEvaluation.conditions.join('\n'), /после выдачи действующей визы|после/i);
+  assert.equal(digitalNomad.familyEvaluation.state, 'PASS');
+  assert.equal(digitalNomad.familyEvaluation.classification, 'SIMULTANEOUS');
+  assert.deepEqual(digitalNomad.familyEvaluation.conditions, []);
   assert.equal(protection.familyEvaluation.state, 'PASS');
+
+  const withChild = calculate({ amount: 6_000_000, children: [7] });
+  const digitalNomadWithChild = routeResult(withChild, 'CO_V_DIGITAL_NOMAD');
+  assert.equal(digitalNomadWithChild.familyEvaluation.state, 'PASS');
+  assert.equal(digitalNomadWithChild.familyEvaluation.classification, 'SIMULTANEOUS');
 
   const protectionPartner = routeData('CO_INTERNATIONAL_PROTECTION').family_scenarios
     .find(({ applies_to }) => applies_to === 'PARTNER');

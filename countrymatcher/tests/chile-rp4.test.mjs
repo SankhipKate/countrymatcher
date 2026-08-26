@@ -108,12 +108,30 @@ test('Chile RP4 pins the complete coverage map and publication boundary', () => 
   );
 });
 
-test('Chile pensioner and rentista evaluate only the researched income semantics', () => {
+test('Chile pensioner and rentista apply the researched practical screening threshold', () => {
+  const pensionBelow = routeResult(
+    calculateActiveCountry(profile({ type: 'PENSION', amount: 999 }), chile, context),
+    'CL_PENSIONER',
+  );
+  assert.equal(pensionBelow.routeStatus, 'UNSUITABLE');
+
   const pension = routeResult(
-    calculateActiveCountry(profile({ type: 'PENSION', amount: 1 }), chile, context),
+    calculateActiveCountry(profile({ type: 'PENSION', amount: 1000 }), chile, context),
     'CL_PENSIONER',
   );
   assert.equal(pension.routeStatus, 'SUITABLE');
+
+  const pensionWithChildBelow = routeResult(
+    calculateActiveCountry(profile({ type: 'PENSION', amount: 1499, children: [7] }), chile, context),
+    'CL_PENSIONER',
+  );
+  assert.equal(pensionWithChildBelow.routeStatus, 'UNSUITABLE');
+
+  const pensionWithChild = routeResult(
+    calculateActiveCountry(profile({ type: 'PENSION', amount: 1500, children: [7] }), chile, context),
+    'CL_PENSIONER',
+  );
+  assert.equal(pensionWithChild.routeStatus, 'SUITABLE');
 
   const remotePension = routeResult(
     calculateActiveCountry(profile(), chile, context),
@@ -121,8 +139,14 @@ test('Chile pensioner and rentista evaluate only the researched income semantics
   );
   assert.equal(remotePension.routeStatus, 'UNSUITABLE');
 
+  const rentistaBelow = routeResult(
+    calculateActiveCountry(profile({ type: 'PASSIVE_INCOME', amount: 999 }), chile, context),
+    'CL_RENTISTA',
+  );
+  assert.equal(rentistaBelow.routeStatus, 'UNSUITABLE');
+
   const rentista = routeResult(
-    calculateActiveCountry(profile({ type: 'PASSIVE_INCOME', amount: 1 }), chile, context),
+    calculateActiveCountry(profile({ type: 'PASSIVE_INCOME', amount: 1000 }), chile, context),
     'CL_RENTISTA',
   );
   assert.equal(rentista.routeStatus, 'SUITABLE');
@@ -136,7 +160,13 @@ test('Chile pensioner and rentista evaluate only the researched income semantics
   for (const routeId of ['CL_PENSIONER', 'CL_RENTISTA']) {
     const financial = routeData(routeId).requirements[0].financial.alternatives[0];
     assert.equal(financial.comparison, 'NO_FIXED_THRESHOLD');
-    assert.equal(financial.practical_screening_threshold, undefined);
+    assert.deepEqual(financial.practical_screening_threshold.family_formula, {
+      base_applicant_amount: 1000,
+      additional_adult_amount: 500,
+      child_amount: 500,
+    });
+    assert.equal(financial.practical_screening_threshold.currency, 'USD');
+    assert.equal(financial.practical_screening_threshold.period, 'MONTHLY');
     assert.equal(financial.practical_financial_guidance.evaluation_mode, 'DISPLAY_ONLY');
   }
 });

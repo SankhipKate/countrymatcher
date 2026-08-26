@@ -222,9 +222,9 @@
           "type": "FINANCIAL",
           "subject": "APPLICANT",
           "timing": "LONG_TERM",
-          "evaluation_mode": "UNASKED_CONDITION",
-          "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Если ваша обязательная цель — ПМЖ или гражданство, при переходе к Permanent Residence нужно отдельно подтвердить реальную и проверяемую solvency по одной из 12 категорий Resolution DNM 407/2026; единого числового минимума не опубликовано.",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Если вы планируете ПМЖ или гражданство, при переходе с временной на постоянную резиденцию потребуется подтвердить реальную и проверяемую финансовую состоятельность по одной из применимых категорий Resolution DNM 407/2026. Универсального минимального дохода или суммы накоплений не установлено.",
           "financial": {
             "model": "INCOME_ONLY",
             "alternatives": [
@@ -336,15 +336,15 @@
           "relationship_types": null,
           "child_age_min": 0,
           "child_age_max": 17,
-          "simultaneous_move": "CONDITIONAL",
+          "simultaneous_move": "YES",
           "administrative_separate_filing": true,
-          "separate_route_required": true,
-          "linked_route_id": "PY_GENERAL_TEMPORARY",
-          "join_stage": "SEPARATE_ROUTE",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкую eligibility.",
+          "condition_ru": "Для ребёнка оформляется собственное административное дело с родительскими/опекунскими формальностями; ребёнок может подаваться одновременно как минимум с одним родителем, и отдельное дело не является отдельным миграционным основанием.",
           "source_ids": [
             "PY_SRC_MIGRATION_LAW",
             "PY_SRC_TEMP"
