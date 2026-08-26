@@ -287,8 +287,8 @@
           "type": "OTHER_BASIS",
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
-          "evaluation_mode": "UNASKED_CONDITION",
-          "unmet_effect": "BECOMES_CONDITION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
           "condition_ru": "Для income/pension alternative нужно подтвердить подходящий доход за предыдущие 6 месяцев; для savings alternative вместо этого нужно подтвердить средний остаток за предыдущие 12 месяцев.",
           "source_ids": [
             "MX_SRC_VISA_LINEAMIENTOS",
@@ -301,8 +301,8 @@
           "type": "OTHER_BASIS",
           "subject": "APPLICANT",
           "timing": "BEFORE_APPLICATION",
-          "evaluation_mode": "UNASKED_CONDITION",
-          "unmet_effect": "BECOMES_CONDITION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
           "condition_ru": "Выбранное мексиканское консульство может публиковать отличающиеся operational amounts, периоды банковской истории и формат документов; конкретный filing post требуется сверить даже при выполнении national UMA formula.",
           "source_ids": [
             "MX_SRC_TEMP_WASHINGTON",

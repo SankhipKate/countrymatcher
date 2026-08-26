@@ -346,7 +346,7 @@
           ],
           "child_age_min": null,
           "child_age_max": null,
-          "simultaneous_move": "NO",
+          "simultaneous_move": "CONDITIONAL",
           "administrative_separate_filing": true,
           "separate_route_required": false,
           "linked_route_id": null,
@@ -354,7 +354,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; требуется экономическая зависимость и подтверждение средств основного держателя. Квалифицируются супруг(а) или permanent partner при документально подтверждённой связи.",
+          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; это административная последовательность и сама по себе не требует раздельного переезда. Требуются документально подтверждённая связь, экономическая зависимость и подтверждение средств основного держателя.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION"
           ]
@@ -365,7 +365,7 @@
           "relationship_types": null,
           "child_age_min": 0,
           "child_age_max": 24,
-          "simultaneous_move": "NO",
+          "simultaneous_move": "CONDITIONAL",
           "administrative_separate_filing": true,
           "separate_route_required": false,
           "linked_route_id": null,
@@ -373,7 +373,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; требуется экономическая зависимость и подтверждение средств основного держателя. Квалифицируется экономически зависимый ребёнок младше 25 лет.",
+          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; это административная последовательность и сама по себе не требует раздельного переезда. Квалифицируется экономически зависимый ребёнок младше 25 лет; требуются подтверждение зависимости и средств основного держателя.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION"
           ]
@@ -384,7 +384,7 @@
           "relationship_types": null,
           "child_age_min": 25,
           "child_age_max": null,
-          "simultaneous_move": "NO",
+          "simultaneous_move": "CONDITIONAL",
           "administrative_separate_filing": true,
           "separate_route_required": false,
           "linked_route_id": null,
@@ -392,7 +392,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; требуется экономическая зависимость и подтверждение средств основного держателя. Ребёнок 25 лет и старше может квалифицироваться при надлежащим образом подтверждённой инвалидности, препятствующей экономической самостоятельности.",
+          "condition_ru": "Бенефициар подаёт отдельное заявление после выдачи действующей визы основному держателю; это административная последовательность и сама по себе не требует раздельного переезда. Ребёнок 25 лет и старше может квалифицироваться при подтверждённой инвалидности, препятствующей экономической самостоятельности; также требуются экономическая зависимость и подтверждение средств основного держателя.",
           "source_ids": [
             "CO_SRC_VISA_RESOLUTION"
           ]

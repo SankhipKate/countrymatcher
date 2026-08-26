@@ -675,9 +675,11 @@ function renderCountryResult(calculation, changed = false, active = false) {
     && Number.isFinite(primaryFinancial?.thresholdUsd)
       ? ` (≈ ${currency(primaryFinancial.thresholdUsd, 'USD')})`
       : '';
-  const thresholdValue = primaryFinancial?.threshold != null
-    ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${thresholdUsd}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
-    : 'Числовой порог не применяется';
+  const thresholdValue = !best?.financialSummary
+    ? 'Подтверждение финансовой состоятельности не требуется'
+    : primaryFinancial?.threshold != null
+      ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${thresholdUsd}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
+      : 'Числовой порог не установлен';
   const incomeValue = incomeAmount == null ? 'Не указан' : `${currency(incomeAmount, incomeCurrency)}${incomeCurrency !== 'USD' && Number.isFinite(incomeUsd) ? ` (≈ ${currency(incomeUsd, 'USD')})` : ''}`;
   const entryBlock = renderEntryPresentation(calculation);
   const comparisonCities = (calculation.cities || []).map((city) => ({

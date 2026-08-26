@@ -857,7 +857,7 @@ test('NO_FIXED_THRESHOLD with completed NOT_FOUND research stays UNKNOWN instead
   })).state, 'FAIL');
 });
 
-test('LONG_TERM financial requirements affect mandatory PR/citizenship goals but not temporary-only matching', () => {
+test('Paraguay future PR solvency stays display-only for every long-term goal', () => {
   const pyRoute = paraguay.routes.find(({ route_id }) => route_id === 'PY_GENERAL_TEMPORARY');
   const financeId = 'PY_TEMP_PR_SOLVENCY_INFO';
 
@@ -869,11 +869,11 @@ test('LONG_TERM financial requirements affect mandatory PR/citizenship goals but
 
   for (const longTerm of ['PR_REQUIRED', 'CITIZENSHIP_REQUIRED']) {
     const result = evaluateRoute(pyRoute, profile({ applicantAmount: 0, longTerm }), context, 'PY');
-    assert.equal(result.routeStatus, 'SUITABLE_WITH_CONDITIONS', longTerm);
+    assert.equal(result.routeStatus, 'SUITABLE', longTerm);
     const financial = result.requirementResults.find(({ requirement }) => requirement.requirement_id === financeId);
-    assert.equal(financial.state, 'UNKNOWN', longTerm);
-    assert.equal(financial.effect, 'CONDITION', longTerm);
-    assert.match(result.conditions.join(' '), /solvency|Permanent Residence/u, longTerm);
+    assert.equal(financial.state, 'DISPLAY_ONLY', longTerm);
+    assert.equal(financial.effect, 'NONE', longTerm);
+    assert.equal(result.conditions.length, 0, longTerm);
   }
 });
 

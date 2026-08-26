@@ -144,7 +144,7 @@ test('Mexico solvency keeps the national UMA formula materialized without treati
   assert.equal(savings.asked_in_questionnaire, false);
 });
 
-test('Mexico solvency keeps documentary history and filing-post variation as separate conditions', () => {
+test('Mexico solvency keeps documentary history and filing-post variation as display-only preparation', () => {
   const history = requirementById(
     'MX_TEMP_SOLVENCY',
     'MX_TEMP_SOLVENCY_INCOME_HISTORY',
@@ -154,17 +154,17 @@ test('Mexico solvency keeps documentary history and filing-post variation as sep
     'MX_CONSULAR_VARIATION',
   );
 
-  assert.equal(history.evaluation_mode, 'UNASKED_CONDITION');
-  assert.equal(history.unmet_effect, 'BECOMES_CONDITION');
+  assert.equal(history.evaluation_mode, 'DISPLAY_ONLY');
+  assert.equal(history.unmet_effect, 'NONE');
   assert.match(history.condition_ru, /6 месяцев/);
   assert.match(history.condition_ru, /12 месяцев/);
 
-  assert.equal(consular.evaluation_mode, 'UNASKED_CONDITION');
-  assert.equal(consular.unmet_effect, 'BECOMES_CONDITION');
+  assert.equal(consular.evaluation_mode, 'DISPLAY_ONLY');
+  assert.equal(consular.unmet_effect, 'NONE');
   assert.match(consular.condition_ru, /консульств/i);
 });
 
-test('Mexico solvency above the national income threshold remains conditional only for unasked documentary checks', () => {
+test('Mexico solvency above the national income threshold is suitable while documentary checks stay display-only', () => {
   const result = calculateActiveCountry(
     profile({ applicantAmount: 80000 }),
     mexico,
@@ -173,13 +173,14 @@ test('Mexico solvency above the national income threshold remains conditional on
   const route = routeById(result, 'MX_TEMP_SOLVENCY');
 
   assert.ok(route);
-  assert.equal(route.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(route.routeStatus, 'SUITABLE');
   assert.equal(route.blockers?.length || 0, 0);
+  assert.equal(route.conditions?.length || 0, 0);
 
-  const conditions = (route.conditions || []).join(' ');
-  assert.match(conditions, /6 месяцев/);
-  assert.match(conditions, /12 месяцев/);
-  assert.match(conditions, /консульств/i);
+  const preparation = (route.displayOnlyRequirements || []).map(({ condition_ru }) => condition_ru).join(' ');
+  assert.match(preparation, /6 месяцев/);
+  assert.match(preparation, /12 месяцев/);
+  assert.match(preparation, /консульств/i);
 });
 
 test('Mexico failing current income plus questionnaire-unknown savings does not become a false hard blocker', () => {
