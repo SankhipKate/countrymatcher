@@ -59,6 +59,9 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.CL.score, 7.8);
   assert.ok(editorial.countries.CL.narrative_ru.length >= 6);
   assert.match(editorial.countries.CL.formula_ru, /Очень высокое человеческое развитие/);
+  assert.equal(editorial.countries.GR.score, 7.6);
+  assert.ok(editorial.countries.GR.narrative_ru.length >= 6);
+  assert.match(editorial.countries.GR.formula_ru, /Средиземноморский климат/);
 });
 
 

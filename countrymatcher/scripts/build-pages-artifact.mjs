@@ -8,7 +8,7 @@ const outputRoot = resolve(process.argv[2] || resolve(appRoot, '.pages-artifact'
 const files = [
   '.nojekyll', 'index.html', 'payment-config.js',
   'assets', 'landing', 'matcher', 'pilot', 'js',
-  'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json', 'data/CL-research-v4.0.json',
+  'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json', 'data/CL-research-v4.0.json', 'data/GR-research-v4.0.json',
   'data/active-countries.json',
   'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json', 'data/schemas/user-profile-v1.schema.json',
 ];
