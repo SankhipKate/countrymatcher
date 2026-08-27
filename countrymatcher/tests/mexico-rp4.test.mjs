@@ -51,6 +51,8 @@ const profile = ({
   childAges = null,
   partnerIncluded = adults === 2,
   relationshipType = partnerIncluded ? 'MARRIED' : null,
+  savingsAmount = null,
+  savingsCurrency = 'MXN',
 } = {}) => ({
   residence: {
     current_country: 'RU',
@@ -78,7 +80,7 @@ const profile = ({
       has_income: false,
       sources: [],
     },
-    savings: null,
+    savings: savingsAmount == null ? null : { amount: savingsAmount, currency: savingsCurrency },
   },
   investment_capital: null,
   goal: {
@@ -114,7 +116,7 @@ test('Mexico package keeps the agreed route inventory and points route unpublish
   assert.equal(routeById(result, 'MX_PR_POINTS'), undefined);
 });
 
-test('Mexico solvency keeps the national UMA formula materialized without treating current savings as twelve-month history', () => {
+test('Mexico solvency keeps the national UMA formula materialized while current savings remain evaluable', () => {
   const requirement = requirementById(
     'MX_TEMP_SOLVENCY',
     'MX_TEMP_SOLVENCY_FIN',
@@ -141,7 +143,7 @@ test('Mexico solvency keeps the national UMA formula materialized without treati
   assert.equal(savings.period, 'ONE_TIME');
   assert.equal(savings.comparison, 'AT_LEAST');
   assert.equal(savings.history_months, 12);
-  assert.equal(savings.asked_in_questionnaire, false);
+  assert.equal(savings.asked_in_questionnaire, true);
 });
 
 test('Mexico solvency keeps documentary history and filing-post variation as display-only preparation', () => {
@@ -183,16 +185,55 @@ test('Mexico solvency above the national income threshold is suitable while docu
   assert.match(preparation, /консульств/i);
 });
 
-test('Mexico failing current income plus questionnaire-unknown savings does not become a false hard blocker', () => {
+test('Mexico solvency blocks when both current income and current savings are below their numeric alternatives', () => {
+  for (const input of [
+    { applicantAmount: 0, savingsAmount: 0 },
+    { applicantAmount: 70000, savingsAmount: 1000000 },
+  ]) {
+    const result = calculateActiveCountry(profile(input), mexico, context);
+    const route = routeById(result, 'MX_TEMP_SOLVENCY');
+
+    assert.ok(route);
+    assert.equal(route.routeStatus, 'UNSUITABLE');
+    assert.ok((route.blockers?.length || 0) >= 1);
+    assert.equal(route.financialSummary?.state, 'FAIL');
+  }
+});
+
+test('Mexico solvency passes through current savings while twelve-month history stays display-only', () => {
   const result = calculateActiveCountry(
-    profile({ applicantAmount: 70000 }),
+    profile({ applicantAmount: 70000, savingsAmount: 1400000 }),
     mexico,
     context,
   );
   const route = routeById(result, 'MX_TEMP_SOLVENCY');
 
   assert.ok(route);
-  assert.equal(route.routeStatus, 'SUITABLE_WITH_CONDITIONS');
+  assert.equal(route.routeStatus, 'SUITABLE');
+  assert.equal(route.financialSummary?.state, 'PASS');
+  assert.equal(route.blockers?.length || 0, 0);
+  assert.equal(route.conditions?.length || 0, 0);
+  assert.ok((route.displayOnlyRequirements || []).some(({ condition_ru }) => /12 месяцев/u.test(condition_ru)));
+});
+
+test('Mexico retiree savings alternative is also evaluated from current questionnaire savings', () => {
+  const requirement = requirementById('MX_PR_RETIREE', 'MX_PR_RETIREE_FIN');
+  const savings = requirement.financial.alternatives.find(({ kind }) => kind === 'SAVINGS');
+
+  assert.equal(savings.amount, 5378663.5);
+  assert.equal(savings.currency, 'MXN');
+  assert.equal(savings.history_months, 12);
+  assert.equal(savings.asked_in_questionnaire, true);
+
+  const result = calculateActiveCountry(
+    profile({ applicantType: 'PENSION', applicantAmount: 100000, savingsAmount: 6000000 }),
+    mexico,
+    context,
+  );
+  const route = routeById(result, 'MX_PR_RETIREE');
+
+  assert.ok(route);
+  assert.equal(route.financialSummary?.state, 'PASS');
   assert.equal(route.blockers?.length || 0, 0);
 });
 
