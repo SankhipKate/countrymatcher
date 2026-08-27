@@ -50,6 +50,7 @@ const ACTIVE_RP4_PACKAGES = [
   'ME-research-v4.0.json',
   'CL-research-v4.0.json',
   'GR-research-v4.0.json',
+  'CR-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';

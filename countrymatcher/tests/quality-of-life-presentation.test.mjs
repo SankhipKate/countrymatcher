@@ -62,6 +62,9 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.GR.score, 7.6);
   assert.ok(editorial.countries.GR.narrative_ru.length >= 6);
   assert.match(editorial.countries.GR.formula_ru, /Средиземноморский климат/);
+  assert.equal(editorial.countries.CR.score, 7.6);
+  assert.ok(editorial.countries.CR.narrative_ru.length >= 6);
+  assert.match(editorial.countries.CR.formula_ru, /Сильные институты/);
 });
 
 
