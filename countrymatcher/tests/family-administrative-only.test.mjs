@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { evaluateFamilyScenarios } from '../js/engine/rp4-engine.js';
 
 const profile = {
@@ -91,5 +92,22 @@ test('Canon distinguishes administrative status sequence from real later family 
     assert.match(text, /AFTER_PR/u);
     assert.match(text, /AFTER_CITIZENSHIP/u);
     assert.match(text, /SEPARATE_ROUTE/u);
+  }
+});
+
+test('active RP4 packages cannot describe administrative-only family filing as a substantive separate route', async () => {
+  const active = JSON.parse(await readFile(new URL('../data/active-countries.json', import.meta.url), 'utf8'));
+
+  for (const { code } of active) {
+    const pkg = JSON.parse(await readFile(new URL(`../data/${code}-research-v4.0.json`, import.meta.url), 'utf8'));
+    for (const route of pkg.routes || []) {
+      for (const item of route.family_scenarios || []) {
+        const text = item.condition_ru || '';
+        if (!text.includes('сама по себе не означает запрет совместного переезда')) continue;
+        assert.equal(item.administrative_separate_filing, true, `${code}:${route.route_id}:${item.scenario_id}`);
+        assert.equal(item.separate_route_required, false, `${code}:${route.route_id}:${item.scenario_id}`);
+        assert.notEqual(item.join_stage, 'SEPARATE_ROUTE', `${code}:${route.route_id}:${item.scenario_id}`);
+      }
+    }
   }
 });
