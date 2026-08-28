@@ -21,7 +21,7 @@ test('visible matcher keeps a build-injected product-version hook', async () => 
   ]);
   assert.match(matcherHtml, /версия <span data-app-version>dev<\/span>/);
   assert.match(matcherHtml, /aria-label="COUNTRY MATCHER"/);
-  assert.match(matcherHtml, /<img class="brand-logo" src="\.\/assets\/images\/countrymatcher-logo\.png"/);
+  assert.match(matcherHtml, /<img class="brand-logo" src="\.\/landing\/assets\/countrymatcher-logo-user\.png"/);
   assert.doesNotMatch(matcherHtml, /class="brand-mark"/);
   assert.equal(matcherHtml.includes('product-version'), false);
   assert.match(matcherHtml, /<title>COUNTRY MATCHER<\/title>/);

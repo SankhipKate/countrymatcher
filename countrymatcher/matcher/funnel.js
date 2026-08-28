@@ -29,8 +29,34 @@ function routeCounter(count, singularVerb, pluralVerb, suffix = '') {
   return `${count} ${routeWord} ${verb}${suffix ? ` ${suffix}` : ''}`;
 }
 
+const routeCount = (count) => `${count} ${pluralRu(count, 'маршрут', 'маршрута', 'маршрутов')}`;
+
+const bestRouteGroup = (result) => (
+  result?.bestRoute?.presentationGroup
+  || result?.bestRoute?.routeStatus
+  || result?.presentationGroup
+  || result?.routeStatus
+  || 'UNSUITABLE'
+);
+
+export function summarizeCountries(calculation) {
+  const summary = { suitable: 0, conditional: 0, separateBasis: 0 };
+  for (const result of Array.isArray(calculation?.results) ? calculation.results : []) {
+    const groups = new Set((result.routes || []).map(bestRouteGroup));
+    if (groups.has('SUITABLE')) summary.suitable += 1;
+    if (groups.has('SUITABLE_WITH_CONDITIONS')) summary.conditional += 1;
+    if (groups.has('REQUIRES_SEPARATE_BASIS') || groups.has('INTERNATIONAL_PROTECTION')) summary.separateBasis += 1;
+  }
+  return summary;
+}
+
+export function countrySummaryHeading(calculation) {
+  return 'Результат расчёта';
+}
+
 export const countryCount = (count) => `${count} ${pluralRu(count, 'страна', 'страны', 'стран')}`;
 export const additionalCountriesText = (count) => `Ещё ${countryCount(count)}`;
+export const countryLocative = (count) => `${count} ${pluralRu(count, 'стране', 'странах', 'странах')}`;
 
 function hasValidResults(calculation) {
   return Array.isArray(calculation?.results)
@@ -56,29 +82,36 @@ export function summarizeCalculation(calculation) {
   let countries = 0;
   let suitableRoutes = 0;
   let conditionalRoutes = 0;
+  let separateBasisRoutes = 0;
   let unsuitableRoutes = 0;
 
   for (const result of results) {
     if (MATCHED_STATUSES.has(result?.bestRoute?.routeStatus)) countries += 1;
     for (const route of Array.isArray(result?.routes) ? result.routes : []) {
-      if (route?.routeStatus === 'SUITABLE') suitableRoutes += 1;
-      if (route?.routeStatus === 'SUITABLE_WITH_CONDITIONS') conditionalRoutes += 1;
-      if (route?.routeStatus === 'UNSUITABLE') unsuitableRoutes += 1;
+      const group = bestRouteGroup(route);
+      if (group === 'SUITABLE') suitableRoutes += 1;
+      if (group === 'SUITABLE_WITH_CONDITIONS') conditionalRoutes += 1;
+      if (['REQUIRES_SEPARATE_BASIS', 'INTERNATIONAL_PROTECTION'].includes(group)) separateBasisRoutes += 1;
+      if (group === 'UNSUITABLE') unsuitableRoutes += 1;
     }
   }
 
   return {
     countries,
-    routes: suitableRoutes + conditionalRoutes,
+    routes: suitableRoutes + conditionalRoutes + separateBasisRoutes,
     suitableRoutes,
     conditionalRoutes,
+    separateBasisRoutes,
     unsuitableRoutes,
-    totalEvaluatedRoutes: suitableRoutes + conditionalRoutes + unsuitableRoutes,
+    totalEvaluatedRoutes: suitableRoutes + conditionalRoutes + separateBasisRoutes + unsuitableRoutes,
   };
 }
 
 export function teaserPresentation(calculation) {
   const counts = summarizeCalculation(calculation);
+  const countryCounts = summarizeCountries(calculation);
+  const connectedCountries = Array.isArray(calculation?.results) ? calculation.results.length : 0;
+  const potentialRoutes = counts.conditionalRoutes + counts.separateBasisRoutes;
 
   if (counts.countries === 0) {
     return {
@@ -86,27 +119,29 @@ export function teaserPresentation(calculation) {
       routes: 0,
       suitableRoutes: 0,
       conditionalRoutes: 0,
+      separateBasisRoutes: 0,
       unsuitableRoutes: counts.unsuitableRoutes,
       totalEvaluatedRoutes: counts.totalEvaluatedRoutes,
       heading: 'По вашим ответам среди подключённых сейчас маршрутов подходящих или потенциально подходящих вариантов нет.',
       text: 'Полный результат покажет причины, почему конкретные маршруты не подошли.',
       breakdown: [],
+      countryCounts,
     };
   }
 
   return {
     ...counts,
-    heading: `Проверили ${counts.totalEvaluatedRoutes} ${pluralRu(counts.totalEvaluatedRoutes, 'миграционный маршрут', 'миграционных маршрута', 'миграционных маршрутов')} исходя из ваших ответов`,
+    heading: countrySummaryHeading(calculation),
     text: '',
+    countryCounts,
     breakdown: [
-      routeCounter(counts.suitableRoutes, 'подходит', 'подходят'),
-      `${counts.conditionalRoutes} ${pluralRu(counts.conditionalRoutes, 'маршрут', 'маршрута', 'маршрутов')} — при выполнении условий`,
-      counts.unsuitableRoutes ? routeCounter(counts.unsuitableRoutes, 'не подходит', 'не подходят') : null,
-    ].filter(Boolean),
+      `${countryCount(countryCounts.suitable)}:и ${routeCount(counts.suitableRoutes)}, ${usesSingularVerb(counts.suitableRoutes) ? 'который уже вам подходит' : 'которые уже вам подходят'}`,
+      `${countryCount(connectedCountries)}:и ${routeCount(potentialRoutes)}, ${usesSingularVerb(potentialRoutes) ? 'в котором необходимо выполнить условие, либо по основанию, которое, возможно, у вас уже есть' : 'в которых необходимо выполнить условие, либо по основанию, которое, возможно, у вас уже есть'}`,
+    ],
   };
 }
 
-export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
+export function deriveFunnelPresentation(calculation, sortCountriesForDisplay, selectFreeCountry) {
   const errors = Array.isArray(calculation?.errors) ? calculation.errors : [];
   if (!hasValidResults(calculation) || typeof sortCountriesForDisplay !== 'function') {
     return errors.length ? { state: FUNNEL_STATES.ERROR, errors } : { state: FUNNEL_STATES.ERROR };
@@ -126,7 +161,11 @@ export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
   }
 
   const sortedMatchedCountries = sortCountriesForDisplay(matchedCountries);
-  const [freeCountry] = sortedMatchedCountries;
+  const defaultFreeCountry = sortedMatchedCountries[0];
+  const freeCountry = typeof selectFreeCountry === 'function'
+    ? selectFreeCountry(sortedMatchedCountries)
+    : defaultFreeCountry;
+  if (!sortedMatchedCountries.includes(freeCountry)) return { state: FUNNEL_STATES.ERROR };
   if (!freeCountry) return { state: FUNNEL_STATES.ERROR };
 
   return {
@@ -142,6 +181,7 @@ export function deriveFunnelPresentation(calculation, sortCountriesForDisplay) {
         countryId: result.country.countryId,
         name: result.country.name,
       })),
+    fullCalculation: calculation,
   };
 }
 

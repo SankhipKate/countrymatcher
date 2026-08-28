@@ -103,7 +103,7 @@ test("matcher analytics is privacy-masked and hooked only into free-result prese
     assert.match(
       matcher,
       new RegExp(
-        `<a id="${id}"[^>]*data-clarity-unmask="true"`,
+        `<(?:a|button) id="${id}"[^>]*data-clarity-unmask="true"`,
       ),
     );
   }

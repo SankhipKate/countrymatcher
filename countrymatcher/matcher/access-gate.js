@@ -37,7 +37,7 @@ export function accessPresentationState(accessState, { hasFreeCountry = false, p
   return {
     paymentVisible: paidResultsAvailable && !unavailable,
     retryVisible: unavailable,
-    bottomCtaVisible: hasFreeCountry && paidResultsAvailable && !unavailable,
+    bottomCtaVisible: false,
   };
 }
 
@@ -196,7 +196,7 @@ function applyAccessState(state, { statusText, hasFreeCountry = false, paidResul
   const { payment, bottomCta, retry } = gateElements();
   if (!payment || !bottomCta || !retry) return;
   const presentation = accessPresentationState(state, { hasFreeCountry, paidResultsAvailable });
-  payment.hidden = !presentation.paymentVisible;
+  payment.hidden = true;
   retry.hidden = !presentation.retryVisible;
   bottomCta.hidden = !presentation.bottomCtaVisible;
 
@@ -216,13 +216,19 @@ export function showAccessTeaser({ heading, text, breakdown = [], freeCountryMes
   const elements = gateElements();
   if (!elements.gate || !elements.heading || !elements.teaser || !elements.payment) return;
 
+  document.documentElement.classList.add("access-locked");
   elements.heading.textContent = heading;
   elements.teaser.textContent = text;
   elements.teaser.hidden = !text;
   if (elements.breakdown) {
     elements.breakdown.replaceChildren(...breakdown.map((line) => {
       const item = document.createElement("span");
-      item.textContent = line;
+      const [count, ...description] = line.split(":");
+      const value = document.createElement("strong");
+      const copy = document.createElement("small");
+      value.textContent = count;
+      copy.textContent = description.join(":").trim();
+      item.append(value, copy);
       return item;
     }));
     elements.breakdown.hidden = breakdown.length === 0;
@@ -231,9 +237,9 @@ export function showAccessTeaser({ heading, text, breakdown = [], freeCountryMes
     elements.freeCountry.textContent = freeCountryMessage;
     elements.freeCountry.hidden = !freeCountryMessage;
   }
-  const lockedMessage = lockedCountryCount ? `${additionalCountriesText(lockedCountryCount)} и полный разбор их маршрутов — за $${EXPECTED_PRICE.replace(/\.00$/, "")}.` : '';
+  const lockedMessage = '';
   if (elements.lockedCountries) { elements.lockedCountries.textContent = lockedMessage; elements.lockedCountries.hidden = !lockedMessage; }
-  if (elements.bottomLockedCountries) elements.bottomLockedCountries.textContent = lockedCountryCount ? `${additionalCountriesText(lockedCountryCount)} — полный разбор по каждой: все маршруты, их условия и статусы` : '';
+  if (elements.bottomLockedCountries) elements.bottomLockedCountries.textContent = lockedCountryCount ? `${additionalCountriesText(lockedCountryCount)}` : '';
   elements.payment.textContent = `Открыть все результаты — $${EXPECTED_PRICE.replace(/\.00$/, "")}`;
   if (elements.bottomPayment) {
     elements.bottomPayment.textContent = `Открыть все результаты — $${EXPECTED_PRICE.replace(/\.00$/, "")}`;
@@ -244,7 +250,7 @@ export function showAccessTeaser({ heading, text, breakdown = [], freeCountryMes
   elements.error.hidden = true;
   currentPresentationOptions = { statusText, hasFreeCountry, paidResultsAvailable: lockedCountryCount > 0 };
   applyAccessState(accessState, currentPresentationOptions);
-  elements.gate.scrollIntoView({ block: "start", behavior: "smooth" });
+  window.scrollTo(0, 0);
 }
 
 async function checkAccess() {
