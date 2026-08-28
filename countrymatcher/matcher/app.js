@@ -10,7 +10,9 @@ import {
   resolveAccessState,
   showAccessTeaser,
 } from './access-gate.js';
-import { deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
+import { countryLocative, deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
+import { selectWorstSuitableCountry } from './free-country-selection.js';
+import { countAdditionalSuitableCountriesAtIncome } from './income-opportunity.js';
 import { DRAFT_VERSION, prepareDraftForRestore } from './draft-state.js';
 import { mergeRouteSpecificAnswer, renderRouteSpecificFollowUps } from './route-specific-follow-up.js';
 import { activeConsultantsForCountry, telegramConsultantUrl } from './consultants.js';
@@ -56,16 +58,20 @@ const ACTIVE_RP4_PACKAGES = [
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';
 const INDEXED_UNIT_RATES_FILE = 'indexed-unit-rates.json';
+const COUNTRY_COMPARISON_FILE = 'country-comparison-ru.json';
 let currentStep = 1;
 let activeResearchPackages = [];
 let qualityOfLifeEditorial = { countries: {} };
 let countryConsultants = { countries: {} };
+let countryComparisonEditorial = { countries: {} };
 let calculationContext;
 let currentProfile;
 let currentAnswers;
+let currentThousandIncomeOpportunityCount = 0;
 let profileSchema;
 let pendingCalculation = null;
 let verifiedAccessActive = false;
+let stickyPaymentScrollHandler = null;
 
 const value = (id) => $(`#${id}`)?.value ?? '';
 const checked = (id) => Boolean($(`#${id}`)?.checked);
@@ -353,7 +359,7 @@ function renderAnswersBlock(a) {
   add('Планы переезда', [['Цель', ANSWER_LABELS[a.longTermGoal]], ...(a.longTermGoal && a.longTermGoal !== 'TEMPORARY_RESIDENCE_SUFFICIENT' ? [['Сохранить гражданство РФ', ANSWER_LABELS[a.keepRuCitizenship]]] : [])]);
   const row = ([label, answer]) => `<div class="answer-row"><span>${html(label)}</span><b>${html(answer)}</b></div>`;
   const item = (entry) => Array.isArray(entry) ? row(entry) : `<section class="answer-subgroup"><h4>${html(entry.title)}</h4><div class="answer-subgroup-grid">${entry.rows.map(row).join('')}</div></section>`;
-  return `<section class="answers-review surface"><h2>Ваши ответы</h2><p>Эти данные использованы для расчёта результатов.</p><div class="answers-groups">${groups.map(([title, items]) => `<section><h3>${html(title)}</h3><div class="answers-grid">${items.map(item).join('')}</div></section>`).join('')}</div></section>`;
+  return `<details class="answers-review"><summary>Ваши ответы</summary><div class="answers-review-body"><p>Эти данные использованы для расчёта результатов.</p><div class="answers-groups">${groups.map(([title, items]) => `<section><h3>${html(title)}</h3><div class="answers-grid">${items.map(item).join('')}</div></section>`).join('')}</div></div></details>`;
 }
 
 function statusClass(group) { return ({ SUITABLE: 'positive', SUITABLE_WITH_CONDITIONS: 'conditional', REQUIRES_SEPARATE_BASIS: 'separate-basis', INTERNATIONAL_PROTECTION: 'protection', UNSUITABLE: 'negative' })[group] || 'negative'; }
@@ -659,10 +665,136 @@ function renderCountryTab(calculation, active = false) {
 
 function renderLockedCountryTab(country) {
   const flag = country.countryId ? countryFlag(country.countryId) : '';
-  return `<button class="country-tab is-locked" type="button" role="tab" aria-disabled="true" tabindex="-1"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(country.name)}</strong><small>Доступно после оплаты</small></span><span class="country-tab-lock" aria-hidden="true">🔒</span></button>`;
+  return `<button class="country-tab is-locked" type="button" data-locked-country="${html(country.countryId)}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(country.name)}</strong></span><span class="country-tab-lock" aria-hidden="true">🔒</span></button>`;
 }
 
-function renderCountryResult(calculation, changed = false, active = false) {
+function renderMoreLockedCountries(count) {
+  if (count < 1) return '';
+  return `<button class="country-tab country-tab-more is-locked" type="button" data-more-locked="${count}"><span class="country-tab-lock country-tab-lock-leading" aria-hidden="true">🔒</span><span class="country-tab-copy"><strong>И ещё ${count} стран</strong><small>Открыть все результаты</small></span></button>`;
+}
+
+function citizenshipYears(route) {
+  if (Number.isFinite(route?.longTerm?.yearsToCitizenship)) return route.longTerm.yearsToCitizenship;
+  const text = String(route?.longTerm?.citizenship || '');
+  const values = [...text.matchAll(/(\d+(?:[.,]\d+)?)\s*(?:год|года|лет)/giu)]
+    .map((match) => Number(match[1].replace(',', '.')))
+    .filter(Number.isFinite);
+  if (values.length) return Math.min(...values);
+  const wordYears = [
+    ['один', 1], ['одного', 1], ['два', 2], ['двух', 2], ['три', 3], ['трех', 3], ['трёх', 3],
+    ['четыре', 4], ['четырех', 4], ['четырёх', 4], ['пять', 5], ['пяти', 5], ['семь', 7], ['семи', 7],
+    ['десять', 10], ['десяти', 10],
+  ].filter(([word]) => new RegExp(`(?<![\\p{L}\\p{N}])${word}\\s+(?:год|года|лет)`, 'iu').test(text)).map(([, years]) => years);
+  return wordYears.length ? Math.min(...wordYears) : null;
+}
+
+function countryComparisonCitizenshipYears(country) {
+  const bestRouteYears = citizenshipYears(country?.bestRoute);
+  if (bestRouteYears != null) return bestRouteYears;
+  const routeYears = (Array.isArray(country?.routes) ? country.routes : [])
+    .map(citizenshipYears)
+    .filter(Number.isFinite);
+  if (routeYears.length) return Math.min(...routeYears);
+  const countryId = country?.country?.countryId;
+  const editorialYears = countryComparisonEditorial?.countries?.[countryId]?.yearsToCitizenship;
+  return Number.isFinite(editorialYears) ? editorialYears : null;
+}
+
+function incomeThresholdUsd(route) {
+  if (Number.isFinite(route?.comparisonIncomeThresholdUsd)) return route.comparisonIncomeThresholdUsd;
+  if (route?.financialSummary == null) return 0;
+  const values = (route?.financialSummary?.alternatives || [])
+    .filter((item) => item.kind === 'INCOME' && Number.isFinite(item.thresholdUsd))
+    .map((item) => item.thresholdUsd);
+  return values.length ? Math.min(...values) : null;
+}
+
+function countryComparisonIncomeRoute(country) {
+  const routes = Array.isArray(country?.routes) ? country.routes : [];
+  const withNumericIncome = routes.filter((route) => {
+    const threshold = incomeThresholdUsd(route);
+    return Number.isFinite(threshold) && threshold > 0;
+  });
+  const digitalNomad = withNumericIncome.find(
+    (route) => route.routeType === 'DIGITAL_NOMAD_REMOTE_WORK',
+  );
+  if (digitalNomad) return digitalNomad;
+  return withNumericIncome.sort(
+    (left, right) => incomeThresholdUsd(left) - incomeThresholdUsd(right),
+  )[0] || null;
+}
+
+function countryComparisonIncome(country) {
+  const route = countryComparisonIncomeRoute(country);
+  return route ? incomeThresholdUsd(route) : 0;
+}
+
+function comparisonRank(value, values, total = values.length) {
+  if (value == null) return null;
+  const sorted = values.filter(Number.isFinite).sort((left, right) => left - right);
+  return { rank: sorted.findIndex((item) => item >= value) + 1, total };
+}
+
+function comparisonBarPosition(rank) {
+  if (!rank || rank.total < 2) return 50;
+  return Math.round(((rank.rank - 1) / (rank.total - 1)) * 100);
+}
+
+function selectFreeCountryForPreview(countries) {
+  return selectWorstSuitableCountry(countries, {
+    citizenshipYears: countryComparisonCitizenshipYears,
+    incomeThreshold: countryComparisonIncome,
+  });
+}
+
+function renderLossLine(freeCountry, fullCalculation) {
+  const all = Array.isArray(fullCalculation?.results) ? fullCalculation.results : [];
+  if (!freeCountry || all.length < 2) return '';
+  const suitableCountries = all.filter((country) => routePresentationGroup(country.bestRoute) === 'SUITABLE');
+  const paraguayOnlySuitable = suitableCountries.length === 1 && suitableCountries[0]?.country?.countryId === 'PY';
+  if (paraguayOnlySuitable) {
+    const remainingCountries = Math.max(0, all.length - 1);
+    return `<section class="result-comparison result-limitation"><h2>Что вас сейчас ограничивает</h2><p><b>Парагвай — единственная страна, где маршрут подходит без дополнительных условий.</b></p><p>Он подошёл потому, что при подаче на ВНЖ доход не проверяется. Для ПМЖ подтверждать средства всё равно придётся, но уже на следующем шаге. В остальных ${countryLocative(remainingCountries)} маршруты есть, но требуют условий или отдельного основания.</p><p><b>Ближайший подтверждённый порог — от $1 000 в месяц.</b> При таком доходе полностью подходящие маршруты появляются ещё в ${countryLocative(currentThousandIncomeOpportunityCount)}.</p></section>`;
+  }
+  const targetYears = countryComparisonCitizenshipYears(freeCountry);
+  const targetIncome = countryComparisonIncome(freeCountry);
+  const yearsRank = comparisonRank(targetYears, all.map(countryComparisonCitizenshipYears), all.length);
+  const incomeRank = comparisonRank(targetIncome, all.map(countryComparisonIncome), all.length);
+  const lowerIncome = targetIncome == null ? 0 : all.filter((country) => {
+    const threshold = countryComparisonIncome(country);
+    return threshold != null && threshold < targetIncome;
+  }).length;
+  const lowerAndShorter = targetIncome == null || targetYears == null ? 0 : all.filter((country) => {
+    const threshold = countryComparisonIncome(country);
+    const years = countryComparisonCitizenshipYears(country);
+    return threshold != null && years != null && threshold < targetIncome && years < targetYears;
+  }).length;
+  const shorter = targetYears == null ? 0 : all.filter((country) => {
+    const years = countryComparisonCitizenshipYears(country);
+    return years != null && years < targetYears;
+  }).length;
+  const metric = (label, value, rank) => `<div class="comparison-metric"><span>${html(label)}</span><div class="comparison-track">${rank ? `<i style="left:${comparisonBarPosition(rank)}%"></i>` : ''}</div><b>${html(value)}${rank ? ` · ${rank.rank}-я из ${rank.total}` : ''}</b></div>`;
+  const yearsAfterPermanentResidence = /(?:после|от).*?(?:Permanent Residence|ПМЖ)/iu.test(String(freeCountry.bestRoute?.longTerm?.citizenship || ''));
+  const yearsValue = targetYears == null ? 'Нет сопоставимого срока' : `${targetYears} ${targetYears === 1 ? 'год' : targetYears >= 2 && targetYears <= 4 ? 'года' : 'лет'}${yearsAfterPermanentResidence ? ' после ПМЖ' : ''}`;
+  const incomeValue = targetIncome == null ? 'Нет сопоставимого порога' : targetIncome === 0 ? '$0 · текущий доход не требуется' : currency(Math.round(targetIncome), 'USD');
+  const comparisonLines = [
+    targetYears == null
+      ? 'срок до гражданства для выбранного маршрута не установлен'
+      : shorter > 0 ? `в ${countryLocative(shorter)} путь к паспорту короче` : null,
+    targetIncome == null
+      ? 'числовой порог дохода для выбранного маршрута не установлен'
+      : lowerIncome > 0 ? `в ${countryLocative(lowerIncome)} порог дохода ниже` : null,
+    targetIncome == null || targetYears == null
+      ? 'совместное сравнение срока и порога недоступно'
+      : lowerAndShorter > 0 ? `в ${lowerAndShorter} — и то, и другое` : null,
+  ].filter(Boolean);
+  const comparisonSummary = comparisonLines.length
+    ? `<p><b>Среди всех стран:</b><br>${comparisonLines.map((line) => html(line)).join(',<br>')}.</p>`
+    : '';
+  return `<section class="result-comparison"><h2>Эта страна в сравнении с другими странами</h2>${metric('До гражданства', yearsValue, yearsRank)}${metric('Порог дохода', incomeValue, incomeRank)}${comparisonSummary}</section>`;
+}
+
+function renderCountryResult(calculation, changed = false, active = false, previewCollapsed = false) {
   const { sortedRoutes, best, countryId, countryName, flag } = countryPresentation(calculation);
   const children = calculation.profile.children?.length || 0;
   const family = `${calculation.profile.adults} ${calculation.profile.adults === 1 ? 'взрослый' : 'взрослых'}${children ? `, ${children} ${children === 1 ? 'ребёнок' : 'детей'}` : ''}`;
@@ -717,13 +849,13 @@ function renderCountryResult(calculation, changed = false, active = false) {
         return `<tr data-city-index="${index}" data-size="${city.size || ''}" data-cost="${comparisonCost ?? ''}" data-cold-low="${coldBounds[0] ?? ''}" data-cold-high="${coldBounds[1] ?? coldBounds[0] ?? ''}" data-hot-low="${hotBounds[0] ?? ''}" data-hot-high="${hotBounds[1] ?? hotBounds[0] ?? ''}"><td data-label="Город"><div class="city-name">${html(city.name)}</div><div class="city-role-list">${badges.map((category) => `<span>${html(category)}</span>`).join('')}</div></td><td data-label="Тип города">${html(citySizeLabel(city.size))}</td><td data-label="Расходы в мес" class="city-cost">${comparisonCost == null ? 'Нет данных' : currency(comparisonCost)}</td><td data-label="Холодный сезон">${coldValue == null ? 'Нет данных' : html(formatCityTemperatureRange(coldValue))}</td><td data-label="Жаркий сезон">${hotValue == null ? 'Нет данных' : html(formatCityTemperatureRange(hotValue))}</td></tr>`;
       }).join('')}</tbody></table></div>`
     : '<p>Для этой страны пока нет городской модели.</p>';
-  return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
+  return `<article id="country-panel-${html(countryId)}" class="country-detail-panel${previewCollapsed ? ' is-preview-collapsed' : ''}" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
     <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     ${entryBlock}
     <section class="country-info-card country-info-cities"><div class="section-title-row"><div><h3>Города, климат и расходы</h3></div></div>${citySection}</section>
     ${renderSchoolPresentation(calculation)}
-    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}${renderConsultantCollaboration(calculation)}</div></article>`;
+    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}${renderConsultantCollaboration(calculation)}</div>${previewCollapsed ? '<div class="country-preview-fade"></div><button class="country-preview-expand" type="button">Развернуть полный разбор ↓</button>' : ''}</article>`;
 }
 
 function renderQualityOfLife(calculation) {
@@ -879,10 +1011,12 @@ function bindRouteSpecificFollowUps() {
   });
 }
 
-function renderResult(calculation, changed = false, lockedCountries = [], answers = null) {
+function renderResult(calculation, changed = false, lockedCountries = [], answers = null, fullCalculation = calculation) {
   const countries = sortCountriesForDisplay(calculation.results || []);
+  const visibleLockedCountries = lockedCountries.slice(0, 2);
+  const remainingLockedCount = Math.max(0, lockedCountries.length - visibleLockedCountries.length);
   const calculationNote = `<p id="calculationResultNote" class="result-note">${calculationNoteHtml(countries[0])}</p>`;
-  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}${lockedCountries.map(renderLockedCountryTab).join('')}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0)).join('')}</div></div>${renderCalculationErrors(calculation.errors || [])}${calculationNote}${answers ? renderAnswersBlock(answers) : ''}`;
+  $('#result').innerHTML = `<div class="country-workspace"><nav class="country-tabs" role="tablist" aria-label="Страны">${countries.map((country, index) => renderCountryTab(country, index === 0)).join('')}${visibleLockedCountries.map(renderLockedCountryTab).join('')}${renderMoreLockedCountries(remainingLockedCount)}</nav><div class="country-detail-pane">${countries.map((country, index) => renderCountryResult(country, changed, index === 0, lockedCountries.length > 0)).join('')}</div></div>${lockedCountries.length ? renderLossLine(countries[0], fullCalculation) : ''}${renderCalculationErrors(calculation.errors || [])}${calculationNote}${answers ? renderAnswersBlock(answers) : ''}`;
   const countryById = new Map(countries.map((country) => [country.country.countryId, country]));
   const activateCountry = (countryId) => {
     $$('[data-country-tab]', $('#result')).forEach((tab) => {
@@ -898,6 +1032,17 @@ function renderResult(calculation, changed = false, lockedCountries = [], answer
     });
   };
   $$('[data-country-tab]', $('#result')).forEach((tab) => tab.addEventListener('click', () => activateCountry(tab.dataset.countryTab)));
+  $$('[data-locked-country], [data-more-locked]', $('#result')).forEach((tab) => tab.addEventListener('click', () => {
+    $('#lockedCountryTitle').textContent = `Откройте ещё ${lockedCountries.length} стран`;
+    $('#lockedCountrySummary').textContent = 'Полный разбор всех остальных стран — всего за $9.';
+    $('#lockedCountryDialog').showModal();
+  }));
+  $$('.country-preview-expand', $('#result')).forEach((button) => button.addEventListener('click', () => {
+    const panel = button.closest('.country-detail-panel');
+    panel?.classList.remove('is-preview-collapsed');
+    button.remove();
+    $('.country-preview-fade', panel)?.remove();
+  }));
   $$('.cities-comparison', $('#result')).forEach((comparison) => {
     const sourceCities = [...comparison.querySelectorAll('tbody tr')];
     const body = comparison.querySelector('tbody');
@@ -920,16 +1065,40 @@ function renderResult(calculation, changed = false, lockedCountries = [], answer
 function switchToResult(calculation, changed = false) {
   hideAccessGate();
   $('#previewBottomCta').hidden = true;
+  $('#resultSales').hidden = true;
+  $('#resultReviews').hidden = true;
+  $('#resultFaq').hidden = true;
+  $('#resultPayment').hidden = true;
+  $('#resultUpdates').hidden = true;
+  $('#resultFooter').hidden = true;
+  $('#headerSalesLink').hidden = true;
+  if (stickyPaymentScrollHandler) window.removeEventListener('scroll', stickyPaymentScrollHandler);
   $('#citizenshipGate').hidden = true;
   renderResult(calculation, changed);
   $('#questionnaireView').hidden = true;
   $('#resultView').hidden = false;
+  $('#heroTitle').hidden = false;
   $('#heroTitle').textContent = 'Ваш результат';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'По вашим ответам рассчитаны доступные варианты переезда и условия для семьи.';
   $('#saveResult').hidden = false;
   $('#editProfile').hidden = false;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => window.scrollTo(0, 0));
+}
+
+function setupStickyPayment() {
+  const cta = $('#previewBottomCta');
+  const panel = $('.country-detail-panel', $('#result'));
+  if (!cta || !panel) return;
+  if (stickyPaymentScrollHandler) window.removeEventListener('scroll', stickyPaymentScrollHandler);
+  stickyPaymentScrollHandler = () => {
+    const threshold = panel.getBoundingClientRect().top + window.scrollY + panel.offsetHeight / 2;
+    cta.hidden = window.scrollY < threshold;
+  };
+  window.addEventListener('scroll', stickyPaymentScrollHandler, { passive: true });
+  stickyPaymentScrollHandler();
 }
 
 function showUnpaidResult(presentation, accessState, changed = false) {
@@ -937,10 +1106,18 @@ function showUnpaidResult(presentation, accessState, changed = false) {
   $('#citizenshipGate').hidden = true;
   $('#questionnaireView').hidden = true;
   const hasFreeCountry = presentation.state === FUNNEL_STATES.FREE_COUNTRY;
-  if (hasFreeCountry) renderResult(presentation.previewCalculation, changed, presentation.lockedCountries, currentAnswers);
+  if (hasFreeCountry) renderResult(presentation.previewCalculation, changed, presentation.lockedCountries, currentAnswers, presentation.fullCalculation);
   $('#resultView').hidden = !hasFreeCountry;
+  $('#resultSales').hidden = !hasFreeCountry;
+  $('#resultReviews').hidden = !hasFreeCountry;
+  $('#resultFaq').hidden = !hasFreeCountry;
+  $('#resultPayment').hidden = !hasFreeCountry;
+  $('#resultUpdates').hidden = !hasFreeCountry;
+  $('#resultFooter').hidden = !hasFreeCountry;
   if (hasFreeCountry) {
     initializeMatcherAnalytics();
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+    import('../landing/paypal-checkout.js');
     trackMatcherClarityEventOnce(
       MATCHER_CLARITY_EVENTS.FREE_COUNTRY_RESULT_VIEW,
     );
@@ -951,7 +1128,8 @@ function showUnpaidResult(presentation, accessState, changed = false) {
       );
     }
   }
-  $('#heroTitle').textContent = 'Результат расчёта';
+  $('#headerSalesLink').hidden = !hasFreeCountry;
+  $('#heroTitle').hidden = true;
   $('#heroSubtitle').textContent = '';
   $('#heroSubtitle').hidden = true;
   $('#saveResult').hidden = true;
@@ -974,7 +1152,15 @@ function showCalculationFailure(errors = []) {
   $('#result').innerHTML = '';
   $('#previewBottomCta').hidden = true;
   $('#resultView').hidden = true;
+  $('#resultSales').hidden = true;
+  $('#resultReviews').hidden = true;
+  $('#resultFaq').hidden = true;
+  $('#resultPayment').hidden = true;
+  $('#resultUpdates').hidden = true;
+  $('#resultFooter').hidden = true;
+  $('#headerSalesLink').hidden = true;
   $('#questionnaireView').hidden = false;
+  $('#heroTitle').hidden = false;
   $('#heroTitle').textContent = 'Подберём вариант иммиграции';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
@@ -992,7 +1178,18 @@ async function accessStateForResult() {
 }
 
 async function handleCalculatedResult(calculation, { changed = false, accessState = null } = {}) {
-  const presentation = deriveFunnelPresentation(calculation, sortCountriesForDisplay);
+  const suitableCountries = (calculation.results || []).filter((country) => routePresentationGroup(country.bestRoute) === 'SUITABLE');
+  currentThousandIncomeOpportunityCount = suitableCountries.length === 1 && suitableCountries[0]?.country?.countryId === 'PY'
+    ? countAdditionalSuitableCountriesAtIncome({
+      profile: currentProfile,
+      packages: activeResearchPackages,
+      context: calculationContext,
+      calculate: calculateActiveMatcher,
+      existingSuitableCountryIds: new Set(['PY']),
+      incomeUsd: 1000,
+    })
+    : 0;
+  const presentation = deriveFunnelPresentation(calculation, sortCountriesForDisplay, selectFreeCountryForPreview);
   if (presentation.state === FUNNEL_STATES.ERROR) {
     showCalculationFailure(presentation.errors || calculation.errors || []);
     return;
@@ -1017,7 +1214,15 @@ function returnToQuestionnaire() {
   $('#previewBottomCta').hidden = true;
   $('#citizenshipGate').hidden = true;
   $('#resultView').hidden = true;
+  $('#resultSales').hidden = true;
+  $('#resultReviews').hidden = true;
+  $('#resultFaq').hidden = true;
+  $('#resultPayment').hidden = true;
+  $('#resultUpdates').hidden = true;
+  $('#resultFooter').hidden = true;
+  $('#headerSalesLink').hidden = true;
   $('#questionnaireView').hidden = false;
+  $('#heroTitle').hidden = false;
   $('#heroTitle').textContent = 'Подберём вариант иммиграции';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
@@ -1682,6 +1887,27 @@ $('#clearDraft').addEventListener('click', clearAll);
 $('#saveResult').addEventListener('click', openSaveResultDialog);
 $('#editProfile').addEventListener('click', returnToQuestionnaire);
 
+function openPaymentDialog() {
+  $('#lockedCountryDialog')?.close();
+  import('../landing/paypal-checkout.js');
+  $('#resultPayment')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
+function openSalesSection() {
+  $('#lockedCountryDialog')?.close();
+  $('#resultSales')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+}
+
+$('#previewBottomPaymentLink').addEventListener('click', openPaymentDialog);
+$('#accessPaymentLink').addEventListener('click', openPaymentDialog);
+$$('[data-open-payment]').forEach((button) => button.addEventListener('click', openPaymentDialog));
+$$('[data-open-sales]').forEach((button) => button.addEventListener('click', openSalesSection));
+$('#headerSalesLink').addEventListener('click', openPaymentDialog);
+$$('[data-close-dialog]').forEach((button) => button.addEventListener('click', () => button.closest('dialog')?.close()));
+$$('dialog').forEach((dialog) => dialog.addEventListener('click', (event) => {
+  if (event.target === dialog) dialog.close();
+}));
+
 $('#closeSaveResult').addEventListener(
   'click',
   () => $('#saveResultDialog').close(),
@@ -1769,12 +1995,67 @@ async function handlePaymentReturn(restoredDraft) {
   }
 }
 
+function initializeResultLandingSections() {
+  const resultView = $('#resultView');
+  const payment = $('#resultPayment');
+  const reviews = $('#resultReviews');
+  const faq = $('#resultFaq');
+  if (resultView && payment && reviews && faq) {
+    resultView.insertBefore(reviews, payment);
+    resultView.insertBefore(faq, payment);
+  }
+
+  const carousel = $('[data-result-carousel]');
+  if (!carousel) return;
+  const cards = $$('.review-card', carousel);
+  const dots = $$('.review-dot', carousel);
+  const track = $('.reviews-track', carousel);
+  const stage = $('.reviews-stage', carousel);
+  const founder = $('.founder-note', reviews);
+  const expand = $('.review-expand', carousel);
+  const preview = $('.review-text-preview', carousel);
+  const full = $('.review-text-full', carousel);
+  let index = 0;
+
+  const fitHeight = () => {
+    if (!stage || !cards.length || reviews.hidden) return;
+    stage.style.height = 'auto';
+    const maxHeight = Math.max(...cards.map((card) => card.scrollHeight));
+    stage.style.height = `${maxHeight}px`;
+    if (founder) founder.style.height = window.matchMedia('(min-width:981px)').matches ? `${maxHeight}px` : '';
+  };
+  const render = () => {
+    if (track) track.style.transform = `translateX(-${index * 100}%)`;
+    cards.forEach((card, cardIndex) => card.classList.toggle('active', cardIndex === index));
+    dots.forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === index));
+    requestAnimationFrame(fitHeight);
+  };
+  const goTo = (nextIndex) => {
+    index = (nextIndex + cards.length) % cards.length;
+    render();
+  };
+  $('.review-nav.prev', carousel)?.addEventListener('click', () => goTo(index - 1));
+  $('.review-nav.next', carousel)?.addEventListener('click', () => goTo(index + 1));
+  dots.forEach((dot, dotIndex) => dot.addEventListener('click', () => goTo(dotIndex)));
+  expand?.addEventListener('click', () => {
+    const opening = expand.getAttribute('aria-expanded') !== 'true';
+    expand.setAttribute('aria-expanded', String(opening));
+    if (preview) preview.hidden = opening;
+    if (full) full.hidden = !opening;
+    expand.textContent = opening ? 'Свернуть ↑' : 'Читать полностью ↓';
+    requestAnimationFrame(fitHeight);
+  });
+  window.addEventListener('resize', fitHeight);
+  render();
+}
+
 async function init() {
+  initializeResultLandingSections();
   const restoredDraft = restoreDraft();
   syncChildren(); syncConditional(); showStep(1, false);
   try {
     const buildId = currentBuildId();
-    const [packages, schemaResponse, editorial, consultants, indexedUnits] = await Promise.all([
+    const [packages, schemaResponse, editorial, consultants, indexedUnits, countryComparison] = await Promise.all([
       Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
         const response = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
         if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
@@ -1792,6 +2073,9 @@ async function init() {
       fetch(withBuildId(new URL(INDEXED_UNIT_RATES_FILE, DATA_BASE), buildId))
         .then((response) => response.ok ? response.json() : { units: {} })
         .catch(() => ({ units: {} })),
+      fetch(withBuildId(new URL(COUNTRY_COMPARISON_FILE, DATA_BASE), buildId))
+        .then((response) => response.ok ? response.json() : { countries: {} })
+        .catch(() => ({ countries: {} })),
     ]);
     if (!schemaResponse.ok) throw new Error(`HTTP ${schemaResponse.status}: user-profile schema`);
     const fxCurrencies = [...new Set([...collectCurrencyCodes(packages), ...questionnaireCurrencies()])];
@@ -1805,6 +2089,7 @@ async function init() {
     calculationContext = context;
     qualityOfLifeEditorial = editorial?.countries && typeof editorial.countries === 'object' ? editorial : { countries: {} };
     countryConsultants = consultants?.countries && typeof consultants.countries === 'object' ? consultants : { countries: {} };
+    countryComparisonEditorial = countryComparison?.countries && typeof countryComparison.countries === 'object' ? countryComparison : { countries: {} };
     const availabilityError = $('#calculationAvailabilityError');
     if (hasCompleteFxOutage(context.fx)) {
       availabilityError.hidden = false;

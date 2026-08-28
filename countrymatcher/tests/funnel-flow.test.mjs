@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import {
   additionalCountriesText,
   countryCount,
+  countryLocative,
   deriveFunnelPresentation,
   FUNNEL_STATES,
   summarizeCalculation,
@@ -12,6 +13,7 @@ import {
   usesSingularVerb,
 } from '../matcher/funnel.js';
 import { sortCountriesForDisplay } from '../matcher/profile.js';
+import { selectWorstSuitableCountry } from '../matcher/free-country-selection.js';
 import { countryOptions, parseCountryCode } from '../matcher/countries.js';
 
 import {
@@ -94,22 +96,27 @@ test('aggregate teaser counts every evaluated route while retaining matched coun
     routes: 3,
     suitableRoutes: 1,
     conditionalRoutes: 2,
+    separateBasisRoutes: 0,
     unsuitableRoutes: 3,
     totalEvaluatedRoutes: 6,
   });
 });
 
-test('result summary contains route-status breakdown and no country or route names', () => {
+test('country locative uses correct Russian forms', () => {
+  assert.deepEqual([1, 2, 5, 21].map(countryLocative), ['1 стране', '2 странах', '5 странах', '21 стране']);
+});
+
+test('result summary combines every potential route into the second card and exposes no names', () => {
   const teaser = teaserPresentation(syntheticCalculation());
   assert.equal(teaser.routes, 3);
   assert.equal(teaser.suitableRoutes, 1);
   assert.equal(teaser.conditionalRoutes, 2);
   assert.equal(teaser.totalEvaluatedRoutes, 6);
-  assert.match(teaser.heading, /Проверили 6 миграционных маршрутов исходя из ваших ответов/);
+  assert.equal(teaser.heading, 'Результат расчёта');
+  assert.deepEqual(teaser.countryCounts, { suitable: 1, conditional: 2, separateBasis: 0 });
   assert.deepEqual(teaser.breakdown, [
-    '1 маршрут подходит',
-    '2 маршрута — при выполнении условий',
-    '3 маршрута не подходят',
+    '1 страна:и 1 маршрут, который уже вам подходит',
+    '3 страны:и 2 маршрута, в которых необходимо выполнить условие, либо по основанию, которое, возможно, у вас уже есть',
   ]);
   assert.equal(teaser.routes, teaser.suitableRoutes + teaser.conditionalRoutes);
   const summaryCopy = [teaser.heading, teaser.text, ...teaser.breakdown].join(' ');
@@ -119,7 +126,7 @@ test('result summary contains route-status breakdown and no country or route nam
   }
 });
 
-test('result summary uses correct Russian forms for route counts', () => {
+test('result summary uses route counts from all evaluated routes', () => {
   const calculationWithCount = (count, status = 'SUITABLE') => ({
     results: Array.from({ length: count }, () => ({
       bestRoute: { routeStatus: status },
@@ -127,20 +134,9 @@ test('result summary uses correct Russian forms for route counts', () => {
     })),
   });
 
-  assert.match(teaserPresentation(calculationWithCount(1)).heading, /Проверили 1 миграционный маршрут/);
-  assert.match(teaserPresentation(calculationWithCount(2)).heading, /Проверили 2 миграционных маршрута/);
-  const suitableExpected = new Map([
-    [1, '1 маршрут подходит'], [2, '2 маршрута подходят'], [5, '5 маршрутов подходят'], [11, '11 маршрутов подходят'], [21, '21 маршрут подходит'],
-  ]);
-  const conditionalExpected = new Map([
-    [1, '1 маршрут — при выполнении условий'], [2, '2 маршрута — при выполнении условий'], [5, '5 маршрутов — при выполнении условий'], [11, '11 маршрутов — при выполнении условий'], [21, '21 маршрут — при выполнении условий'],
-  ]);
-  for (const [count, expected] of suitableExpected) {
-    assert.equal(teaserPresentation(calculationWithCount(count)).breakdown[0], expected);
-  }
-  for (const [count, expected] of conditionalExpected) {
-    assert.equal(teaserPresentation(calculationWithCount(count, 'SUITABLE_WITH_CONDITIONS')).breakdown[1], expected);
-  }
+  assert.match(teaserPresentation(calculationWithCount(1)).breakdown[0], /^1 страна:и 1 маршрут/);
+  assert.match(teaserPresentation(calculationWithCount(2)).breakdown[0], /^2 страны:и 2 маршрута/);
+  assert.match(teaserPresentation(calculationWithCount(5, 'SUITABLE_WITH_CONDITIONS')).breakdown[1], /^5 стран:и 5 маршрутов, в которых необходимо выполнить условие/);
   assert.deepEqual([1, 2, 5, 11, 21].map(usesSingularVerb), [true, false, false, false, true]);
   assert.deepEqual([1, 2, 5, 11, 21].map(countryCount), ['1 страна', '2 страны', '5 стран', '11 стран', '21 страна']);
   assert.deepEqual([1, 2, 5, 11, 21].map(additionalCountriesText), ['Ещё 1 страна', 'Ещё 2 страны', 'Ещё 5 стран', 'Ещё 11 стран', 'Ещё 21 страна']);
@@ -174,6 +170,45 @@ test('free preview selects the first eligible country using generic display sort
   assert.ok(presentation.lockedCountries.every((country) => (
     !('routes' in country) && !('bestRoute' in country)
   )));
+  assert.deepEqual(Object.keys(presentation.lockedCountries[0]).sort(), ['countryId', 'name']);
+});
+
+test('free preview selects the suitable country with the worst combined citizenship and income rank', () => {
+  const countries = [
+    { country: { countryId: 'A' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 2, income: 3000 },
+    { country: { countryId: 'B' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 10, income: 2000 },
+    { country: { countryId: 'C' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 5, income: 5000 },
+    { country: { countryId: 'D' }, bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS' }, years: 20, income: 9000 },
+  ];
+  const selected = selectWorstSuitableCountry(countries, {
+    citizenshipYears: (country) => country.years,
+    incomeThreshold: (country) => country.income,
+  });
+  assert.equal(selected.country.countryId, 'C');
+});
+
+test('worst-country selection preserves current order on equal combined rank', () => {
+  const countries = [
+    { country: { countryId: 'A' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 10, income: 1000 },
+    { country: { countryId: 'B' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 2, income: 5000 },
+  ];
+  const selected = selectWorstSuitableCountry(countries, {
+    citizenshipYears: (country) => country.years,
+    incomeThreshold: (country) => country.income,
+  });
+  assert.equal(selected.country.countryId, 'A');
+});
+
+test('a single suitable country remains free even when a conditional country precedes it', () => {
+  const countries = [
+    { country: { countryId: 'A' }, bestRoute: { routeStatus: 'SUITABLE_WITH_CONDITIONS' }, years: 10, income: 5000 },
+    { country: { countryId: 'B' }, bestRoute: { routeStatus: 'SUITABLE' }, years: 2, income: 1000 },
+  ];
+  const selected = selectWorstSuitableCountry(countries, {
+    citizenshipYears: (country) => country.years,
+    incomeThreshold: (country) => country.income,
+  });
+  assert.equal(selected.country.countryId, 'B');
 });
 
 test('country-scoped FX errors survive the free preview without invalidating healthy country results', () => {
@@ -293,10 +328,28 @@ test('a single active matched country produces a valid one-country preview', () 
   assert.equal(presentation.lockedCountryCount, 0);
 });
 
-test('unsuitable zero suppresses the third summary line', () => {
+test('matched result summary always contains exactly two cards', () => {
   const teaser = teaserPresentation({ results: [{ bestRoute: { routeStatus: 'SUITABLE' }, routes: [{ routeStatus: 'SUITABLE' }] }] });
   assert.equal(teaser.unsuitableRoutes, 0);
   assert.equal(teaser.breakdown.length, 2);
+  assert.match(teaser.breakdown[0], /^1 страна:и 1 маршрут/);
+  assert.match(teaser.breakdown[1], /^1 страна:и 0 маршрутов, в которых необходимо выполнить условие/);
+});
+
+test('route counters use mutually exclusive presentation groups', () => {
+  const summary = summarizeCalculation({ results: [{
+    bestRoute: { routeStatus: 'SUITABLE' },
+    routes: [
+      { routeStatus: 'SUITABLE', presentationGroup: 'SUITABLE' },
+      { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
+      { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'INTERNATIONAL_PROTECTION' },
+    ],
+  }] });
+  assert.deepEqual({ suitable: summary.suitableRoutes, conditional: summary.conditionalRoutes, separate: summary.separateBasisRoutes }, {
+    suitable: 1,
+    conditional: 0,
+    separate: 2,
+  });
 });
 
 test('questionnaire is free initially and the access gate starts hidden', async () => {
@@ -308,6 +361,14 @@ test('questionnaire is free initially and the access gate starts hidden', async 
   assert.match(html, /<form id="matcherForm"/);
   assert.doesNotMatch(html, /classList\.add\(["']access-locked["']\)/);
   assert.doesNotMatch(css, /\.access-locked body > :not\(#accessGate\)/);
+});
+
+test('result FAQ uses the approved question wording', async () => {
+  const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(html, /Сколько времени занимает заполнение анкеты\?/);
+  assert.match(html, /Нужно ли снова платить за доступ к новым странам\?/);
+  assert.doesNotMatch(html, /Сколько занимает анкета\?/);
+  assert.doesNotMatch(html, /Нужно ли снова платить за новые страны\?/);
 });
 
 test('free-result DOM order is compact gate, result with bottom CTA, then independent manual access', async () => {
@@ -337,7 +398,9 @@ test('funnel UI has no preliminary-result copy and separates questionnaire priva
     readFile(new URL('../matcher/funnel.js', import.meta.url), 'utf8'),
   ]);
   assert.doesNotMatch(`${html}\n${app}\n${funnel}`, /предварительн/iu);
-  assert.ok((html.match(/Ответы анкеты остаются в вашем браузере\./g) || []).length >= 2);
+  assert.doesNotMatch(html, /Ответы анкеты остаются в вашем браузере\./);
+  assert.match(html, /id="headerSalesLink"[^>]*>Открыть все результаты<\/button>/);
+  assert.match(app, /\$\('#headerSalesLink'\)\.addEventListener\('click', openPaymentDialog\)/);
   assert.doesNotMatch(html, /на вашем устройстве|Данные остаются в браузере/);
   assert.match(html, /После активации доступ сохранится в этом браузере\./);
   assert.match(html, /<button type="submit">Открыть результаты<\/button>/);
@@ -345,21 +408,46 @@ test('funnel UI has no preliminary-result copy and separates questionnaire priva
   assert.doesNotMatch(html, /class="access-label"/);
   assert.match(html, /id="accessFreeCountry"[^>]*hidden/);
   assert.match(app, /freeCountryMessage: presentation\.freeCountryMessage/);
-  assert.match(app, /heroTitle'\)\.textContent = 'Результат расчёта'/);
+  assert.match(app, /heroTitle'\)\.hidden = true/);
   assert.doesNotMatch(`${html}\n${app}`, /Расчёт выполнен по вашим ответам/);
 });
 
 test('locked countries expose names only through locked navigation without unpaid details', async () => {
   const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const lockedTab = app.slice(app.indexOf('function renderLockedCountryTab'), app.indexOf('function renderCountryResult'));
+  const lockedTab = app.slice(app.indexOf('function renderLockedCountryTab'), app.indexOf('function citizenshipYears'));
   const resultRenderer = app.slice(app.indexOf('function renderResult'), app.indexOf('function switchToResult'));
   assert.match(lockedTab, /country-tab is-locked/);
   assert.match(lockedTab, /country\.name/);
   assert.doesNotMatch(lockedTab, /routeName|conditions|threshold|renderCountryResult/);
-  assert.match(resultRenderer, /lockedCountries\.map\(renderLockedCountryTab\)/);
+  assert.match(resultRenderer, /lockedCountries\.slice\(0, 2\)/);
+  assert.match(resultRenderer, /visibleLockedCountries\.map\(renderLockedCountryTab\)/);
+  assert.match(resultRenderer, /renderMoreLockedCountries\(remainingLockedCount\)/);
   assert.doesNotMatch(resultRenderer, /lockedCountries\.map\([^)]*renderCountryResult/);
-  assert.match(lockedTab, /aria-disabled="true"/);
+  assert.match(lockedTab, /data-locked-country/);
   assert.doesNotMatch(lockedTab, /data-country-tab/);
+});
+
+test('country citizenship comparison falls back to the shortest numeric term from published routes', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const comparison = app.slice(app.indexOf('function citizenshipYears'), app.indexOf('function incomeThresholdUsd'));
+  const resultComparison = app.slice(app.indexOf('function renderLossLine'), app.indexOf('function renderCountryResult'));
+  assert.match(comparison, /function countryComparisonCitizenshipYears\(country\)/);
+  assert.match(comparison, /const bestRouteYears = citizenshipYears\(country\?\.bestRoute\)/);
+  assert.match(comparison, /\['трёх', 3\]/);
+  assert.match(comparison, /if \(routeYears\.length\) return Math\.min\(\.\.\.routeYears\)/);
+  assert.match(comparison, /countryComparisonEditorial\?\.countries\?\.\[countryId\]\?\.yearsToCitizenship/);
+  assert.match(resultComparison, /const targetYears = countryComparisonCitizenshipYears\(freeCountry\)/);
+  assert.match(resultComparison, /all\.map\(countryComparisonCitizenshipYears\)/);
+  assert.doesNotMatch(resultComparison, /citizenshipYears\(country\.bestRoute\)/);
+});
+
+test('Paraguay-only result replaces comparison copy with a limitation explanation', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  assert.match(app, /Что вас сейчас ограничивает/);
+  assert.match(app, /Парагвай — единственная страна, где маршрут подходит без дополнительных условий/);
+  assert.match(app, /Ближайший подтверждённый порог — от \$1 000 в месяц/);
+  assert.match(app, /в \$\{countryLocative\(currentThousandIncomeOpportunityCount\)\}/);
+  assert.doesNotMatch(app, /в \$\{shorter\} странах путь к паспорту короче/);
 });
 
 test('one access-state owner controls payment, retry, and the complete bottom CTA', () => {
@@ -369,7 +457,7 @@ test('one access-state owner controls payment, retry, and the complete bottom CT
   ), {
     paymentVisible: true,
     retryVisible: false,
-    bottomCtaVisible: true,
+    bottomCtaVisible: false,
   });
   assert.deepEqual(accessPresentationState(
     { state: ACCESS_STATES.UNAVAILABLE },
@@ -453,7 +541,7 @@ test('valid unpaid submission calculates before access decision and renders only
   assert.ok(submit.indexOf('calculateActiveCountries()') < submit.indexOf('handleCalculatedResult(calculation)'));
   assert.match(orchestrator, /resolvedAccessState\.state === ACCESS_STATES\.ACTIVE[\s\S]*?switchToResult\(calculation, changed\)/);
   assert.match(orchestrator, /showUnpaidResult\(presentation, resolvedAccessState, changed\)/);
-  assert.match(unpaid, /renderResult\(presentation\.previewCalculation, changed, presentation\.lockedCountries, currentAnswers\)/);
+  assert.match(unpaid, /renderResult\(presentation\.previewCalculation, changed, presentation\.lockedCountries, currentAnswers, presentation\.fullCalculation\)/);
   assert.doesNotMatch(unpaid, /renderResult\(calculation|switchToResult/);
 });
 
@@ -548,10 +636,22 @@ test('landing primary CTAs open the free questionnaire while payment section rem
     readFile(new URL('../index.html', import.meta.url), 'utf8'),
     readFile(new URL('../matcher/access-gate.js', import.meta.url), 'utf8'),
   ]);
-  assert.match(matcher, /id="accessPaymentLink"[^>]*>Открыть все результаты<\/a>/);
-  assert.match(matcher, /id="previewBottomPaymentLink"[^>]*>Открыть все результаты<\/a>/);
+  assert.match(matcher, /id="resultPayment"/);
+  assert.match(matcher, /class="card-network-marks"/);
+  assert.match(matcher, /class="paypal-payment-card paypal-live-card"/);
+  assert.match(matcher, /цена только до 1 сентября <del>\$29<\/del> <span class="current-payment-price">\$9<\/span>/);
+  assert.match(matcher, /class="paypal-button-wrap paypal-button-live-wrap"/);
+  assert.match(matcher, /class="other-payments"/);
+  assert.match(matcher, /class="other-payment-list"/);
+  assert.match(matcher, /class="button other-payments-confirm"/);
+  assert.match(matcher, /src="\.\/landing\/assets\/payment\/visa\.svg"/);
+  assert.match(matcher, /src="\.\/landing\/assets\/payment\/mastercard\.svg"/);
+  assert.match(matcher, /id="manualAccess"[\s\S]*Уже есть код доступа\?/);
+  assert.match(matcher, /id="resultUpdates"/);
+  assert.match(matcher, /id="resultFooter"/);
+  assert.match(matcher, /id="previewBottomPaymentLink"[^>]*>Открыть<\/button>/);
   assert.match(gate, /EXPECTED_PRICE/);
-  assert.equal((gate.match(/Открыть все результаты — \$\$\{EXPECTED_PRICE/g) || []).length, 2);
-  assert.match(matcher, /Ответы анкеты остаются в вашем браузере\./);
+  assert.match(gate, /elements\.payment\.textContent = `Открыть все результаты/);
+  assert.doesNotMatch(matcher, /Ответы анкеты остаются в вашем браузере\./);
   assert.doesNotMatch(matcher, /Лучшая страна|Лучшая подходящая страна/);
 });

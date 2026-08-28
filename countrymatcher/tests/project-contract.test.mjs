@@ -244,7 +244,7 @@ test('root index is the application and matcher has no user page or redirect', a
     await existingRelativeAsset(asset);
   }
   assert.ok(html.indexOf('id="accessGate"') < html.indexOf('id="resultView"'));
-  assert.match(html, /class="brand" href="\.\/"/);
+  assert.match(html, /class="brand" href="\.\/landing\/"/);
 
   await assert.rejects(access(new URL('../matcher/index.html', import.meta.url)));
   await assert.rejects(access(new URL('../pilot/index.html', import.meta.url)));
