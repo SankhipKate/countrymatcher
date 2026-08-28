@@ -29,6 +29,7 @@ import {
   captureAndStoreAccess,
   captureUrl,
   isCompletedPermanentAccess,
+  matcherUrlFor,
   recoverPendingOrder,
   verifyAccessToken as verifyLandingToken,
 } from "../landing/paypal-checkout.js";
@@ -54,6 +55,25 @@ const BLOCKED_LOCATION = {
   hostname: "example.com",
   port: "",
 };
+
+test("successful payment always returns to the Country Matcher application root", () => {
+  assert.equal(
+    matcherUrlFor(
+      "https://sankhipkate.github.io/countrymatcher/landing/paypal-checkout.js",
+    ),
+    "https://sankhipkate.github.io/countrymatcher/?payment=success",
+  );
+  assert.equal(
+    matcherUrlFor(
+      "https://sankhipkate.github.io/countrymatcher/landing/paypal-checkout.js?v=build-123",
+    ),
+    "https://sankhipkate.github.io/countrymatcher/?payment=success",
+  );
+  assert.equal(
+    matcherUrlFor("http://localhost:8000/landing/paypal-checkout.js"),
+    "http://localhost:8000/?payment=success",
+  );
+});
 
 function memoryStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
