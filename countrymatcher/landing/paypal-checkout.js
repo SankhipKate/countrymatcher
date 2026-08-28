@@ -205,11 +205,15 @@ function setStatus(element, message, tone = "") {
   element.dataset.tone = tone;
 }
 
+export function matcherUrlFor(moduleUrl = import.meta.url) {
+  return new URL("../?payment=success", moduleUrl).href;
+}
+
 function addOpenAccessLink(container) {
   if (container.querySelector("[data-open-countrymatcher]")) return;
 
   const link = document.createElement("a");
-  link.href = "../";
+  link.href = matcherUrlFor();
   link.className = "button paypal-checkout-open";
   link.dataset.openCountrymatcher = "";
   link.textContent = "Открыть результат →";
@@ -259,7 +263,7 @@ function loadPayPalSdk(config) {
 
 function redirectToMatcher() {
   window.setTimeout(() => {
-    window.location.assign("../?payment=success");
+    window.location.assign(matcherUrlFor());
   }, 2500);
 }
 
