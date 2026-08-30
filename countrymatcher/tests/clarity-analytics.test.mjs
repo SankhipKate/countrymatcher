@@ -127,6 +127,8 @@ test("checkout contains the purchase-funnel analytics hooks", async () => {
     checkout,
     /trackPayPalFundingSource\(data\?\.fundingSource\)/,
   );
+  assert.match(analytics, /const isLandingDocument = Boolean/);
+  assert.match(analytics, /doc\.getElementById\?\.\("payment"\)/);
 
   for (const eventName of [
     "payment_section_view",

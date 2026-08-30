@@ -157,7 +157,7 @@ html,body{max-width:100%;overflow-x:clip}
 .country-detail-panel{overflow:hidden;border:1px solid var(--line);border-radius:20px;background:#fff}
 .country-detail-panel[hidden]{display:none!important}
 .country-result-banner{cursor:default;border-radius:0}
-@media(max-width:900px){.country-workspace{grid-template-columns:1fr}.country-tabs{position:sticky;z-index:5;top:0;display:flex;max-height:none;padding:8px 0;overflow-x:auto;background:#fff}.country-tab{flex:0 0 min(280px,82vw)}.country-detail-pane{min-width:0}}
+@media(max-width:900px){.country-workspace{grid-template-columns:1fr}.country-tabs{position:sticky;z-index:5;top:0;display:flex;max-height:none;padding:8px 0;overflow-x:auto;background:#fff}.country-tab{flex:0 0 min(230px,68vw)}.country-detail-pane{min-width:0}}
 
 @media(max-width:760px){.hero-content-row{display:block}.result-actions{margin-top:18px;flex-wrap:wrap}.result-save-button,.result-edit-button{width:auto;margin-top:0}}
 @media(max-width:430px){.result-actions{display:grid;grid-template-columns:1fr}.result-save-button,.result-edit-button{width:100%}}

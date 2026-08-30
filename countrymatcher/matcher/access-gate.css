@@ -356,8 +356,9 @@
 .result-payment .paypal-live-card { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
 .result-payment .payment-label { color: #1765bf; font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 .result-payment .paypal-payment-card h3 { margin: 0; font-size: 25px; }
-.result-payment .paypal-payment-card h3 del { color: #61738e; text-decoration-thickness: 2px; }
-.result-payment .current-payment-price { color: #071f3e; font-weight: 900; white-space: nowrap; }
+.result-payment .previous-payment-price,.result-payment .current-payment-price { font-family:inherit; font-size:1em; font-weight:900; line-height:inherit; }
+.result-payment .previous-payment-price { color:#61738e; text-decoration-thickness:2px; }
+.result-payment .current-payment-price { color:#071f3e; white-space:nowrap; }
 .result-payment .paypal-checkout-note { margin: 0; color: #61738e; font-size: 14px; }
 .result-payment .paypal-button-wrap { box-sizing: border-box; width: 100%; min-height: 145px; padding: 18px; border: 1px solid #e0e7ef; border-radius: 14px; background: #f4f7fb; }
 .result-payment .paypal-button-live-wrap { max-width: 560px; }
@@ -441,7 +442,8 @@
 /* Result page navigation and landing-identical sales/footer elements. */
 .site-header { position:sticky; z-index:60; top:0; }
 .header-sales-link,.sales-button { min-height:46px; padding:0 20px; border:0; border-radius:11px; background:#ffc956; color:#071f3e; font:inherit; font-size:15px; font-weight:850; cursor:pointer; box-shadow:0 8px 24px rgba(255,201,86,.18); }
-.header-sales-link { margin-left:auto; }
+.header-sales-link { flex:0 0 auto; margin-left:auto; }
+@media(max-width:900px) and (min-width:761px){.nav-shell{gap:34px}.header-sales-link{flex:1 1 auto;margin-left:0}}
 .preview-bottom-cta { display:none!important; }
 .result-offer-card .sales-button { width:100%; min-height:54px; margin-top:24px; font-size:17px; }
 .result-offer-card h2 { font-size:32px; }
@@ -479,6 +481,7 @@
 }
 @media(max-width:640px){
   .header-sales-link { min-height:38px; padding:0 12px; font-size:13px; }
+  .nav-shell { gap:12px; }
   .result-section-shell,.manual-access { width:min(100% - 28px,1180px); }
   .result-updates .updates-strip-inner { gap:12px; }
   .result-updates .updates-strip-copy { padding-top:0; }
