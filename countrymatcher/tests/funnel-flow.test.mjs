@@ -368,6 +368,7 @@ test('result FAQ uses the approved question wording', async () => {
   assert.doesNotMatch(html, /Сколько времени занимает заполнение анкеты\?/);
   assert.match(html, /Нужно ли снова платить за доступ к новым странам\?/);
   assert.doesNotMatch(html, /Сколько занимает анкета\?/);
+  assert.doesNotMatch(html, /Что будет, если ни одна страна не подойдёт\?/);
   assert.doesNotMatch(html, /Нужно ли снова платить за новые страны\?/);
 });
 
@@ -399,7 +400,7 @@ test('funnel UI has no preliminary-result copy and separates questionnaire priva
   ]);
   assert.doesNotMatch(`${html}\n${app}\n${funnel}`, /предварительн/iu);
   assert.doesNotMatch(html, /Ответы анкеты остаются в вашем браузере\./);
-  assert.match(html, /id="headerSalesLink"[^>]*>Открыть все результаты<\/button>/);
+  assert.match(html, /id="headerSalesLink"[^>]*>Открыть доступ<\/button>/);
   assert.match(app, /\$\('#headerSalesLink'\)\.addEventListener\('click', openPaymentDialog\)/);
   assert.doesNotMatch(html, /на вашем устройстве|Данные остаются в браузере/);
   assert.match(html, /После активации доступ сохранится в этом браузере\./);
@@ -639,7 +640,7 @@ test('landing primary CTAs open the free questionnaire while payment section rem
   assert.match(matcher, /id="resultPayment"/);
   assert.match(matcher, /class="card-network-marks"/);
   assert.match(matcher, /class="paypal-payment-card paypal-live-card"/);
-  assert.match(matcher, /цена только до 1 сентября <del>\$29<\/del> <span class="current-payment-price">\$9<\/span>/);
+  assert.match(matcher, /цена только до 1 сентября <del class="previous-payment-price">\$29<\/del> <span class="current-payment-price">\$9<\/span>/);
   assert.match(matcher, /class="paypal-button-wrap paypal-button-live-wrap"/);
   assert.match(matcher, /class="other-payments"/);
   assert.match(matcher, /class="other-payment-list"/);

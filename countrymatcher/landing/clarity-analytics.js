@@ -39,6 +39,12 @@ let initialized = false;
 
 export function initializeLandingAnalytics(doc = globalThis.document, win = globalThis.window) {
   if (initialized || !doc || !win) return;
+  const isLandingDocument = Boolean(
+    doc.getElementById?.("top") &&
+    doc.getElementById?.("payment") &&
+    doc.querySelector?.("[data-cta-location]"),
+  );
+  if (!isLandingDocument) return;
   initialized = true;
 
   trackClarityEvent(CLARITY_EVENTS.LANDING_VIEW);

@@ -15,7 +15,17 @@ test("matcher Clarity uses only fixed non-profile event names", () => {
       "cta_unlock_results_bottom",
       "cta_unlock_results_top",
       "free_country_result_view",
+      "locked_country_click",
+      "locked_dialog_cta_click",
+      "locked_more_click",
       "locked_results_view",
+      "manual_payment_telegram",
+      "other_payments_open",
+      "result_expand_click",
+      "result_header_cta_click",
+      "result_payment_view",
+      "result_sales_cta_click",
+      "result_sales_view",
     ],
   );
 
@@ -143,4 +153,16 @@ test("matcher analytics is privacy-masked and hooked only into free-result prese
     analytics,
     /clickable\.id === "previewBottomPaymentLink"/,
   );
+  for (const marker of [
+    "RESULT_EXPAND_CLICK",
+    "LOCKED_COUNTRY_CLICK",
+    "LOCKED_MORE_CLICK",
+    "RESULT_SALES_VIEW",
+    "RESULT_SALES_CTA_CLICK",
+    "RESULT_HEADER_CTA_CLICK",
+    "LOCKED_DIALOG_CTA_CLICK",
+    "RESULT_PAYMENT_VIEW",
+  ]) {
+    assert.match(analytics, new RegExp(`MATCHER_CLARITY_EVENTS\\.${marker}`));
+  }
 });
