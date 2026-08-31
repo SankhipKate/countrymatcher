@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 const appRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const outputRoot = resolve(process.argv[2] || resolve(appRoot, '.pages-artifact'));
 const files = [
-  '.nojekyll', 'index.html', 'payment-config.js',
+  '.nojekyll', 'index.html', 'payment-config.js', 'cookie-consent.css', 'cookie-consent.js',
   'assets', 'landing', 'matcher', 'pilot', 'js',
   'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json', 'data/CL-research-v4.0.json', 'data/GR-research-v4.0.json', 'data/CR-research-v4.0.json', 'data/EC-research-v4.0.json',
   'data/active-countries.json',
@@ -134,6 +134,16 @@ async function injectRootMetadata(appVersion, buildId) {
   await writeFile(indexPath, html);
 }
 
+async function injectLandingVersion(appVersion) {
+  const landingPath = resolve(outputRoot, 'landing/index.html');
+  let html = await readFile(landingPath, 'utf8');
+  if (!/<span\s+data-app-version>[^<]*<\/span>/i.test(html)) {
+    throw new Error('landing/index.html must contain a data-app-version span');
+  }
+  html = html.replace(/(<span\s+data-app-version>)[^<]*(<\/span>)/i, `$1${appVersion}$2`);
+  await writeFile(landingPath, html);
+}
+
 const appVersion = await resolveAppVersion();
 const buildId = resolveBuildId();
 
@@ -145,6 +155,7 @@ for (const relative of files) {
   await cp(resolve(appRoot, relative), destination, { recursive: true });
 }
 await injectRootMetadata(appVersion, buildId);
+await injectLandingVersion(appVersion);
 await rewriteRuntimeReferences(buildId);
 
 console.log(`Pages artifact built at ${outputRoot}`);

@@ -118,9 +118,12 @@ test('Pages artifact injects app version and one deployment BUILD_ID across runt
     await buildArtifact(output, { APP_VERSION: appVersion, BUILD_ID: buildId });
 
     const index = await readFile(join(output, 'index.html'), 'utf8');
+    const landing = await readFile(join(output, 'landing/index.html'), 'utf8');
     assert.match(index, new RegExp(`версия <span data-app-version>${appVersion.replaceAll('.', '\\.')}</span>`));
+    assert.match(landing, new RegExp(`версия <span data-app-version>${appVersion.replaceAll('.', '\\.')}</span>`));
     assert.match(index, new RegExp(`<meta name="countrymatcher-build-id" content="${buildId}">`));
     assert.doesNotMatch(index, />dev<\/span>/);
+    assert.doesNotMatch(landing, />dev<\/span>/);
 
     const textFiles = await artifactTextFiles(output);
     let staticRuntimeReferenceCount = 0;
