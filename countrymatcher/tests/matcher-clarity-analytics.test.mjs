@@ -83,13 +83,14 @@ test("free-result view events can be emitted only once per page", () => {
 });
 
 test("matcher analytics is privacy-masked and hooked only into free-result presentation", async () => {
-  const [matcher, app, analytics] = await Promise.all([
+  const [matcher, app, analytics, consent] = await Promise.all([
     readFile(new URL("../index.html", import.meta.url), "utf8"),
     readFile(new URL("../matcher/app.js", import.meta.url), "utf8"),
     readFile(
       new URL("../matcher/clarity-analytics.js", import.meta.url),
       "utf8",
     ),
+    readFile(new URL("../cookie-consent.js", import.meta.url), "utf8"),
   ]);
 
   for (const id of [
@@ -119,13 +120,14 @@ test("matcher analytics is privacy-masked and hooked only into free-result prese
   }
 
   assert.match(
-    analytics,
+    consent,
     /ad_Storage:\s*"denied"/,
   );
   assert.match(
-    analytics,
-    /analytics_Storage:\s*"denied"/,
+    consent,
+    /analytics_Storage:\s*choice === "granted" \? "granted" : "denied"/,
   );
+  assert.match(analytics, /applyClarityConsent\(readCookieConsent/);
 
   assert.match(
     app,

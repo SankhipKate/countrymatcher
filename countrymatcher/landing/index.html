@@ -16,12 +16,19 @@
     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
 })(window, document, "clarity", "script", "xz08tpk4d1");
+const countryMatcherCookieConsent = (() => {
+  try {
+    return window.localStorage.getItem("countrymatcher_cookie_consent_v1");
+  } catch {
+    return null;
+  }
+})();
 window.clarity("consentv2", {
   ad_Storage: "denied",
-  analytics_Storage: "denied"
+  analytics_Storage: countryMatcherCookieConsent === "granted" ? "granted" : "denied"
 });
 </script>
-<link href="./landing-v57.css" rel="stylesheet"/><link href="./legal-email.css" rel="stylesheet"/>
+<link href="./landing-v57.css" rel="stylesheet"/><link href="./legal-email.css" rel="stylesheet"/><link href="../cookie-consent.css" rel="stylesheet"/>
 </head>
 <body>
 <nav class="nav">
@@ -595,5 +602,5 @@ window.clarity("consentv2", {
     nodes.push(node);
   }
   nodes.forEach((node) => { node.nodeValue = node.nodeValue.replace(re, '$1$2\u00A0'); });
-})();</script></body>
+})();</script><script type="module" src="./cookie-consent-entry.js"></script></body>
 </html>
