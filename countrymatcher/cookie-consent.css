@@ -1,0 +1,84 @@
+html.cookie-consent-open {
+  overflow: hidden;
+}
+
+.cookie-consent {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(3, 17, 36, 0.58);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.cookie-consent__dialog {
+  display: grid;
+  gap: 20px;
+  width: min(100%, 460px);
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  color: #fff;
+  background: #071e3d;
+  box-shadow: 0 24px 70px rgba(3, 17, 36, 0.42);
+}
+
+.cookie-consent__copy {
+  display: grid;
+  gap: 6px;
+  text-align: center;
+}
+
+.cookie-consent__copy strong {
+  font-size: 20px;
+}
+
+.cookie-consent__copy span {
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cookie-consent__actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cookie-consent__actions button {
+  flex: 1;
+  min-width: 96px;
+  padding: 12px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  color: #fff;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cookie-consent__actions button:hover,
+.cookie-consent__actions button:focus-visible {
+  color: #071e3d;
+  background: #ffd84d;
+  border-color: #ffd84d;
+  outline: none;
+}
+
+@media (max-width: 560px) {
+  .cookie-consent {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .cookie-consent__dialog {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .cookie-consent__copy {
+    text-align: left;
+  }
+}

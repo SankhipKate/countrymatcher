@@ -1,3 +1,8 @@
+import {
+  applyClarityConsent,
+  readCookieConsent,
+} from "../cookie-consent.js";
+
 export const MATCHER_CLARITY_EVENTS = Object.freeze({
   FREE_COUNTRY_RESULT_VIEW: "free_country_result_view",
   LOCKED_RESULTS_VIEW: "locked_results_view",
@@ -36,14 +41,7 @@ function ensureClarityQueue(win) {
 function installClarity(doc, win) {
   ensureClarityQueue(win);
 
-  /*
-   * Country Matcher does not grant analytics/ad storage here.
-   * Clarity therefore runs in its no-consent/cookieless mode.
-   */
-  win.clarity("consentv2", {
-    ad_Storage: "denied",
-    analytics_Storage: "denied",
-  });
+  applyClarityConsent(readCookieConsent(win.localStorage), win.clarity);
 
   if (doc.querySelector("script[data-countrymatcher-clarity]")) {
     return;
