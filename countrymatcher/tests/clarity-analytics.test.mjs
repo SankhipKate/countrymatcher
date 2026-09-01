@@ -8,7 +8,7 @@ import {
   trackPayPalFundingSource,
 } from "../landing/clarity-analytics.js";
 
-test("Clarity stays static on landing and loads in matcher only through the free-result analytics module", async () => {
+test("Clarity waits for cookie choice and uses one common loader", async () => {
   const landing = await readFile(
     new URL("../landing/index.html", import.meta.url),
     "utf8",
@@ -25,28 +25,73 @@ test("Clarity stays static on landing and loads in matcher only through the free
     new URL("../matcher/access-gate.js", import.meta.url),
     "utf8",
   );
+  const loader = await readFile(
+    new URL("../clarity-loader.js", import.meta.url),
+    "utf8",
+  );
+  const landingEntry = await readFile(
+    new URL("../landing/cookie-consent-entry.js", import.meta.url),
+    "utf8",
+  );
+  const landingAnalytics = await readFile(
+    new URL("../landing/clarity-analytics.js", import.meta.url),
+    "utf8",
+  );
   const matcherAnalytics = await readFile(
     new URL("../matcher/clarity-analytics.js", import.meta.url),
     "utf8",
   );
 
+  assert.doesNotMatch(
+    landing,
+    /clarity\.ms\/tag\/|xz08tpk4d1/,
+  );
   assert.match(
     landing,
+    /window\.clarity = window\.clarity \|\| function \(\) \{[\s\S]*?window\.clarity\.q/,
+  );
+
+  assert.match(
+    loader,
     /https:\/\/www\.clarity\.ms\/tag\//,
   );
-  assert.match(landing, /xz08tpk4d1/);
   assert.equal(
-    (landing.match(/xz08tpk4d1/g) || []).length,
+    (loader.match(/xz08tpk4d1/g) || []).length,
     1,
   );
 
-  // Matcher HTML never loads Clarity eagerly.
   assert.doesNotMatch(
     matcher,
     /clarity\.ms\/tag\/|xz08tpk4d1/,
   );
+  assert.doesNotMatch(
+    matcherAnalytics,
+    /clarity\.ms\/tag\/|xz08tpk4d1/,
+  );
 
-  // The app explicitly invokes the isolated free-result module.
+  assert.ok(
+    landing.indexOf("cookie-consent-entry.js") <
+      landing.indexOf("paypal-checkout.js"),
+  );
+
+  assert.match(
+    landingEntry,
+    /initializeClarity\(choice, doc, win\)/,
+  );
+  assert.match(
+    landingEntry,
+    /setClarityTag\([\s\S]*?COOKIE_DECISION_TIME_TAG,[\s\S]*?decisionTimeBucket/,
+  );
+  assert.match(
+    landingEntry,
+    /initializeLandingAnalytics\(doc, win\)/,
+  );
+
+  assert.doesNotMatch(
+    landingAnalytics,
+    /DOMContentLoaded[\s\S]*?initializeLandingAnalytics/,
+  );
+
   assert.match(
     app,
     /from '\.\/clarity-analytics\.js'/,
@@ -55,14 +100,15 @@ test("Clarity stays static on landing and loads in matcher only through the free
     app,
     /initializeMatcherAnalytics\(\)/,
   );
-
   assert.match(
     matcherAnalytics,
-    /https:\/\/www\.clarity\.ms\/tag\//,
+    /readCookieConsentFromWindow\(win\)/,
   );
-  assert.match(matcherAnalytics, /xz08tpk4d1/);
+  assert.match(
+    matcherAnalytics,
+    /initializeClarity\([\s\S]*?consentChoice,[\s\S]*?doc,[\s\S]*?win/,
+  );
 
-  // Access logic remains analytics-free.
   assert.doesNotMatch(
     gate,
     /clarity\.ms|xz08tpk4d1|clarity-analytics/i,

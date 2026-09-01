@@ -168,7 +168,7 @@ test('five presentation groups have distinct semantic UI classes and stable resp
 test('tax block renders four factual headings and no internal research commentary', async () => {
   const appSource = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
   for (const heading of ['Налоговое резидентство', 'Подоходный налог', 'Доходы из-за рубежа', 'Россия и двойное налогообложение']) assert.ok(appSource.includes(heading));
-  assert.match(appSource, /<h3>Налоги<\/h3>/);
+  assert.match(appSource, /<h3(?:\s+[^>]*)?>Налоги<\/h3>/);
   assert.match(appSource, /Проверено:/);
   for (const pkg of [spainResearch, JSON.parse(await readFile(new URL('../data/AR-research-v4.0.json', import.meta.url), 'utf8')), uruguayResearch]) {
     const taxText = Object.entries(pkg.taxes).filter(([key, value]) => key.endsWith('_ru') && typeof value === 'string').map(([, value]) => value).join(' ');
