@@ -82,7 +82,7 @@ test("free-result view events can be emitted only once per page", () => {
   ]);
 });
 
-test("matcher analytics is privacy-masked and hooked only into free-result presentation", async () => {
+test("matcher analytics keeps personal data masked while adding safe partial unmask", async () => {
   const [matcher, app, analytics, consent] = await Promise.all([
     readFile(new URL("../index.html", import.meta.url), "utf8"),
     readFile(new URL("../matcher/app.js", import.meta.url), "utf8"),
@@ -119,6 +119,64 @@ test("matcher analytics is privacy-masked and hooked only into free-result prese
     );
   }
 
+  for (const id of [
+    "resultSales",
+    "resultPayment",
+  ]) {
+    assert.match(
+      matcher,
+      new RegExp(
+        `<section id="${id}"[^>]*data-clarity-unmask="true"`,
+      ),
+    );
+  }
+
+  assert.match(
+    app,
+    /class="country-preview-expand" data-clarity-unmask="true"[^>]*>Развернуть полный разбор ↓/,
+  );
+  assert.match(
+    app,
+    /class="route-expand-label" data-clarity-unmask="true"/,
+  );
+  assert.match(
+    app,
+    /class="status-pill \$\{statusClass\(presentationGroup\)\}" data-clarity-unmask="true"/,
+  );
+  assert.match(
+    app,
+    /<h3 data-clarity-unmask="true">Все проверенные варианты<\/h3>/,
+  );
+  assert.match(
+    app,
+    /<h3 data-clarity-unmask="true">Города, климат и расходы<\/h3>/,
+  );
+  assert.match(
+    app,
+    /<h3 data-clarity-unmask="true">Школы<\/h3>/,
+  );
+  assert.match(
+    app,
+    /<h3 data-clarity-unmask="true">Налоги<\/h3>/,
+  );
+  assert.match(
+    app,
+    /<h3 data-clarity-unmask="true">Качество жизни в стране<\/h3>/,
+  );
+
+  assert.doesNotMatch(
+    app,
+    /class="country-tab[^"]*"[^>]*data-clarity-unmask="true"/,
+  );
+  assert.doesNotMatch(
+    app,
+    /class="route-title-content"[^>]*data-clarity-unmask="true"/,
+  );
+  assert.doesNotMatch(
+    app,
+    /class="answers-review"[^>]*data-clarity-unmask="true"/,
+  );
+
   assert.match(
     consent,
     /ad_Storage:\s*"denied"/,
@@ -127,7 +185,18 @@ test("matcher analytics is privacy-masked and hooked only into free-result prese
     consent,
     /analytics_Storage:\s*choice === "granted" \? "granted" : "denied"/,
   );
-  assert.match(analytics, /applyClarityConsent\(readCookieConsent/);
+  assert.match(
+    analytics,
+    /readCookieConsentFromWindow\(win\)/,
+  );
+  assert.match(
+    analytics,
+    /initializeClarity\([\s\S]*?consentChoice,[\s\S]*?doc,[\s\S]*?win/,
+  );
+  assert.doesNotMatch(
+    analytics,
+    /CLARITY_PROJECT_ID|clarity\.ms\/tag\/|xz08tpk4d1/,
+  );
 
   assert.match(
     app,

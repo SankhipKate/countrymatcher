@@ -5,7 +5,10 @@ import { readFile } from "node:fs/promises";
 import {
   COOKIE_CONSENT_STORAGE_KEY,
   applyClarityConsent,
+  cookieDecisionTimeBucket,
   readCookieConsent,
+  readCookieConsentFromWindow,
+  storeCookieConsent,
 } from "../cookie-consent.js";
 
 test("cookie consent defaults to denied Clarity storage", () => {
@@ -29,6 +32,40 @@ test("stored consent grants analytics but keeps ads denied", () => {
     "consentv2",
     { ad_Storage: "denied", analytics_Storage: "granted" },
   ]]);
+});
+
+test("cookie decision time uses only agreed buckets", () => {
+  assert.equal(cookieDecisionTimeBucket(0), "0-3s");
+  assert.equal(cookieDecisionTimeBucket(2999), "0-3s");
+  assert.equal(cookieDecisionTimeBucket(3000), "3-10s");
+  assert.equal(cookieDecisionTimeBucket(9999), "3-10s");
+  assert.equal(cookieDecisionTimeBucket(10000), "10s+");
+  assert.equal(cookieDecisionTimeBucket(60000), "10s+");
+});
+
+test("storage failures do not block cookie decision helpers", () => {
+  const brokenStorage = {
+    getItem() {
+      throw new Error("blocked");
+    },
+    setItem() {
+      throw new Error("blocked");
+    },
+  };
+
+  assert.equal(readCookieConsent(brokenStorage), null);
+  assert.equal(
+    readCookieConsentFromWindow({
+      get localStorage() {
+        throw new Error("blocked");
+      },
+    }),
+    null,
+  );
+  assert.equal(
+    storeCookieConsent("granted", brokenStorage),
+    false,
+  );
 });
 
 test("cookie choice blocks the landing until either equal option is selected", async () => {
@@ -55,9 +92,30 @@ test("only the landing page loads the cookie consent UI", async () => {
   assert.match(landingEntry, /initializeCookieConsent/);
   assert.doesNotMatch(matcher, /cookie-consent-entry\.js/);
   assert.doesNotMatch(matcher, /cookie-consent\.css/);
-  assert.match(landing, /countrymatcher_cookie_consent_v1/);
-  assert.match(
+  assert.doesNotMatch(
     landing,
-    /countryMatcherCookieConsent === "granted" \? "granted" : "denied"/,
+    /countrymatcher_cookie_consent_v1/,
+  );
+  assert.ok(
+    landing.indexOf("cookie-consent-entry.js") <
+      landing.indexOf("paypal-checkout.js"),
+  );
+
+  const consentSource = await readFile(
+    new URL("../cookie-consent.js", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(
+    consentSource,
+    /let choiceHandled = false;/,
+  );
+  assert.match(
+    consentSource,
+    /if \(!button \|\| choiceHandled\) return;/,
+  );
+  assert.match(
+    consentSource,
+    /storeCookieConsent\(choice, storage\);[\s\S]*?onChoice\(\{/,
   );
 });

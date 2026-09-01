@@ -1,6 +1,8 @@
 import {
-  applyClarityConsent,
-  readCookieConsent,
+  initializeClarity,
+} from "../clarity-loader.js";
+import {
+  readCookieConsentFromWindow,
 } from "../cookie-consent.js";
 
 export const MATCHER_CLARITY_EVENTS = Object.freeze({
@@ -20,7 +22,6 @@ export const MATCHER_CLARITY_EVENTS = Object.freeze({
   MANUAL_PAYMENT_TELEGRAM: "manual_payment_telegram",
 });
 
-const CLARITY_PROJECT_ID = "xz08tpk4d1";
 const ALLOWED_EVENTS = new Set(
   Object.values(MATCHER_CLARITY_EVENTS),
 );
@@ -29,32 +30,6 @@ const sentOnce = new Set();
 let clickTrackingInitialized = false;
 let viewTrackingInitialized = false;
 let otherPaymentsTrackingInitialized = false;
-
-function ensureClarityQueue(win) {
-  if (typeof win.clarity === "function") return;
-
-  win.clarity = function (...args) {
-    (win.clarity.q = win.clarity.q || []).push(args);
-  };
-}
-
-function installClarity(doc, win) {
-  ensureClarityQueue(win);
-
-  applyClarityConsent(readCookieConsent(win.localStorage), win.clarity);
-
-  if (doc.querySelector("script[data-countrymatcher-clarity]")) {
-    return;
-  }
-
-  const script = doc.createElement("script");
-  script.async = true;
-  script.src = `https://www.clarity.ms/tag/${CLARITY_PROJECT_ID}`;
-  script.dataset.countrymatcherClarity = "true";
-
-  const parent = doc.head || doc.documentElement;
-  parent.appendChild(script);
-}
 
 export function trackMatcherClarityEvent(
   eventName,
@@ -89,7 +64,19 @@ export function initializeMatcherAnalytics(
 ) {
   if (!doc || !win) return false;
 
-  installClarity(doc, win);
+  const consentChoice =
+    readCookieConsentFromWindow(win);
+
+  if (
+    !consentChoice
+    || !initializeClarity(
+      consentChoice,
+      doc,
+      win,
+    )
+  ) {
+    return false;
+  }
 
   if (!clickTrackingInitialized) {
     doc.addEventListener("click", (event) => {

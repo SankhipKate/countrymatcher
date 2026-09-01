@@ -89,11 +89,3 @@ export function initializeLandingAnalytics(doc = globalThis.document, win = glob
     observer.observe(paymentSection);
   }
 }
-
-if (typeof window !== "undefined" && typeof document !== "undefined") {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => initializeLandingAnalytics(), { once: true });
-  } else {
-    initializeLandingAnalytics();
-  }
-}

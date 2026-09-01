@@ -378,7 +378,7 @@ function renderLgbtResearch(calculation) {
     : '';
   const citiesBlock = practicalEnvironment === 'Неоднородная' && loyalCities.length
     ? `<div class="lgbt-row"><h4>Наиболее лояльные города</h4><p>${html(loyalCities.join(', '))}</p></div>` : '';
-  return `<section class="country-info-card country-info-lgbt lgbt-research"><div class="section-title-row"><div><h3>ЛГБТ: права, семья и практическая среда</h3><p>Оценки описывают право и среду, но не являются гарантией личной безопасности.</p></div></div><div class="lgbt-assessment-grid"><div><span>Правовое положение</span><b>${html(legalPosition)}</b></div><div><span>Практическая среда</span><b>${html(practicalEnvironment)}</b></div></div><p class="research-caveat">${html(practicalExplanation)}</p><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${citiesBlock}${changesBlock}</div></section>`;
+  return `<section class="country-info-card country-info-lgbt lgbt-research"><div class="section-title-row"><div><h3 data-clarity-unmask="true">ЛГБТ: права, семья и практическая среда</h3><p>Оценки описывают право и среду, но не являются гарантией личной безопасности.</p></div></div><div class="lgbt-assessment-grid"><div><span>Правовое положение</span><b>${html(legalPosition)}</b></div><div><span>Практическая среда</span><b>${html(practicalEnvironment)}</b></div></div><p class="research-caveat">${html(practicalExplanation)}</p><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}${citiesBlock}${changesBlock}</div></section>`;
 }
 
 const publicSchoolAccessLabel = (value) => ({
@@ -439,7 +439,7 @@ function renderSchoolPresentation(calculation) {
   })[tuitionOriginal?.period] || 'в год';
   const tuitionLines = tuitionAmount
     ? `<p>Стоимость обучения: ${html(tuitionAmount)} ${html(tuitionPeriod)}.</p><p>Вступительные и регистрационные взносы не включены.</p>` : '';
-  return `<section class="country-info-card country-info-schools school-research"><div class="section-title-row"><div><h3>Школы</h3></div></div><div class="school-subsection"><h4>Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4>Международные школы с обучением на английском</h4><p>${international}</p>${tuitionLines}</div></section>`;
+  return `<section class="country-info-card country-info-schools school-research"><div class="section-title-row"><div><h3 data-clarity-unmask="true">Школы</h3></div></div><div class="school-subsection"><h4 data-clarity-unmask="true">Государственные школы</h4>${rules || '<p>Данных о государственных школах пока недостаточно.</p>'}</div><div class="school-subsection"><h4 data-clarity-unmask="true">Международные школы с обучением на английском</h4><p>${international}</p>${tuitionLines}</div></section>`;
 }
 
 function renderEntryPresentation(calculation) {
@@ -450,7 +450,7 @@ function renderEntryPresentation(calculation) {
     String(entry.processingTime || '').trim() ? `Срок оформления: ${entry.processingTime}` : null,
     entry.rule,
   ].filter(Boolean) : [];
-  return lines.length ? `<div class="route-requirements practical-warning"><h4>Въезд для граждан РФ</h4>${lines.map((line) => `<p>${html(line)}</p>`).join('')}</div>` : '';
+  return lines.length ? `<div class="route-requirements practical-warning"><h4 data-clarity-unmask="true">Въезд для граждан РФ</h4>${lines.map((line) => `<p>${html(line)}</p>`).join('')}</div>` : '';
 }
 
 function renderPetPresentation(calculation) {
@@ -460,7 +460,7 @@ function renderPetPresentation(calculation) {
     pets.importText ? `<p><b>Ввоз в страну:</b> ${html(pets.importText)}</p>` : '',
     pets.afterEntryText ? `<p><b>После въезда:</b> ${html(pets.afterEntryText)}</p>` : '',
   ].filter(Boolean).join('');
-  return lines ? `<section class="country-info-card country-info-pets"><div class="section-title-row"><div><h3>Домашние животные</h3></div></div>${lines}</section>` : '';
+  return lines ? `<section class="country-info-card country-info-pets"><div class="section-title-row"><div><h3 data-clarity-unmask="true">Домашние животные</h3></div></div>${lines}</section>` : '';
 }
 
 function renderTaxPresentation(calculation) {
@@ -473,20 +473,20 @@ function renderTaxPresentation(calculation) {
     ['Россия и двойное налогообложение', taxes.doubleTaxationWithRussia],
   ].filter(([, text]) => String(text || '').trim());
   if (!rows.length) return '';
-  return `<section class="country-info-card country-info-taxes tax-research"><div class="section-title-row"><div><h3>Налоги</h3><p>Информация носит справочный характер и не рассчитывает персональные налоговые обязательства.</p></div></div><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}</div>${taxes.checkedAt ? `<p class="research-caveat">Проверено: ${html(taxes.checkedAt)}</p>` : ''}</section>`;
+  return `<section class="country-info-card country-info-taxes tax-research"><div class="section-title-row"><div><h3 data-clarity-unmask="true">Налоги</h3><p>Информация носит справочный характер и не рассчитывает персональные налоговые обязательства.</p></div></div><div class="lgbt-list">${rows.map(([title, text]) => `<div class="lgbt-row"><h4>${html(title)}</h4><p>${html(text)}</p></div>`).join('')}</div>${taxes.checkedAt ? `<p class="research-caveat">Проверено: ${html(taxes.checkedAt)}</p>` : ''}</section>`;
 }
 
 function longTermConditions(route) {
   if (!route.longTerm) return "";
   const items = [route.longTerm.renewal, route.longTerm.permanentResidence, route.longTerm.citizenship, route.longTerm.presence, route.longTerm.language].filter(Boolean);
-  return items.length ? `<div class="route-client-items"><h4>Долгосрочная перспектива</h4><ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul></div>` : "";
+  return items.length ? `<div class="route-client-items"><h4 data-clarity-unmask="true">Долгосрочная перспектива</h4><ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul></div>` : "";
 }
 
 function routeCard(route, countryName, main = false) {
   const unsuitable = route.routeStatus === "UNSUITABLE";
   const presentationGroup = routePresentationGroup(route);
   const list = (items = []) => `<ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul>`;
-  const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4>Почему не подходит</h4>${list(route.blockers)}</div>` : "";
+  const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4 data-clarity-unmask="true">Почему не подходит</h4>${list(route.blockers)}</div>` : "";
   const formatFinancialAlternative = (item) => {
     const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
     const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
@@ -576,17 +576,17 @@ function routeCard(route, countryName, main = false) {
     );
   });
   const actionsBlock = route.routeStatus === "SUITABLE_WITH_CONDITIONS" && actionItems.length
-    ? `<div class="route-actions"><h4>Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
+    ? `<div class="route-actions"><h4 data-clarity-unmask="true">Что нужно выполнить, чтобы маршрут подходил</h4>${list(actionItems)}</div>` : "";
   const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
-  const preparationBlock = preparation.length ? `<div class="route-requirements"><h4>Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
+  const preparationBlock = preparation.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialRequirements = route.financialRequirements || (route.financialSummary ? [{ requirementId: null, effect: 'NONE', summary: route.financialSummary }] : []);
   const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) =>
     summary.alternatives?.filter((item) => item.threshold != null).map((item) => `${item.requirementLabel || item.kindLabel} — ${formatFinancialAlternative(item)}`) || []);
-  const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4>Финансовое требование</h4>${list(financialItems)}</div>` : "";
+  const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4 data-clarity-unmask="true">Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const geographyNotices = [...new Set(financialRequirements.flatMap(({ summary }) =>
     (summary?.alternatives || []).map((item) => item.geographyNotice).filter(Boolean)))];
   const geographyNoticeBlock = !unsuitable && geographyNotices.length
-    ? `<div class="route-requirements"><h4>География дохода</h4>${list(geographyNotices)}</div>` : "";
+    ? `<div class="route-requirements"><h4 data-clarity-unmask="true">География дохода</h4>${list(geographyNotices)}</div>` : "";
   const practicalPeriod = { MONTHLY: 'в месяц', YEARLY: 'в год', ANNUAL: 'в год', ONE_TIME: 'единовременно', ACADEMIC_YEAR: 'за учебный год', OTHER: '' };
   const practicalEvidenceLabel = {
     PRACTITIONER_GUIDANCE: 'Практическая рекомендация специалиста',
@@ -607,7 +607,7 @@ function routeCard(route, countryName, main = false) {
       practicalGuidanceSeen.add(identity);
       return true;
     });
-  const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems.length ? `<div class="route-requirements practical-warning"><h4>Практический финансовый ориентир</h4>${practicalGuidanceItems.map((guidance) => {
+  const practicalGuidanceBlock = !unsuitable && practicalGuidanceItems.length ? `<div class="route-requirements practical-warning"><h4 data-clarity-unmask="true">Практический финансовый ориентир</h4>${practicalGuidanceItems.map((guidance) => {
     if (guidance.status === 'NOT_FOUND') return `<p>${html(guidance.summary_ru)}</p><p>Официального фиксированного порога нет; надёжную практическую сумму найти не удалось.</p><p>${html(guidance.disclaimer_ru)}</p>`;
     const figures = guidance.figures.map((figure) => {
       const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
@@ -627,17 +627,17 @@ function routeCard(route, countryName, main = false) {
     return `<p>${html(guidance.summary_ru)}</p><ul>${figures}</ul><p><b>Это не официальный минимальный порог.</b> ${html(guidance.disclaimer_ru)}</p>`;
   }).join('')}</div>` : "";
   const applicationItems = route.application?.map(applicationPresentationText) || [];
-  const applicationBlock = applicationItems.length ? `<div class="route-requirements"><h4>Как можно подать заявление</h4>${list(applicationItems)}</div>` : "";
-  const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4>Первый статус</h4><p>${html(route.firstPermit.description)}</p>${route.firstPermit.months != null ? `<p>Срок первого разрешения: ${html(russianMonths(route.firstPermit.months))}.</p>` : ''}</div>` : "";
+  const applicationBlock = applicationItems.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Как можно подать заявление</h4>${list(applicationItems)}</div>` : "";
+  const firstPermitBlock = route.firstPermit?.description ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Первый статус</h4><p>${html(route.firstPermit.description)}</p>${route.firstPermit.months != null ? `<p>Срок первого разрешения: ${html(russianMonths(route.firstPermit.months))}.</p>` : ''}</div>` : "";
   const applicableFamily = route.familyEvaluation?.state === 'NOT_APPLICABLE' ? []
     : (route.family || []).filter((item) => route.familyEvaluation?.applicableScenarioIds?.includes(item.scenarioId));
-  const familyBlock = applicableFamily.length ? `<div class="route-requirements"><h4>Семья</h4>${list(applicableFamily.map((item) => item.description))}</div>` : "";
+  const familyBlock = applicableFamily.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Семья</h4>${list(applicableFamily.map((item) => item.description))}</div>` : "";
   const workItems = deduplicatedWorkRights(route.workRights);
-  const workBlock = workItems.length ? `<div class="route-requirements"><h4>Право на работу</h4>${list(workItems)}</div>` : "";
-  const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4>Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
+  const workBlock = workItems.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Право на работу</h4>${list(workItems)}</div>` : "";
+  const processingBlock = route.processing?.officialRule ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Срок рассмотрения</h4><p>${html(route.processing.officialRule)}</p></div>` : "";
   const sourceBlock = route.officialSource?.url ? `<p class="route-source"><a href="${html(route.officialSource.url)}" target="_blank" rel="noopener">Официальный источник: ${html(route.officialSource.title)}</a></p>` : "";
-  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(presentationGroup)}">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}<span class="route-expand-label"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
-  const descriptionBlock = route.description ? `<div class="route-requirements"><h4>Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
+  const header = `<div class="route-card-heading"><span class="status-pill ${statusClass(presentationGroup)}" data-clarity-unmask="true">${html(ROUTE_PRESENTATION_LABELS_RU[presentationGroup])}</span><div class="route-title-content"><h3>${html(route.routeName)}</h3>${route.routeOfficialName ? `<p class="route-official-name">${html(route.routeOfficialName)}</p>` : ""}<span class="route-expand-label" data-clarity-unmask="true"><span class="when-closed">Показать подробности</span><span class="when-open">Скрыть подробности</span></span></div></div>`;
+  const descriptionBlock = route.description ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Что это за маршрут</h4><p>${html(route.description)}</p></div>` : "";
   const followUpBlock = renderRouteSpecificFollowUps(route);
   const body = `${descriptionBlock}${followUpBlock}${financeBlock}${geographyNoticeBlock}${practicalGuidanceBlock}${actionsBlock}${preparationBlock}${applicationBlock}${firstPermitBlock}${familyBlock}${workBlock}${longTermConditions(route)}${processingBlock}${sourceBlock}`;
   return `<article class="route-result ${main ? 'best' : 'compact'}" data-route-group="${html(presentationGroup)}"><details${main ? ' open' : ''}><summary>${header}</summary><div class="route-card-body">${unsuitable ? blockersBlock : body}</div></details></article>`;
@@ -659,7 +659,7 @@ function countryPresentation(calculation) {
 function renderCountryTab(calculation, active = false) {
   const { best, countryId, countryName, flag } = countryPresentation(calculation);
   const summary = best ? '' : '<small>Нет маршрутов для надёжной оценки</small>';
-  const status = best ? `<span class="status-pill ${statusClass(routePresentationGroup(best))}">${html(ROUTE_PRESENTATION_LABELS_RU[routePresentationGroup(best)])}</span>` : '';
+  const status = best ? `<span class="status-pill ${statusClass(routePresentationGroup(best))}" data-clarity-unmask="true">${html(ROUTE_PRESENTATION_LABELS_RU[routePresentationGroup(best)])}</span>` : '';
   return `<button class="country-tab${active ? ' is-active' : ''}" type="button" role="tab" data-country-tab="${html(countryId)}" aria-controls="country-panel-${html(countryId)}" aria-selected="${active}"><span class="country-tab-flag" aria-hidden="true">${flag}</span><span class="country-tab-copy"><strong>${html(countryName)}</strong>${summary}</span>${status}</button>`;
 }
 
@@ -754,7 +754,7 @@ function renderLossLine(freeCountry, fullCalculation) {
   const paraguayOnlySuitable = suitableCountries.length === 1 && suitableCountries[0]?.country?.countryId === 'PY';
   if (paraguayOnlySuitable) {
     const remainingCountries = Math.max(0, all.length - 1);
-    return `<section class="result-comparison result-limitation"><h2>Что вас сейчас ограничивает</h2><p><b>Парагвай — единственная страна, где маршрут подходит без дополнительных условий.</b></p><p>Он подошёл потому, что при подаче на ВНЖ доход не проверяется. Для ПМЖ подтверждать средства всё равно придётся, но уже на следующем шаге. В остальных ${countryLocative(remainingCountries)} маршруты есть, но требуют условий или отдельного основания.</p><p><b>Ближайший подтверждённый порог — от $1 000 в месяц.</b> При таком доходе полностью подходящие маршруты появляются ещё в ${countryLocative(currentThousandIncomeOpportunityCount)}.</p></section>`;
+    return `<section class="result-comparison result-limitation"><h2 data-clarity-unmask="true">Что вас сейчас ограничивает</h2><p><b>Парагвай — единственная страна, где маршрут подходит без дополнительных условий.</b></p><p>Он подошёл потому, что при подаче на ВНЖ доход не проверяется. Для ПМЖ подтверждать средства всё равно придётся, но уже на следующем шаге. В остальных ${countryLocative(remainingCountries)} маршруты есть, но требуют условий или отдельного основания.</p><p><b>Ближайший подтверждённый порог — от $1 000 в месяц.</b> При таком доходе полностью подходящие маршруты появляются ещё в ${countryLocative(currentThousandIncomeOpportunityCount)}.</p></section>`;
   }
   const targetYears = countryComparisonCitizenshipYears(freeCountry);
   const targetIncome = countryComparisonIncome(freeCountry);
@@ -791,7 +791,7 @@ function renderLossLine(freeCountry, fullCalculation) {
   const comparisonSummary = comparisonLines.length
     ? `<p><b>Среди всех стран:</b><br>${comparisonLines.map((line) => html(line)).join(',<br>')}.</p>`
     : '';
-  return `<section class="result-comparison"><h2>Эта страна в сравнении с другими странами</h2>${metric('До гражданства', yearsValue, yearsRank)}${metric('Порог дохода', incomeValue, incomeRank)}${comparisonSummary}</section>`;
+  return `<section class="result-comparison"><h2 data-clarity-unmask="true">Эта страна в сравнении с другими странами</h2>${metric('До гражданства', yearsValue, yearsRank)}${metric('Порог дохода', incomeValue, incomeRank)}${comparisonSummary}</section>`;
 }
 
 function renderCountryResult(calculation, changed = false, active = false, previewCollapsed = false) {
@@ -838,7 +838,7 @@ function renderCountryResult(calculation, changed = false, active = false, previ
         ['cost', 'Расходы в мес', 'Сортировать по расходам в месяц'],
         ['cold', 'Холодный сезон', 'Сортировать по холодному сезону'],
         ['hot', 'Жаркий сезон', 'Сортировать по жаркому сезону'],
-      ].map(([key, label, ariaLabel]) => `<th scope="col" aria-sort="none"><button type="button" data-city-sort="${key}" aria-label="${ariaLabel}">${label}<span class="sort-direction" aria-hidden="true"> ↕</span></button></th>`).join('')}</tr></thead><tbody>${comparisonCities.map((city, index) => {
+      ].map(([key, label, ariaLabel]) => `<th scope="col" aria-sort="none"><button type="button" data-clarity-unmask="true" data-city-sort="${key}" aria-label="${ariaLabel}">${label}<span class="sort-direction" aria-hidden="true"> ↕</span></button></th>`).join('')}</tr></thead><tbody>${comparisonCities.map((city, index) => {
         const comparisonCost = Number.isFinite(city.comparisonCost) ? Math.round(city.comparisonCost) : null;
         const coldValue = city.coldRange ?? city.avgTempColdestMonthC;
         const hotValue = city.hotRange ?? city.avgTempHottestMonthC;
@@ -851,11 +851,11 @@ function renderCountryResult(calculation, changed = false, active = false, previ
     : '<p>Для этой страны пока нет городской модели.</p>';
   return `<article id="country-panel-${html(countryId)}" class="country-detail-panel${previewCollapsed ? ' is-preview-collapsed' : ''}" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
-    <section><div class="section-title-row"><div><h3>Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
+    <section><div class="section-title-row"><div><h3 data-clarity-unmask="true">Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     ${entryBlock}
-    <section class="country-info-card country-info-cities"><div class="section-title-row"><div><h3>Города, климат и расходы</h3></div></div>${citySection}</section>
+    <section class="country-info-card country-info-cities"><div class="section-title-row"><div><h3 data-clarity-unmask="true">Города, климат и расходы</h3></div></div>${citySection}</section>
     ${renderSchoolPresentation(calculation)}
-    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}${renderConsultantCollaboration(calculation)}</div>${previewCollapsed ? '<div class="country-preview-fade"></div><button class="country-preview-expand" type="button">Развернуть полный разбор ↓</button>' : ''}</article>`;
+    ${renderLgbtResearch(calculation)}${renderPetPresentation(calculation)}${renderTaxPresentation(calculation)}${renderQualityOfLife(calculation)}${renderConsultantCollaboration(calculation)}</div>${previewCollapsed ? '<div class="country-preview-fade"></div><button class="country-preview-expand" data-clarity-unmask="true" type="button">Развернуть полный разбор ↓</button>' : ''}</article>`;
 }
 
 function renderQualityOfLife(calculation) {
@@ -871,7 +871,7 @@ function renderQualityOfLife(calculation) {
   const scoreBlock = scoreText ? `<p class="quality-of-life-score">Субъективная редакционная оценка качества жизни: <b>${html(scoreText)}</b></p>` : '';
   const disclaimer = 'Оценка отражает общее качество повседневной жизни в стране. Она не показывает, насколько эта страна подходит именно вам, насколько легко получить ВНЖ, ПМЖ или гражданство, насколько легко интегрироваться в общество или стоит ли вам туда переезжать.';
   const formulaBlock = formula ? `<p class="quality-of-life-formula"><b>Формула страны:</b> ${html(formula)}</p>` : '';
-  return `<section class="country-info-card country-info-quality-of-life"><div class="section-title-row"><div><h3>Качество жизни в стране</h3></div></div>${scoreBlock}<p class="quality-of-life-disclaimer">${html(disclaimer)}</p><div class="quality-of-life-narrative">${paragraphs}</div>${formulaBlock}</section>`;
+  return `<section class="country-info-card country-info-quality-of-life"><div class="section-title-row"><div><h3 data-clarity-unmask="true">Качество жизни в стране</h3></div></div>${scoreBlock}<p class="quality-of-life-disclaimer">${html(disclaimer)}</p><div class="quality-of-life-narrative">${paragraphs}</div>${formulaBlock}</section>`;
 }
 
 
