@@ -38,11 +38,12 @@ export const ACTIVE_ENGINE_FINANCIAL_CAPABILITIES = Object.freeze({
     'INCOME_OR_SAVINGS',
     'INCOME_AND_SAVINGS',
     'INCOME_WITH_SAVINGS_SHORTFALL',
+    'INCOME_PLUS_SAVINGS_TOTAL',
     'INVESTMENT_CAPITAL',
     'SPONSOR_OR_SCHOLARSHIP',
   ]),
   alternativeKinds: Object.freeze(['INCOME', 'SAVINGS', 'CAPITAL']),
-  comparisons: Object.freeze(['AT_LEAST', 'MORE_THAN', 'EXACT', 'NO_FIXED_THRESHOLD']),
+  comparisons: Object.freeze(['AT_LEAST', 'MORE_THAN', 'EXACT', 'OFFICIAL_FORMULA', 'NO_FIXED_THRESHOLD']),
   alternativeApplicabilityModels: Object.freeze([
     'INCOME_ONLY',
     'SAVINGS_ONLY',
@@ -73,6 +74,9 @@ function assertActiveEngineFinancialCapabilities(route, requirement) {
     }
     if (!ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.comparisons.includes(alternative.comparison)) {
       unsupported.push({ semantic: 'alternative.comparison', value: alternative.comparison, alternativeIndex: index });
+    }
+    if (alternative.comparison === 'OFFICIAL_FORMULA' && financial.model !== 'INCOME_PLUS_SAVINGS_TOTAL') {
+      unsupported.push({ semantic: 'alternative.comparisonModel', value: `${alternative.comparison}:${financial.model}`, alternativeIndex: index });
     }
   });
   if (unsupported.length) throw new Rp4EvaluationUnsupportedError(
@@ -252,12 +256,25 @@ export function evaluateEngineRule(rule, value) {
 const familyMembers = (profile) => Math.max(0, Number(profile?.family?.adults_count || 1) - 1)
   + (Array.isArray(profile?.family?.children) ? profile.family.children.length : 0);
 
-export function calculateFamilyThreshold(alternative, profile) {
-  const members = familyMembers(profile);
+function qualifyingAdditionalAdults(profile, route = null) {
+  const extraAdults = Math.max(0, Number(profile?.family?.adults_count || 1) - 1);
+  if (!route || profile?.family?.partner_included !== true || extraAdults === 0) return extraAdults;
+  const scenarios = Array.isArray(route.family_scenarios) ? route.family_scenarios : [];
+  const partnerScenarios = scenarios.filter((scenario) => scenario.applies_to === 'PARTNER' || scenario.applies_to === 'PARTNER_AND_CHILDREN');
+  if (!partnerScenarios.length) return extraAdults;
+  const relationship = profile?.family?.relationship_type;
+  const recognized = partnerScenarios.some((scenario) => Array.isArray(scenario.relationship_types) && scenario.relationship_types.includes(relationship));
+  return recognized ? extraAdults : Math.max(0, extraAdults - 1);
+}
+
+export function calculateFamilyThreshold(alternative, profile, route = null) {
+  const extraAdults = qualifyingAdditionalAdults(profile, route);
+  const childrenCount = Array.isArray(profile?.family?.children) ? profile.family.children.length : 0;
+  const members = extraAdults + childrenCount;
   const formula = alternative.family_formula;
   if (formula) return Number(formula.base_applicant_amount)
-    + Math.max(0, Number(profile?.family?.adults_count || 1) - 1) * Number(formula.additional_adult_amount)
-    + (profile?.family?.children?.length || 0) * Number(formula.child_amount);
+    + extraAdults * Number(formula.additional_adult_amount)
+    + childrenCount * Number(formula.child_amount);
   const ordered = alternative.family_formula_ordered;
   if (ordered) return Number(ordered.base_applicant_amount)
     + (members > 0 ? Number(ordered.first_additional_member_amount) : 0)
@@ -376,14 +393,17 @@ function incomeAlternative(alternative, profile, context, countryId) {
       };
     }
     const practicalResearchNotFound = alternative.practical_financial_guidance?.status === 'NOT_FOUND';
+    const amountNotRequiredForEligibility = alternative.amount_not_required_for_eligibility === true;
     const state = hasConfirmedSource
-      ? practicalResearchNotFound ? 'UNKNOWN' : 'PASS'
+      ? (amountNotRequiredForEligibility || !practicalResearchNotFound ? 'PASS' : 'UNKNOWN')
       : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
     return {
       state, alternative, amount: null, confirmedAmount: null,
       unknownGeographyAmount: null, potentialAmount: null,
       unknownReason: state === 'UNKNOWN'
-        ? practicalResearchNotFound && hasConfirmedSource ? 'FINANCIAL_SUFFICIENCY' : 'GEOGRAPHY'
+        ? practicalResearchNotFound && hasConfirmedSource && !amountNotRequiredForEligibility
+          ? 'FINANCIAL_SUFFICIENCY'
+          : 'GEOGRAPHY'
         : null,
       hasUnknownGeography, threshold: null, currency: null,
       incomeEligibility: hasConfirmedSource ? 'ELIGIBLE_SOURCE'
@@ -450,12 +470,12 @@ function reservedSavingsInCurrency(resourceState, currency, context) {
   }, 0);
 }
 
-function assetAlternative(alternative, profile, context, resourceState = null) {
+function assetAlternative(alternative, profile, context, resourceState = null, route = null) {
   const { field, assetSourceKind } = assetFieldForAlternative(alternative, profile);
   if (alternative.comparison === 'NO_FIXED_THRESHOLD') {
     const screening = alternative.practical_screening_threshold;
     const practicalThreshold = screening
-      ? calculateFamilyThreshold({ amount: screening.amount ?? null, family_formula: screening.family_formula }, profile)
+      ? calculateFamilyThreshold({ amount: screening.amount ?? null, family_formula: screening.family_formula }, profile, route)
       : null;
     const practical = {
       practicalScreeningThreshold: practicalThreshold,
@@ -475,8 +495,8 @@ function assetAlternative(alternative, profile, context, resourceState = null) {
       alternative, amount, grossAmount, reservedAmount, threshold: null, currency: null, assetSourceKind, ...practical,
     };
   }
-  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile), currency: alternative.currency, assetSourceKind };
-  const threshold = calculateFamilyThreshold(alternative, profile);
+  if (!alternative.asked_in_questionnaire) return { state: 'UNKNOWN', alternative, threshold: calculateFamilyThreshold(alternative, profile, route), currency: alternative.currency, assetSourceKind };
+  const threshold = calculateFamilyThreshold(alternative, profile, route);
   if (field?.amount == null || threshold == null || alternative.currency == null) return { state: 'UNKNOWN', alternative, threshold, currency: alternative.currency, assetSourceKind };
   const grossAmount = convertAmount(field.amount, field.currency, alternative.currency, context);
   const reservedAmount = assetSourceKind === 'SAVINGS'
@@ -489,10 +509,73 @@ function assetAlternative(alternative, profile, context, resourceState = null) {
   };
 }
 
-function evaluateAlternative(alternative, profile, context, countryId, resourceState = null) {
+function evaluateAlternative(alternative, profile, context, countryId, resourceState = null, route = null) {
   if (alternative.kind === 'INCOME' || alternative.kind === 'PENSION') return incomeAlternative(alternative, profile, context, countryId);
-  if (alternative.kind === 'SAVINGS' || alternative.kind === 'CAPITAL') return assetAlternative(alternative, profile, context, resourceState);
+  if (alternative.kind === 'SAVINGS' || alternative.kind === 'CAPITAL') return assetAlternative(alternative, profile, context, resourceState, route);
   return { state: 'UNKNOWN', alternative, unsupported: true };
+}
+
+function evaluateIncomePlusSavingsTotal(requirement, profile, context, countryId, route = null, resourceState = null) {
+  const alternatives = requirement.financial?.alternatives || [];
+  const incomeAlternativeRaw = alternatives.find((item) => item.kind === 'INCOME');
+  const savingsAlternativeRaw = alternatives.find((item) => item.kind === 'SAVINGS');
+  if (!incomeAlternativeRaw || !savingsAlternativeRaw || alternatives.length !== 2) {
+    throw new Rp4EvaluationUnsupportedError(
+      `INCOME_PLUS_SAVINGS_TOTAL requires exactly one INCOME and one SAVINGS alternative for ${requirement.requirement_id}.`,
+      { routeId: route?.route_id, requirementId: requirement.requirement_id },
+    );
+  }
+  if (incomeAlternativeRaw.comparison !== 'OFFICIAL_FORMULA' || savingsAlternativeRaw.comparison !== 'OFFICIAL_FORMULA') {
+    throw new Rp4EvaluationUnsupportedError(
+      `INCOME_PLUS_SAVINGS_TOTAL requires OFFICIAL_FORMULA alternatives for ${requirement.requirement_id}.`,
+      { routeId: route?.route_id, requirementId: requirement.requirement_id },
+    );
+  }
+  const incomeThreshold = calculateFamilyThreshold(incomeAlternativeRaw, profile, route);
+  const savingsThreshold = calculateFamilyThreshold(savingsAlternativeRaw, profile, route);
+  if (incomeThreshold == null || savingsThreshold == null || incomeThreshold !== savingsThreshold
+    || !incomeAlternativeRaw.currency || incomeAlternativeRaw.currency !== savingsAlternativeRaw.currency) {
+    throw new Rp4EvaluationUnsupportedError(
+      `INCOME_PLUS_SAVINGS_TOTAL requires one shared numeric threshold and currency for ${requirement.requirement_id}.`,
+      { routeId: route?.route_id, requirementId: requirement.requirement_id },
+    );
+  }
+  const currency = incomeAlternativeRaw.currency;
+  const incomeEvaluated = incomeAlternative(
+    { ...incomeAlternativeRaw, comparison: 'AT_LEAST' }, profile, context, countryId,
+  );
+  const savingsEvaluated = assetAlternative(
+    { ...savingsAlternativeRaw, comparison: 'AT_LEAST' }, profile, context, resourceState, route,
+  );
+  const confirmedIncome = Number(incomeEvaluated.confirmedAmount ?? incomeEvaluated.amount ?? 0);
+  const potentialIncome = Number(incomeEvaluated.potentialAmount ?? incomeEvaluated.amount ?? confirmedIncome);
+  const savingsKnown = savingsEvaluated.amount != null;
+  const savingsAmount = savingsKnown ? Number(savingsEvaluated.amount) : 0;
+  const confirmedTotal = confirmedIncome + savingsAmount;
+  const potentialTotal = potentialIncome + savingsAmount;
+  const state = !savingsKnown ? 'UNKNOWN'
+    : confirmedTotal >= incomeThreshold ? 'PASS'
+      : potentialTotal >= incomeThreshold ? 'UNKNOWN' : 'FAIL';
+  const savingsClaim = state === 'PASS'
+    ? Math.max(0, incomeThreshold - confirmedIncome)
+    : 0;
+  return {
+    state,
+    model: 'INCOME_PLUS_SAVINGS_TOTAL',
+    combinedThreshold: incomeThreshold,
+    combinedCurrency: currency,
+    confirmedTotal,
+    potentialTotal,
+    confirmedIncome,
+    savingsAmount: savingsKnown ? savingsAmount : null,
+    combinedSavingsClaim: savingsClaim > 0 ? { amount: savingsClaim, currency } : null,
+    alternatives: [
+      { ...incomeEvaluated, alternative: incomeAlternativeRaw, threshold: incomeThreshold, currency },
+      { ...savingsEvaluated, alternative: savingsAlternativeRaw, threshold: incomeThreshold, currency },
+    ],
+    condition: null,
+    unsupported: false,
+  };
 }
 
 function combineOr(items) {
@@ -505,6 +588,9 @@ export const combineFinancialAlternatives = combineOr;
 
 export function evaluateFinancialRequirement(requirement, profile, context, countryId, route = null, resourceState = null) {
   const financial = requirement.financial;
+  if (financial.model === 'INCOME_PLUS_SAVINGS_TOTAL') {
+    return evaluateIncomePlusSavingsTotal(requirement, profile, context, countryId, route, resourceState);
+  }
   const hasAlternativeGates = financial.alternatives.some((item) => item.applies_if);
 
   if (
@@ -529,7 +615,7 @@ export function evaluateFinancialRequirement(requirement, profile, context, coun
     }
 
     return {
-      ...evaluateAlternative(item, profile, context, countryId, resourceState),
+      ...evaluateAlternative(item, profile, context, countryId, resourceState, route),
       applicability,
     };
   });
@@ -620,6 +706,11 @@ function reserveSavingsForFinancialEvaluation(evaluation, resourceState) {
   const alternatives = evaluation.alternatives || [];
   const passingNonSavings = alternatives.some((item) => item.state === 'PASS' && !alternativeUsesSavings(item));
 
+  if (evaluation.model === 'INCOME_PLUS_SAVINGS_TOTAL') {
+    if (evaluation.combinedSavingsClaim) resourceState.reservedSavings.push(evaluation.combinedSavingsClaim);
+    return;
+  }
+
   if (evaluation.model === 'INCOME_WITH_SAVINGS_SHORTFALL') {
     const income = alternatives.find(({ alternative }) => alternative?.kind === 'INCOME');
     if (income?.state === 'PASS') return;
@@ -647,6 +738,10 @@ function reserveSavingsForFinancialEvaluation(evaluation, resourceState) {
 function financialBlockerReason(evaluation, profile) {
   const income = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'INCOME');
   if (evaluation?.state !== 'FAIL') return null;
+  if (evaluation.model === 'INCOME_PLUS_SAVINGS_TOTAL' && evaluation.combinedThreshold != null && evaluation.combinedCurrency) {
+    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
+    return `По официальной комбинированной формуле годовой подтверждаемый доход и доступный банковский депозит вместе должны достигать ${number(evaluation.combinedThreshold)} ${evaluation.combinedCurrency}. По данным анкеты учитывается около ${number(evaluation.confirmedTotal ?? 0)} ${evaluation.combinedCurrency}.`;
+  }
   const savings = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'SAVINGS');
   if (savings?.state === 'FAIL' && savings.threshold != null && savings.amount != null && savings.currency) {
     const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
@@ -1119,11 +1214,15 @@ function familyPathResult(scenario, member, profileFamily, routeIds) {
     || scenario.join_stage === 'SEPARATE_ROUTE'
     || scenario.separate_route_required === true;
   if (operationalCondition && !scenario.condition_ru?.trim()) return { state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, scenario, problems: ['conditional family path has no condition_ru'] };
-  const conditions = [relationshipCondition, operationalCondition ? scenario.condition_ru : null].filter(Boolean);
+  const operationalConditions = [operationalCondition ? scenario.condition_ru : null].filter(Boolean);
+  const relationshipConditions = [relationshipCondition].filter(Boolean);
+  const conditions = [...relationshipConditions, ...operationalConditions];
   return {
     state: conditions.length ? FAMILY_STATES.CONDITION : FAMILY_STATES.PASS,
     scenario,
     conditions,
+    relationshipConditions,
+    operationalConditions,
     classification: scenario.join_stage === 'SEPARATE_ROUTE' || scenario.separate_route_required === true ? 'SEPARATE_LINKED_ROUTE'
       : (later && !administrativeSequenceOnly) || scenario.simultaneous_move === 'NO' ? 'LATER_JOIN'
         : scenario.simultaneous_move === 'CONDITIONAL' && !administrativeOnly ? 'CONDITIONAL_SIMULTANEOUS' : 'SIMULTANEOUS',
@@ -1192,6 +1291,8 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
       sortRank: bestFamilyRank,
       applicableScenarioIds: selected.map(({ scenario }) => scenario.scenario_id),
       conditions: selected.flatMap(({ conditions = [] }) => conditions),
+      relationshipConditions: selected.flatMap(({ relationshipConditions = [] }) => relationshipConditions),
+      operationalConditions: selected.flatMap(({ operationalConditions = [] }) => operationalConditions),
       classifications: selected.map(({ classification }) => classification).filter(Boolean),
       linkedRouteIds: selected.map(({ scenario }) => scenario.linked_route_id).filter(Boolean),
       joinStages: selected.map(({ scenario }) => scenario.join_stage),
@@ -1217,6 +1318,8 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
     state, classification, sortRank, memberResults,
     applicableScenarioIds: [...new Set(memberResults.flatMap((member) => member.applicableScenarioIds || []))],
     conditions: [...new Set(memberResults.flatMap((member) => member.conditions || []))],
+    relationshipConditions: [...new Set(memberResults.flatMap((member) => member.relationshipConditions || []))],
+    operationalConditions: [...new Set(memberResults.flatMap((member) => member.operationalConditions || []))],
     linkedRouteIds: [...new Set(memberResults.flatMap((member) => member.linkedRouteIds || []))],
     joinStages: [...new Set(memberResults.flatMap((member) => member.joinStages || []))],
     simultaneousMoves: [...new Set(memberResults.flatMap((member) => member.simultaneousMoves || []))],

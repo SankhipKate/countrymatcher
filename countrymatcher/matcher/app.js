@@ -55,6 +55,7 @@ const ACTIVE_RP4_PACKAGES = [
   'GR-research-v4.0.json',
   'CR-research-v4.0.json',
   'EC-research-v4.0.json',
+  'TH-research-v4.0.json',
 ];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';
@@ -536,9 +537,11 @@ function routeCard(route, countryName, main = false) {
     );
   };
 
-  const conditionActions = route.conditionActions?.length
+  const familyRelationshipNotes = route.familyEvaluation?.relationshipConditions || [];
+  const conditionActions = (route.conditionActions?.length
     ? route.conditionActions
-    : (route.conditions || []).map((text) => ({ text, requirementId: null, financialSummary: null }));
+    : (route.conditions || []).map((text) => ({ text, requirementId: null, financialSummary: null })))
+    .filter((action) => !familyRelationshipNotes.includes(action.text));
   const financialActionSeen = new Set();
   const actionItems = conditionActions.map((action) => {
     const alternatives = action.requirementId && !financialActionSeen.has(action.requirementId)

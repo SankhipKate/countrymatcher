@@ -2285,3 +2285,45 @@ test('SUITABLE_WITH_CONDITIONS always carries at least one condition', () => {
     if (item.conditions.length === 0) assert.notEqual(item.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   }
 });
+
+
+test('explicit source-only income eligibility passes without a numeric amount', () => {
+  const sourceOnly = alternative('INCOME', true, {
+    amount: null,
+    currency: null,
+    comparison: 'NO_FIXED_THRESHOLD',
+    allowed_income_types: ['REMOTE_EMPLOYMENT'],
+    source_geography: 'FOREIGN',
+    amount_not_required_for_eligibility: true,
+    practical_financial_guidance: {
+      evaluation_mode: 'DISPLAY_ONLY',
+      status: 'NOT_FOUND',
+      summary_ru: 'Числового критерия допуска нет.',
+      figures: [],
+      disclaimer_ru: 'Проверяется квалифицирующий источник.',
+    },
+  });
+
+  for (const amount of [0, 6000, 999999]) {
+    assert.equal(financialState('INCOME_ONLY', [sourceOnly], profile({
+      applicantAmount: amount,
+      applicantCurrency: 'USD',
+      applicantType: 'REMOTE_EMPLOYMENT',
+      applicantCountryId: 'US',
+    })).state, 'PASS');
+  }
+
+  assert.equal(financialState('INCOME_ONLY', [sourceOnly], profile({
+    applicantAmount: 999999,
+    applicantCurrency: 'USD',
+    applicantType: 'PENSION',
+    applicantCountryId: 'US',
+  })).state, 'FAIL');
+
+  assert.equal(financialState('INCOME_ONLY', [sourceOnly], profile({
+    applicantAmount: 999999,
+    applicantCurrency: 'USD',
+    applicantType: 'REMOTE_EMPLOYMENT',
+    applicantCountryId: 'ES',
+  })).state, 'FAIL');
+});

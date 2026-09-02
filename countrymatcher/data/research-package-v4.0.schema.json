@@ -802,6 +802,10 @@
         "asked_in_questionnaire": {
           "type": "boolean"
         },
+        "amount_not_required_for_eligibility": {
+          "const": true,
+          "description": "Explicit opt-in for an asked INCOME alternative where eligibility depends on source type, owner and geography and no numeric income amount is required."
+        },
         "applies_if": {
           "$ref": "#/$defs/applicabilityCondition"
         },
@@ -924,6 +928,49 @@
       },
       "allOf": [
         {
+          "if": {
+            "required": [
+              "amount_not_required_for_eligibility"
+            ]
+          },
+          "then": {
+            "required": [
+              "income_owners",
+              "practical_financial_guidance"
+            ],
+            "properties": {
+              "kind": {
+                "const": "INCOME"
+              },
+              "asked_in_questionnaire": {
+                "const": true
+              },
+              "amount": {
+                "const": null
+              },
+              "currency": {
+                "const": null
+              },
+              "comparison": {
+                "const": "NO_FIXED_THRESHOLD"
+              },
+              "allowed_income_types": {
+                "type": "array",
+                "minItems": 1
+              },
+              "income_owners": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "not": {
+              "required": [
+                "practical_screening_threshold"
+              ]
+            }
+          }
+        },
+        {
           "not": {
             "required": [
               "family_formula",
@@ -999,7 +1046,8 @@
             "INCOME_AND_SAVINGS",
             "INCOME_WITH_SAVINGS_SHORTFALL",
             "INVESTMENT_CAPITAL",
-            "SPONSOR_OR_SCHOLARSHIP"
+            "SPONSOR_OR_SCHOLARSHIP",
+            "INCOME_PLUS_SAVINGS_TOTAL"
           ]
         },
         "alternatives": {
@@ -4225,7 +4273,10 @@
           "minLength": 1
         },
         "expected_effective_date": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date"
         },
         "impact_ru": {
@@ -4241,7 +4292,29 @@
             "minLength": 1
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "OFFICIALLY_SCHEDULED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expected_effective_date": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        }
+      ]
     },
     "engineRule": {
       "type": "object",
