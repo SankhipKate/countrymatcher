@@ -640,7 +640,8 @@ test('landing primary CTAs open the free questionnaire while payment section rem
   assert.match(matcher, /id="resultPayment"/);
   assert.match(matcher, /class="card-network-marks"/);
   assert.match(matcher, /class="paypal-payment-card paypal-live-card"/);
-  assert.match(matcher, /цена только до 1 сентября <del class="previous-payment-price">\$29<\/del> <span class="current-payment-price">\$9<\/span>/);
+  assert.match(matcher, /<h3>Открыть все результаты — \$29<\/h3>/);
+  assert.doesNotMatch(matcher, /цена только до 1 сентября/);
   assert.match(matcher, /class="paypal-button-wrap paypal-button-live-wrap"/);
   assert.match(matcher, /class="other-payments"/);
   assert.match(matcher, /class="other-payment-list"/);

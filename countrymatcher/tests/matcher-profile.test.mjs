@@ -978,7 +978,7 @@ test('route cards deduplicate financial actions by requirement identity', async 
     financialSummary: conditional.summary, financialRequirements: [conditional, satisfied],
     conditionActions: [{ requirementId: 'FIN_FIX', requirementType: 'FINANCIAL', text: 'Исправить финансы.', financialSummary: conditional.summary }],
   }, 'Страна');
-  assert.match(mixed, /Что нужно выполнить, чтобы маршрут подходил[\s\S]*Исправить финансы — доход 2000 EUR\/мес \(≈ 2220 USD\/мес\)/u);
+  assert.match(mixed, /Что нужно выполнить, чтобы маршрут подходил[\s\S]*Исправить финансы — доход 2000 EUR\/мес \(2220 USD\/мес\)/u);
   assert.equal((mixed.match(/Исправить финансы/g) || []).length, 1);
   assert.match(mixed, /Финансовое требование[\s\S]*Удовлетворённое требование/u);
   assert.doesNotMatch(mixed.slice(mixed.indexOf('Финансовое требование')), /Условное требование/u);
@@ -1006,8 +1006,8 @@ test('route cards deduplicate financial actions by requirement identity', async 
     ],
   }, 'Страна');
   assert.equal((identicalText.match(/Одинаковое действие/g) || []).length, 2);
-  assert.match(identicalText, /Одинаковое действие — доход 1200 EUR\/мес \(≈ 1330 USD\/мес\)/u);
-  assert.match(identicalText, /Одинаковое действие — доход 2400 EUR\/мес \(≈ 2670 USD\/мес\)/u);
+  assert.match(identicalText, /Одинаковое действие — доход 1200 EUR\/мес \(1330 USD\/мес\)/u);
+  assert.match(identicalText, /Одинаковое действие — доход 2400 EUR\/мес \(2670 USD\/мес\)/u);
   assert.doesNotMatch(identicalText, /Финансовое требование/u);
 
   const separate = renderRoute({

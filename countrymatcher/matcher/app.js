@@ -3,6 +3,7 @@ import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engi
 import { collectCurrencyCodes, FX_FALLBACK_URL, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js';
 import { formatCurrency } from './format.js';
+import { EXPECTED_PRICE } from '../payment-config.js';
 import {
   ACCESS_GRANTED_EVENT,
   ACCESS_STATES,
@@ -10,7 +11,7 @@ import {
   resolveAccessState,
   showAccessTeaser,
 } from './access-gate.js';
-import { countryLocative, deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
+import { countryCount, countryLocative, deriveFunnelPresentation, FUNNEL_STATES } from './funnel.js';
 import { selectWorstSuitableCountry } from './free-country-selection.js';
 import { countAdditionalSuitableCountriesAtIncome } from './income-opportunity.js';
 import { DRAFT_VERSION, prepareDraftForRestore } from './draft-state.js';
@@ -489,7 +490,7 @@ function routeCard(route, countryName, main = false) {
   const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4 data-clarity-unmask="true">Почему не подходит</h4>${list(route.blockers)}</div>` : "";
   const formatFinancialAlternative = (item) => {
     const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
-    const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (≈ ${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
+    const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
     return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${official}${equivalent}`.trim();
   };
   const withDynamicFinancialTextEquivalents = (text, financialSummary) => {
@@ -530,7 +531,7 @@ function routeCard(route, countryName, main = false) {
         const amountUsd =
           localAmount * anchor.thresholdUsd / anchor.threshold;
 
-        return `${match} (≈ ${currency(amountUsd, 'USD')})`;
+        return `${match} (${currency(amountUsd, 'USD')})`;
       },
     );
   };
@@ -670,7 +671,7 @@ function renderLockedCountryTab(country) {
 
 function renderMoreLockedCountries(count) {
   if (count < 1) return '';
-  return `<button class="country-tab country-tab-more is-locked" type="button" data-more-locked="${count}"><span class="country-tab-lock country-tab-lock-leading" aria-hidden="true">🔒</span><span class="country-tab-copy"><strong>И ещё ${count} стран</strong><small>Открыть все результаты</small></span></button>`;
+  return `<button class="country-tab country-tab-more is-locked" type="button" data-more-locked="${count}"><span class="country-tab-lock country-tab-lock-leading" aria-hidden="true">🔒</span><span class="country-tab-copy"><strong>И ещё ${countryCount(count)}</strong><small>Открыть все результаты</small></span></button>`;
 }
 
 function citizenshipYears(route) {
@@ -808,14 +809,14 @@ function renderCountryResult(calculation, changed = false, active = false, previ
   const thresholdLabel = 'Финансовый порог';
   const thresholdUsd = primaryFinancial?.currency !== 'USD'
     && Number.isFinite(primaryFinancial?.thresholdUsd)
-      ? ` (≈ ${currency(primaryFinancial.thresholdUsd, 'USD')})`
+      ? ` (${currency(primaryFinancial.thresholdUsd, 'USD')})`
       : '';
   const thresholdValue = !best?.financialSummary
     ? 'Подтверждение финансовой состоятельности не требуется'
     : primaryFinancial?.threshold != null
       ? `${currency(primaryFinancial.threshold, primaryFinancial.currency)}${thresholdUsd}${officialFinancialPeriodSuffix(primaryFinancial.period)}`
       : 'Числовой порог не установлен';
-  const incomeValue = incomeAmount == null ? 'Не указан' : `${currency(incomeAmount, incomeCurrency)}${incomeCurrency !== 'USD' && Number.isFinite(incomeUsd) ? ` (≈ ${currency(incomeUsd, 'USD')})` : ''}`;
+  const incomeValue = incomeAmount == null ? 'Не указан' : `${currency(incomeAmount, incomeCurrency)}${incomeCurrency !== 'USD' && Number.isFinite(incomeUsd) ? ` (${currency(incomeUsd, 'USD')})` : ''}`;
   const entryBlock = renderEntryPresentation(calculation);
   const comparisonCities = (calculation.cities || []).map((city) => ({
         name: city.cityName,
@@ -1033,8 +1034,8 @@ function renderResult(calculation, changed = false, lockedCountries = [], answer
   };
   $$('[data-country-tab]', $('#result')).forEach((tab) => tab.addEventListener('click', () => activateCountry(tab.dataset.countryTab)));
   $$('[data-locked-country], [data-more-locked]', $('#result')).forEach((tab) => tab.addEventListener('click', () => {
-    $('#lockedCountryTitle').textContent = `Откройте ещё ${lockedCountries.length} стран`;
-    $('#lockedCountrySummary').textContent = 'Полный разбор всех остальных стран — всего за $9.';
+    $('#lockedCountryTitle').textContent = `Откройте ещё ${countryCount(lockedCountries.length)}`;
+    $('#lockedCountrySummary').textContent = `Полный разбор всех остальных стран — всего за $${EXPECTED_PRICE.replace(/\.00$/, '')}.`;
     $('#lockedCountryDialog').showModal();
   }));
   $$('.country-preview-expand', $('#result')).forEach((button) => button.addEventListener('click', () => {
@@ -1161,7 +1162,7 @@ function showCalculationFailure(errors = []) {
   $('#headerSalesLink').hidden = true;
   $('#questionnaireView').hidden = false;
   $('#heroTitle').hidden = false;
-  $('#heroTitle').textContent = 'Подберём вариант иммиграции';
+  $('#heroTitle').textContent = 'Подберите подходящую страну';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
   $('#saveResult').hidden = true;
@@ -1223,7 +1224,7 @@ function returnToQuestionnaire() {
   $('#headerSalesLink').hidden = true;
   $('#questionnaireView').hidden = false;
   $('#heroTitle').hidden = false;
-  $('#heroTitle').textContent = 'Подберём вариант иммиграции';
+  $('#heroTitle').textContent = 'Подберите подходящую страну';
   $('#heroSubtitle').hidden = false;
   $('#heroSubtitle').textContent = 'Ответьте на вопросы о вашей ситуации — анкета рассчитает доступные страны и программы.';
   $('#saveResult').hidden = true;

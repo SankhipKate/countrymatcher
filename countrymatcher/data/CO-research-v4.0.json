@@ -3029,7 +3029,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Действующий брак с гражданином Колумбии и реальная совместная семейная жизнь.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CO_SPOUSE_BASIS",
@@ -3249,7 +3249,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Формализованная unión marital de hecho с гражданином Колумбии; документ, служащий основанием, должен быть формализован более чем за один год до подачи.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CO_PARTNER_BASIS",
@@ -3469,7 +3469,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Мать или отец гражданина Колумбии по рождению при выполнении специальных условий статьи 70.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CO_PARENT_BIRTH_BASIS",
@@ -3801,7 +3801,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Родитель либо предусмотренный нормой ребёнок гражданина Колумбии по adopción, с подтверждением родства и solvency.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CO_PARENT_ADOPT_BASIS",

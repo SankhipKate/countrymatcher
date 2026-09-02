@@ -431,7 +431,11 @@ async function initializeCheckout() {
         }
 
         container.hidden = true;
-        setStatus(status, "Оплата подтверждена. Открываем постоянный доступ…");
+        setStatus(
+          status,
+          "Оплата подтверждена.\nПолный доступ откроется автоматически\nЗаймёт несколько секунд",
+          "success",
+        );
 
         try {
           await captureAndStoreAccess(orderId);
@@ -440,7 +444,7 @@ async function initializeCheckout() {
           );
           setStatus(
             status,
-            "Оплата прошла. Постоянный доступ открыт. Переходим в Country Matcher…",
+            "Оплата прошла успешно.\nПолный доступ откроется автоматически\nЗаймёт несколько секунд",
             "success",
           );
           addOpenAccessLink(status.parentElement);

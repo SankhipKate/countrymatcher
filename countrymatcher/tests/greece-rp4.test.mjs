@@ -80,7 +80,7 @@ test('Greece RP4 keeps full Canon coverage while publishing only completed route
   assert.equal(greece.country_currency, 'EUR');
   assert.equal(greece.route_coverage.length, 13);
   assert.equal(greece.routes.length, 74);
-  assert.equal(greece.routes.filter(({ publishable }) => publishable).length, 19);
+  assert.equal(greece.routes.filter(({ publishable }) => publishable).length, 15);
   assert.equal(greece.completeness.country_ready_status, 'PARTIAL');
 });
 
@@ -91,8 +91,10 @@ test('every unpublished Greek route has its own blocking open item and publishab
     blockingByRoute.set(item.related_route_id, (blockingByRoute.get(item.related_route_id) || 0) + 1);
   }
 
+  const productHidden = new Set(['GR_E2_ICT', 'GR_O1_FAMILY', 'GR_O3_GREEK_FAMILY', 'GR_EU_CITIZEN_FAMILY']);
   for (const route of greece.routes) {
     if (route.publishable) assert.equal(blockingByRoute.has(route.route_id), false, route.route_id);
+    else if (productHidden.has(route.route_id)) assert.equal(blockingByRoute.has(route.route_id), false, route.route_id);
     else assert.equal(blockingByRoute.has(route.route_id), true, route.route_id);
   }
 });
