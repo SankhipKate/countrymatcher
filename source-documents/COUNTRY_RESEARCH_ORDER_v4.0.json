@@ -1,6 +1,6 @@
 {
   "schema_version": "4.0",
-  "updated_at": "2026-08-27",
+  "updated_at": "2026-08-28",
   "countries": [
     {
       "overall_rank": 1,
@@ -84,7 +84,7 @@
       "country": "Таиланд",
       "region": "Азия",
       "category": "Признан однополый брак",
-      "research_status": "В очереди"
+      "research_status": "Подключена"
     },
     {
       "overall_rank": 13,

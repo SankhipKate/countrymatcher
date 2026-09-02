@@ -462,6 +462,11 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                                 f"{alternative_path}.comparison: unsupported active ENGINE comparison {comparison}",
                                 errors,
                             )
+                        if comparison == "OFFICIAL_FORMULA" and model != "INCOME_PLUS_SAVINGS_TOTAL":
+                            fail(
+                                f"{alternative_path}.comparison: OFFICIAL_FORMULA is supported only by INCOME_PLUS_SAVINGS_TOTAL",
+                                errors,
+                            )
                 if mode == "ENGINE" and rtype != "FINANCIAL" and not isinstance(requirement.get("engine_rule"), dict):
                     fail(
                         f"$.routes[{route_id}].requirements[{k}].engine_rule: non-financial ENGINE requires engine_rule",
@@ -479,6 +484,20 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
                             f"$.routes[{route_id}].requirements[{k}].financial.shortfall_coverage: required for shortfall model",
                             errors,
                         )
+                    if financial.get("model") == "INCOME_PLUS_SAVINGS_TOTAL":
+                        alternatives = [a for a in (financial.get("alternatives") or []) if isinstance(a, dict)]
+                        kinds = [a.get("kind") for a in alternatives]
+                        if len(alternatives) != 2 or sorted(kinds) != ["INCOME", "SAVINGS"]:
+                            fail(
+                                f"$.routes[{route_id}].requirements[{k}].financial.alternatives: INCOME_PLUS_SAVINGS_TOTAL requires exactly one INCOME and one SAVINGS alternative",
+                                errors,
+                            )
+                        thresholds = {(a.get("amount"), a.get("currency")) for a in alternatives}
+                        if len(thresholds) != 1 or any(a.get("comparison") != "OFFICIAL_FORMULA" for a in alternatives):
+                            fail(
+                                f"$.routes[{route_id}].requirements[{k}].financial: INCOME_PLUS_SAVINGS_TOTAL requires one shared amount/currency threshold and OFFICIAL_FORMULA comparisons",
+                                errors,
+                            )
                     for a, alternative in enumerate(financial.get("alternatives") or []):
                         if not isinstance(alternative, dict):
                             continue

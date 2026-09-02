@@ -999,7 +999,8 @@
             "INCOME_AND_SAVINGS",
             "INCOME_WITH_SAVINGS_SHORTFALL",
             "INVESTMENT_CAPITAL",
-            "SPONSOR_OR_SCHOLARSHIP"
+            "SPONSOR_OR_SCHOLARSHIP",
+            "INCOME_PLUS_SAVINGS_TOTAL"
           ]
         },
         "alternatives": {
@@ -4225,7 +4226,10 @@
           "minLength": 1
         },
         "expected_effective_date": {
-          "type": "string",
+          "type": [
+            "string",
+            "null"
+          ],
           "format": "date"
         },
         "impact_ru": {
@@ -4241,7 +4245,29 @@
             "minLength": 1
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "OFFICIALLY_SCHEDULED"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expected_effective_date": {
+                "type": "string",
+                "format": "date"
+              }
+            }
+          }
+        }
+      ]
     },
     "engineRule": {
       "type": "object",

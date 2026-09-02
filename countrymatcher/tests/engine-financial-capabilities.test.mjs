@@ -72,9 +72,18 @@ const dnvRequirement = (pkg) => pkg.routes.find(({ route_id }) => route_id === '
 
 test('actual engine exports an immutable JSON capability contract', () => {
   assert.deepEqual(JSON.parse(JSON.stringify(ACTIVE_ENGINE_FINANCIAL_CAPABILITIES)), {
-    models: ['INCOME_ONLY', 'SAVINGS_ONLY', 'INCOME_OR_SAVINGS', 'INCOME_AND_SAVINGS', 'INCOME_WITH_SAVINGS_SHORTFALL', 'INVESTMENT_CAPITAL', 'SPONSOR_OR_SCHOLARSHIP'],
+    models: [
+      'INCOME_ONLY',
+      'SAVINGS_ONLY',
+      'INCOME_OR_SAVINGS',
+      'INCOME_AND_SAVINGS',
+      'INCOME_WITH_SAVINGS_SHORTFALL',
+      'INCOME_PLUS_SAVINGS_TOTAL',
+      'INVESTMENT_CAPITAL',
+      'SPONSOR_OR_SCHOLARSHIP',
+    ],
     alternativeKinds: ['INCOME', 'SAVINGS', 'CAPITAL'],
-    comparisons: ['AT_LEAST', 'MORE_THAN', 'EXACT', 'NO_FIXED_THRESHOLD'],
+    comparisons: ['AT_LEAST', 'MORE_THAN', 'EXACT', 'OFFICIAL_FORMULA', 'NO_FIXED_THRESHOLD'],
     alternativeApplicabilityModels: [
       'INCOME_ONLY',
       'SAVINGS_ONLY',
@@ -87,6 +96,15 @@ test('actual engine exports an immutable JSON capability contract', () => {
   for (const values of Object.values(ACTIVE_ENGINE_FINANCIAL_CAPABILITIES)) assert.equal(Object.isFrozen(values), true);
 });
 
+const formulaAlternatives = (threshold = 1000, currency = 'USD') => [
+  {
+    ...alternative('INCOME', 'OFFICIAL_FORMULA'), amount: threshold, currency, period: 'ANNUAL',
+  },
+  {
+    ...alternative('SAVINGS', 'OFFICIAL_FORMULA'), amount: threshold, currency, period: 'ONE_TIME',
+  },
+];
+
 test('every declared model, kind, and comparison has a non-unsupported active ENGINE path', () => {
   const modelAlternatives = {
     INCOME_ONLY: [alternative('INCOME')],
@@ -94,19 +112,40 @@ test('every declared model, kind, and comparison has a non-unsupported active EN
     INCOME_OR_SAVINGS: [alternative('INCOME'), alternative('SAVINGS')],
     INCOME_AND_SAVINGS: [alternative('INCOME'), alternative('SAVINGS')],
     INCOME_WITH_SAVINGS_SHORTFALL: [alternative('INCOME')],
+    INCOME_PLUS_SAVINGS_TOTAL: formulaAlternatives(),
     INVESTMENT_CAPITAL: [alternative('CAPITAL')],
     SPONSOR_OR_SCHOLARSHIP: [alternative('INCOME')],
   };
   for (const model of ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.models) {
     assertRuntimeSupported(requirement(model, modelAlternatives[model]));
   }
-  const kindModels = { INCOME: 'INCOME_ONLY', SAVINGS: 'SAVINGS_ONLY', CAPITAL: 'INVESTMENT_CAPITAL' };
+  const kindModels = {
+    INCOME: 'INCOME_ONLY', SAVINGS: 'SAVINGS_ONLY', CAPITAL: 'INVESTMENT_CAPITAL',
+  };
   for (const kind of ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.alternativeKinds) {
     assertRuntimeSupported(requirement(kindModels[kind], [alternative(kind)]));
   }
   for (const comparison of ACTIVE_ENGINE_FINANCIAL_CAPABILITIES.comparisons) {
-    assertRuntimeSupported(requirement('INCOME_ONLY', [alternative('INCOME', comparison)]));
+    if (comparison === 'OFFICIAL_FORMULA') {
+      assertRuntimeSupported(requirement('INCOME_PLUS_SAVINGS_TOTAL', formulaAlternatives()));
+    } else {
+      assertRuntimeSupported(requirement('INCOME_ONLY', [alternative('INCOME', comparison)]));
+    }
   }
+});
+
+test('INCOME_PLUS_SAVINGS_TOTAL evaluates the official annual sum formula', () => {
+  const formulaRequirement = requirement('INCOME_PLUS_SAVINGS_TOTAL', formulaAlternatives(800000, 'THB'));
+  const fxContext = { fx: { base_currency: 'USD', rates: { USD: 1, THB: 35 }, as_of: '2026-08-27', source: 'test' } };
+  const formulaProfile = structuredClone(profile);
+  formulaProfile.income.primary.monthly_provable = { amount: 1000, currency: 'USD' };
+  formulaProfile.income.primary.monthly_total = { amount: 1000, currency: 'USD' };
+  formulaProfile.income.savings = { amount: 400000, currency: 'THB' };
+  assert.equal(evaluateRoute(runtimeRoute(formulaRequirement), formulaProfile, fxContext, 'TH').routeStatus, 'SUITABLE');
+  formulaProfile.income.primary.monthly_provable = { amount: 500, currency: 'USD' };
+  formulaProfile.income.primary.monthly_total = { amount: 500, currency: 'USD' };
+  formulaProfile.income.savings = { amount: 100000, currency: 'THB' };
+  assert.equal(evaluateRoute(runtimeRoute(formulaRequirement), formulaProfile, fxContext, 'TH').routeStatus, 'UNSUITABLE');
 });
 
 test('schema financial enum values outside the capability contract stay unsupported in active ENGINE', () => {
@@ -124,25 +163,35 @@ test('schema financial enum values outside the capability contract stay unsuppor
   assertRuntimeUnsupported(requirement('FUTURE_MODEL', [alternative('INCOME')]));
 });
 
-test('Python validator imports the engine contract without a duplicate capability list', () => {
+test('OFFICIAL_FORMULA is active only inside INCOME_PLUS_SAVINGS_TOTAL', () => {
+  assertRuntimeSupported(requirement('INCOME_PLUS_SAVINGS_TOTAL', formulaAlternatives()));
+  assertRuntimeUnsupported(requirement('INCOME_ONLY', [alternative('INCOME', 'OFFICIAL_FORMULA')]));
+});
+
+test('Python validator imports the engine contract instead of maintaining a second capability enum', () => {
   assert.match(validatorSource, /engine\.ACTIVE_ENGINE_FINANCIAL_CAPABILITIES/);
   assert.match(validatorSource, /subprocess\.run/);
-  for (const duplicatedValue of ['INCOME_ONLY', 'SAVINGS_ONLY', 'SPONSOR_OR_SCHOLARSHIP', 'OFFICIAL_FORMULA']) {
-    assert.equal(validatorSource.includes(duplicatedValue), false, duplicatedValue);
-  }
+  assert.equal(/ACTIVE_ENGINE_FINANCIAL_CAPABILITIES\s*=\s*\{/.test(validatorSource), false);
 });
 
 test('validator and runtime agree for supported and unsupported active ENGINE semantics', () => {
   assert.equal(integrityErrors(spain), '');
   assertRuntimeSupported(structuredClone(dnvRequirement(spain)));
 
-  for (const [semantic, value] of [['comparison', 'OFFICIAL_FORMULA'], ['kind', 'SPONSOR'], ['kind', 'SCHOLARSHIP']]) {
+  for (const [semantic, value] of [['kind', 'SPONSOR'], ['kind', 'SCHOLARSHIP']]) {
     const pkg = structuredClone(spain);
     const financialRequirement = dnvRequirement(pkg);
     financialRequirement.financial.alternatives[0][semantic] = value;
     assert.match(integrityErrors(pkg), new RegExp(`ES_DNV.*${financialRequirement.requirement_id}.*alternatives\\[0\\].*${semantic}.*${value}`));
     assertRuntimeUnsupported(financialRequirement);
   }
+
+  const wrongFormula = structuredClone(spain);
+  const wrongFormulaRequirement = dnvRequirement(wrongFormula);
+  wrongFormulaRequirement.financial.alternatives[0].comparison = 'OFFICIAL_FORMULA';
+  assert.match(integrityErrors(wrongFormula), /OFFICIAL_FORMULA is supported only by INCOME_PLUS_SAVINGS_TOTAL/);
+  assertRuntimeUnsupported(wrongFormulaRequirement);
+
   const unsupportedModel = structuredClone(spain);
   const unsupportedModelRequirement = dnvRequirement(unsupportedModel);
   unsupportedModelRequirement.financial.model = 'FUTURE_MODEL';
@@ -150,7 +199,7 @@ test('validator and runtime agree for supported and unsupported active ENGINE se
   assertRuntimeUnsupported(unsupportedModelRequirement);
 });
 
-test('OFFICIAL_FORMULA and Spain Study sponsor semantics remain valid outside active ENGINE', () => {
+test('OFFICIAL_FORMULA remains valid outside active ENGINE and Spain Study keeps sponsor semantics', () => {
   assert.ok(schema.$defs.financialAlternative.properties.comparison.enum.includes('OFFICIAL_FORMULA'));
   const unaskedFormula = structuredClone(spain);
   const formulaRequirement = dnvRequirement(unaskedFormula);
