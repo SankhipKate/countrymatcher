@@ -1492,7 +1492,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Перевод manager/specialist/trainee внутри связанной international corporate structure.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "ME_ICT_BASIS",
@@ -2546,7 +2546,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Qualifying family relationship с Montenegrin citizen или sponsor с применимым temporary/permanent residence.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "ME_FAMILY_RELATIONSHIP",

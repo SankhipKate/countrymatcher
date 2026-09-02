@@ -295,7 +295,7 @@ test('active matcher calculates real Spain, Argentina, and Uruguay packages thro
   assert.equal(one.results[0].country.countryId, 'ES');
   const three = calculateActiveMatcher(input, [spain, argentina, uruguay], threeCountryContext);
   assert.deepEqual(three.results.map(({ country }) => country.countryId), ['ES', 'AR', 'UY']);
-  assert.deepEqual(three.results.map(({ routes }) => routes.length), [11, 8, 7]);
+  assert.deepEqual(three.results.map(({ routes }) => routes.length), [11, 7, 7]);
   assert.ok(three.results[2].routes.every(({ routeName }) => typeof routeName === 'string' && routeName.length > 0));
   assert.deepEqual(sortCountriesForDisplay(three.results).map(({ country }) => country.countryId).sort(), ['AR', 'ES', 'UY']);
   assert.throws(() => calculateActiveMatcher(input, spain, context), /must be an array/);
@@ -306,7 +306,7 @@ test('current public route policy hides narrow supporting routes without hiding 
   for (const routeId of ['ES_FAM_SP', 'ES_REUN', 'ES_ICT']) assert.equal(publication(spain, routeId), false);
   assert.equal(publication(argentina, 'AR_FAMILY'), false);
   assert.equal(publication(uruguay, 'UY_PERMANENT_URUGUAYAN_LINK'), false);
-  assert.equal(publication(argentina, 'AR_SPECIALIST_TRANSFER'), true);
+  assert.equal(publication(argentina, 'AR_SPECIALIST_TRANSFER'), false);
   assert.equal(publication(uruguay, 'UY_TEMP_SPECIALIST'), true);
 });
 

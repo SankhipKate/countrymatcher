@@ -77,7 +77,11 @@ test('Chile RP4 pins the complete coverage map and publication boundary', () => 
   assert.equal(chile.country_name_ru, 'Чили');
   assert.equal(chile.country_currency, 'CLP');
   assert.equal(chile.routes.length, 13);
-  assert.equal(chile.routes.every(({ publishable }) => publishable), true);
+  assert.equal(chile.routes.filter(({ publishable }) => publishable).length, 11);
+  assert.deepEqual(
+    chile.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id),
+    ['CL_INVESTOR_PERSONNEL', 'CL_FAMILY_REUNIFICATION'],
+  );
 
   assert.deepEqual(
     chile.route_coverage.map(({ category, result }) => [category, result]),
@@ -188,8 +192,8 @@ test('Chile investment capital stays an unasked basis and savings do not prove i
     },
   }), chile, context);
   const investor = routeResult(result, 'CL_INVESTOR_PERSONNEL');
-  assert.equal(investor.routeStatus, 'SUITABLE_WITH_CONDITIONS');
-  assert.match(investor.conditions.join(' '), /сбережения .*не доказывают/u);
+  assert.equal(routeData('CL_INVESTOR_PERSONNEL').publishable, false);
+  assert.equal(investor, undefined);
 });
 
 test('Chile student keeps admission separate and preserves the 30-hour work rule', () => {

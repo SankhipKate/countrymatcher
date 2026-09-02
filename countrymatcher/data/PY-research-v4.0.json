@@ -745,7 +745,7 @@
       ],
       "route_subtype_ru": "Прямая Permanent Residence по специальному семейному основанию",
       "basis_ru": "Специальный direct-PR механизм для иностранного супруга или ребёнка гражданина Парагвая.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "PY_FAMILY_PARAGUAYAN_BASIS",
@@ -950,7 +950,7 @@
       ],
       "route_subtype_ru": "Прямая Permanent Residence по специальному семейному основанию",
       "basis_ru": "Статья 48 Ley 6984/2022 предусматривает direct-PR treatment для определённых иностранных членов семьи репатриированного гражданина Парагвая.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "PY_FAMILY_REPATRIATED_BASIS",

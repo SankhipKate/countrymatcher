@@ -155,7 +155,12 @@ test('Montenegro RP4 pins approved publication boundary', () => {
     montenegro.routes.filter(
       ({ publishable }) => publishable,
     ).length,
-    19,
+    17,
+  );
+
+  assert.deepEqual(
+    montenegro.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id).sort(),
+    ['ME_FAMILY', 'ME_ICT'].sort(),
   );
 
   assert.ok(

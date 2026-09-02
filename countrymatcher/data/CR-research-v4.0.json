@@ -1051,7 +1051,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Квалифицирующее корпоративное назначение.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CR_CORP_BASIS",
@@ -2652,7 +2652,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Самостоятельное семейное основание временной резиденции.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CR_SPOUSE_BASIS",
@@ -2864,7 +2864,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Самостоятельный семейный путь к постоянной резиденции для предусмотренных Article 78 родственников.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "CR_FIRST_BASIS",

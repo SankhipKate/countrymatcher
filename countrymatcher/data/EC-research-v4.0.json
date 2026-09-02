@@ -1598,7 +1598,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Для направления сотрудника иностранной компанией в связанную эквадорскую структуру/филиал.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "EC_ICT_BASIS",
@@ -3026,7 +3026,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Для qualifying членов семьи лица с подходящим миграционным статусом.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "EC_AMPARO_RELATIONSHIP",
@@ -3361,7 +3361,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Для предусмотренных законом близких родственников гражданина Эквадора либо владельца постоянной/бессрочной резиденции.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "EC_FAMILY_PR_BASIS",
@@ -5046,7 +5046,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Нужны трудовое/морское основание и предусмотренные документы квалификации/экипажа.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "EC_OTHER_MARITIME_BASIS",
