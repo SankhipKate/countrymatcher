@@ -216,3 +216,34 @@ test('RP4 integrity validator rejects unresolved and non-positive practical scre
   assert.match(result.stdout, /unknown source_id MISSING_SCREENING_SOURCE/);
   assert.match(result.stdout, /child_amount: must be >= 0/);
 });
+
+
+test('source-only income eligibility flag rejects contradictory numeric semantics', () => {
+  const sourceOnly = structuredClone(alternative);
+  sourceOnly.amount_not_required_for_eligibility = true;
+  sourceOnly.practical_financial_guidance = {
+    evaluation_mode: 'DISPLAY_ONLY',
+    status: 'NOT_FOUND',
+    summary_ru: 'Числового критерия допуска нет.',
+    figures: [],
+    disclaimer_ru: 'Проверяется квалифицирующий источник.',
+  };
+
+  assert.equal(validate(sourceOnly), true, JSON.stringify(validate.errors));
+
+  const numeric = structuredClone(sourceOnly);
+  numeric.comparison = 'AT_LEAST';
+  numeric.amount = 1;
+  numeric.currency = 'USD';
+  assert.equal(validate(numeric), false);
+
+  const screened = structuredClone(sourceOnly);
+  screened.practical_screening_threshold = {
+    comparison: 'AT_LEAST',
+    currency: 'USD',
+    period: 'MONTHLY',
+    amount: 1,
+    source_ids: ['SRC_1'],
+  };
+  assert.equal(validate(screened), false);
+});

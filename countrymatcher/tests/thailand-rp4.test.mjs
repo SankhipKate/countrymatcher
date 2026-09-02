@@ -59,7 +59,7 @@ const route = (result, routeId) => {
 test('Thailand package is Final Lock RP4 and activated in production 14.0.0', () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(thailand));
   assert.equal(thailand.country_id, 'TH');
-  assert.equal(thailand.routes.length, 25);
+  assert.equal(thailand.routes.length, 24);
   assert.equal(version, '14.0.0');
   const productionBlock = appSource.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/)?.[1] || '';
   const productionPackages = [...productionBlock.matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
@@ -69,17 +69,32 @@ test('Thailand package is Final Lock RP4 and activated in production 14.0.0', ()
   assert.match(buildSource, /data\/TH-research-v4\.0\.json/);
 });
 
-test('DTV own-funds branch blocks insufficient personal funds while sponsor branch remains conditional', () => {
-  const result = calculateActiveCountry(profile({ savings: 5000 }), thailand, context);
-  assert.equal(route(result, 'TH_DTV_WORKCATION_OWN').routeStatus, 'UNSUITABLE');
-  assert.equal(route(result, 'TH_DTV_WORKCATION_SPONSOR').routeStatus, 'SUITABLE_WITH_CONDITIONS');
+test('DTV is one route and qualifying remote work does not require a numeric income threshold', () => {
+  const dtvRoutes = thailand.routes.filter(({ route_id }) => route_id.startsWith('TH_DTV_WORKCATION_'));
+  assert.deepEqual(dtvRoutes.map(({ route_id }) => route_id), ['TH_DTV_WORKCATION_OWN']);
+
+  const remote = dtvRoutes[0].requirements
+    .find(({ requirement_id }) => requirement_id === 'TH_DTV_WORKCATION_OWN_REMOTE')
+    .financial.alternatives[0];
+
+  assert.equal(remote.amount_not_required_for_eligibility, true);
+
+  const result = calculateActiveCountry(profile({ amount: 6000, savings: 20000 }), thailand, context);
+  const dtv = route(result, 'TH_DTV_WORKCATION_OWN');
+
+  assert.equal(dtv.routeStatus, 'SUITABLE');
+  assert.equal(dtv.blockers.length, 0);
+  assert.equal(dtv.conditions.length, 0);
 });
 
-test('DTV own-funds branch becomes conditional, not unsuitable, when 500k THB funds are met', () => {
-  const result = calculateActiveCountry(profile({ savings: 20000 }), thailand, context);
+test('DTV insufficient own funds becomes a condition because sponsor or family evidence may be available', () => {
+  const result = calculateActiveCountry(profile({ amount: 6000, savings: 5000 }), thailand, context);
   const dtv = route(result, 'TH_DTV_WORKCATION_OWN');
+
   assert.equal(dtv.routeStatus, 'SUITABLE_WITH_CONDITIONS');
   assert.equal(dtv.blockers.length, 0);
+  assert.match(dtv.conditions.join(' '), /500 000 THB/u);
+  assert.doesNotMatch(dtv.conditions.join(' '), /Нужен действующий иностранный источник дохода/u);
 });
 
 test('retirement age 50+ and fixed financial branch can produce a fully suitable Non-O route', () => {
@@ -120,7 +135,7 @@ test('Thai-spouse route treats registered partnership as a correctable condition
 
 test('relationship formalization drives conditional status but is rendered in the Family section instead of duplicated as a generic action', () => {
   const result = calculateActiveCountry(profile({ relationship: 'REGISTERED_PARTNERSHIP' }), thailand, context);
-  const dtv = route(result, 'TH_DTV_WORKCATION_SPONSOR');
+  const dtv = route(result, 'TH_DTV_WORKCATION_OWN');
   assert.ok(dtv.conditions.some((text) => /признаваем.*брак/i.test(text)));
   assert.ok(dtv.familyEvaluation.relationshipConditions.some((text) => /признаваем.*брак/i.test(text)));
   assert.match(appSource, /filter\(\(action\) => !familyRelationshipNotes\.includes\(action\.text\)\)/);

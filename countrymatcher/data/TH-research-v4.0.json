@@ -26,7 +26,6 @@
       ],
       "linked_route_ids": [
         "TH_DTV_WORKCATION_OWN",
-        "TH_DTV_WORKCATION_SPONSOR",
         "TH_LTR_WFT_HIGH",
         "TH_LTR_WFT_LOWER"
       ]
@@ -191,14 +190,14 @@
   "routes": [
     {
       "route_id": "TH_DTV_WORKCATION_OWN",
-      "name_ru": "Виза для удалённой работы DTV — собственные средства",
+      "name_ru": "Виза для удалённой работы DTV",
       "official_term_ru": "Виза DTV для долгосрочного пребывания — удалённая работа (Destination Thailand Visa — Workcation)",
       "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
       "covers_categories": [
         "DIGITAL_NOMAD_REMOTE_WORK"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Подтверждённая удалённая работа или фриланс на иностранного работодателя или заказчиков и отдельное финансовое подтверждение.",
+      "basis_ru": "Подтверждённая удалённая работа или фриланс на иностранного работодателя или заказчиков и финансовое подтверждение в размере 500 000 THB.",
       "publishable": true,
       "requirements": [
         {
@@ -242,10 +241,11 @@
                 "practical_financial_guidance": {
                   "evaluation_mode": "DISPLAY_ONLY",
                   "status": "NOT_FOUND",
-                  "summary_ru": "Отдельный минимальный месячный доход для DTV не установлен: официальное денежное требование относится к подтверждению средств в размере 500 000 THB.",
+                  "summary_ru": "Для DTV отдельный минимальный размер дохода не установлен; проверяются подходящий вид удалённой деятельности и иностранный источник.",
                   "figures": [],
-                  "disclaimer_ru": "Отсутствие минимального месячного дохода не отменяет требования к подходящему основанию удалённой работы и отдельному финансовому подтверждению."
-                }
+                  "disclaimer_ru": "Размер дохода не используется как отдельный критерий допуска; требование подтвердить 500 000 THB средств проверяется отдельно."
+                },
+                "amount_not_required_for_eligibility": true
               }
             ]
           },
@@ -260,10 +260,10 @@
           "subject": "APPLICANT",
           "timing": "AT_APPLICATION",
           "evaluation_mode": "ENGINE",
-          "unmet_effect": "BLOCKS",
-          "condition_ru": "Нужно не менее 500 000 THB доступных подтверждаемых средств.",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Нужно подтвердить 500 000 THB доступных средств. Если собственных средств недостаточно, в некоторых местах подачи допускается подтверждение от члена семьи или спонсора; допустимость нужно проверить для конкретного места подачи.",
           "met_ru": "Личные сбережения достигают 500 000 THB.",
-          "unmet_ru": "Личные сбережения ниже 500 000 THB.",
+          "unmet_ru": "Собственные средства ниже 500 000 THB; нужно проверить допустимость семейного или спонсорского финансового подтверждения по месту подачи.",
           "profile_path": "INCOME_APPLICANT",
           "financial": {
             "model": "SAVINGS_ONLY",
@@ -350,270 +350,6 @@
       "family_scenarios": [
         {
           "scenario_id": "TH_DTV_WORKCATION_OWN_FAMILY",
-          "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": [
-            "MARRIED"
-          ],
-          "child_age_min": 0,
-          "child_age_max": 19,
-          "simultaneous_move": "YES",
-          "administrative_separate_filing": true,
-          "separate_route_required": false,
-          "linked_route_id": null,
-          "join_stage": "WITH_INITIAL_APPLICATION",
-          "separation_months_min": null,
-          "separation_months_max": null,
-          "member_long_term_path": null,
-          "condition_ru": "Супруг или супруга и дети, соответствующие требованиям программы, могут подавать отдельные семейные заявления без обязательного раздельного переезда.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        }
-      ],
-      "applicant_work_rights": {
-        "employment": {
-          "status": "SEPARATE_PERMISSION_REQUIRED",
-          "available_after_months": null,
-          "rule_ru": "Право на местную работу определяется правилами конкретного статуса; если требуется отдельное разрешение на работу, его нужно получить.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "self_employment": {
-          "status": "SEPARATE_PERMISSION_REQUIRED",
-          "available_after_months": null,
-          "rule_ru": "Самозанятость или предпринимательская деятельность допускается только в пределах прав конкретного статуса и необходимых разрешений.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "remote_foreign_work": {
-          "status": "ALLOWED",
-          "available_after_months": null,
-          "rule_ru": "Удалённая работа на иностранного работодателя или заказчиков допустима только в пределах правил конкретного статуса.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "allowed_remote_activity_types": [
-          "REMOTE_EMPLOYMENT",
-          "CONTRACTOR",
-          "FREELANCE_OR_SELF_EMPLOYED",
-          "SOLE_PROPRIETOR",
-          "COMPANY_OWNER"
-        ]
-      },
-      "partner_work_rights": {
-        "employment": {
-          "status": "SEPARATE_PERMISSION_REQUIRED",
-          "available_after_months": null,
-          "rule_ru": "Право на местную работу определяется правилами конкретного статуса; если требуется отдельное разрешение на работу, его нужно получить.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "self_employment": {
-          "status": "SEPARATE_PERMISSION_REQUIRED",
-          "available_after_months": null,
-          "rule_ru": "Самозанятость или предпринимательская деятельность допускается только в пределах прав конкретного статуса и необходимых разрешений.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "remote_foreign_work": {
-          "status": "CONDITIONAL",
-          "available_after_months": null,
-          "rule_ru": "Удалённая работа на иностранного работодателя или заказчиков допустима только в пределах правил конкретного статуса.",
-          "source_ids": [
-            "TH_SRC_004"
-          ]
-        },
-        "allowed_remote_activity_types": null
-      },
-      "long_term_path": {
-        "first_permit_months": 60,
-        "initial_status_ru": "Пятилетняя многократная виза с пребыванием до 180 дней за один въезд.",
-        "renewal_status": "AVAILABLE",
-        "renewal_months": 6,
-        "renewal_ru": "Для конкретного въезда возможно продление пребывания ещё до 180 дней по действующим правилам.",
-        "pr_path_status": "NOT_RESEARCHED",
-        "years_to_pr": null,
-        "residence_counts_for_pr": "NOT_RESEARCHED",
-        "pr_path_ru": "Не подтверждено, что время в этом статусе засчитывается в общее предварительное условие для ПМЖ.",
-        "citizenship_path_status": "NOT_RESEARCHED",
-        "years_to_citizenship": null,
-        "residence_counts_for_citizenship": "NOT_RESEARCHED",
-        "citizenship_path_ru": "Автоматический переход от этого статуса к гражданству не подтверждён.",
-        "renunciation_required": null,
-        "presence_rule_ru": "Применяются правила пребывания конкретного статуса и общие миграционные требования.",
-        "language_requirements_ru": "Для первоначального статуса универсальное языковое требование не установлено, если прямо не указано иное.",
-        "source_ids": [
-          "TH_SRC_004",
-          "TH_SRC_014",
-          "TH_SRC_041"
-        ]
-      },
-      "official_source_id": "TH_SRC_004"
-    },
-    {
-      "route_id": "TH_DTV_WORKCATION_SPONSOR",
-      "name_ru": "Виза для удалённой работы DTV — средства семьи или спонсора",
-      "official_term_ru": "Виза DTV для долгосрочного пребывания — удалённая работа (Destination Thailand Visa — Workcation)",
-      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
-      "covers_categories": [
-        "DIGITAL_NOMAD_REMOTE_WORK"
-      ],
-      "route_subtype_ru": null,
-      "basis_ru": "Подтверждённая удалённая работа или фриланс на иностранного работодателя или заказчиков; в некоторых официальных инструкциях финансовое подтверждение может исходить от члена семьи или спонсора.",
-      "publishable": true,
-      "requirements": [
-        {
-          "requirement_id": "TH_DTV_WORKCATION_SPONSOR_REMOTE",
-          "type": "FINANCIAL",
-          "subject": "APPLICANT",
-          "timing": "AT_APPLICATION",
-          "evaluation_mode": "ENGINE",
-          "unmet_effect": "BLOCKS",
-          "condition_ru": "Нужен действующий иностранный источник дохода от удалённой работы или фриланса.",
-          "met_ru": "Подтверждён подходящий иностранный источник дохода от удалённой работы или фриланса.",
-          "unmet_ru": "Подходящий иностранный источник дохода от удалённой работы или фриланса не подтверждён.",
-          "profile_path": "INCOME_APPLICANT",
-          "financial": {
-            "model": "INCOME_ONLY",
-            "alternatives": [
-              {
-                "kind": "INCOME",
-                "asked_in_questionnaire": true,
-                "amount": null,
-                "currency": null,
-                "period": "MONTHLY",
-                "comparison": "NO_FIXED_THRESHOLD",
-                "history_months": null,
-                "allowed_income_types": [
-                  "REMOTE_EMPLOYMENT",
-                  "CONTRACTOR",
-                  "FREELANCE_OR_SELF_EMPLOYED",
-                  "SOLE_PROPRIETOR",
-                  "COMPANY_OWNER"
-                ],
-                "source_geography": "FOREIGN",
-                "family_formula_ru": "Для DTV необходимо реальное основание для удалённой работы; отдельного минимального месячного дохода не установлено.",
-                "source_ids": [
-                  "TH_SRC_004"
-                ],
-                "confidence": "HIGH",
-                "income_owners": [
-                  "APPLICANT"
-                ],
-                "practical_financial_guidance": {
-                  "evaluation_mode": "DISPLAY_ONLY",
-                  "status": "NOT_FOUND",
-                  "summary_ru": "Отдельный минимальный месячный доход для DTV не установлен: официальное денежное требование относится к подтверждению средств в размере 500 000 THB.",
-                  "figures": [],
-                  "disclaimer_ru": "Отсутствие минимального месячного дохода не отменяет требования к подходящему основанию удалённой работы и отдельному финансовому подтверждению."
-                }
-              }
-            ]
-          },
-          "source_ids": [
-            "TH_SRC_004"
-          ],
-          "confidence": "HIGH"
-        },
-        {
-          "requirement_id": "TH_DTV_WORKCATION_SPONSOR_SPONSOR",
-          "type": "FINANCIAL",
-          "subject": "APPLICANT",
-          "timing": "AT_APPLICATION",
-          "evaluation_mode": "UNASKED_CONDITION",
-          "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Если собственных средств недостаточно, некоторые официальные инструкции DTV допускают финансовое подтверждение от члена семьи или спонсора; допустимость такого подтверждения зависит от места подачи.",
-          "source_ids": [
-            "TH_SRC_004"
-          ],
-          "confidence": "HIGH",
-          "requires_separate_basis": true,
-          "financial": {
-            "model": "SPONSOR_OR_SCHOLARSHIP",
-            "alternatives": [
-              {
-                "kind": "SPONSOR",
-                "asked_in_questionnaire": false,
-                "amount": 500000,
-                "currency": "THB",
-                "period": "ONE_TIME",
-                "comparison": "AT_LEAST",
-                "history_months": null,
-                "allowed_income_types": [],
-                "source_geography": "NOT_APPLICABLE",
-                "family_formula_ru": "В предусмотренных официальными инструкциями случаях финансовое подтверждение может предоставить член семьи или спонсор.",
-                "source_ids": [
-                  "TH_SRC_004"
-                ],
-                "confidence": "HIGH"
-              }
-            ]
-          }
-        },
-        {
-          "requirement_id": "TH_DTV_WORKCATION_SPONSOR_HISTORY",
-          "type": "OTHER_BASIS",
-          "subject": "APPLICANT",
-          "timing": "AT_APPLICATION",
-          "evaluation_mode": "DISPLAY_ONLY",
-          "unmet_effect": "NONE",
-          "condition_ru": "Требования к банковской истории зависят от места подачи. Например, посольство Таиланда в Вашингтоне требует выписки за последние 3 месяца с остатком не менее 500 000 THB на конец каждого месяца; при семейных или спонсорских средствах дополнительно подтверждаются отношения и спонсорство.",
-          "source_ids": [
-            "TH_SRC_005"
-          ],
-          "confidence": "HIGH"
-        }
-      ],
-      "processing_time": {
-        "official_days": null,
-        "official_rule_ru": "Официальный единый срок для всех этапов маршрута не зафиксирован в источнике исследования.",
-        "practical_range_ru": null,
-        "official_source_ids": [
-          "TH_SRC_004"
-        ],
-        "practical_source_ids": []
-      },
-      "application_methods": [
-        {
-          "method": "ORIGIN_COUNTRY",
-          "availability": "AVAILABLE",
-          "country_id": "RU",
-          "city_ru": null,
-          "coordinates": null,
-          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
-          "visa_required_for_ru": null,
-          "entry_condition_ru": "Заявитель находится за пределами Таиланда; применяются требования электронной системы Thai e-Visa или соответствующего тайского загранучреждения.",
-          "rule_checked_at": "2026-08-25",
-          "condition_ru": "Подача через Thai e-Visa или компетентное тайское загранучреждение при нахождении заявителя за пределами Таиланда.",
-          "source_ids": [
-            "TH_SRC_004",
-            "TH_SRC_042"
-          ]
-        },
-        {
-          "method": "ONLINE",
-          "availability": "AVAILABLE",
-          "country_id": null,
-          "city_ru": null,
-          "coordinates": null,
-          "applicant_status_requirement": "NOT_APPLICABLE",
-          "visa_required_for_ru": null,
-          "entry_condition_ru": "Онлайн-канал используется в пределах официальной процедуры маршрута.",
-          "rule_checked_at": "2026-08-25",
-          "condition_ru": "Онлайн-этап не заменяет географические и последующие очные требования процедуры.",
-          "source_ids": [
-            "TH_SRC_042"
-          ]
-        }
-      ],
-      "family_scenarios": [
-        {
-          "scenario_id": "TH_DTV_WORKCATION_SPONSOR_FAMILY",
           "applies_to": "PARTNER_AND_CHILDREN",
           "relationship_types": [
             "MARRIED"

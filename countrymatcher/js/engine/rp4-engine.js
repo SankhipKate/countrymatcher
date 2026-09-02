@@ -393,14 +393,17 @@ function incomeAlternative(alternative, profile, context, countryId) {
       };
     }
     const practicalResearchNotFound = alternative.practical_financial_guidance?.status === 'NOT_FOUND';
+    const amountNotRequiredForEligibility = alternative.amount_not_required_for_eligibility === true;
     const state = hasConfirmedSource
-      ? practicalResearchNotFound ? 'UNKNOWN' : 'PASS'
+      ? (amountNotRequiredForEligibility || !practicalResearchNotFound ? 'PASS' : 'UNKNOWN')
       : hasUnknownGeography ? 'UNKNOWN' : 'FAIL';
     return {
       state, alternative, amount: null, confirmedAmount: null,
       unknownGeographyAmount: null, potentialAmount: null,
       unknownReason: state === 'UNKNOWN'
-        ? practicalResearchNotFound && hasConfirmedSource ? 'FINANCIAL_SUFFICIENCY' : 'GEOGRAPHY'
+        ? practicalResearchNotFound && hasConfirmedSource && !amountNotRequiredForEligibility
+          ? 'FINANCIAL_SUFFICIENCY'
+          : 'GEOGRAPHY'
         : null,
       hasUnknownGeography, threshold: null, currency: null,
       incomeEligibility: hasConfirmedSource ? 'ELIGIBLE_SOURCE'

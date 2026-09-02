@@ -802,6 +802,10 @@
         "asked_in_questionnaire": {
           "type": "boolean"
         },
+        "amount_not_required_for_eligibility": {
+          "const": true,
+          "description": "Explicit opt-in for an asked INCOME alternative where eligibility depends on source type, owner and geography and no numeric income amount is required."
+        },
         "applies_if": {
           "$ref": "#/$defs/applicabilityCondition"
         },
@@ -923,6 +927,49 @@
         }
       },
       "allOf": [
+        {
+          "if": {
+            "required": [
+              "amount_not_required_for_eligibility"
+            ]
+          },
+          "then": {
+            "required": [
+              "income_owners",
+              "practical_financial_guidance"
+            ],
+            "properties": {
+              "kind": {
+                "const": "INCOME"
+              },
+              "asked_in_questionnaire": {
+                "const": true
+              },
+              "amount": {
+                "const": null
+              },
+              "currency": {
+                "const": null
+              },
+              "comparison": {
+                "const": "NO_FIXED_THRESHOLD"
+              },
+              "allowed_income_types": {
+                "type": "array",
+                "minItems": 1
+              },
+              "income_owners": {
+                "type": "array",
+                "minItems": 1
+              }
+            },
+            "not": {
+              "required": [
+                "practical_screening_threshold"
+              ]
+            }
+          }
+        },
         {
           "not": {
             "required": [
