@@ -987,7 +987,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Внутрикорпоративный перевод менеджера, специалиста или стажёра из компании группы за пределами ЕС в связанную организацию в Греции.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "GR_E2_TRANSFER",
@@ -1818,7 +1818,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Воссоединение с квалифицирующим иностранным спонсором, уже законно проживающим в Греции.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "GR_O1_SPONSOR",
@@ -2014,7 +2014,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Прямая семейная резиденция для квалифицирующего члена семьи гражданина Греции.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "GR_O3_GREEK_FAMILY_BASIS",
@@ -2190,7 +2190,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Проживание в Греции вместе с гражданином ЕС или вслед за ним по правилам свободного передвижения.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "GR_EU_FAMILY_BASIS",

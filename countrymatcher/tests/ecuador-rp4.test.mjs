@@ -67,10 +67,10 @@ test('Ecuador RP4 covers all 13 Canon route categories and keeps second-stage PR
   assert.equal(ecuador.country_id, 'EC');
   assert.equal(ecuador.route_coverage.length, 13);
   assert.ok(ecuador.route_coverage.every(({ result }) => result === 'ROUTE_EXISTS'));
-  assert.equal(ecuador.routes.filter(({ publishable }) => publishable).length, 20);
+  assert.equal(ecuador.routes.filter(({ publishable }) => publishable).length, 16);
   assert.deepEqual(
-    ecuador.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id),
-    ['EC_PR_21_MONTHS', 'EC_FISCAL_TEMP_5Y'],
+    ecuador.routes.filter(({ publishable }) => !publishable).map(({ route_id }) => route_id).sort(),
+    ['EC_ICT', 'EC_FAMILY_TEMP_AMPARO', 'EC_FAMILY_PR_DIRECT', 'EC_OTHER_MARITIME', 'EC_PR_21_MONTHS', 'EC_FISCAL_TEMP_5Y'].sort(),
   );
   assert.deepEqual(
     ecuador.open_items.map(({ item_id }) => item_id).sort(),

@@ -2,7 +2,7 @@ export const SANDBOX_WORKER_URL =
   "https://countrymatcher-payments-sandbox.sankhipkate.workers.dev";
 export const LIVE_WORKER_URL =
   "https://countrymatcher-payments.sankhipkate.workers.dev";
-export const EXPECTED_PRICE = "9.00";
+export const EXPECTED_PRICE = "29.00";
 export const EXPECTED_CURRENCY = "USD";
 
 export const TOKEN_STORAGE_KEY = "countryMatcherAccessToken";

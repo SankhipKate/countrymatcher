@@ -1033,7 +1033,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Корпоративная руководящая роль в бразильском юридическом лице при выполнении инвестиционных условий.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "BR_RN11_BASIS",
@@ -2158,7 +2158,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Семейная связь с гражданином Бразилии или иностранцем с подходящей бразильской резиденцией.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "BR_FAM_BASIS",
