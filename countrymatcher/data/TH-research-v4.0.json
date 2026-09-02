@@ -177,14 +177,30 @@
   "entry_for_russian_citizen": {
     "entry_type": "VISA_FREE",
     "visa_required": false,
-    "rule_ru": "Для граждан РФ с обычным паспортом продолжает действовать безвизовый режим, применяемый на дату исследования; отдельное двустороннее соглашение о 30 днях остаётся самостоятельной правовой основой. Одобренная в 2026 году реформа не считается вступившей в силу, пока не опубликован соответствующий нормативный акт и не подтверждена дата начала действия.",
+    "rule_ru": "До 14 сентября 2026 года включительно граждане РФ с обычным паспортом могут въезжать в Таиланд без визы на срок до 60 дней. С 15 сентября 2026 года после отмены общего 60-дневного режима для граждан РФ применяется отдельное двустороннее соглашение о безвизовом въезде на срок до 30 дней.",
     "authorization_validity_days": null,
     "maximum_stay_days": 60,
     "processing_time_ru": null,
     "source_ids": [
       "TH_SRC_001",
       "TH_SRC_002",
-      "TH_SRC_003"
+      "TH_SRC_003",
+      "TH_SRC_045"
+    ],
+    "scheduled_rules": [
+      {
+        "effective_at": "2026-09-15T00:00:00+07:00",
+        "entry_type": "VISA_FREE",
+        "visa_required": false,
+        "rule_ru": "С 15 сентября 2026 года общий 60-дневный безвизовый режим отменён. Для граждан РФ с обычным паспортом продолжает действовать отдельное двустороннее соглашение, позволяющее находиться в Таиланде без визы до 30 дней.",
+        "authorization_validity_days": null,
+        "maximum_stay_days": 30,
+        "processing_time_ru": null,
+        "source_ids": [
+          "TH_SRC_003",
+          "TH_SRC_045"
+        ]
+      }
     ]
   },
   "routes": [
@@ -4212,7 +4228,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Родитель или опекун ребёнка, который учится в подходящем учебном заведении Таиланда.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "TH_GUARDIAN_CHILD_STUDY",
@@ -4406,7 +4422,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Юридически действительный брак с гражданином или гражданкой Таиланда; однополый законный брак рассматривается на общих основаниях.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "TH_FAMILY_THAI_SPOUSE_FIXED_REL",
@@ -4637,7 +4653,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Юридически действительный брак с гражданином или гражданкой Таиланда и официальный комбинированный метод финансового подтверждения.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "TH_FAMILY_THAI_SPOUSE_COMBINATION_REL",
@@ -4868,7 +4884,7 @@
       ],
       "route_subtype_ru": null,
       "basis_ru": "Родитель ребёнка, который является гражданином Таиланда.",
-      "publishable": true,
+      "publishable": false,
       "requirements": [
         {
           "requirement_id": "TH_FAMILY_THAI_CHILD_FIXED_CHILD",
@@ -6837,6 +6853,18 @@
       "confidence": "HIGH",
       "published_or_updated_at": "2026-07-19",
       "language": "English"
+    },
+    {
+      "source_id": "TH_SRC_045",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Consular Affairs, Ministry of Foreign Affairs of Thailand",
+      "title_ru": "Итоговые меры визовых освобождений Таиланда 2026 года с датой вступления в силу",
+      "url": "https://consular.mfa.go.th/th/content/1-9-69-00?page=5d68c88b15e39c160c008173",
+      "supports_ru": "Пересмотренные схемы освобождения от визы для обычных паспортов вступают в силу 15 сентября 2026 года.",
+      "checked_at": "2026-09-02",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-09-01",
+      "language": "Thai/English"
     }
   ],
   "pending_changes": [
@@ -6853,14 +6881,15 @@
     },
     {
       "change_id": "TH_PENDING_ENTRY_REFORM_2026",
-      "status": "ADOPTED_NOT_IN_FORCE",
+      "status": "OFFICIALLY_SCHEDULED",
       "title_ru": "Реформа краткосрочного безвизового режима 2026 года",
-      "summary_ru": "Кабинет Таиланда одобрил новую структуру освобождения от визы, заменяющую действующий общий 60-дневный режим. Пять соответствующих актов МВД ещё должны быть опубликованы в Royal Gazette.",
-      "expected_effective_date": null,
-      "impact_ru": "До фактического вступления новых актов в силу применяется текущий 60-дневный режим. После публикации актов МВД новые правила начнут действовать через 15 дней; двустороннее 30-дневное соглашение для граждан РФ остаётся отдельным правовым основанием и проверяется отдельно.",
+      "summary_ru": "Пересмотренные схемы освобождения от визы опубликованы с официальной датой вступления в силу 15 сентября 2026 года. Общий 60-дневный режим прекращается; для граждан РФ сохраняется отдельное двустороннее 30-дневное освобождение от визы.",
+      "expected_effective_date": "2026-09-15",
+      "impact_ru": "До 14 сентября 2026 года включительно для граждан РФ применяется текущий 60-дневный безвизовый режим. С 15 сентября 2026 года Country Matcher должен автоматически применять 30-дневный срок по двустороннему соглашению России и Таиланда.",
       "source_ids": [
         "TH_SRC_002",
-        "TH_SRC_044"
+        "TH_SRC_003",
+        "TH_SRC_045"
       ]
     },
     {

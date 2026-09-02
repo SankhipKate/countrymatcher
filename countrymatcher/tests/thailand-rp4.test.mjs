@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { assertActiveResearchPackage, calculateActiveCountry } from '../js/engine/rp4-engine.js';
+import { assertActiveResearchPackage, calculateActiveCountry, evaluateRoute, resolveEntryForRussianCitizen } from '../js/engine/rp4-engine.js';
 
 const thailand = JSON.parse(await readFile(new URL('../data/TH-research-v4.0.json', import.meta.url), 'utf8'));
 const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
@@ -126,9 +126,29 @@ test('SMART S remains conditional even with enough savings because startup basis
   assert.ok(smart.conditions.length > 0);
 });
 
-test('Thai-spouse route treats registered partnership as a correctable condition, not hard rejection', () => {
-  const result = calculateActiveCountry(profile({ relationship: 'REGISTERED_PARTNERSHIP' }), thailand, context);
-  const spouse = route(result, 'TH_FAMILY_THAI_SPOUSE_FIXED');
+test('specialized Thailand family routes are retained as research data but excluded from public matching', () => {
+  const hiddenRouteIds = [
+    'TH_DEPENDANT_NON_O',
+    'TH_GUARDIAN',
+    'TH_FAMILY_THAI_SPOUSE_FIXED',
+    'TH_FAMILY_THAI_SPOUSE_COMBINATION',
+    'TH_FAMILY_THAI_CHILD_FIXED',
+  ];
+
+  for (const routeId of hiddenRouteIds) {
+    const item = thailand.routes.find(({ route_id }) => route_id === routeId);
+    assert.ok(item, `Thailand research route ${routeId} exists`);
+    assert.equal(item.publishable, false, routeId);
+  }
+
+  const result = calculateActiveCountry(profile({ relationship: 'MARRIED' }), thailand, context);
+  const publicRouteIds = new Set(result.routes.map(({ routeId }) => routeId));
+  for (const routeId of hiddenRouteIds) assert.equal(publicRouteIds.has(routeId), false, routeId);
+});
+
+test('hidden Thai-spouse research route still treats registered partnership as a correctable condition', () => {
+  const spouseRoute = thailand.routes.find(({ route_id }) => route_id === 'TH_FAMILY_THAI_SPOUSE_FIXED');
+  const spouse = evaluateRoute(spouseRoute, profile({ relationship: 'REGISTERED_PARTNERSHIP' }), context, 'TH');
   assert.notEqual(spouse.routeStatus, 'UNSUITABLE');
   assert.ok(spouse.conditions.some((text) => /брак/i.test(text)));
 });
@@ -221,11 +241,12 @@ test('Thai retirement combination computes annual income plus savings against 80
   assert.equal(route(fail, 'TH_RETIREMENT_NON_O_COMBINATION').routeStatus, 'UNSUITABLE');
 });
 
-test('Thai-spouse combination computes annual income plus savings against 400k THB', () => {
-  const pass = calculateActiveCountry(profile({ relationship: 'MARRIED', amount: 500, savings: 7000 }), thailand, context);
-  assert.notEqual(route(pass, 'TH_FAMILY_THAI_SPOUSE_COMBINATION').routeStatus, 'UNSUITABLE');
-  const fail = calculateActiveCountry(profile({ relationship: 'MARRIED', amount: 100, savings: 500 }), thailand, context);
-  assert.equal(route(fail, 'TH_FAMILY_THAI_SPOUSE_COMBINATION').routeStatus, 'UNSUITABLE');
+test('hidden Thai-spouse combination research route computes annual income plus savings against 400k THB', () => {
+  const combinationRoute = thailand.routes.find(({ route_id }) => route_id === 'TH_FAMILY_THAI_SPOUSE_COMBINATION');
+  const pass = evaluateRoute(combinationRoute, profile({ relationship: 'MARRIED', amount: 500, savings: 7000 }), context, 'TH');
+  assert.notEqual(pass.routeStatus, 'UNSUITABLE');
+  const fail = evaluateRoute(combinationRoute, profile({ relationship: 'MARRIED', amount: 100, savings: 500 }), context, 'TH');
+  assert.equal(fail.routeStatus, 'UNSUITABLE');
 });
 
 test('LTR parent expansion is pending rather than active family eligibility', () => {
@@ -239,13 +260,33 @@ test('LTR parent expansion is pending rather than active family eligibility', ()
   assert.equal(pending.expected_effective_date, null);
 });
 
-test('2026 visa-free reform is pending with unknown effective date while the current 60-day rule remains active', () => {
+test('Thailand entry switches from 60 to 30 visa-free days on 15 September 2026', () => {
   assert.equal(thailand.entry_for_russian_citizen.maximum_stay_days, 60);
   assert.equal(thailand.open_items.some(({ item_id }) => item_id === 'TH_OPEN_03_ENTRY_REFORM_2026'), false);
+
+  const beforeCutover = resolveEntryForRussianCitizen(
+    thailand.entry_for_russian_citizen,
+    '2026-09-14T16:59:59.999Z',
+  );
+  const atCutover = resolveEntryForRussianCitizen(
+    thailand.entry_for_russian_citizen,
+    '2026-09-14T17:00:00.000Z',
+  );
+
+  assert.equal(beforeCutover.maximum_stay_days, 60);
+  assert.equal(atCutover.maximum_stay_days, 30);
+  assert.equal(atCutover.visa_required, false);
+
+  const scheduled = thailand.entry_for_russian_citizen.scheduled_rules
+    .find(({ effective_at }) => effective_at === '2026-09-15T00:00:00+07:00');
+  assert.ok(scheduled);
+  assert.equal(scheduled.maximum_stay_days, 30);
+
   const pending = thailand.pending_changes.find(({ change_id }) => change_id === 'TH_PENDING_ENTRY_REFORM_2026');
   assert.ok(pending);
-  assert.equal(pending.status, 'ADOPTED_NOT_IN_FORCE');
-  assert.equal(pending.expected_effective_date, null);
+  assert.equal(pending.status, 'OFFICIALLY_SCHEDULED');
+  assert.equal(pending.expected_effective_date, '2026-09-15');
+
   const entryBlock = thailand.completeness.blocks.find(({ block }) => block === 'ENTRY_APPLICATION');
   assert.equal(entryBlock.status, 'COMPLETE');
 });
