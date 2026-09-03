@@ -23,6 +23,7 @@ const explicitlyHidden = new Set([
   'GR_E2_ICT','GR_EU_CITIZEN_FAMILY','GR_O1_FAMILY','GR_O3_GREEK_FAMILY',
   'ME_FAMILY','ME_ICT',
   'PY_FAMILY_PARAGUAYAN','PY_FAMILY_REPATRIATED',
+  'MT_ICT','MT_MALTESE_PARTNER',
 ]);
 
 function countries() {
@@ -39,7 +40,7 @@ test('approved narrow-route publication exclusions remain nonpublishable', () =>
 
 test('approved broad routes remain publishable', () => {
   const routes = new Map(countries().flatMap((country) => country.routes.map((route) => [route.route_id, route])));
-  for (const routeId of ['UY_TEMP_SPECIALIST','MX_TEMP_WORK','EC_AUTONOMO_PRO_SERVICES']) {
+  for (const routeId of ['UY_TEMP_SPECIALIST','MX_TEMP_WORK','EC_AUTONOMO_PRO_SERVICES','MT_SELF_EMPLOYED','MT_RESEARCHER']) {
     assert.equal(routes.get(routeId)?.publishable, true, routeId);
   }
 });
@@ -85,4 +86,6 @@ test('operational prompt records architecture decision gate and narrow-route pub
   assert.match(prompt, /ПРОДУКТОВОЕ ПРАВИЛО ПУБЛИКАЦИИ УЗКОСПЕЦИАЛЬНЫХ МАРШРУТОВ/);
   assert.match(prompt, /внутрикорпоративный перевод \/ ICT/);
   assert.match(prompt, /Family scenarios внутри обычного основного маршрута заявителя сохраняются/);
+  assert.match(prompt, /Каждый такой mixed route выносится на отдельное продуктовое решение пользователя/);
+  assert.doesNotMatch(prompt, /mixed route должен оставаться непубликуемым/);
 });

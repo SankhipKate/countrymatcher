@@ -1639,11 +1639,14 @@ test('generic family evaluator checks every child and exact scenario IDs', () =>
   assert.deepEqual(combined.applicableScenarioIds, ['COMBINED']);
 });
 
-test('family data contract problems are route-local and never become public statuses', () => {
+test('explicit unavailable family paths are blockers while real family contract gaps stay route-local', () => {
   const partner = profile({ adults: 2 });
   const problem = (scenario, packageRoutes = []) => evaluateFamilyScenarios({ family_scenarios: Array.isArray(scenario) ? scenario : [scenario] }, partner, packageRoutes);
   assert.equal(problem(familyScenario({ simultaneous_move: 'NOT_RESEARCHED' })).state, 'DATA_CONTRACT_PROBLEM');
-  assert.equal(problem(familyScenario({ join_stage: 'NOT_AVAILABLE' })).state, 'DATA_CONTRACT_PROBLEM');
+  const unavailable = problem(familyScenario({ join_stage: 'NOT_AVAILABLE', condition_ru: 'Семейный путь недоступен.' }));
+  assert.equal(unavailable.state, 'BLOCKER');
+  assert.equal(unavailable.classification, 'NOT_AVAILABLE');
+  assert.ok(unavailable.blockers.some((text) => /недоступен/u.test(text)));
   assert.equal(problem(familyScenario({ separate_route_required: true, linked_route_id: 'MISSING', join_stage: 'SEPARATE_ROUTE' })).state, 'DATA_CONTRACT_PROBLEM');
   assert.equal(problem(familyScenario({ applies_to: 'CHILD', relationship_types: null })).state, 'DATA_CONTRACT_PROBLEM');
   assert.equal(problem([familyScenario({ scenario_id: 'DUP' }), familyScenario({ scenario_id: 'DUP' })]).state, 'DATA_CONTRACT_PROBLEM');

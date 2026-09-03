@@ -8,7 +8,7 @@
 
 ## Подключённые страны
 
-В активный matcher подключены четырнадцать Research Package 4.0:
+В активный matcher подключены пятнадцать Research Package 4.0:
 
 - Испания — `../../data/ES-research-v4.0.json`;
 - Аргентина — `../../data/AR-research-v4.0.json`;
@@ -23,7 +23,8 @@
 - Греция — `../../data/GR-research-v4.0.json`;
 - Коста-Рика — `../../data/CR-research-v4.0.json`;
 - Эквадор — `../../data/EC-research-v4.0.json`;
-- Таиланд — `../../data/TH-research-v4.0.json`.
+- Таиланд — `../../data/TH-research-v4.0.json`;
+- Мальта — `../../data/MT-research-v4.0.json`.
 
 Файлы Research Package 3.0 и старые country reports сохраняются только как архивные материалы и не используются активным matcher.
 

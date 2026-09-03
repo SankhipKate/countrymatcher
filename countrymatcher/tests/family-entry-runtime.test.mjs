@@ -143,6 +143,36 @@ test('relationship mismatch still creates CONDITION on admin-only path', () => {
   assert.match(result.conditions.join(' '), /брак|партнёрство/u);
 });
 
+test('explicit NOT_AVAILABLE family path is a normal blocker with explanation', () => {
+  const result = evaluate(scenario({
+    scenario_id: 'NO_FAMILY_PATH',
+    simultaneous_move: 'NO',
+    join_stage: 'NOT_AVAILABLE',
+    condition_ru: 'Партнёр не может присоединиться по этому маршруту.',
+  }));
+  assert.equal(result.state, 'BLOCKER');
+  assert.equal(result.classification, 'NOT_AVAILABLE');
+  assert.deepEqual(result.applicableScenarioIds, ['NO_FAMILY_PATH']);
+  assert.deepEqual(result.blockers, ['Партнёр не может присоединиться по этому маршруту.']);
+  assert.equal(result.dataContractProblems.length, 0);
+});
+
+test('missing family scenario remains a data-contract problem', () => {
+  const value = scenario({ child_age_min: 0, child_age_max: 17 });
+  const childProfile = structuredClone(marriedPartnerProfile);
+  childProfile.family.partner_included = false;
+  childProfile.family.relationship_type = null;
+  childProfile.family.adults_count = 1;
+  childProfile.family.children = [{ age_years: 18 }];
+  const result = evaluateFamilyScenarios(
+    routeWith(value),
+    childProfile,
+    [{ route_id: 'TEST_ROUTE' }],
+  );
+  assert.equal(result.state, 'DATA_CONTRACT_PROBLEM');
+  assert.match(result.dataContractProblems.join(' '), /no applicable family scenario/u);
+});
+
 const baseEntry = {
   entry_type: 'VISA_FREE',
   visa_required: false,

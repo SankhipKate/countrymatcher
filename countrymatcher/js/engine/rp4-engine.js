@@ -1175,19 +1175,30 @@ function presentWorkRights(block) {
 
 const FAMILY_STATES = Object.freeze({
   NOT_APPLICABLE: 'NOT_APPLICABLE', PASS: 'PASS', CONDITION: 'CONDITION',
-  DATA_CONTRACT_PROBLEM: 'DATA_CONTRACT_PROBLEM',
+  BLOCKER: 'BLOCKER', DATA_CONTRACT_PROBLEM: 'DATA_CONTRACT_PROBLEM',
 });
 
 function familyPathResult(scenario, member, profileFamily, routeIds) {
   const problems = [];
   if (scenario.simultaneous_move === 'NOT_RESEARCHED') problems.push('simultaneous_move is NOT_RESEARCHED');
   if (scenario.join_stage === 'NOT_RESEARCHED') problems.push('join_stage is NOT_RESEARCHED');
-  if (scenario.join_stage === 'NOT_AVAILABLE') problems.push('join_stage NOT_AVAILABLE has no Final Lock family semantics');
   if (scenario.separate_route_required == null) problems.push('separate_route_required is not researched');
   if (scenario.linked_route_id && !routeIds.has(scenario.linked_route_id)) problems.push(`linked route ${scenario.linked_route_id} is missing`);
   if ((scenario.separate_route_required === true || scenario.join_stage === 'SEPARATE_ROUTE')
     && !scenario.linked_route_id && !scenario.member_long_term_path) problems.push('separate family path has no linked route or member long-term path');
   if (problems.length) return { state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, scenario, problems };
+  if (scenario.join_stage === 'NOT_AVAILABLE') {
+    if (!scenario.condition_ru?.trim()) {
+      return { state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, scenario, problems: ['unavailable family path has no condition_ru'] };
+    }
+    return {
+      state: FAMILY_STATES.BLOCKER,
+      scenario,
+      blockers: [scenario.condition_ru],
+      conditions: [],
+      classification: 'NOT_AVAILABLE',
+    };
+  }
 
   let relationshipCondition = null;
   if (member.type === 'PARTNER' || (scenario.applies_to === 'PARTNER_AND_CHILDREN' && profileFamily.partner_included === true)) {
@@ -1281,16 +1292,22 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
     if (!applicable.length) return { memberId: member.id, memberType: member.type, state: FAMILY_STATES.DATA_CONTRACT_PROBLEM, applicableScenarioIds: [], problems: ['no applicable family scenario'] };
     const paths = applicable.map((scenario) => familyPathResult(scenario, member, family, routeIds));
     const preferredState = paths.some(({ state }) => state === FAMILY_STATES.PASS) ? FAMILY_STATES.PASS
-      : paths.some(({ state }) => state === FAMILY_STATES.CONDITION) ? FAMILY_STATES.CONDITION : FAMILY_STATES.DATA_CONTRACT_PROBLEM;
+      : paths.some(({ state }) => state === FAMILY_STATES.CONDITION) ? FAMILY_STATES.CONDITION
+        : paths.some(({ state }) => state === FAMILY_STATES.BLOCKER) ? FAMILY_STATES.BLOCKER
+          : FAMILY_STATES.DATA_CONTRACT_PROBLEM;
     const preferredPaths = paths.filter(({ state }) => state === preferredState);
-    const bestFamilyRank = preferredState === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 3
-      : Math.min(...preferredPaths.map(familyPathSortRank));
-    const selected = preferredPaths.filter((path) => familyPathSortRank(path) === bestFamilyRank);
+    const bestFamilyRank = preferredState === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 4
+      : preferredState === FAMILY_STATES.BLOCKER ? 3
+        : Math.min(...preferredPaths.map(familyPathSortRank));
+    const selected = preferredState === FAMILY_STATES.BLOCKER
+      ? preferredPaths
+      : preferredPaths.filter((path) => familyPathSortRank(path) === bestFamilyRank);
     return {
       memberId: member.id, memberType: member.type, age: member.age ?? null, state: preferredState,
       sortRank: bestFamilyRank,
       applicableScenarioIds: selected.map(({ scenario }) => scenario.scenario_id),
       conditions: selected.flatMap(({ conditions = [] }) => conditions),
+      ...(selected.some(({ blockers = [] }) => blockers.length) ? { blockers: selected.flatMap(({ blockers = [] }) => blockers) } : {}),
       relationshipConditions: selected.flatMap(({ relationshipConditions = [] }) => relationshipConditions),
       operationalConditions: selected.flatMap(({ operationalConditions = [] }) => operationalConditions),
       classifications: selected.map(({ classification }) => classification).filter(Boolean),
@@ -1305,19 +1322,23 @@ export function evaluateFamilyScenarios(route, profile, packageRoutes = []) {
   });
   const dataContractProblems = memberResults.flatMap(({ memberId, problems = [] }) => problems.map((problem) => `${memberId}: ${problem}`));
   const state = memberResults.some((member) => member.state === FAMILY_STATES.DATA_CONTRACT_PROBLEM) ? FAMILY_STATES.DATA_CONTRACT_PROBLEM
-    : memberResults.some((member) => member.state === FAMILY_STATES.CONDITION) ? FAMILY_STATES.CONDITION : FAMILY_STATES.PASS;
+    : memberResults.some((member) => member.state === FAMILY_STATES.BLOCKER) ? FAMILY_STATES.BLOCKER
+      : memberResults.some((member) => member.state === FAMILY_STATES.CONDITION) ? FAMILY_STATES.CONDITION : FAMILY_STATES.PASS;
   const classifications = memberResults.flatMap((member) => member.classifications || []);
   const classification = state === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 'DATA_CONTRACT_PROBLEM'
-    : classifications.includes('SEPARATE_LINKED_ROUTE') ? 'SEPARATE_LINKED_ROUTE'
+    : state === FAMILY_STATES.BLOCKER ? 'NOT_AVAILABLE'
+      : classifications.includes('SEPARATE_LINKED_ROUTE') ? 'SEPARATE_LINKED_ROUTE'
       : classifications.includes('LATER_JOIN') ? 'LATER_JOIN'
         : classifications.includes('CONDITIONAL_SIMULTANEOUS') ? 'CONDITIONAL_SIMULTANEOUS' : 'SIMULTANEOUS';
   const sortRank = state === FAMILY_STATES.NOT_APPLICABLE ? 0
-    : state === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 3
-      : Math.max(0, ...memberResults.map((member) => Number.isInteger(member.sortRank) ? member.sortRank : 3));
+    : state === FAMILY_STATES.DATA_CONTRACT_PROBLEM ? 4
+      : state === FAMILY_STATES.BLOCKER ? 3
+        : Math.max(0, ...memberResults.map((member) => Number.isInteger(member.sortRank) ? member.sortRank : 4));
   return {
     state, classification, sortRank, memberResults,
     applicableScenarioIds: [...new Set(memberResults.flatMap((member) => member.applicableScenarioIds || []))],
     conditions: [...new Set(memberResults.flatMap((member) => member.conditions || []))],
+    ...(memberResults.some((member) => (member.blockers || []).length) ? { blockers: [...new Set(memberResults.flatMap((member) => member.blockers || []))] } : {}),
     relationshipConditions: [...new Set(memberResults.flatMap((member) => member.relationshipConditions || []))],
     operationalConditions: [...new Set(memberResults.flatMap((member) => member.operationalConditions || []))],
     linkedRouteIds: [...new Set(memberResults.flatMap((member) => member.linkedRouteIds || []))],
@@ -1682,9 +1703,14 @@ export function calculateActiveCountry(profile, pkg, context) {
       if (!calculated.blockers.length && calculated.conditions.length) calculated.routeStatus = ROUTE_STATUSES.SUITABLE_WITH_CONDITIONS;
       calculated.conditionsCount = calculated.conditions.length;
     }
+    if (familyEvaluation.state === FAMILY_STATES.BLOCKER) {
+      for (const text of familyEvaluation.blockers || []) if (text && !calculated.blockers.includes(text)) calculated.blockers.push(text);
+      calculated.routeStatus = ROUTE_STATUSES.UNSUITABLE;
+    }
     calculated.familyFit = familyEvaluation.state === FAMILY_STATES.NOT_APPLICABLE ? GOAL_FITS.NOT_APPLICABLE
-      : familyEvaluation.sortRank <= 1 ? GOAL_FITS.MEETS
-        : familyEvaluation.sortRank === 2 ? GOAL_FITS.DOES_NOT_MEET : GOAL_FITS.UNKNOWN;
+      : familyEvaluation.state === FAMILY_STATES.BLOCKER ? GOAL_FITS.DOES_NOT_MEET
+        : familyEvaluation.sortRank <= 1 ? GOAL_FITS.MEETS
+          : familyEvaluation.sortRank === 2 ? GOAL_FITS.DOES_NOT_MEET : GOAL_FITS.UNKNOWN;
     return { route, calculated, familyEvaluation };
   });
   const excludedRoutes = evaluated.filter(({ familyEvaluation }) => familyEvaluation.state === FAMILY_STATES.DATA_CONTRACT_PROBLEM)
