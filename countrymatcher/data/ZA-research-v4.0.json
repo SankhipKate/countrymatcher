@@ -1,0 +1,4323 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "ZA",
+  "country_name_ru": "Южно-Африканская Республика",
+  "research_date": "2026-08-27",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-11-27",
+    "migration_rules_next_review": "2026-10-27",
+    "financial_costs_next_review": "2026-11-27",
+    "taxes_next_review": "2027-02-27",
+    "lgbt_legal_next_review": "2027-02-27",
+    "lgbt_practical_next_review": "2026-11-27",
+    "schools_pets_next_review": "2027-02-27",
+    "climate_next_review": "2027-08-27"
+  },
+  "country_currency": "ZAR",
+  "country_summary_ru": "ЮАР предлагает удалённую, рабочие, предпринимательские, пенсионные, прямой ПМЖ для финансово независимого заявителя, семейные, учебные, обменные и договорные категории. Убежище существует, но пока не публикуется из-за неполного исследования конкретного маршрута.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Удалённая работа в ЮАР для иностранного работодателя.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_REMOTE_WORK"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Прямой ПМЖ для финансово независимого заявителя.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_FINANCIALLY_INDEPENDENT_PR"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Временный и постоянный статус на основании пенсионных ресурсов.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_RETIRED"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Рабочие визы по предложению работодателя в ЮАР.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_GENERAL_WORK",
+        "ZA_CRITICAL_SKILLS_WORK",
+        "ZA_ICT"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Рабочая виза для профессии из перечня критически востребованных навыков.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_CRITICAL_SKILLS_WORK"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Внутрикорпоративный перевод в южноафриканское подразделение.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_ICT"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Ведение одобренного собственного бизнеса в ЮАР.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_BUSINESS"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Активные вложения в собственный бизнес; отдельного пассивного инвестиционного маршрута нет.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_BUSINESS"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Учебная виза после зачисления в подходящее учебное заведение.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_STUDY"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Маршруты для родственников, супругов и постоянных партнёров граждан или постоянных резидентов ЮАР.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_RELATIVE",
+        "ZA_SA_SPOUSE_LIFE_PARTNER"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Прямой ПМЖ для финансово независимого заявителя и отдельные категорийные основания ПМЖ.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_FINANCIALLY_INDEPENDENT_PR"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Убежище и статус беженца существуют, но маршрут пока не публикуется из-за неполного блока исследования.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_ASYLUM"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "explanation_ru": "Существуют визы по программам обмена и международным договорам.",
+      "source_ids": [
+        "ZA_S01"
+      ],
+      "linked_route_ids": [
+        "ZA_EXCHANGE",
+        "ZA_TREATY"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Обычный паспорт РФ: безвизовый подходящий holiday/предпринимательские visit до 90 дней; это не разрешение на работу, учёбу или долгосрочную деятельность.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "ZA_S22"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "ZA_REMOTE_WORK",
+      "name_ru": "Удалённая работа на иностранного работодателя",
+      "official_term_ru": "Удалённая работа на иностранного работодателя",
+      "route_type": "DIGITAL_NOMAD_REMOTE_WORK",
+      "covers_categories": [
+        "DIGITAL_NOMAD_REMOTE_WORK"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Действующий трудовой договор с иностранным работодателем и удалённая работа из ЮАР",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_RW_INCOME",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить валовой доход не менее R650,976 в год от иностранного работодателя. Нормативная сумма взята из GN5398; административный контрольный список публикует расходящуюся сумму R650,796.",
+          "source_ids": [
+            "ZA_S03",
+            "ZA_S05"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "met_ru": "Финансовый порог выполнен.",
+          "unmet_ru": "Подтверждаемого квалифицирующего дохода недостаточно.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 650976,
+                "currency": "ZAR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "REMOTE_EMPLOYMENT"
+                ],
+                "source_geography": "FOREIGN",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "ZA_S03",
+                  "ZA_S05"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "requirement_id": "ZA_RW_EVIDENCE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить трудовой договор и банковскую историю; фриланс без иностранного работодателя не считается автоматически поддержанным.",
+          "source_ids": [
+            "ZA_S03"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S03"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_REMOTE_WORK_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        {
+          "scenario_id": "ZA_REMOTE_WORK_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена только удалённая работа для иностранного работодателя.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена только удалённая работа для иностранного работодателя.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена только удалённая работа для иностранного работодателя.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S03"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 36,
+        "initial_status_ru": "Максимум до 36 месяцев; маршрут сам по себе не создаёт рабочего пути к ПМЖ.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Максимум до 36 месяцев; маршрут сам по себе не создаёт рабочего пути к ПМЖ.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S03"
+    },
+    {
+      "route_id": "ZA_GENERAL_WORK",
+      "name_ru": "Общая рабочая виза",
+      "official_term_ru": "Общая рабочая виза",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Предложение работы в ЮАР и 100 баллов",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_GW_OFFER",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить предложение работы от работодателя в ЮАР.",
+          "source_ids": [
+            "ZA_S04"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_GW_POINTS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Набрать не менее 100 баллов. В финальном GN5448 зарплата по будущему предложению работы R650,976–R976,194 в год даёт 20 баллов, а сумма выше R976,194 — 50 баллов. Сообщение DHA от 9 октября отдельно указывает R650,796 для заявлений вне схемы доверенных работодателей (Trusted Employer Scheme).",
+          "source_ids": [
+            "ZA_S04",
+            "ZA_GW_DHA_2024"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "ZA_GW_EVIDENCE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Квалификация и опыт подтверждаются документами и не считаются известными из анкеты.",
+          "source_ids": [
+            "ZA_S04"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S04"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_GENERAL_WORK_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "scenario_id": "ZA_GENERAL_WORK_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа только по одобренному предложению и выданному разрешению.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа только по одобренному предложению и выданному разрешению.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа только по одобренному предложению и выданному разрешению.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 60,
+        "initial_status_ru": "ПМЖ по рабочей категории требует 5 лет квалифицирующего рабочего статуса и постоянного предложения.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "ПМЖ по рабочей категории требует 5 лет квалифицирующего рабочего статуса и постоянного предложения.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S04"
+    },
+    {
+      "route_id": "ZA_CRITICAL_SKILLS_WORK",
+      "name_ru": "Работа по критически востребованной профессии",
+      "official_term_ru": "Работа по критически востребованной профессии",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Профессия из Critical Skills List и предложение работы",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_CS_LIST",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить профессию из действующего Critical Skills List.",
+          "source_ids": [
+            "ZA_S04"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_CS_OFFER",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить обязательное предложение работы в ЮАР.",
+          "source_ids": [
+            "ZA_S04"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_CS_EVIDENCE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить квалификацию, профессиональное признание и требуемый опыт; универсального минимальная зарплата нет.",
+          "source_ids": [
+            "ZA_S04"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S04"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_CRITICAL_SKILLS_WORK_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        {
+          "scenario_id": "ZA_CRITICAL_SKILLS_WORK_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Работа по одобренной критически востребованной специальности.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Работа по одобренной критически востребованной специальности.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Работа по одобренной критически востребованной специальности.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S04"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 60,
+        "initial_status_ru": "Есть отдельное основание ПМЖ для специалистов с критически востребованными навыками при подтверждении требований, включая 5 лет опыта после получения квалификации; это не срок проживания.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Есть отдельное основание ПМЖ для специалистов с критически востребованными навыками при подтверждении требований, включая 5 лет опыта после получения квалификации; это не срок проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S04"
+    },
+    {
+      "route_id": "ZA_ICT",
+      "name_ru": "Внутрикорпоративный перевод",
+      "official_term_ru": "Внутрикорпоративный перевод",
+      "route_type": "INTRA_COMPANY_TRANSFER",
+      "covers_categories": [
+        "INTRA_COMPANY_TRANSFER",
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Перевод внутри группы компаний в подразделение в ЮАР",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "ZA_ICT_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить квалифицирующий внутрикорпоративный перевод.",
+          "source_ids": [
+            "ZA_S08"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_ICT_HISTORY",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить требуемую историю работы в иностранной компании группы.",
+          "source_ids": [
+            "ZA_S08"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S08"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_ICT_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        {
+          "scenario_id": "ZA_ICT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Только работа у указанного принимающего работодателя.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Только работа у указанного принимающего работодателя.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Только работа у указанного принимающего работодателя.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S08"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 48,
+        "initial_status_ru": "Максимум 4 года; зачёт смешанных ICT-периодов к рабочему ПМЖ не подтверждён.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Максимум 4 года; зачёт смешанных ICT-периодов к рабочему ПМЖ не подтверждён.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S08"
+    },
+    {
+      "route_id": "ZA_BUSINESS",
+      "name_ru": "Бизнес-виза",
+      "official_term_ru": "Бизнес-виза",
+      "route_type": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "covers_categories": [
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+        "INVESTMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Создание или инвестиция в активный бизнес в ЮАР",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_BUSINESS_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подготовить квалифицирующий бизнес-проект и получить необходимые рекомендации.",
+          "source_ids": [
+            "ZA_S09"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_BUSINESS_CAPITAL",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Стандартное требование — R5,000,000 денежный капитал из-за рубежа; возможна отраслевое снижение или освобождение без универсального заменяющего порога.",
+          "source_ids": [
+            "ZA_S09"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INVESTMENT_CAPITAL",
+            "alternatives": [
+              {
+                "kind": "CAPITAL",
+                "asked_in_questionnaire": false,
+                "amount": 5000000,
+                "currency": "ZAR",
+                "period": "ONE_TIME",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "ZA_S09"
+                ],
+                "confidence": "HIGH"
+              }
+            ]
+          }
+        },
+        {
+          "requirement_id": "ZA_BUSINESS_STAFF",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Не менее 60% постоянного персонала должны составлять граждане ЮАР или постоянные резиденты.",
+          "source_ids": [
+            "ZA_S09"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S09"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_BUSINESS_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        {
+          "scenario_id": "ZA_BUSINESS_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена деятельность только в одобренном собственном бизнесе.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена деятельность только в одобренном собственном бизнесе.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена деятельность только в одобренном собственном бизнесе.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S09"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Существует отдельная предпринимательские PR category; временная виза не конвертируется автоматически по времени.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Существует отдельная предпринимательские PR category; временная виза не конвертируется автоматически по времени.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S09"
+    },
+    {
+      "route_id": "ZA_RETIRED",
+      "name_ru": "Виза для пенсионеров",
+      "official_term_ru": "Виза для пенсионеров",
+      "route_type": "RETIREMENT",
+      "covers_categories": [
+        "RETIREMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Пенсия/аннуитет либо реализуемый квалифицирующий ежемесячный поток",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_RETIRED_INCOME",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Подтвердить R37,000 в месяц квалифицирующего дохода заявителя; доход партнёра и обычные сбережениями автоматически не суммируются.",
+          "source_ids": [
+            "ZA_GAZETTE_451",
+            "ZA_S10"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "met_ru": "Финансовый порог выполнен.",
+          "unmet_ru": "Подтверждаемого квалифицирующего дохода недостаточно.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 37000,
+                "currency": "ZAR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PENSION",
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "ZA_GAZETTE_451",
+                  "ZA_S10"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "requirement_id": "ZA_RETIRED_STRUCTURE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Подтвердить допустимую пенсионную, аннуитетную или реализующую доход структуру активов.",
+          "source_ids": [
+            "ZA_S10"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S10"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_RETIRED_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        {
+          "scenario_id": "ZA_RETIRED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа возможна только при отдельном разрешении.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа возможна только при отдельном разрешении.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа возможна только при отдельном разрешении.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S10"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 48,
+        "initial_status_ru": "Временный статус до 4 лет, с возможностью продления; существует отдельное пенсионное основание для ПМЖ.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 48,
+        "renewal_ru": "Продление возможно при сохранении основания.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Временный статус до 4 лет, с возможностью продления; существует отдельное пенсионное основание для ПМЖ.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S10"
+    },
+    {
+      "route_id": "ZA_FINANCIALLY_INDEPENDENT_PR",
+      "name_ru": "ПМЖ для финансово независимых",
+      "official_term_ru": "ПМЖ для финансово независимых",
+      "route_type": "INCOME_FINANCIALLY_INDEPENDENT",
+      "covers_categories": [
+        "INCOME_FINANCIALLY_INDEPENDENT",
+        "GENERAL_RESIDENCE"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Прямой ПМЖ по s27(f)",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_FI_NET_WORTH",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить чистую стоимость активов (net worth) не менее R12,000,000. Это самостоятельное требование к чистой стоимости активов, а не к сумме денежных сбережений или инвестиционного капитала.",
+          "source_ids": [
+            "ZA_GAZETTE_454"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_FI_PAYMENT",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "После одобрения принять обязательство уплатить R120,000 Генеральному директору МВД ЮАР.",
+          "source_ids": [
+            "ZA_GAZETTE_454"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S13"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_FINANCIALLY_INDEPENDENT_PR_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        {
+          "scenario_id": "ZA_FINANCIALLY_INDEPENDENT_PR_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "После получения собственного ПМЖ применяются общие права постоянного резидента.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "После получения собственного ПМЖ применяются общие права постоянного резидента.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "После получения собственного ПМЖ применяются общие права постоянного резидента.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S13"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Первый статус — ПМЖ; затем применяются отдельные правила натурализации.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Первый статус — ПМЖ; затем применяются отдельные правила натурализации.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "После получения ПМЖ натурализация может быть доступна после пяти лет непрерывного обычного проживания при выполнении остальных условий.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S13"
+    },
+    {
+      "route_id": "ZA_RELATIVE",
+      "name_ru": "Виза родственника гражданина/ПМЖ ЮАР",
+      "official_term_ru": "Виза родственника гражданина/ПМЖ ЮАР",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Непосредственное родство с гражданином или постоянным резидентом ЮАР",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "ZA_REL_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить квалифицирующее родство с гражданином или ПМЖ ЮАР.",
+          "source_ids": [
+            "ZA_S14"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_REL_SPONSOR",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Спонсор-гражданин/ПМЖ подтверждает R8,500 на человека в месяц; это не текущий доход заявителя. Для dependent child действует подтверждённое исключение; более широкое spouse exemption зависит от миссии.",
+          "source_ids": [
+            "ZA_S14"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 8500,
+                "currency": "ZAR",
+                "period": "MONTHLY",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "ZA_S14"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S14"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_RELATIVE_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        {
+          "scenario_id": "ZA_RELATIVE_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Relative Visa сама по себе не разрешает работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Relative Visa сама по себе не разрешает работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Relative Visa сама по себе не разрешает работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S14"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S14"
+    },
+    {
+      "route_id": "ZA_SA_SPOUSE_LIFE_PARTNER",
+      "name_ru": "Супруг или постоянный партнёр гражданина/ПМЖ ЮАР",
+      "official_term_ru": "Супруг или постоянный партнёр гражданина/ПМЖ ЮАР",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Брак либо доказанное постоянное однополое/разнополое партнёрство с гражданином/ПМЖ ЮАР",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "ZA_SPOUSE_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить, что партнёр — гражданин или постоянный резидент ЮАР, а отношения являются браком или доказанным постоянным партнёрством. Иностранное зарегистрированное партнёрство не считается браком автоматически.",
+          "source_ids": [
+            "ZA_S28"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_SPOUSE_EVIDENCE",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Для постоянного партнёрства нужны доказательства устойчивости отношений, совместного проживания и общих финансов.",
+          "source_ids": [
+            "ZA_S28"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S16"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_SA_SPOUSE_LIFE_PARTNER_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        {
+          "scenario_id": "ZA_SA_SPOUSE_LIFE_PARTNER_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа, предпринимательская деятельность или учёба требуют соответствующего специального разрешения.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа, предпринимательская деятельность или учёба требуют соответствующего специального разрешения.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа, предпринимательская деятельность или учёба требуют соответствующего специального разрешения.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S16"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Супружеское ПМЖ возможно после 5 лет добросовестных отношений; отсутствие вопроса о длительности не означает ноль лет.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Супружеское ПМЖ возможно после 5 лет добросовестных отношений; отсутствие вопроса о длительности не означает ноль лет.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S16"
+    },
+    {
+      "route_id": "ZA_STUDY",
+      "name_ru": "Учебная виза",
+      "official_term_ru": "Учебная виза",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Зачисление в подходящее учебное заведение",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_STUDY_ADMISSION",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить зачисление в подходящее учебное заведение.",
+          "source_ids": [
+            "ZA_S17"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "ZA_STUDY_FUNDS",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить достаточные средства через заявителя, спонсора или стипендию; единого национального фиксированного порога нет.",
+          "source_ids": [
+            "ZA_S17"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "ZA_S17"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "FOUND",
+                  "summary_ru": "Единого национального фиксированного порога не найдено. Отдельная миссия использует ориентир около R3,000 на человека в месяц; фактическое подтверждение может включать средства заявителя, спонсорскую поддержку или стипендию.",
+                  "figures": [
+                    {
+                      "amount": 3000,
+                      "currency": "ZAR",
+                      "period": "MONTHLY",
+                      "family_context_ru": "На человека; ориентир конкретной миссии",
+                      "evidence": [
+                        {
+                          "source_id": "ZA_S17",
+                          "source_date": "2026-08-27",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
+                      ],
+                      "note_ru": "Справочный консульский ориентир, а не национальный юридический минимум."
+                    }
+                  ],
+                  "disclaimer_ru": "R3,000 на человека в месяц показывается только справочно и не участвует в автоматической финансовой оценке."
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S17"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_STUDY_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        {
+          "scenario_id": "ZA_STUDY_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "При обучении в высшем учебном заведении разрешена работа с неполной занятостью до 20 часов в неделю; во время учебных каникул этот лимит не действует.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "При обучении в высшем учебном заведении разрешена работа с неполной занятостью до 20 часов в неделю; во время учебных каникул этот лимит не действует.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "При обучении в высшем учебном заведении разрешена работа с неполной занятостью до 20 часов в неделю; во время учебных каникул этот лимит не действует.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S17"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S17"
+    },
+    {
+      "route_id": "ZA_EXCHANGE",
+      "name_ru": "Обменная виза",
+      "official_term_ru": "Обменная виза",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Участие в квалифицирующей программе обмена",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_EXCHANGE_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить подходящий обменные programme и достаточные средства без универсального национального threshold.",
+          "source_ids": [
+            "ZA_S18"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S18"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_EXCHANGE_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        {
+          "scenario_id": "ZA_EXCHANGE_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, разрешённая программой и визой.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, разрешённая программой и визой.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, разрешённая программой и визой.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S18"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S18"
+    },
+    {
+      "route_id": "ZA_TREATY",
+      "name_ru": "Виза по международному договору",
+      "official_term_ru": "Виза по международному договору",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Деятельность по применимому договору или международному соглашению",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "ZA_TREATY_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить applicable договорные/program authorization и соглашение-специфические средства.",
+          "source_ids": [
+            "ZA_S19"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S19"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР, имеющем юрисдикцию по гражданству.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Для гражданина РФ основной зарубежный канал — компетентное представительство ЮАР.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        {
+          "method": "CURRENT_LEGAL_RESIDENCE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Подать лично в представительстве ЮАР по месту законного проживания.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Нужно подтвердить законное проживание в консульском округе.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        {
+          "method": "IN_COUNTRY",
+          "availability": "CONDITIONAL",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "LEGAL_RESIDENT",
+          "entry_condition_ru": "Продление или изменение статуса внутри ЮАР допускается только в случаях, разрешённых действующими правилами; обычный безвизовый визит не считается общим правом на смену статуса.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Проверить допустимость конкретного in-country действия по текущему статусу через DHA/VFS.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_TREATY_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        {
+          "scenario_id": "ZA_TREATY_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Права определяются конкретным международным договором и выданным разрешением.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Права определяются конкретным международным договором и выданным разрешением.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Права определяются конкретным международным договором и выданным разрешением.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S19"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S19"
+    },
+    {
+      "route_id": "ZA_ASYLUM",
+      "name_ru": "Убежище и международная защита",
+      "official_term_ru": "Убежище и международная защита",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Индивидуальные основания международной защиты",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "ZA_ASYLUM_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Нужна индивидуальная оценка защищаемого основания и риска; процедуры конкретного маршрута не полностью исследована.",
+          "source_ids": [
+            "ZA_S01"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый национальный официальный срок не найден.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "ZA_S01"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "ZA",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "entry_condition_ru": "Обращение за убежищем производится внутри ЮАР через действующий механизм Refugee Reception Office.",
+          "rule_checked_at": "2026-08-27",
+          "condition_ru": "Точный пункт приёма и текущую процедуру нужно подтвердить до публикации маршрута.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "ZA_ASYLUM_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг или подтверждённый постоянный партнёр использует сопровождающий статус; административно может потребоваться отдельное заявление, автоматического права на работу нет.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        {
+          "scenario_id": "ZA_ASYLUM_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": [],
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний ребёнок 0–17 может использовать сопровождающий статус; в 18–25 требуется собственное основание.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, прямо разрешённая данным статусом.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, прямо разрешённая данным статусом.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Только деятельность, прямо разрешённая данным статусом.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Сопровождение не даёт автоматического права на работу.",
+          "source_ids": [
+            "ZA_S01"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": null,
+        "initial_status_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "renewal_status": "NOT_APPLICABLE",
+        "renewal_months": null,
+        "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для ПМЖ требуется отдельное квалифицирующее основание.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NOT_RESEARCHED",
+        "citizenship_path_ru": "Натурализация возможна после ПМЖ и выполнения отдельного общего правила обычного проживания.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Проверяются отдельные требования ПМЖ и натурализации; это не срок от первого въезда.",
+        "language_requirements_ru": "Для натурализации требуется способность общаться на одном из официальных языков.",
+        "source_ids": [
+          "ZA_S01",
+          "ZA_S25"
+        ]
+      },
+      "official_source_id": "ZA_S01",
+      "protection_details": {
+        "protection_types_ru": "Существование asylum/refugee protection подтверждено; точная полнота типов требует targeted research.",
+        "recognized_grounds_ru": "Индивидуальные основания защиты требуют проверки по действующему refugee framework.",
+        "individual_risk_rule_ru": "Гражданство или общая ситуация не означают автоматического соответствия.",
+        "protected_ground_link_ru": "Связь риска с защищённым основанием требует индивидуальной оценки.",
+        "evidence_rule_ru": "Точные действующие правила доказательств не исследованы до достаточного для публикации уровня.",
+        "admissibility_ru": "Точные действующие правила допустимости не исследованы до достаточного для публикации уровня.",
+        "safe_third_country_ru": "Текущая применимость не исследована до достаточного для публикации уровня.",
+        "previous_applications_ru": "Текущие правила повторных заявлений не исследованы до достаточного для публикации уровня.",
+        "right_to_remain_during_processing_ru": "Право оставаться и work rights pending не исследованы до достаточного для публикации уровня.",
+        "reception_housing_ru": "Гарантированный объём reception/housing не исследован до достаточного для публикации уровня.",
+        "assistance_ru": "Гарантированный объём assistance не исследован до достаточного для публикации уровня.",
+        "healthcare_ru": "Гарантированный объём healthcare не исследован до достаточного для публикации уровня.",
+        "appeal_ru": "Текущая appeal procedure не исследована до достаточного для публикации уровня.",
+        "status_after_positive_decision_ru": "Последствия recognition, PR и citizenship требуют targeted research.",
+        "source_ids": [
+          "ZA_S01"
+        ]
+      }
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "ZA_JOHANNESBURG",
+      "name_ru": "Йоханнесбург",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": 4803262,
+      "population_agglomeration": null,
+      "size_basis_ru": "По Census 2022 население City of Johannesburg Metropolitan Municipality составляет 4 803 262 человека. Это оценка населения муниципалитета, а не города в узких границах; на единой муниципальной основе представитель отнесён к крупным.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 385,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_JHB"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 106,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_JHB"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 351,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_JHB"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 92.2,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_JHB"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный региональный климат",
+        "cold_min_c": 3,
+        "cold_max_c": 17,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 15,
+        "hot_max_c": 26,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "research observations checked 2026-08-27",
+        "notes_ru": "Диапазоны приведены как справочные климатические ориентиры.",
+        "source_ids": [
+          "ZA_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "ZA_CITY_JHB",
+        "ZA_POP_JHB_2022",
+        "ZA_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ZA_PRETORIA",
+      "name_ru": "Претория",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": 4040315,
+      "population_agglomeration": null,
+      "size_basis_ru": "Для Претории используется сопоставимая муниципальная основа: по Census 2022 население City of Tshwane Metropolitan Municipality составляет 4 040 315 человек. Это население муниципалитета, а не города в узких границах; на единой муниципальной основе представитель отнесён к крупным. Претория является административной (исполнительной) столицей; Кейптаун выполняет законодательную, а Блумфонтейн — традиционную судебную столичную функцию.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 369,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_PRETORIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 94.4,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_PRETORIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 310,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_PRETORIA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 50.3,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_PRETORIA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный региональный климат",
+        "cold_min_c": 6,
+        "cold_max_c": 19,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 17,
+        "hot_max_c": 28,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "research observations checked 2026-08-27",
+        "notes_ru": "Диапазоны приведены как справочные климатические ориентиры.",
+        "source_ids": [
+          "ZA_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "ZA_CITY_PRETORIA",
+        "ZA_POP_TSHWANE_2022",
+        "ZA_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ZA_GQEBERHA",
+      "name_ru": "Гкеберха",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": 1190496,
+      "population_agglomeration": null,
+      "size_basis_ru": "Для Гкеберхи используется сопоставимая муниципальная основа: по Census 2022 население Nelson Mandela Bay Metropolitan Municipality составляет 1 190 496 человек. Это население муниципалитета, а не города в узких границах; на единой муниципальной основе представитель отнесён к средним.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 390,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GQEBERHA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 76.4,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GQEBERHA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 321,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GQEBERHA"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 37.1,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GQEBERHA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный региональный климат",
+        "cold_min_c": 8,
+        "cold_max_c": 20,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 18,
+        "hot_max_c": 26,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "research observations checked 2026-08-27",
+        "notes_ru": "Диапазоны приведены как справочные климатические ориентиры.",
+        "source_ids": [
+          "ZA_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "ZA_CITY_GQEBERHA",
+        "ZA_POP_NMB_2022",
+        "ZA_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "ZA_GEORGE",
+      "name_ru": "Джордж",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": 294929,
+      "population_agglomeration": null,
+      "size_basis_ru": "По Census 2022 население George Local Municipality составляет 294 929 человек. Это оценка населения муниципалитета, а не города в узких границах; на единой муниципальной основе представитель отнесён к небольшим.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 335,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GEORGE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 66.8,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GEORGE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 292,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GEORGE"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 28.1,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_ADULT",
+          "condition_ru": "Сопоставимый прямой компонент для одного человека; не семейный бюджет.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "ZA_CITY_GEORGE"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный региональный климат",
+        "cold_min_c": 8,
+        "cold_max_c": 18,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 16,
+        "hot_max_c": 24,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "research observations checked 2026-08-27",
+        "notes_ru": "Диапазоны приведены как справочные климатические ориентиры.",
+        "source_ids": [
+          "ZA_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "ZA_CITY_GEORGE",
+        "ZA_POP_GEORGE_2022",
+        "ZA_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Южная Африка",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Зависит от школы и местной политики",
+        "compulsory_age_min": 7,
+        "compulsory_age_max": 15,
+        "is_free": null,
+        "tuition": null,
+        "rule_ru": "Доступ к basic education распространяется на детей независимо от гражданства; существуют no-fee и fee-paying public schools.",
+        "source_ids": [
+          "ZA_S01"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [],
+    "international_school_cities": [
+      {
+        "city_name_ru": "Йоханнесбург",
+        "source_ids": [
+          "ZA_S37_AISJ"
+        ]
+      },
+      {
+        "city_name_ru": "Кейптаун",
+        "source_ids": [
+          "ZA_S38_ISCT"
+        ]
+      },
+      {
+        "city_name_ru": "Претория",
+        "source_ids": [
+          "ZA_S64_CRAWFORD"
+        ]
+      },
+      {
+        "city_name_ru": "Гкеберха",
+        "source_ids": [
+          "ZA_S64_CURRO_PRIMARY"
+        ]
+      },
+      {
+        "city_name_ru": "Джордж",
+        "source_ids": [
+          "ZA_S64_GLENWOOD"
+        ]
+      }
+    ],
+    "international_school_tuition_observations": [
+      {
+        "school_name_ru": "American International School of Johannesburg",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 478800,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S37_AISJ"
+        ]
+      },
+      {
+        "school_name_ru": "American International School of Johannesburg",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 643400,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S37_AISJ"
+        ]
+      },
+      {
+        "school_name_ru": "Crawford International Pretoria",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 121800,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_CRAWFORD"
+        ]
+      },
+      {
+        "school_name_ru": "Crawford International Pretoria",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 190000,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_CRAWFORD"
+        ]
+      },
+      {
+        "school_name_ru": "Curro Westbrook",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 57480,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_CURRO_PRIMARY"
+        ]
+      },
+      {
+        "school_name_ru": "Curro Westbrook",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 88920,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_CURRO_HIGH"
+        ]
+      },
+      {
+        "school_name_ru": "Glenwood House",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 65580,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_GLENWOOD"
+        ]
+      },
+      {
+        "school_name_ru": "Glenwood House",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 106260,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S64_GLENWOOD"
+        ]
+      },
+      {
+        "school_name_ru": "International School of Cape Town",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 102000,
+          "currency": "ZAR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-27"
+        },
+        "source_ids": [
+          "ZA_S38_ISCT"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Для ввоза животного в ЮАР до отправки требуется получить ветеринарное разрешение на импорт и оформить официальный ветеринарный сертификат. Точные требования к конкретной перевозке указываются в разрешении. Для собаки или кошки, отправляемой из России, исследование не подтвердило единое заранее опубликованное правило по карантину и тесту на титр антител к бешенству; эти условия нужно проверять по выданному разрешению.",
+      "source_ids": [
+        "ZA_PETS"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESEARCHED_NO_RELIABLE_DATA",
+      "explanation_ru": "На национальном уровне не найден единый список запрещённых пород собак. После въезда действуют местные правила муниципалитета, а также ограничения конкретного жилого комплекса, арендодателя и перевозчика; их нужно проверять по адресу проживания и условиям перевозки.",
+      "source_ids": [
+        "ZA_PETS"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-08-27",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны.",
+    "state_restrictions_ru": "Конституционная защита от дискриминации; практическая безопасность неоднородна.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Однополый брак и законный иностранный брак признаются.",
+    "registered_partnership_recognized": "PARTIAL",
+    "registered_partnership_rule_ru": "Не являющееся браком зарегистрированное партнёрство оценивается как постоянное партнёрство.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранный документ проверяется по праву места заключения и надлежащему оформлению.",
+    "parenthood_ru": "Родительские документы проверяются отдельно.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "конституционное равенство"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Суды и компетентные equality bodies.",
+      "rule_ru": "Конституция запрещает дискриминацию по sexual orientation.",
+      "source_ids": [
+        "ZA_S28"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Уровень принятия и общей безопасности различается по месту.",
+    "regional_differences_ru": "Не сводятся к единому country score.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "HETEROGENEOUS",
+    "assessment_basis_ru": "Брак и постоянное партнёрство признаны для иммиграции; практическая среда неоднородна.",
+    "source_ids": [
+      "ZA_S28"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-08-27",
+    "tax_residency_rule_ru": "Применяются критерии обычного проживания и физического присутствия; визовое упоминание 183 дней не заменяет полноценный налоговый анализ.",
+    "typical_day_threshold": 183,
+    "other_residency_triggers_ru": "Учитываются фактическое обычное проживание и продолжительность физического присутствия.",
+    "personal_income_tax_ru": "Налоговые резиденты в целом облагаются с мирового дохода; для нерезидентов применяются правила о доходах из источников в ЮАР. Для 2027 налогового года (1 марта 2026 — 28 февраля 2027) применяется прогрессивная шкала из семи диапазонов.",
+    "personal_income_tax_rates": [
+      {
+        "from_amount": 1,
+        "to_amount": 245100,
+        "rate_percent": 18,
+        "currency": "ZAR",
+        "rule_ru": "18% налогооблагаемого дохода.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 245101,
+        "to_amount": 383100,
+        "rate_percent": 26,
+        "currency": "ZAR",
+        "rule_ru": "R44 118 плюс 26% суммы налогооблагаемого дохода свыше R245 100.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 383101,
+        "to_amount": 530200,
+        "rate_percent": 31,
+        "currency": "ZAR",
+        "rule_ru": "R79 998 плюс 31% суммы налогооблагаемого дохода свыше R383 100.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 530201,
+        "to_amount": 695800,
+        "rate_percent": 36,
+        "currency": "ZAR",
+        "rule_ru": "R125 599 плюс 36% суммы налогооблагаемого дохода свыше R530 200.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 695801,
+        "to_amount": 887000,
+        "rate_percent": 39,
+        "currency": "ZAR",
+        "rule_ru": "R185 215 плюс 39% суммы налогооблагаемого дохода свыше R695 800.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 887001,
+        "to_amount": 1878600,
+        "rate_percent": 41,
+        "currency": "ZAR",
+        "rule_ru": "R259 783 плюс 41% суммы налогооблагаемого дохода свыше R887 000.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      },
+      {
+        "from_amount": 1878601,
+        "to_amount": null,
+        "rate_percent": 45,
+        "currency": "ZAR",
+        "rule_ru": "R666 339 плюс 45% суммы налогооблагаемого дохода свыше R1 878 600.",
+        "source_ids": [
+          "ZA_SARS_PIT_2027"
+        ]
+      }
+    ],
+    "social_contributions_ru": "Зависят от статуса и деятельности.",
+    "foreign_income_ru": "Для иностранного дохода отдельно анализируются налоговое резидентство, источник дохода и применимое соглашение об избежании двойного налогообложения.",
+    "double_taxation_with_russia_ru": "Между Россией и ЮАР действует соглашение об избежании двойного налогообложения; его применение зависит от обстоятельств конкретного дела.",
+    "source_ids": [
+      "ZA_S03",
+      "ZA_SARS_PIT_2027"
+    ]
+  },
+  "open_items": [
+    {
+      "item_id": "ZA_OI_01",
+      "block": "ROUTES",
+      "priority": "MEDIUM",
+      "related_route_id": "ZA_RELATIVE",
+      "blocks_publication": false,
+      "missing_ru": "Конфликт официальных формулировок об освобождении от требования финансового обеспечения по визе родственника.",
+      "handling_ru": "На национальном уровне считать подтверждённым только освобождение для зависимого ребёнка; для супруга или супруги сохранять предупреждение, поскольку такое освобождение подтверждено только отдельными представительствами."
+    },
+    {
+      "item_id": "ZA_OI_02",
+      "block": "LONG_TERM",
+      "priority": "MEDIUM",
+      "related_route_id": "ZA_ICT",
+      "blocks_publication": false,
+      "missing_ru": "Зачёт смешанных периодов работы и внутрикорпоративного перевода к ПМЖ не подтверждён.",
+      "handling_ru": "Не засчитывать период внутрикорпоративного перевода автоматически; требуется отдельная юридическая проверка или смена основания."
+    },
+    {
+      "item_id": "ZA_OI_03",
+      "block": "ROUTES",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Национальный медианный срок рассмотрения заявлений не найден.",
+      "handling_ru": "Оставить числовой срок пустым; диапазоны отдельных представительств использовать только как справочную информацию."
+    },
+    {
+      "item_id": "ZA_OI_04",
+      "block": "PETS",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Точные условия ввоза питомцев из России зависят от ветеринарного разрешения на импорт.",
+      "handling_ru": "Подтверждать по условиям конкретного выданного разрешения; не делать универсальный вывод заранее."
+    },
+    {
+      "item_id": "ZA_OI_05",
+      "block": "ROUTES",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Практический канал банковских переводов из России не подтверждён.",
+      "handling_ru": "Перед переводом получать предварительное письменное подтверждение банка о возможности операции."
+    },
+    {
+      "item_id": "ZA_OI_06",
+      "block": "PETS",
+      "priority": "MEDIUM",
+      "related_route_id": null,
+      "blocks_publication": false,
+      "missing_ru": "Ограничения на содержание животных в конкретном доме или жилом комплексе зависят от адреса.",
+      "handling_ru": "Проверять правила конкретного объекта недвижимости или жилого комплекса."
+    },
+    {
+      "item_id": "ZA_RG_01",
+      "block": "PROTECTION",
+      "priority": "HIGH",
+      "related_route_id": "ZA_ASYLUM",
+      "blocks_publication": true,
+      "missing_ru": "Для маршрута убежища не закрыт полный обязательный набор данных о международной защите, необходимый для публикации этого маршрута.",
+      "handling_ru": "Маршрут убежища не публиковать до завершения отдельного исследования."
+    }
+  ],
+  "completeness": {
+    "country_ready_status": "PARTIAL",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ZA_OI_01",
+          "ZA_OI_03",
+          "ZA_OI_05"
+        ]
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ZA_OI_02"
+        ]
+      },
+      {
+        "block": "PROTECTION",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ZA_RG_01"
+        ]
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PETS",
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "ZA_OI_04",
+          "ZA_OI_06"
+        ]
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "ZA_S01",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "South Africa official source",
+      "title_ru": "Immigration Act 13 of 2002",
+      "language": "en",
+      "supports_ru": "Immigration Act 13 of 2002",
+      "url": "https://www.saflii.org/za/legis/consol_act/ia2002138/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S03",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "виза для удалённой работы: иностранный работодатель и доход R650 976 в год",
+      "language": "en",
+      "supports_ru": "виза для удалённой работы: иностранный работодатель и доход R650 976 в год",
+      "url": "https://www.gov.za/sites/default/files/gcis_document/202410/51366gpm5398.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S04",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "балльная система рабочей визы и обязательное предложение работы",
+      "language": "en",
+      "supports_ru": "балльная система рабочей визы и обязательное предложение работы",
+      "url": "https://www.gov.za/sites/default/files/gcis_document/202410/51416gon5448.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S08",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Intra-Company Transfer requirements",
+      "language": "en",
+      "supports_ru": "Intra-Company Transfer requirements",
+      "url": "https://dirco.gov.za/canberra/intra-company-transfer/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S09",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "предпринимательская виза с требованиями к капиталу и персоналу",
+      "language": "en",
+      "supports_ru": "предпринимательская виза с требованиями к капиталу и персоналу",
+      "url": "https://dirco.gov.za/canberra/business-permit-new-business/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S10",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "VFS Global for Department of Home Affairs",
+      "title_ru": "Практические инструкции по заявлению на пенсионный маршрут",
+      "language": "en",
+      "supports_ru": "Подтверждает административную практику и комплект документов; нормативный порог R37,000 установлен отдельно Government Notice 451.",
+      "url": "https://visa.vfsglobal.com/one-pager/dha/southafrica/english/index.html",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S13",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "VFS Global for Department of Home Affairs",
+      "title_ru": "Практические инструкции по Financially Independent PR",
+      "language": "en",
+      "supports_ru": "Подтверждает административную практику и комплект документов; суммы R12,000,000 и R120,000 установлены отдельно Government Notice 454.",
+      "url": "https://visa.vfsglobal.com/one-pager/dha/southafrica/english/index.html",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S14",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Relative Visa assurance",
+      "language": "en",
+      "supports_ru": "Relative Visa assurance",
+      "url": "https://dirco.gov.za/toronto/relatives-visa/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S16",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "маршрут супруга или постоянного партнёра",
+      "language": "en",
+      "supports_ru": "маршрут супруга или постоянного партнёра",
+      "url": "https://dirco.gov.za/canberra/visitors-visa-section-116-spouse-of-sa-citizen/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S17",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Study Visa",
+      "language": "en",
+      "supports_ru": "Study Visa",
+      "url": "https://dirco.gov.za/canberra/study-visa-2/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S18",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Exchange Visa",
+      "language": "en",
+      "supports_ru": "Exchange Visa",
+      "url": "https://dirco.gov.za/canberra/exchange-visa/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S19",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Treaty Visa",
+      "language": "en",
+      "supports_ru": "Treaty Visa",
+      "url": "https://dirco.gov.za/canberra/treaty-visa/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S22",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Visa rules for Russian citizens",
+      "language": "en",
+      "supports_ru": "Visa rules for Russian citizens",
+      "url": "https://www.saembassy.ru/immigration-civic-services/visas",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S25",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "South Africa official source",
+      "title_ru": "Citizenship Act",
+      "language": "en",
+      "supports_ru": "Citizenship Act",
+      "url": "https://www.saflii.org/za/legis/consol_act/saca1995271/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S28",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "South Africa official source",
+      "title_ru": "определения брака и постоянного партнёра",
+      "language": "en",
+      "supports_ru": "определения брака и постоянного партнёра",
+      "url": "https://www.saflii.org/za/cases/ZACC/2023/40.html",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_CLIMATE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "South Africa official source",
+      "title_ru": "City climate observations",
+      "language": "en",
+      "supports_ru": "City climate observations",
+      "url": "https://weatherspark.com/countries/ZA",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "ZA_PETS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South Africa official source",
+      "title_ru": "Official animal import process",
+      "language": "en",
+      "supports_ru": "Official animal import process",
+      "url": "https://www.gov.za/services/import/import-animals-and-animal-products",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S05",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "South African Consulate-General Toronto",
+      "title_ru": "Контрольный список виза для удалённой работы",
+      "language": "en",
+      "supports_ru": "Публикует административную сумму R650,796, трудовой договор и банковские выписки; нормативная сумма R650,976 берётся из Gazette GN5398.",
+      "url": "https://dirco.gov.za/toronto/nomad-visa/",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_GW_DHA_2024",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Home Affairs",
+      "title_ru": "Официальное сообщение о реформе рабочих виз от 9 октября 2024 года",
+      "language": "en",
+      "supports_ru": "Сообщает административный порог R650,796 вне Trusted Employer Scheme; финальный GN5448 использует R650,976 как нижнюю границу 20-балльного диапазона.",
+      "url": "https://www.gov.za/news/media-statements/minister-leon-schreiber-cutting-edge-visa-reform-combat-corruption-and-create",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_GAZETTE_451",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Department of Home Affairs / Government Gazette",
+      "title_ru": "Government Notice 451, Gazette 37716",
+      "language": "en",
+      "supports_ru": "Устанавливает R37,000 в месяц для Retired Person Visa и соответствующего ПМЖ.",
+      "url": "https://www.gov.za/documents/notices/immigration-act-minimum-amounts-payment-month-pension-or-irrevocable-annuity-or",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_GAZETTE_454",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Department of Home Affairs / Government Gazette",
+      "title_ru": "Government Notice 454, Gazette 37716",
+      "language": "en",
+      "supports_ru": "Устанавливает минимальную чистую стоимость активов R12,000,000 для ПМЖ финансово независимого лица и платёж R120,000 Генеральному директору после одобрения.",
+      "url": "https://www.gov.za/documents/notices/immigration-act-minimum-new-worth-respect-application-permanent-residence-permit-03-jun-2014",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S37_AISJ",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "American International School of Johannesburg",
+      "title_ru": "AISJ — официальный раздел о поступлении и стоимости обучения",
+      "language": "en",
+      "supports_ru": "Стоимость Grade 1 и Grade 12 за 2026–2027 учебный год.",
+      "url": "https://www.aisj-jhb.com/admissions",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S38_ISCT",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "International School of Cape Town",
+      "title_ru": "ISCT Fee Schedule 2026",
+      "language": "en",
+      "supports_ru": "Year 1 R102,000; Year 13 тарифицируется за предмет, поэтому фиксированная итоговая стоимость не выводится.",
+      "url": "https://www.isct.co.za/wp-content/uploads/2025/09/ISCT_2026-Fee-Schedule.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S64_CRAWFORD",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Crawford International Pretoria",
+      "title_ru": "Crawford International Pretoria — School Fees",
+      "language": "en",
+      "supports_ru": "Стоимость Grade 1 и Grade 12 за 2026 год.",
+      "url": "https://www.crawfordinternational.co.za/pretoria-college-school-fees",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S64_CURRO_PRIMARY",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Curro Westbrook",
+      "title_ru": "Westbrook Primary School Fees 2026",
+      "language": "en",
+      "supports_ru": "Стоимость Grade 1 за 2026 год.",
+      "url": "https://www.curro.co.za/media/5tabyakp/westbrook-primary-school-fees-2026.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S64_CURRO_HIGH",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Curro Westbrook",
+      "title_ru": "Westbrook High School Fees 2026",
+      "language": "en",
+      "supports_ru": "Стоимость Grade 12 за 2026 год.",
+      "url": "https://www.curro.co.za/media/pqin3y10/westbrook-high-school-fees-2026.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_S64_GLENWOOD",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Glenwood House",
+      "title_ru": "Glenwood House Fee Structure 2026",
+      "language": "en",
+      "supports_ru": "Стоимость Grade 1 и Grade 12 за 2026 год.",
+      "url": "https://glenwoodhouse.co.za/wp-content/uploads/2025/10/2026-Fee-Structure.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_SARS_PIT_2027",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "South African Revenue Service",
+      "title_ru": "Ставки налога для физических лиц — 2027 налоговый год",
+      "language": "en",
+      "supports_ru": "Официальная шкала из семи предельных ставок для периода 1 марта 2026 — 28 февраля 2027.",
+      "url": "https://www.sars.gov.za/tax-rates/income-tax/rates-of-tax-for-individuals/",
+      "published_or_updated_at": "2026-02-25",
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_POP_JHB_2022",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Statistics South Africa",
+      "title_ru": "Census 2022 — City of Johannesburg Metropolitan Municipality",
+      "language": "en",
+      "supports_ru": "Население муниципалитета City of Johannesburg: 4 803 262 человека.",
+      "url": "https://census.statssa.gov.za/assets/documents/2022/Provinces_at_a_Glance.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_POP_TSHWANE_2022",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Statistics South Africa",
+      "title_ru": "Census 2022 — City of Tshwane Metropolitan Municipality",
+      "language": "en",
+      "supports_ru": "Население муниципалитета City of Tshwane, используемое как сопоставимая основа для Претории: 4 040 315 человек.",
+      "url": "https://census.statssa.gov.za/assets/documents/2022/Provinces_at_a_Glance.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_POP_NMB_2022",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Statistics South Africa",
+      "title_ru": "Census 2022 — Nelson Mandela Bay Metropolitan Municipality",
+      "language": "en",
+      "supports_ru": "Население муниципалитета Nelson Mandela Bay, используемое как сопоставимая основа для Гкеберхи: 1 190 496 человек.",
+      "url": "https://census.statssa.gov.za/assets/documents/2022/Provinces_at_a_Glance.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_POP_GEORGE_2022",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Statistics South Africa",
+      "title_ru": "Census 2022 — George Local Municipality",
+      "language": "en",
+      "supports_ru": "Население George Local Municipality: 294 929 человек.",
+      "url": "https://www.statssa.gov.za/wp-content/uploads/2024/08/Mbalo-brief-August-Inside.pdf",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "HIGH"
+    },
+    {
+      "source_id": "ZA_CITY_JHB",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Оценка расходов: Johannesburg",
+      "language": "en",
+      "supports_ru": "Источник четырёх сопоставимых компонентов расходов для Johannesburg; не используется как демографическая основа.",
+      "url": "https://livingcost.org/cost/south-africa/johannesburg",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "ZA_CITY_PRETORIA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Оценка расходов: Pretoria",
+      "language": "en",
+      "supports_ru": "Источник четырёх сопоставимых компонентов расходов для Pretoria; не используется как демографическая основа.",
+      "url": "https://livingcost.org/cost/south-africa/pretoria",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "ZA_CITY_GQEBERHA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Оценка расходов: Gqeberha",
+      "language": "en",
+      "supports_ru": "Источник четырёх сопоставимых компонентов расходов для Gqeberha; не используется как демографическая основа.",
+      "url": "https://livingcost.org/cost/south-africa/port-elizabeth",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "MEDIUM"
+    },
+    {
+      "source_id": "ZA_CITY_GEORGE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Оценка расходов: George",
+      "language": "en",
+      "supports_ru": "Источник четырёх сопоставимых компонентов расходов для George; не используется как демографическая основа.",
+      "url": "https://livingcost.org/cost/south-africa/george",
+      "published_or_updated_at": null,
+      "checked_at": "2026-08-27",
+      "confidence": "MEDIUM"
+    }
+  ],
+  "pending_changes": []
+}
