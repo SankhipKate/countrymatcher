@@ -213,7 +213,10 @@ ${deployment}
 ${researchReadme}`, /подключены три страны|активные страны — Испания, Аргентина и Уругвай|единственная подключённая страна Canon 4\.0/u);
   assert.match(questionnaire, /подтверждаемых сбережений/u);
   assert.doesNotMatch(questionnaire, /семейный бюджет|Не знаю бюджет|Накопления[^\n]+не спрашиваются/u);
-  assert.match(questionnaire, /первая страна открывается бесплатно полностью/u);
+  assert.match(questionnaire, /если `SUITABLE` стран несколько, бесплатно открывается наихудшая/u);
+  assert.match(matchingStandard, /максимальной суммой двух rank/u);
+  assert.match(matchingStandard, /product publication boundary/u);
+  assert.match(matchingStandard, /фиктивный blocking `open_item` не создаётся/u);
   assert.match(questionnaire, /автоматической синхронизации доступа между разными браузерами или устройствами нет/u);
   assert.match(matchingStandard, /## 22\.1\. Бесплатный preview и полный доступ/u);
   assert.match(matchingStandard, /## 32\.1\. Quality of Life editorial layer/u);
