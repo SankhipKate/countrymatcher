@@ -68,6 +68,9 @@ test('quality-of-life editorial content is presentation-only and independent fro
   assert.equal(editorial.countries.EC.score, 6.2);
   assert.ok(editorial.countries.EC.narrative_ru.length >= 6);
   assert.match(editorial.countries.EC.formula_ru, /Разнообразный климат/);
+  assert.equal(editorial.countries.MT.score, 7.9);
+  assert.ok(editorial.countries.MT.narrative_ru.length >= 6);
+  assert.match(editorial.countries.MT.formula_ru, /английский язык/);
 });
 
 
