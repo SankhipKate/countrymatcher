@@ -600,10 +600,7 @@ test('savings cannot replace a structurally required DNV income source', () => {
   const insufficient = dnv(profile({ applicantAmount: 200, applicantCurrency: 'USD', applicantCountryId: 'US', savings: { amount: 0, currency: 'EUR' } }));
   assert.equal(insufficient.routeStatus, 'UNSUITABLE');
   assert.equal(insufficient.financialSummary.state, 'FAIL');
-  assert.equal(
-    insufficient.blockers[0],
-    'Для вашего состава семьи требуется 2 442 EUR в месяц. По подтверждаемым данным — около 180 EUR в месяц. Дефицит можно покрыть подтверждаемыми накоплениями; при указанном доходе требуется около 81 432 EUR накоплений за установленный период покрытия.',
-  );
+  assert.match(insufficient.blockers[0], /2[^\d]*442[^\d]*€\/мес \(2[^\d]*710[^\d]*\$\/мес\).+180[^\d]*€\/мес \(200[^\d]*\$\/мес\).+81[^\d]*432[^\d]*€\/мес \(90[^\d]*480[^\d]*\$\/мес\)/u);
 
   const threshold = dnv(profile({ applicantAmount: 2442, savings: { amount: 0, currency: 'EUR' } }));
   assert.equal(threshold.financialSummary.state, 'PASS');
@@ -622,14 +619,14 @@ test('AR and UY digital nomads use separate practical screening while official t
     assert.equal(route.routeStatus, expected);
     const income = route.financialSummary.alternatives[0];
     assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 1500 });
-    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 1 500 USD в месяц. По подтверждаемым данным — около 200 USD в месяц. Это практический продуктовый порог, а не официальный минимальный порог.');
+    if (amount === 200) assert.match(route.blockers[0], /1[^\d]*500[^\d]*\$\/мес.+200[^\d]*\$\/мес.+не официальный минимальный порог/u);
   }
   for (const [amount, expected] of [[200, 'UNSUITABLE'], [1999, 'UNSUITABLE'], [2000, 'SUITABLE'], [2500, 'SUITABLE']]) {
     const route = nomad(argentina, 'AR_NOMAD', amount);
     assert.equal(route.routeStatus, expected);
     const income = route.financialSummary.alternatives[0];
     assert.deepEqual({ officialThreshold: income.threshold, officialCurrency: income.currency, screening: income.practicalScreeningThreshold }, { officialThreshold: null, officialCurrency: null, screening: 2000 });
-    if (amount === 200) assert.equal(route.blockers[0], 'Подтверждаемый доход ниже практического ориентира для этого маршрута: около 2 000 USD в месяц. По подтверждаемым данным — около 200 USD в месяц. Это практический продуктовый порог, а не официальный минимальный порог.');
+    if (amount === 200) assert.match(route.blockers[0], /2[^\d]*000[^\d]*\$\/мес.+200[^\d]*\$\/мес.+не официальный минимальный порог/u);
   }
   for (const [pkg, routeId] of [[uruguay, 'UY_DIGITAL_NOMAD'], [argentina, 'AR_NOMAD']]) {
     const route = nomad(pkg, routeId, 2500, pkg === uruguay ? uyuContext : context);
@@ -644,7 +641,7 @@ test('known NLV savings below threshold produce a concrete savings blocker', () 
   const nlv = calculateActiveCountry(profile({ adults: 2, savings: { amount: 34600, currency: 'EUR' } }), spain, context)
     .routes.find(({ routeId }) => routeId === 'ES_NLV');
   assert.equal(nlv.routeStatus, 'UNSUITABLE');
-  assert.equal(nlv.blockers[0], 'Для вашего состава семьи требуется 36 000 EUR подтверждаемых средств. Ваши подтверждаемые накопления — около 34 600 EUR.');
+  assert.match(nlv.blockers[0], /36[^\d]*000[^\d]*€ \(40[^\d]*000[^\d]*\$\).+34[^\d]*600[^\d]*€ \(38[^\d]*440[^\d]*\$\)/u);
   assert.doesNotMatch(nlv.blockers.join(' '), /если накопления не подтверждены|доход/u);
 });
 
@@ -657,10 +654,7 @@ test('official income blockers show required and confirmed amounts in the offici
   }), argentina, context).routes.find(({ routeId }) => routeId === 'AR_RENTISTA');
 
   assert.equal(rentista.routeStatus, 'UNSUITABLE');
-  assert.equal(
-    rentista.blockers[0],
-    'Для этого маршрута требуется 1 883 000 ARS в месяц. По подтверждаемым данным — около 150 000 ARS в месяц.',
-  );
+  assert.match(rentista.blockers[0], /1[^\d]*883[^\d]*000[^\d]*ARS\/мес \(1[^\d]*260[^\d]*\$\/мес\).+150[^\d]*000[^\d]*ARS\/мес \(100[^\d]*\$\/мес\)/u);
 });
 
 test('official income blockers use the family-adjusted threshold', () => {
@@ -674,10 +668,7 @@ test('official income blockers use the family-adjusted threshold', () => {
   }), portugal, context).routes.find(({ routeId }) => routeId === 'PT_OWN_INCOME');
 
   assert.equal(ownIncome.routeStatus, 'UNSUITABLE');
-  assert.equal(
-    ownIncome.blockers[0],
-    'Для вашего состава семьи требуется 1 656 EUR в месяц. По подтверждаемым данным — около 100 EUR в месяц.',
-  );
+  assert.match(ownIncome.blockers[0], /1[^\d]*656[^\d]*€\/мес \(1[^\d]*840[^\d]*\$\/мес\).+100[^\d]*€\/мес \(111[^\d]*\$\/мес\)/u);
 });
 
 test('NO_FIXED_THRESHOLD geography failure is not mislabeled as an income-type failure', () => {
@@ -1013,7 +1004,7 @@ test('practical screening evaluates asked savings while unasked savings remain U
   );
 
   assert.equal(blocked.routeStatus, 'UNSUITABLE');
-  assert.match(blocked.blockers[0], /1\s*500 USD/);
+  assert.match(blocked.blockers[0], /1[ \s]*500[ \s]*\$/u);
   assert.match(blocked.blockers[0], /не официальный минимальный порог/);
 });
 
@@ -1123,7 +1114,7 @@ test('Portugal D2 separates official subsistence from soft business-capital scre
     'PT',
   );
   assert.equal(noMoney.routeStatus, 'UNSUITABLE');
-  assert.ok(noMoney.blockers.some((text) => /11[ \s]*040 EUR/u.test(text)), noMoney.blockers.join(' | '));
+  assert.ok(noMoney.blockers.some((text) => /11[ \s]*040[ \s]*€/u.test(text)), noMoney.blockers.join(' | '));
   assert.ok(noMoney.conditions.some((text) => /5 000 EUR|5\s*000 EUR/u.test(text)));
 
   const exactMeansOnly = evaluateRoute(

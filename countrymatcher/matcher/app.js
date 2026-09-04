@@ -492,52 +492,12 @@ function routeCard(route, countryName, main = false) {
   const list = (items = []) => `<ul>${items.map((item) => `<li>${html(item)}</li>`).join("")}</ul>`;
   const blockersBlock = route.blockers?.length ? `<div class="route-reasons"><h4 data-clarity-unmask="true">Почему не подходит</h4>${list(route.blockers)}</div>` : "";
   const formatFinancialAlternative = (item) => {
-    const official = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
-    const equivalent = item.currency !== "USD" && item.thresholdUsd != null ? ` (${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : "";
-    return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${official}${equivalent}`.trim();
+    const local = `${currency(item.threshold, item.currency)}${officialFinancialPeriodSuffix(item.period)}`;
+    const monetary = item.currency !== 'USD' && item.thresholdUsd != null
+      ? `${local} (${currency(item.thresholdUsd, "USD")}${officialFinancialPeriodSuffix(item.period)})` : local;
+    return `${String(item.kindLabel || '').toLocaleLowerCase('ru')} ${monetary}`.trim();
   };
-  const withDynamicFinancialTextEquivalents = (text, financialSummary) => {
-    const source = String(text ?? '');
-    const alternatives = financialSummary?.alternatives || [];
-
-    const anchors = new Map();
-
-    for (const item of alternatives) {
-      if (
-        item.currency
-        && Number.isFinite(item.threshold)
-        && item.threshold > 0
-        && Number.isFinite(item.thresholdUsd)
-        && item.thresholdUsd > 0
-        && !anchors.has(item.currency)
-      ) {
-        anchors.set(item.currency, item);
-      }
-    }
-
-    return source.replace(
-      /([\d][\d\s\u00a0]*)\s+([A-Z]{3})\b/gu,
-      (match, rawAmount, currencyCode) => {
-        if (currencyCode === 'USD') return match;
-
-        const anchor = anchors.get(currencyCode);
-        if (!anchor) return match;
-
-        const localAmount = Number(
-          String(rawAmount).replace(/\s/gu, ''),
-        );
-
-        if (!Number.isFinite(localAmount) || localAmount <= 0) {
-          return match;
-        }
-
-        const amountUsd =
-          localAmount * anchor.thresholdUsd / anchor.threshold;
-
-        return `${match} (${currency(amountUsd, 'USD')})`;
-      },
-    );
-  };
+  const financialRequirementLabel = (item) => item.requirementLabel || item.kindLabel;
 
   const familyRelationshipNotes = route.familyEvaluation?.relationshipConditions || [];
   const conditionActions = (route.conditionActions?.length
@@ -559,23 +519,9 @@ function routeCard(route, countryName, main = false) {
       ? `${String(text).replace(/\s+$/u, '')} ${reservationNotices.join(' ')}`
       : text;
 
-    const actionText = withDynamicFinancialTextEquivalents(
-      action.text,
-      action.financialSummary,
-    );
+    const actionText = action.text;
 
     if (!alternatives.length) return appendReservationNotices(actionText);
-
-    const compactActionText = String(actionText).replace(/[\s\u00a0]/gu, '');
-
-    const thresholdsAlreadyExplained = alternatives.every((item) =>
-      item.threshold != null
-      && item.currency
-      && compactActionText.includes(
-        `${Math.round(item.threshold)}${item.currency}`,
-      ));
-
-    if (thresholdsAlreadyExplained) return appendReservationNotices(actionText);
 
     return appendReservationNotices(
       `${String(actionText).replace(/[.;:\s]+$/u, '')} — ${alternatives.map(formatFinancialAlternative).join(' или ')}.`,
@@ -586,8 +532,22 @@ function routeCard(route, countryName, main = false) {
   const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
   const preparationBlock = preparation.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialRequirements = route.financialRequirements || (route.financialSummary ? [{ requirementId: null, effect: 'NONE', summary: route.financialSummary }] : []);
-  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) =>
-    summary.alternatives?.filter((item) => item.threshold != null).map((item) => `${item.requirementLabel || item.kindLabel} — ${formatFinancialAlternative(item)}`) || []);
+  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) => {
+    const alternatives = summary.alternatives?.filter((item) => item.threshold != null) || [];
+    if (!alternatives.length) return [];
+    const groups = [];
+    for (const item of alternatives) {
+      const monthlyYearly = groups.find((group) => {
+        const first = group[0];
+        if (first.kind !== item.kind || first.currency !== item.currency) return false;
+        const monthly = first.period === 'MONTHLY' ? first : item.period === 'MONTHLY' ? item : null;
+        const annual = first.period === 'ANNUAL' ? first : item.period === 'ANNUAL' ? item : null;
+        return monthly && annual && Math.abs(Number(annual.threshold) - Number(monthly.threshold) * 12) < 0.01;
+      });
+      if (monthlyYearly) monthlyYearly.push(item); else groups.push([item]);
+    }
+    return groups.map((group) => `${financialRequirementLabel(group[0])} — ${group.map(formatFinancialAlternative).join(' или ')}`);
+  });
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4 data-clarity-unmask="true">Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const geographyNotices = [...new Set(financialRequirements.flatMap(({ summary }) =>
     (summary?.alternatives || []).map((item) => item.geographyNotice).filter(Boolean)))];

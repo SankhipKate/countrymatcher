@@ -120,6 +120,7 @@ Runtime JS/CSS и динамические data URL используют отд�
 | `14.0.0` | Четырнадцатая активная страна — Таиланд; добавлены TH RP4 и Quality of Life, официальная формула `annual income + savings` для применимых тайских маршрутов, корректный family threshold для признаваемых членов семьи и контракт будущих изменений с неизвестной датой для `ADOPTED_NOT_IN_FORCE` |
 | `15.0.0` | Пятнадцатая активная страна — Мальта; добавлены MT RP4 и Quality of Life, исправлена generic-семантика явного `NOT_AVAILABLE` family path, а публикация узкоспециализированных маршрутов Мальты приведена к отдельным продуктовым решениям |
 | `16.0.0` | Шестнадцатая активная страна — Южно-Африканская Республика; добавлены ZA RP4, Quality of Life и production-активация с девятью публикуемыми маршрутами по текущей product publication boundary |
+| `16.0.1` | Унифицировано presentation денежных требований: runtime USD для financial blockers и нефинансовых display-only сумм, безопасный fallback без FX и единый monthly/yearly item без изменения matching semantics |
 
 ## Проверка перед merge
 

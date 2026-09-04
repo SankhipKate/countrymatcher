@@ -263,6 +263,8 @@ Requirement или financial alternative со state `NOT_APPLICABLE` не пок
 
 Единственный источник истины для финансов маршрута — `requirements[].financial`. Краткие дублирующие пороги на уровне маршрута не создаются.
 
+`requirements[].financial` допустим только при `type = FINANCIAL`. Если у нефинансового требования есть официальная денежная сумма, нужная исключительно для показа, используется отдельный `display_amount` (`amount`, `currency`, опциональный `period`) и явный токен `{display_amount}` в `condition_ru`. Такое поле допустимо только для `UNASKED_CONDITION` или `DISPLAY_ONLY`, не является финансовым требованием, не сравнивается с income/savings/capital и не производит PASS/FAIL. USD-эквивалент не хранится в RP4 и рассчитывается presentation layer по текущему runtime FX; при отсутствии курса показывается только официальная сумма.
+
 Исследуются:
 
 - обязательный доход;
