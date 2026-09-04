@@ -56,14 +56,14 @@ const route = (result, routeId) => {
   return found;
 };
 
-test('Thailand package is Final Lock RP4, introduced in 14.0.0 and remains active in 16.0.1', () => {
+test('Thailand package is Final Lock RP4, introduced in 14.0.0 and remains active in 17.0.0', () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(thailand));
   assert.equal(thailand.country_id, 'TH');
   assert.equal(thailand.routes.length, 24);
-  assert.equal(version, '16.0.1');
+  assert.equal(version, '17.0.0');
   const productionBlock = appSource.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/)?.[1] || '';
   const productionPackages = [...productionBlock.matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
-  assert.equal(productionPackages.length, 16);
+  assert.equal(productionPackages.length, 17);
   assert.ok(productionPackages.includes('EC-research-v4.0.json'));
   assert.ok(productionPackages.includes('TH-research-v4.0.json'));
   assert.ok(productionPackages.includes('MT-research-v4.0.json'));
