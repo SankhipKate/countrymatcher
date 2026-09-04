@@ -56,11 +56,11 @@ const route = (result, routeId) => {
   return found;
 };
 
-test('Thailand package is Final Lock RP4, introduced in 14.0.0 and remains active in 16.0.0', () => {
+test('Thailand package is Final Lock RP4, introduced in 14.0.0 and remains active in 16.0.1', () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(thailand));
   assert.equal(thailand.country_id, 'TH');
   assert.equal(thailand.routes.length, 24);
-  assert.equal(version, '16.0.0');
+  assert.equal(version, '16.0.1');
   const productionBlock = appSource.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/)?.[1] || '';
   const productionPackages = [...productionBlock.matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
   assert.equal(productionPackages.length, 16);
@@ -224,8 +224,8 @@ test('Thailand expanded route copy is clean Russian in processing and long-term 
 });
 
 test('generic renderer retains dynamic USD equivalents for local-currency amounts', () => {
-  assert.match(appSource, /withDynamicFinancialTextEquivalents/);
   assert.match(appSource, /thresholdUsd/);
+  assert.doesNotMatch(appSource, /withDynamicFinancialTextEquivalents/);
 });
 
 test('LTR Wealthy Global Citizen keeps the USD 1m worldwide-assets rule as an unasked condition', () => {

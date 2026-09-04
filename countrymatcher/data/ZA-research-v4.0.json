@@ -1590,7 +1590,11 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подтвердить чистую стоимость активов (net worth) не менее R12,000,000. Это самостоятельное требование к чистой стоимости активов, а не к сумме денежных сбережений или инвестиционного капитала.",
+          "condition_ru": "Подтвердить чистую стоимость активов (net worth) не менее {display_amount}. Это самостоятельное требование к чистой стоимости активов, а не к сумме денежных сбережений или инвестиционного капитала.",
+          "display_amount": {
+            "amount": 12000000,
+            "currency": "ZAR"
+          },
           "source_ids": [
             "ZA_GAZETTE_454"
           ],
@@ -1604,7 +1608,12 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "После одобрения принять обязательство уплатить R120,000 Генеральному директору МВД ЮАР.",
+          "condition_ru": "После одобрения принять обязательство уплатить {display_amount} Генеральному директору МВД ЮАР.",
+          "display_amount": {
+            "amount": 120000,
+            "currency": "ZAR",
+            "period": "ONE_TIME"
+          },
           "source_ids": [
             "ZA_GAZETTE_454"
           ],

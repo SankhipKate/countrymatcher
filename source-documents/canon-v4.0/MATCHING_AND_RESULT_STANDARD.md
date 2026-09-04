@@ -303,6 +303,8 @@ Route-level `is_humanitarian: true` отмечает гуманитарный м
 4. Доход `PARTNER` в shadow check временно трактуется как доход потенциального `APPLICANT` только внутри финансовой оценки.
 5. Не пересчитываются гражданство, текущая страна и миграционный статус, applicant-specific нефинансовые требования, способы подачи, семья, долгосрочный путь и practical-параметры.
 6. Shadow check никогда не меняет `routeStatus`, `bestRoute`, сортировку, blockers или conditions основного результата.
+
+Presentation-only `requirements[].display_amount` у нефинансового требования не поступает в matching и не создаёт статус. Финансовые thresholds, financial blockers/conditions и `display_amount` используют один runtime monetary formatter: официальная сумма в исходной валюте и, при доступном текущем FX, USD-эквивалент в скобках без символа `≈`. При недоступном FX выводится только официальная сумма. Месячное и годовое представления одной и той же суммы одного requirement могут выводиться одним presentation item; разные requirements и юридические alternatives не объединяются.
 7. Подсказка после результатов показывается только если хотя бы для одного `publishable` маршрута:
    - `partnerShadowFinancial = PASS`;
    - `applicantFinancial != PASS`.

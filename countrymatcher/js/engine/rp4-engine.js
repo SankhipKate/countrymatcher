@@ -1,5 +1,6 @@
 import { ROUTE_STATUSES } from './status-contract.js';
 import { ROUTE_PRESENTATION_GROUPS, ROUTE_PRESENTATION_RANK } from './route-presentation-contract.js';
+import { formatMonetaryAmount, formatRequirementText, runtimeUsdAmount } from '../presentation/money.js';
 
 export const ACTIVE_RESEARCH_SCHEMA_VERSION = '4.0';
 export const ACTIVE_CANON_REVISION = '2026-08-08-final-lock';
@@ -735,20 +736,21 @@ function reserveSavingsForFinancialEvaluation(evaluation, resourceState) {
   }
 }
 
-function financialBlockerReason(evaluation, profile) {
+function financialBlockerReason(evaluation, profile, context) {
   const income = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'INCOME');
   if (evaluation?.state !== 'FAIL') return null;
   if (evaluation.model === 'INCOME_PLUS_SAVINGS_TOTAL' && evaluation.combinedThreshold != null && evaluation.combinedCurrency) {
-    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
-    return `По официальной комбинированной формуле годовой подтверждаемый доход и доступный банковский депозит вместе должны достигать ${number(evaluation.combinedThreshold)} ${evaluation.combinedCurrency}. По данным анкеты учитывается около ${number(evaluation.confirmedTotal ?? 0)} ${evaluation.combinedCurrency}.`;
+    const official = formatMonetaryAmount({ amount: evaluation.combinedThreshold, currency: evaluation.combinedCurrency, period: 'ANNUAL' }, context);
+    const confirmed = formatMonetaryAmount({ amount: evaluation.confirmedTotal ?? 0, currency: evaluation.combinedCurrency, period: 'ANNUAL' }, context);
+    return `По официальной комбинированной формуле годовой подтверждаемый доход и доступный банковский депозит вместе должны достигать ${official}. По данным анкеты учитывается около ${confirmed}.`;
   }
   const savings = evaluation?.alternatives?.find(({ alternative }) => alternative.kind === 'SAVINGS');
   if (savings?.state === 'FAIL' && savings.threshold != null && savings.amount != null && savings.currency) {
-    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(value);
+    const money = (value) => formatMonetaryAmount({ amount: value, currency: savings.currency }, context);
     if (savings.reservedAmount > 0 && savings.grossAmount != null) {
-      return `Для вашего состава семьи требуется ${number(savings.threshold)} ${savings.currency} подтверждаемых средств. Указано около ${number(savings.grossAmount)} ${savings.currency}; из них ${number(savings.reservedAmount)} ${savings.currency} уже учитываются для более приоритетного финансового требования, поэтому здесь доступно около ${number(savings.amount)} ${savings.currency}.`;
+      return `Для вашего состава семьи требуется ${money(savings.threshold)} подтверждаемых средств. Указано около ${money(savings.grossAmount)}; из них ${money(savings.reservedAmount)} уже учитываются для более приоритетного финансового требования, поэтому здесь доступно около ${money(savings.amount)}.`;
     }
-    return `Для вашего состава семьи требуется ${number(savings.threshold)} ${savings.currency} подтверждаемых средств. Ваши подтверждаемые накопления — около ${number(savings.amount)} ${savings.currency}.`;
+    return `Для вашего состава семьи требуется ${money(savings.threshold)} подтверждаемых средств. Ваши подтверждаемые накопления — около ${money(savings.amount)}.`;
   }
 
   const practicalAsset = evaluation?.alternatives?.find((item) =>
@@ -759,18 +761,20 @@ function financialBlockerReason(evaluation, profile) {
     && item.practicalScreeningCurrency);
 
   if (practicalAsset) {
-    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+    const money = (value) => formatMonetaryAmount({
+      amount: value,
+      currency: practicalAsset.practicalScreeningCurrency,
+      period: practicalAsset.practicalScreeningPeriod,
+    }, context);
     const label = practicalAsset.assetSourceKind === 'SAVINGS' && practicalAsset.alternative.kind === 'CAPITAL'
       ? 'Подтверждаемые доступные средства'
       : practicalAsset.alternative.kind === 'SAVINGS'
         ? 'Подтверждаемые накопления'
         : 'Инвестиционный капитал';
-    const period = practicalScreeningPeriodRu(practicalAsset.practicalScreeningPeriod);
-    const suffix = period ? ` ${period}` : '';
     const availability = practicalAsset.reservedAmount > 0 && practicalAsset.grossAmount != null
-      ? ` Указано около ${number(practicalAsset.grossAmount)} ${practicalAsset.practicalScreeningCurrency}; из них ${number(practicalAsset.reservedAmount)} ${practicalAsset.practicalScreeningCurrency} уже учитываются для более приоритетного финансового требования, поэтому для этого ориентира доступно около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}.`
-      : ` Указано около ${number(practicalAsset.amount)} ${practicalAsset.practicalScreeningCurrency}.`;
-    return `${label} ниже практического ориентира Country Matcher: требуется не менее ${number(practicalAsset.practicalScreeningThreshold)} ${practicalAsset.practicalScreeningCurrency}${suffix}.${availability} Это практический продуктовый порог, а не официальный минимальный порог.`;
+      ? ` Указано около ${money(practicalAsset.grossAmount)}; из них ${money(practicalAsset.reservedAmount)} уже учитываются для более приоритетного финансового требования, поэтому для этого ориентира доступно около ${money(practicalAsset.amount)}.`
+      : ` Указано около ${money(practicalAsset.amount)}.`;
+    return `${label} ниже практического ориентира Country Matcher: требуется не менее ${money(practicalAsset.practicalScreeningThreshold)}.${availability} Это практический продуктовый порог, а не официальный минимальный порог.`;
   }
 
   if (income?.incomeEligibility === 'NO_ELIGIBLE_SOURCE') {
@@ -794,23 +798,19 @@ function financialBlockerReason(evaluation, profile) {
   }
 
   if (income?.practicalScreeningThreshold != null && income.confirmedAmount != null) {
-    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+    const money = (value) => formatMonetaryAmount({ amount: value, currency: income.practicalScreeningCurrency, period: income.practicalScreeningPeriod }, context);
     const scope = income.alternative.practical_screening_threshold?.family_formula ? 'для вашего состава семьи' : 'для этого маршрута';
-    const period = practicalScreeningPeriodRu(income.practicalScreeningPeriod);
-    const suffix = period ? ` ${period}` : '';
-    return `Подтверждаемый доход ниже практического ориентира ${scope}: около ${number(income.practicalScreeningThreshold)} ${income.practicalScreeningCurrency}${suffix}. По подтверждаемым данным — около ${number(income.confirmedAmount)} ${income.practicalScreeningCurrency}${suffix}. Это практический продуктовый порог, а не официальный минимальный порог.`;
+    return `Подтверждаемый доход ниже практического ориентира ${scope}: около ${money(income.practicalScreeningThreshold)}. По подтверждаемым данным — около ${money(income.confirmedAmount)}. Это практический продуктовый порог, а не официальный минимальный порог.`;
   }
 
   if (income?.state === 'FAIL' && income.incomeEligibility === 'ELIGIBLE_SOURCE'
     && income.threshold != null && income.confirmedAmount != null && income.currency) {
-    const number = (value) => new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 }).format(value);
+    const money = (value) => formatMonetaryAmount({ amount: value, currency: income.currency, period: income.alternative.period }, context);
     const hasFamilyFormula = Boolean(income.alternative.family_formula || income.alternative.family_formula_ordered);
     const scope = hasFamilyFormula ? 'Для вашего состава семьи требуется' : 'Для этого маршрута требуется';
-    const period = practicalScreeningPeriodRu(income.alternative.period);
-    const suffix = period ? ` ${period}` : '';
-    const amounts = `${scope} ${number(income.threshold)} ${income.currency}${suffix}. По подтверждаемым данным — около ${number(income.confirmedAmount)} ${income.currency}${suffix}.`;
+    const amounts = `${scope} ${money(income.threshold)}. По подтверждаемым данным — около ${money(income.confirmedAmount)}.`;
     if (evaluation.model === 'INCOME_WITH_SAVINGS_SHORTFALL' && income.shortfall != null) {
-      return `${amounts} Дефицит можно покрыть подтверждаемыми накоплениями; при указанном доходе требуется около ${number(income.shortfall)} ${income.currency} накоплений за установленный период покрытия.`;
+      return `${amounts} Дефицит можно покрыть подтверждаемыми накоплениями; при указанном доходе требуется около ${money(income.shortfall)} накоплений за установленный период покрытия.`;
     }
     return amounts;
   }
@@ -1010,7 +1010,7 @@ export function evaluateRoute(route, profile, context, countryId) {
       });
     }
     const effect = statusEffect(requirement, evaluation.state);
-    if (effect === 'BLOCKER') blockers.push(financialBlockerReason(evaluation, profile) || requirement.unmet_ru || requirement.condition_ru);
+    if (effect === 'BLOCKER') blockers.push(financialBlockerReason(evaluation, profile, context) || requirement.unmet_ru || requirement.condition_ru);
     if (effect === 'CONDITION') {
       for (const text of [requirement.condition_ru, evaluation.condition]) {
         if (text && !conditions.includes(text)) conditions.push(text);
@@ -1135,7 +1135,7 @@ function presentEvaluatedFinancial(evaluated, context, sources = null) {
         practicalScreeningPeriod: item.practicalScreeningPeriod,
       }),
       thresholdUsd: item.threshold == null || item.currency == null ? null
-        : roundedDisplayAmount(convertAmount(item.threshold, item.currency, 'USD', context)),
+        : runtimeUsdAmount(item.threshold, item.currency, context),
       shortfall: item.shortfall ?? null,
     })),
   };
@@ -1413,15 +1413,22 @@ export function deriveRouteSpecificFollowUps(route, evaluated) {
 function presentRoute(route, evaluated, sources, context) {
   const source = sources.get(route.official_source_id) || null;
   const financialRequirements = presentFinancialRequirements(evaluated.requirementResults, context, sources);
+  const requirementById = new Map((evaluated.requirementResults || []).map(({ requirement }) => [requirement.requirement_id, requirement]));
   const conditionActions = (evaluated.conditionActions || []).map((action) => ({
     ...action,
+    text: formatRequirementText(requirementById.get(action.requirementId) || { condition_ru: action.text }, context),
     financialSummary: action.requirementType === 'FINANCIAL'
       ? financialRequirements.find(({ requirementId }) => requirementId === action.requirementId)?.summary || null
       : null,
   }));
   for (const text of evaluated.conditions) {
-    if (!conditionActions.some((action) => action.text === text)) conditionActions.push({
-      requirementId: null, requirementType: null, text, financialSummary: null,
+    const requirement = (evaluated.requirementResults || []).find(({ requirement: item }) => item.condition_ru === text)?.requirement;
+    const presentationText = formatRequirementText(requirement || { condition_ru: text }, context);
+    if (!conditionActions.some((action) => action.text === presentationText)) conditionActions.push({
+      requirementId: requirement?.requirement_id || null,
+      requirementType: requirement?.type || null,
+      text: presentationText,
+      financialSummary: null,
     });
   }
   const presentationGroup = deriveRoutePresentationGroup(route, evaluated);
@@ -1435,6 +1442,11 @@ function presentRoute(route, evaluated, sources, context) {
     financialSummary: presentFinancial(evaluated.requirementResults, context, sources),
     financialRequirements,
     conditionActions,
+    requirements: (evaluated.displayOnlyRequirements || []).map((requirement) => formatRequirementText(requirement, context)),
+    displayOnlyRequirements: (evaluated.displayOnlyRequirements || []).map((requirement) => ({
+      ...requirement,
+      condition_ru: formatRequirementText(requirement, context),
+    })),
     routeSpecificFollowUps: deriveRouteSpecificFollowUps(route, evaluated),
     application: (route.application_methods || []).filter(({ availability }) => availability === 'AVAILABLE').map((item) => ({
       method: item.method, methodLabel: APPLICATION_METHOD_LABELS_RU[item.method],

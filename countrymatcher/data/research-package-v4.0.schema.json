@@ -1030,6 +1030,19 @@
         }
       ]
     },
+    "displayAmount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": { "type": "number", "exclusiveMinimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "period": {
+          "enum": ["MONTHLY", "ANNUAL", "YEARLY", "ONE_TIME"]
+        }
+      },
+      "description": "Presentation-only monetary amount. It is never evaluated as income, savings or capital."
+    },
     "financialRequirement": {
       "type": "object",
       "additionalProperties": false,
@@ -1184,6 +1197,9 @@
         },
         "financial": {
           "$ref": "#/$defs/financialRequirement"
+        },
+        "display_amount": {
+          "$ref": "#/$defs/displayAmount"
         },
         "source_ids": {
           "type": "array",
@@ -1356,7 +1372,20 @@
           "then": {
             "required": [
               "financial"
-            ]
+            ],
+            "not": { "required": ["display_amount"] }
+          },
+          "else": {
+            "not": { "required": ["financial"] }
+          }
+        },
+        {
+          "if": { "required": ["display_amount"] },
+          "then": {
+            "properties": {
+              "evaluation_mode": { "enum": ["UNASKED_CONDITION", "DISPLAY_ONLY"] },
+              "condition_ru": { "type": "string", "pattern": "\\{display_amount\\}" }
+            }
           }
         },
         {
