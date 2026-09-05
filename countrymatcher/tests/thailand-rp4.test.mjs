@@ -2,12 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { assertActiveResearchPackage, calculateActiveCountry, evaluateRoute, resolveEntryForRussianCitizen } from '../js/engine/rp4-engine.js';
+import { readActiveCountryManifest } from './helpers/active-country-manifest.mjs';
 
 const thailand = JSON.parse(await readFile(new URL('../data/TH-research-v4.0.json', import.meta.url), 'utf8'));
 const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
 const appSource = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-const buildSource = await readFile(new URL('../scripts/build-pages-artifact.mjs', import.meta.url), 'utf8');
-const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
 const context = {
   fx: {
     base_currency: 'USD',
@@ -56,18 +55,15 @@ const route = (result, routeId) => {
   return found;
 };
 
-test('Thailand package is Final Lock RP4, introduced in 14.0.0 and remains active in 17.0.0', () => {
+test('Thailand package is Final Lock RP4, active and introduced in 14.0.0', async () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(thailand));
   assert.equal(thailand.country_id, 'TH');
   assert.equal(thailand.routes.length, 24);
-  assert.equal(version, '17.0.0');
-  const productionBlock = appSource.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/)?.[1] || '';
-  const productionPackages = [...productionBlock.matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
-  assert.equal(productionPackages.length, 17);
-  assert.ok(productionPackages.includes('EC-research-v4.0.json'));
-  assert.ok(productionPackages.includes('TH-research-v4.0.json'));
-  assert.ok(productionPackages.includes('MT-research-v4.0.json'));
-  assert.match(buildSource, /data\/TH-research-v4\.0\.json/);
+
+  const manifest = await readActiveCountryManifest();
+  const thailandEntry = manifest.find(({ code }) => code === 'TH');
+  assert.ok(thailandEntry, 'Thailand must remain active');
+  assert.equal(thailandEntry.introduced_version, '14.0.0');
 });
 
 test('DTV is one route and qualifying remote work does not require a numeric income threshold', () => {

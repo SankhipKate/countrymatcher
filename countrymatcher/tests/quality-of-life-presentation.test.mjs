@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { readActiveCountryManifest } from './helpers/active-country-manifest.mjs';
 
 const appRoot = new URL('../', import.meta.url);
 
@@ -75,25 +76,14 @@ test('quality-of-life editorial content is presentation-only and independent fro
 
 
 test('every active RP4 country has a complete quality-of-life editorial entry', async () => {
-  const [matcher, editorialText] = await Promise.all([
-    text('matcher/app.js'),
+  const [manifest, editorialText] = await Promise.all([
+    readActiveCountryManifest(),
     text('data/quality-of-life-ru.json'),
   ]);
 
-  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
+  const activeCountryIds = manifest.map(({ code }) => code);
+  assert.ok(activeCountryIds.length > 0, 'active-country manifest must not be empty');
 
-  const filenames = [...declaration[1].matchAll(/'([^']+-research-v4\.0\.json)'/g)]
-    .map((match) => match[1]);
-
-  assert.ok(filenames.length > 0, 'active RP4 package list must not be empty');
-
-  const packages = await Promise.all(
-    filenames.map(async (filename) =>
-      JSON.parse(await text(`data/${filename}`))),
-  );
-
-  const activeCountryIds = packages.map((pkg) => pkg.country_id);
   const editorial = JSON.parse(editorialText);
   const editorialCountries = editorial.countries || {};
 

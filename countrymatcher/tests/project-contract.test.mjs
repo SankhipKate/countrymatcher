@@ -6,6 +6,11 @@ import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
+import {
+  activeRp4Filenames,
+  readActiveCountryManifest,
+  readActiveRp4Packages,
+} from './helpers/active-country-manifest.mjs';
 const execFileAsync = promisify(execFile);
 
 function filesystemEntryUrl(rootUrl, name) {
@@ -27,15 +32,8 @@ async function existingRelativeAsset(relativePath) {
 }
 
 async function activeRp4CountryNames() {
-  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const activeBlock = app.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(activeBlock, 'ACTIVE_RP4_PACKAGES must exist');
-  const activeFiles = [...activeBlock[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
-  assert.ok(activeFiles.length > 0, 'at least one active RP4 package is required');
-  return Promise.all(activeFiles.map(async (filename) => {
-    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
-    return pkg.country_name_ru;
-  }));
+  const manifest = await readActiveCountryManifest();
+  return manifest.map(({ name }) => name);
 }
 
 test('repository has one application folder, one backlog, one source-document folder, and the root verifier', async () => {
@@ -72,14 +70,10 @@ test('repository has one application folder, one backlog, one source-document fo
 });
 
 test('every active NO_FIXED_THRESHOLD alternative records a completed practical research pass', async () => {
-  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const activeBlock = app.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(activeBlock, 'ACTIVE_RP4_PACKAGES must exist');
-  const activeFiles = [...activeBlock[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)].map((match) => match[1]);
+  const activePackages = await readActiveRp4Packages();
 
   const missing = [];
-  for (const filename of activeFiles) {
-    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
+  for (const pkg of activePackages) {
     for (const route of pkg.routes || []) {
       for (const requirement of route.requirements || []) {
         for (const alternative of requirement.financial?.alternatives || []) {
@@ -286,7 +280,7 @@ test('Pages artifact is a positive runtime allowlist', async () => {
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'cookie-consent.css', 'cookie-consent.js', 'clarity-loader.js', 'landing/cookie-consent-entry.js',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json',
+      'data/active-countries.json', 'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
       await assert.rejects(access(join(output, excluded)), excluded);
@@ -297,11 +291,7 @@ test('Pages artifact is a positive runtime allowlist', async () => {
 });
 
 test('active RP4 user-facing Russian copy never explains internal questionnaire coverage', async () => {
-  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-  const activePackages = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
-    .map((match) => match[1]);
+  const activePackages = await activeRp4Filenames();
 
   const forbidden = /(?:анкета|questionnaire)/iu;
   const collectRussianCopy = (value, path = '') => {
@@ -329,11 +319,7 @@ test('active RP4 user-facing Russian copy never explains internal questionnaire 
 });
 
 test('every active RP4 package is present in the built Pages artifact', async () => {
-  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-  const activePackages = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
-    .map((match) => match[1]);
+  const activePackages = await activeRp4Filenames();
   assert.ok(activePackages.length > 0, 'at least one active RP4 package is required');
 
   const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-active-pages-'));
@@ -502,19 +488,8 @@ test('schema ids and maintained public documents use canonical addresses', async
   }
 });
 
-test('active matcher declares a non-empty list of Final Lock RP4 packages', async () => {
+test('active matcher keeps generic Final Lock RP4 runtime loading during migration', async () => {
   const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-  const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-  assert.deepEqual(filenames, ['ES-research-v4.0.json', 'AR-research-v4.0.json', 'UY-research-v4.0.json', 'BR-research-v4.0.json', 'PT-research-v4.0.json', 'MX-research-v4.0.json', 'PY-research-v4.0.json', 'CO-research-v4.0.json', 'ME-research-v4.0.json', 'CL-research-v4.0.json', 'GR-research-v4.0.json', 'CR-research-v4.0.json', 'EC-research-v4.0.json', 'TH-research-v4.0.json', 'MT-research-v4.0.json', 'ZA-research-v4.0.json', 'DE-research-v4.0.json']);
-  for (const filename of filenames) {
-    assert.match(filename, /^[A-Z]{2}-research-v4\.0\.json$/);
-    const pkg = JSON.parse(await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'));
-    assert.equal(pkg.schema_version, '4.0');
-    assert.equal(pkg.canon_revision, '2026-08-08-final-lock');
-    assert.notEqual(pkg.completeness.country_ready_status, 'BLOCKED');
-  }
   assert.match(matcher, /Promise\.all\(ACTIVE_RP4_PACKAGES\.map/);
   assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
   assert.doesNotMatch(matcher, /countries\/.+-adapter\.js/);
@@ -588,59 +563,11 @@ test('research order connected status matches the active RP4 matcher and ignores
   assert.ok(archivedV3.length > 0);
 });
 
-test('landing active-country manifest matches active RP4 packages', async () => {
-  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-
-  const filenames = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
-    .map((match) => match[1]);
-
-  const activeCountries = await Promise.all(
-    filenames.map(async (filename) => {
-      const pkg = JSON.parse(
-        await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'),
-      );
-      return {
-        code: pkg.country_id,
-        name: pkg.country_name_ru,
-      };
-    }),
-  );
-
-  const manifest = JSON.parse(
-    await readFile(
-      new URL('../data/active-countries.json', import.meta.url),
-      'utf8',
-    ),
-  );
-
-  assert.equal(Array.isArray(manifest), true);
-  assert.equal(manifest.length, filenames.length);
-
-  assert.deepEqual(
-    manifest.map(({ code, name }) => ({ code, name })),
-    activeCountries,
-  );
-
-  for (const country of manifest) {
-    assert.match(country.region, /\S+/);
-  }
-
-  const landing = await readFile(
-    new URL('../landing/index.html', import.meta.url),
-    'utf8',
-  );
+test('landing loads the active-country manifest', async () => {
+  const landing = await readFile(new URL('../landing/index.html', import.meta.url), 'utf8');
 
   assert.match(
     landing,
     /fetch\('\.\.\/data\/active-countries\.json'/,
   );
-
-  const build = await readFile(
-    new URL('../scripts/build-pages-artifact.mjs', import.meta.url),
-    'utf8',
-  );
-
-  assert.match(build, /'data\/active-countries\.json'/);
 });

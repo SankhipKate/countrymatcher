@@ -2,86 +2,103 @@
   {
     "code": "ES",
     "name": "Испания",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "AR",
     "name": "Аргентина",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "UY",
     "name": "Уругвай",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "BR",
     "name": "Бразилия",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "PT",
     "name": "Португалия",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "MX",
     "name": "Мексика",
-    "region": "Северная Америка"
+    "region": "Северная Америка",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "PY",
     "name": "Парагвай",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "7.2.0"
   },
   {
     "code": "CO",
     "name": "Колумбия",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "8.0.0"
   },
   {
     "code": "ME",
     "name": "Черногория",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "9.0.0"
   },
   {
     "code": "CL",
     "name": "Чили",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "10.0.0"
   },
   {
     "code": "GR",
     "name": "Греция",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "11.0.0"
   },
   {
     "code": "CR",
     "name": "Коста-Рика",
-    "region": "Центральная Америка"
+    "region": "Центральная Америка",
+    "introduced_version": "12.0.0"
   },
   {
     "code": "EC",
     "name": "Эквадор",
-    "region": "Южная Америка"
+    "region": "Южная Америка",
+    "introduced_version": "13.0.0"
   },
   {
     "code": "TH",
     "name": "Таиланд",
-    "region": "Азия"
+    "region": "Азия",
+    "introduced_version": "14.0.0"
   },
   {
     "code": "MT",
     "name": "Мальта",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "15.0.0"
   },
   {
     "code": "ZA",
     "name": "Южно-Африканская Республика",
-    "region": "Африка"
+    "region": "Африка",
+    "introduced_version": "16.0.0"
   },
   {
     "code": "DE",
     "name": "Германия",
-    "region": "Европа"
+    "region": "Европа",
+    "introduced_version": "17.0.0"
   }
 ]
