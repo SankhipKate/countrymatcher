@@ -515,9 +515,9 @@ function routeCard(route, countryName, main = false) {
   const preparation = route.displayOnlyRequirements?.map((item) => item.condition_ru) || [];
   const preparationBlock = preparation.length ? `<div class="route-requirements"><h4 data-clarity-unmask="true">Что понадобится подтвердить при подаче</h4>${list(preparation)}</div>` : "";
   const financialRequirements = route.financialRequirements || (route.financialSummary ? [{ requirementId: null, effect: 'NONE', summary: route.financialSummary }] : []);
-  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').flatMap(({ summary }) => {
+  const financialItems = financialRequirements.filter(({ effect }) => effect !== 'CONDITION').map(({ summary }) => {
     const alternatives = summary.alternatives?.filter((item) => item.threshold != null) || [];
-    if (!alternatives.length) return [];
+    if (!alternatives.length) return null;
     const groups = [];
     for (const item of alternatives) {
       const monthlyYearly = groups.find((group) => {
@@ -529,8 +529,10 @@ function routeCard(route, countryName, main = false) {
       });
       if (monthlyYearly) monthlyYearly.push(item); else groups.push([item]);
     }
-    return groups.map((group) => `${financialRequirementLabel(group[0])} — ${group.map(formatFinancialAlternative).join(' или ')}`);
-  });
+    const label = financialRequirementLabel(alternatives[0]);
+    const alternativesText = groups.flatMap((group) => group.map(formatFinancialAlternative)).join(' или ');
+    return `${label} — ${alternativesText}`;
+  }).filter(Boolean);
   const financeBlock = financialItems.length ? `<div class="route-requirements financial-rule"><h4 data-clarity-unmask="true">Финансовое требование</h4>${list(financialItems)}</div>` : "";
   const geographyNotices = [...new Set(financialRequirements.flatMap(({ summary }) =>
     (summary?.alternatives || []).map((item) => item.geographyNotice).filter(Boolean)))];

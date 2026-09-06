@@ -106,5 +106,11 @@
     "name": "Ирландия",
     "region": "Европа",
     "introduced_version": "18.0.0"
+  },
+  {
+    "code": "FR",
+    "name": "Франция",
+    "region": "Европа",
+    "introduced_version": "19.0.0"
   }
 ]
