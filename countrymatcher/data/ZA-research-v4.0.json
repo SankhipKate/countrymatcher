@@ -168,7 +168,7 @@
   "entry_for_russian_citizen": {
     "entry_type": "VISA_FREE",
     "visa_required": false,
-    "rule_ru": "Обычный паспорт РФ: безвизовый подходящий holiday/предпринимательские visit до 90 дней; это не разрешение на работу, учёбу или долгосрочную деятельность.",
+    "rule_ru": "Обычный паспорт РФ: безвизовая туристическая или деловая поездка до 90 дней; это не разрешение на работу, учёбу или долгосрочную деятельность.",
     "authorization_validity_days": null,
     "maximum_stay_days": 90,
     "processing_time_ru": null,
@@ -1303,14 +1303,14 @@
       },
       "long_term_path": {
         "first_permit_months": null,
-        "initial_status_ru": "Существует отдельная предпринимательские PR category; временная виза не конвертируется автоматически по времени.",
+        "initial_status_ru": "Существует отдельная категория ПМЖ для предпринимателей; временная виза не конвертируется автоматически по времени.",
         "renewal_status": "NOT_APPLICABLE",
         "renewal_months": null,
         "renewal_ru": "Автоматический цикл продления не применяется или не подтверждён.",
         "pr_path_status": "DIRECT",
         "years_to_pr": null,
         "residence_counts_for_pr": "NO",
-        "pr_path_ru": "Существует отдельная предпринимательские PR category; временная виза не конвертируется автоматически по времени.",
+        "pr_path_ru": "Существует отдельная категория ПМЖ для предпринимателей; временная виза не конвертируется автоматически по времени.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": null,
         "residence_counts_for_citizenship": "NOT_RESEARCHED",
@@ -1590,7 +1590,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подтвердить чистую стоимость активов (net worth) не менее {display_amount}. Это самостоятельное требование к чистой стоимости активов, а не к сумме денежных сбережений или инвестиционного капитала.",
+          "condition_ru": "Подтвердить чистую стоимость активов не менее {display_amount}. Это самостоятельное требование к чистой стоимости активов, а не к сумме денежных сбережений или инвестиционного капитала.",
           "display_amount": {
             "amount": 12000000,
             "currency": "ZAR"
@@ -2509,7 +2509,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подтвердить подходящий обменные programme и достаточные средства без универсального национального threshold.",
+          "condition_ru": "Подтвердить подходящую программу обмена и достаточные средства без единого общенационального порога.",
           "source_ids": [
             "ZA_S18"
           ],
@@ -2709,7 +2709,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Подтвердить applicable договорные/program authorization и соглашение-специфические средства.",
+          "condition_ru": "Подтвердить применимое договорное или программное основание и средства, предусмотренные соответствующим соглашением.",
           "source_ids": [
             "ZA_S19"
           ],
@@ -3642,7 +3642,7 @@
       ],
       "applies_to_foreigners": "YES",
       "complaint_mechanisms_ru": "Суды и компетентные equality bodies.",
-      "rule_ru": "Конституция запрещает дискриминацию по sexual orientation.",
+      "rule_ru": "Конституция запрещает дискриминацию по сексуальной ориентации.",
       "source_ids": [
         "ZA_S28"
       ]

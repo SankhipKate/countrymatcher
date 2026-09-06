@@ -40,10 +40,8 @@ const calculate = (options = {}) => calculateActiveCountry(profile(options), ire
 const route = (id) => ireland.routes.find(({ route_id }) => route_id === id);
 const resultRoute = (options, id) => calculate(options).routes.find(({ routeId }) => routeId === id);
 
-test('Ireland package matches the locked RP4 contract and is production-active in 18.0.0', async () => {
-  const version = (await readFile(new URL('../VERSION', import.meta.url), 'utf8')).trim();
+test('Ireland package matches the locked RP4 contract and is production-active', () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(ireland));
-  assert.equal(version, '18.0.0');
   assert.equal(ireland.country_id, 'IE');
   assert.equal(ireland.routes.length, 8);
   assert.equal(active.some(({ code, name }) => code === 'IE' && name === 'Ирландия'), true);

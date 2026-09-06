@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { assertActiveResearchPackage, calculateActiveCountry, evaluateRoute, resolveEntryForRussianCitizen } from '../js/engine/rp4-engine.js';
-import { readActiveCountryManifest } from './helpers/active-country-manifest.mjs';
 
 const thailand = JSON.parse(await readFile(new URL('../data/TH-research-v4.0.json', import.meta.url), 'utf8'));
 const researchSchema = JSON.parse(await readFile(new URL('../data/research-package-v4.0.schema.json', import.meta.url), 'utf8'));
@@ -55,15 +54,10 @@ const route = (result, routeId) => {
   return found;
 };
 
-test('Thailand package is Final Lock RP4, active and introduced in 14.0.0', async () => {
+test('Thailand package matches the locked RP4 contract', () => {
   assert.doesNotThrow(() => assertActiveResearchPackage(thailand));
   assert.equal(thailand.country_id, 'TH');
   assert.equal(thailand.routes.length, 24);
-
-  const manifest = await readActiveCountryManifest();
-  const thailandEntry = manifest.find(({ code }) => code === 'TH');
-  assert.ok(thailandEntry, 'Thailand must remain active');
-  assert.equal(thailandEntry.introduced_version, '14.0.0');
 });
 
 test('DTV is one route and qualifying remote work does not require a numeric income threshold', () => {

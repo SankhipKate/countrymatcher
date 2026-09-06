@@ -54,7 +54,7 @@ test('financially independent PR never interprets R12m as savings/capital or emi
   assert.equal(wealth.type, 'OTHER_BASIS');
   assert.equal(wealth.evaluation_mode, 'UNASKED_CONDITION');
   assert.equal(wealth.financial, undefined);
-  assert.match(wealth.condition_ru, /net worth.+\{display_amount\}/u);
+  assert.match(wealth.condition_ru, /чистую стоимость активов.+\{display_amount\}/u);
   assert.deepEqual(wealth.display_amount, { amount: 12000000, currency: 'ZAR' });
   assert.deepEqual(payment.display_amount, { amount: 120000, currency: 'ZAR', period: 'ONE_TIME' });
   assert.equal(payment.evaluation_mode, 'DISPLAY_ONLY');
