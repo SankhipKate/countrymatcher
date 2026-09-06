@@ -29,7 +29,7 @@ Current Canon directory: [`source-documents/canon-v4.0/`](canon-v4.0/)
 
 ## Research order
 
-[`COUNTRY_RESEARCH_ORDER_v4.0.json`](COUNTRY_RESEARCH_ORDER_v4.0.json)
+[`COUNTRY_RESEARCH_ORDER_v4.0.json`](COUNTRY_RESEARCH_ORDER_v4.0.json) — единственный master очереди исследований. Статус `Подключена` синхронизируется с `active-countries.json` командой `npm run release:sync` из `countrymatcher/`.
 
 ## Supporting and project documents
 
@@ -37,6 +37,5 @@ Current Canon directory: [`source-documents/canon-v4.0/`](canon-v4.0/)
 - `QUESTIONNAIRE_AND_RESULTS_v4.0.md`
 - `ROADMAP_v4.0.md`
 - `Правила_работы_над_Country_Matcher_v4.0.md`
-- `ОЧЕРЕДЬ_ИССЛЕДОВАНИЙ_СТРАН.xlsx`
 
 README является только навигационной картой и не устанавливает новых правил.

@@ -1306,7 +1306,8 @@ test('matcher source delegates cache busting to build id wiring', async () => {
     readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
   ]);
   assert.doesNotMatch(matcher, /\?v=/);
-  assert.match(app, /'ES-research-v4\.0\.json'/);
+  assert.match(app, /new URL\('active-countries\.json', DATA_BASE\)/);
+  assert.match(app, /activeRp4FilenamesFromManifest/);
   assert.match(app, /function currentBuildId\(\)/);
   assert.match(app, /versioned\.searchParams\.set\('v', buildId\)/);
   assert.match(app, /fetch\(withBuildId\(new URL\(filename, DATA_BASE\), buildId\)\)/);

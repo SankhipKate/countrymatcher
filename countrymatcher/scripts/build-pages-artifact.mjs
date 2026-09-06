@@ -2,15 +2,18 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { activeRp4FilenamesFromManifest } from '../js/active-country-manifest.js';
 
 const appRoot = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const outputRoot = resolve(process.argv[2] || resolve(appRoot, '.pages-artifact'));
+const activeCountryManifest = JSON.parse(await readFile(resolve(appRoot, 'data/active-countries.json'), 'utf8'));
+const activeRp4Files = activeRp4FilenamesFromManifest(activeCountryManifest).map((filename) => `data/${filename}`);
 const files = [
   '.nojekyll', 'index.html', 'payment-config.js', 'cookie-consent.css', 'cookie-consent.js', 'clarity-loader.js',
   'assets', 'landing', 'matcher', 'pilot', 'js',
-  'data/ES-research-v4.0.json', 'data/AR-research-v4.0.json', 'data/UY-research-v4.0.json', 'data/BR-research-v4.0.json', 'data/PT-research-v4.0.json', 'data/MX-research-v4.0.json', 'data/PY-research-v4.0.json', 'data/CO-research-v4.0.json', 'data/ME-research-v4.0.json', 'data/CL-research-v4.0.json', 'data/GR-research-v4.0.json', 'data/CR-research-v4.0.json', 'data/EC-research-v4.0.json', 'data/TH-research-v4.0.json', 'data/MT-research-v4.0.json', 'data/ZA-research-v4.0.json', 'data/DE-research-v4.0.json',
+  ...activeRp4Files,
   'data/active-countries.json',
-  'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json', 'data/schemas/user-profile-v1.schema.json',
+  'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/country-comparison-ru.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json', 'data/schemas/user-profile-v1.schema.json',
 ];
 
 const APP_VERSION_PATTERN = /^\d+\.\d+\.\d+$/;

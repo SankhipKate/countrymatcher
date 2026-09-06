@@ -8,6 +8,7 @@ Country Matcher — браузерный сервис для граждан Ро
 
 В текущем production подключены:
 
+<!-- BEGIN GENERATED ACTIVE_COUNTRIES_LIST -->
 - Испания;
 - Аргентина;
 - Уругвай;
@@ -25,6 +26,7 @@ Country Matcher — браузерный сервис для граждан Ро
 - Мальта;
 - Южно-Африканская Республика;
 - Германия.
+<!-- END GENERATED ACTIVE_COUNTRIES_LIST -->
 
 Сервис не заменяет миграционного юриста и не обещает выдачу визы или ВНЖ. Он показывает:
 
@@ -53,7 +55,9 @@ Country Matcher — браузерный сервис для граждан Ро
 
 Активные страновые данные находятся в:
 
+<!-- BEGIN GENERATED ACTIVE_RP4_PATHS -->
 - `countrymatcher/data/{ES,AR,UY,BR,PT,MX,PY,CO,ME,CL,GR,CR,EC,TH,MT,ZA,DE}-research-v4.0.json`.
+<!-- END GENERATED ACTIVE_RP4_PATHS -->
 
 Quality of Life хранится отдельно в `countrymatcher/data/quality-of-life-ru.json` и не является Research Package.
 
@@ -67,8 +71,7 @@ Country-configured коллаборации с миграционными кон
 Рабочие документы:
 
 - `canon-v4.0/NEW_COUNTRY_RESEARCH_PROMPT.md` — готовое задание для исследования новой страны;
-- `ОЧЕРЕДЬ_ИССЛЕДОВАНИЙ_СТРАН.xlsx` — сортируемая очередь из пяти рабочих столбцов;
-- `COUNTRY_RESEARCH_ORDER_v4.0.json` — машинно-проверяемое зеркало очереди: подключённые страны должны совпадать с активным matcher;
+- `COUNTRY_RESEARCH_ORDER_v4.0.json` — master очереди по рангу, региону и категории; статус `Подключена` синхронизируется с `active-countries.json`;
 - `QUESTIONNAIRE_AND_RESULTS_v4.0.md` — человекочитаемая связь вопросов анкеты, funnel и результата;
 - `ROADMAP_v4.0.md` — направления будущего развития, а не список уже выполненных функций.
 

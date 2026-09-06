@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { assertActiveResearchPackage } from '../js/engine/rp4-engine.js';
 import {
-  activeRp4Filenames,
   readActiveCountryManifest,
   rp4FilenameForCode,
 } from './helpers/active-country-manifest.mjs';
@@ -54,6 +53,11 @@ test('active-country manifest defines valid active RP4 packages and release prov
     assert.equal(pkg.country_id, country.code, `${filename}: country_id must match manifest code`);
     assert.equal(pkg.country_name_ru, country.name, `${filename}: country_name_ru must match manifest name`);
     assert.doesNotThrow(() => assertActiveResearchPackage(pkg), `${filename}: active RP4 contract`);
+    assert.notEqual(
+      pkg.completeness?.country_ready_status,
+      'BLOCKED',
+      `${filename}: active country must not be BLOCKED`,
+    );
 
     const escapedVersion = country.introduced_version.replaceAll('.', '\\.');
     const releaseRow = deployment.match(new RegExp('^\\| `' + escapedVersion + '` \\| (.+) \\|$', 'm'));
@@ -73,14 +77,4 @@ test('VERSION COUNTRIES component equals active-country manifest count', async (
     countries,
     `VERSION ${version} requires ${countries} active countries, found ${manifest.length}`,
   );
-});
-
-test('manifest package order matches legacy runtime package order during migration', async () => {
-  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  const declaration = app.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-  assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-  const legacyPackages = [...declaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
-    .map((match) => match[1]);
-
-  assert.deepEqual(await activeRp4Filenames(), legacyPackages);
 });

@@ -275,12 +275,12 @@ test('Pages artifact is a positive runtime allowlist', async () => {
   const temporaryRoot = await mkdtemp(join(tmpdir(), 'countrymatcher-pages-'));
   const output = join(temporaryRoot, 'artifact');
   try {
-    await execFileAsync(process.execPath, [new URL('../scripts/build-pages-artifact.mjs', import.meta.url).pathname, output]);
+    await execFileAsync(process.execPath, [fileURLToPath(new URL('../scripts/build-pages-artifact.mjs', import.meta.url)), output]);
     for (const required of [
       'index.html', '.nojekyll', 'payment-config.js', 'assets/images/countrymatcher-logo.png',
       'cookie-consent.css', 'cookie-consent.js', 'clarity-loader.js', 'landing/cookie-consent-entry.js',
       'landing/index.html', 'matcher/app.js', 'pilot/fx-context.js', 'js/engine/rp4-engine.js',
-      'data/active-countries.json', 'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json',
+      'data/active-countries.json', 'data/quality-of-life-ru.json', 'data/country-consultants-ru.json', 'data/country-comparison-ru.json', 'data/schemas/user-profile-v1.schema.json', 'data/fx-fallback.json', 'data/indexed-unit-rates.json',
     ]) await access(join(output, required));
     for (const excluded of ['tests', 'docs/research', 'node_modules', 'scripts', 'package.json', 'package-lock.json', 'data/research-package-v3.0.schema.json', 'data/spain-research-v3.0.json']) {
       await assert.rejects(access(join(output, excluded)), excluded);
@@ -327,7 +327,7 @@ test('every active RP4 package is present in the built Pages artifact', async ()
   try {
     await execFileAsync(
       process.execPath,
-      [new URL('../scripts/build-pages-artifact.mjs', import.meta.url).pathname, output],
+      [fileURLToPath(new URL('../scripts/build-pages-artifact.mjs', import.meta.url)), output],
     );
     for (const filename of activePackages) {
       await access(join(output, 'data', filename));
@@ -488,12 +488,51 @@ test('schema ids and maintained public documents use canonical addresses', async
   }
 });
 
-test('active matcher keeps generic Final Lock RP4 runtime loading during migration', async () => {
-  const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-  assert.match(matcher, /Promise\.all\(ACTIVE_RP4_PACKAGES\.map/);
+test('every app DATA_BASE file is included in the Pages allowlist', async () => {
+  const [matcher, builder] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../scripts/build-pages-artifact.mjs', import.meta.url), 'utf8'),
+  ]);
+
+  const fileConstants = new Map(
+    [...matcher.matchAll(/const\s+([A-Z0-9_]+_FILE)\s*=\s*'([^']+)'/g)]
+      .map((match) => [match[1], match[2]]),
+  );
+  const runtimeDataFiles = new Set(
+    [...matcher.matchAll(/new URL\('([^']+)'\s*,\s*DATA_BASE\)/g)].map((match) => match[1]),
+  );
+  for (const match of matcher.matchAll(/new URL\(([A-Z0-9_]+_FILE)\s*,\s*DATA_BASE\)/g)) {
+    const filename = fileConstants.get(match[1]);
+    assert.ok(filename, `missing filename constant for ${match[1]}`);
+    runtimeDataFiles.add(filename);
+  }
+
+  for (const filename of runtimeDataFiles) {
+    assert.match(builder, new RegExp(`['\"]data/${filename.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}['\"]`), `Pages allowlist is missing runtime data/${filename}`);
+  }
+});
+
+test('generated release assets are synchronized', async () => {
+  await execFileAsync(process.execPath, [fileURLToPath(new URL('../scripts/release-sync.mjs', import.meta.url)), '--check']);
+});
+
+test('runtime and Pages derive active RP4 packages from the active-country manifest', async () => {
+  const [matcher, builder] = await Promise.all([
+    readFile(new URL('../matcher/app.js', import.meta.url), 'utf8'),
+    readFile(new URL('../scripts/build-pages-artifact.mjs', import.meta.url), 'utf8'),
+  ]);
+
+  assert.match(matcher, /activeRp4FilenamesFromManifest/);
+  assert.match(matcher, /new URL\('active-countries\.json', DATA_BASE\)/);
+  assert.doesNotMatch(matcher, /ACTIVE_RP4_PACKAGES/);
+  assert.doesNotMatch(matcher, /[A-Z]{2}-research-v4\.0\.json/);
   assert.doesNotMatch(matcher, /-research-v3\.0\.json/);
   assert.doesNotMatch(matcher, /countries\/.+-adapter\.js/);
   assert.doesNotMatch(matcher, /spainData|calculateActiveSpain/);
+
+  assert.match(builder, /activeRp4FilenamesFromManifest/);
+  assert.match(builder, /data\/active-countries\.json/);
+  assert.doesNotMatch(builder, /data\/[A-Z]{2}-research-v4\.0\.json/);
 });
 
 test('runtime data URLs are module-relative and remain valid under a project subpath', async () => {
@@ -503,6 +542,7 @@ test('runtime data URLs are module-relative and remain valid under a project sub
   ]);
   assert.match(matcher, /const DATA_BASE = new URL\('\.\.\/data\/', import\.meta\.url\)/);
   assert.doesNotMatch(matcher, /fetch\(['"]\.\.\/data/);
+  assert.match(matcher, /fetch\(withBuildId\(new URL\('active-countries\.json', DATA_BASE\), buildId\)\)/);
   assert.match(matcher, /fetch\(withBuildId\(new URL\(filename, DATA_BASE\), buildId\)\)/);
   assert.match(matcher, /fetch\(withBuildId\(new URL\('schemas\/user-profile-v1\.schema\.json', DATA_BASE\), buildId\)\)/);
   assert.match(matcher, /fetch\(withBuildId\(new URL\(QUALITY_OF_LIFE_EDITORIAL_FILE, DATA_BASE\), buildId\)\)/);

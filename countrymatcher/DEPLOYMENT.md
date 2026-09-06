@@ -123,6 +123,7 @@ Runtime JS/CSS и динамические data URL используют отд�
 | `16.0.0` | Шестнадцатая активная страна — Южно-Африканская Республика; добавлены ZA RP4, Quality of Life и production-активация с девятью публикуемыми маршрутами по текущей product publication boundary |
 | `16.0.1` | Унифицировано presentation денежных требований: runtime USD для financial blockers и нефинансовых display-only сумм, безопасный fallback без FX и единый monthly/yearly item без изменения matching semantics |
 | `17.0.0` | Семнадцатая активная страна — Германия; добавлены DE RP4, Quality of Life и production-активация с восемнадцатью публикуемыми маршрутами по текущей product publication boundary |
+| `17.0.1` | Активные страны переведены на единый manifest для runtime и Pages; добавлены автоматическая синхронизация и drift-check механических release-артефактов, JSON оставлен единственным master очереди исследований, XLSX-копия очереди удалена; исправлена публикация country-comparison-ru.json в Pages artifact |
 
 ## Проверка перед merge
 
