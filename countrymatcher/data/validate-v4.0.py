@@ -254,7 +254,14 @@ def validate_route_specific_applicability(
                 errors,
             )
 
-def validate_schema(data: dict[str, Any]) -> list[str]:
+_SCHEMA_VALIDATOR = None
+
+
+def get_schema_validator():
+    global _SCHEMA_VALIDATOR
+    if _SCHEMA_VALIDATOR is not None:
+        return _SCHEMA_VALIDATOR
+
     try:
         from jsonschema import Draft202012Validator, FormatChecker
     except ImportError as exc:
@@ -269,8 +276,19 @@ def validate_schema(data: dict[str, Any]) -> list[str]:
         raise RuntimeError(f"Cannot read schema {schema_path}: {exc}") from exc
 
     Draft202012Validator.check_schema(schema)
-    validator = Draft202012Validator(schema, format_checker=FormatChecker())
-    errors = sorted(validator.iter_errors(data), key=lambda e: list(e.absolute_path))
+    _SCHEMA_VALIDATOR = Draft202012Validator(
+        schema,
+        format_checker=FormatChecker(),
+    )
+    return _SCHEMA_VALIDATOR
+
+
+def validate_schema(data: dict[str, Any]) -> list[str]:
+    validator = get_schema_validator()
+    errors = sorted(
+        validator.iter_errors(data),
+        key=lambda error: list(error.absolute_path),
+    )
 
     result: list[str] = []
     for error in errors:
@@ -279,7 +297,6 @@ def validate_schema(data: dict[str, Any]) -> list[str]:
             path += f"[{part}]" if isinstance(part, int) else f".{part}"
         result.append(f"{path}: {error.message}")
     return result
-
 
 def validate_integrity(data: dict[str, Any]) -> list[str]:
     errors: list[str] = []
@@ -888,16 +905,7 @@ def validate_family_coverage(data: dict[str, Any]) -> list[str]:
     return errors
 
 
-def main() -> int:
-    family_coverage = len(sys.argv) == 3 and sys.argv[1] == "--family-coverage"
-    if (family_coverage and len(sys.argv) != 3) or (not family_coverage and len(sys.argv) != 2):
-        print(
-            "Usage: python countrymatcher/data/validate-v4.0.py [--family-coverage] path/to/XX-research-v4.0.json",
-            file=sys.stderr,
-        )
-        return 2
-
-    path = Path(sys.argv[2] if family_coverage else sys.argv[1])
+def validate_path(path: Path, family_coverage: bool = False) -> int:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
@@ -930,6 +938,7 @@ def main() -> int:
         return 1
 
     print("Integrity validation PASS")
+
     if family_coverage:
         family_errors = validate_family_coverage(data)
         if family_errors:
@@ -938,6 +947,41 @@ def main() -> int:
                 print(f"- {error}")
             return 1
         print("Family coverage audit PASS")
+
+    return 0
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    family_coverage = args[:1] == ["--family-coverage"]
+
+    if family_coverage:
+        paths = args[1:]
+        if len(paths) != 1:
+            print(
+                "Usage: python countrymatcher/data/validate-v4.0.py --family-coverage path/to/XX-research-v4.0.json",
+                file=sys.stderr,
+            )
+            return 2
+    else:
+        paths = args
+        if not paths:
+            print(
+                "Usage: python countrymatcher/data/validate-v4.0.py path/to/XX-research-v4.0.json [...]",
+                file=sys.stderr,
+            )
+            return 2
+
+    multiple = len(paths) > 1
+
+    for raw_path in paths:
+        path = Path(raw_path)
+        if multiple:
+            print(f"--- {path.name} ---")
+        result = validate_path(path, family_coverage=family_coverage)
+        if result != 0:
+            return result
+
     return 0
 
 

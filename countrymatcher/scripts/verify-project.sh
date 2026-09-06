@@ -97,10 +97,7 @@ PACKAGES=("$APP_DIR"/data/*-research-v4.0.json)
 if [[ "${#PACKAGES[@]}" -eq 0 ]]; then
   fail "no RP4 packages found"
 fi
-for package in "${PACKAGES[@]}"; do
-  echo "--- $(basename "$package") ---"
-  "$PYTHON_VERIFY" "$APP_DIR/data/validate-v4.0.py" "$package"
-done
+"$PYTHON_VERIFY" "$APP_DIR/data/validate-v4.0.py" "${PACKAGES[@]}"
 
 echo
 echo "=== VERIFY 6/7: NODE TEST SUITE ==="
