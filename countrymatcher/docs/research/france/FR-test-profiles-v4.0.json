@@ -1,0 +1,47 @@
+{
+  "country_id": "FR",
+  "research_date": "2026-09-04",
+  "status": "READY_FOR_ENGINE_TESTING",
+  "profiles": [
+    {
+      "profile_id": "FR_VISITOR_BELOW",
+      "purpose_ru": "Visitor: собственные доход и накопления ниже порога; отдельная sponsor-ветка остаётся условной",
+      "expected_route_id": "FR_VISITOR",
+      "expected_status": "UNSUITABLE",
+      "also_expected": {
+        "FR_VISITOR_SPONSOR": "SUITABLE_WITH_CONDITIONS"
+      },
+      "facts": {
+        "monthly_income_eur": 1400
+      }
+    },
+    {
+      "profile_id": "FR_VISITOR_AT",
+      "purpose_ru": "Visitor: допустимый собственный доход ровно на пороге",
+      "expected_route_id": "FR_VISITOR",
+      "expected_status": "SUITABLE",
+      "facts": {
+        "monthly_income_eur": 1477.93
+      }
+    },
+    {
+      "profile_id": "FR_STUDENT_OLD_THRESHOLD",
+      "purpose_ru": "Регрессия устаревшего student threshold",
+      "expected_route_id": "FR_STUDENT",
+      "expected_status": "SUITABLE_WITH_CONDITIONS",
+      "facts": {
+        "monthly_income_eur": 615
+      }
+    },
+    {
+      "profile_id": "FR_STUDENT_CURRENT_THRESHOLD",
+      "purpose_ru": "Новый student threshold",
+      "expected_route_id": "FR_STUDENT",
+      "expected_status": "SUITABLE_WITH_CONDITIONS",
+      "facts": {
+        "monthly_income_eur": 877.5,
+        "admission": false
+      }
+    }
+  ]
+}

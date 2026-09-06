@@ -69,9 +69,9 @@ test('schema rejects financial on non-FINANCIAL and separates display_amount fro
   assert.equal(validate(wealth), false);
 });
 
-test('monthly/yearly representations group only inside one requirement and never use approximation mark', () => {
+test('financial alternatives render as one item per requirement and never use approximation mark', () => {
   assert.match(appSource, /Math\.abs\(Number\(annual\.threshold\) - Number\(monthly\.threshold\) \* 12\)/u);
-  assert.match(appSource, /groups\.map\(\(group\)/u);
-  assert.match(appSource, /financialRequirements[^]*flatMap/u);
+  assert.match(appSource, /financialRequirements[^]*\.map\(\(\{ summary \}\)/u);
+  assert.match(appSource, /groups\.flatMap\(\(group\) => group\.map\(formatFinancialAlternative\)\)\.join\(' или '\)/u);
   assert.doesNotMatch(formatMonetaryAmount({ amount: 12000000, currency: 'ZAR' }, context), /≈/u);
 });

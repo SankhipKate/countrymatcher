@@ -1,0 +1,106 @@
+{
+  "country_id": "FR",
+  "rules_version": "4.0",
+  "canonical_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "cases": [
+    {
+      "case_id": "VISITOR_OWN_INCOME_AT_THRESHOLD",
+      "profile_summary": "Допустимый собственный регулярный доход достигает 1 477,93 EUR в месяц.",
+      "expected": {
+        "FR_VISITOR": "SUITABLE"
+      }
+    },
+    {
+      "case_id": "VISITOR_OWN_SAVINGS_AT_ANNUAL_EQUIVALENT",
+      "profile_summary": "Подтверждаемые накопления достигают официальной годовой суммы 17 735,19 EUR.",
+      "expected": {
+        "FR_VISITOR": "SUITABLE"
+      }
+    },
+    {
+      "case_id": "VISITOR_BELOW_OWN_RESOURCES_SPONSOR_UNKNOWN",
+      "profile_summary": "Собственные ресурсы ниже порога, но поддержка платежеспособного третьего лица анкетой не устанавливается.",
+      "expected": {
+        "FR_VISITOR": "UNSUITABLE",
+        "FR_VISITOR_SPONSOR": "SUITABLE_WITH_CONDITIONS"
+      }
+    },
+    {
+      "case_id": "FUTURE_EMPLOYMENT_SALARY_NOT_CURRENT_INCOME",
+      "profile_summary": "Высокий текущий иностранный доход не заменяет будущий французский договор и его зарплату.",
+      "expected": {
+        "FR_EMPLOYEE": "SUITABLE_WITH_CONDITIONS",
+        "FR_BLUE_CARD": "SUITABLE_WITH_CONDITIONS"
+      }
+    },
+    {
+      "case_id": "INVESTMENT_IS_CAPITAL_NOT_INCOME",
+      "profile_summary": "Talent-investor использует разовую инвестицию 300 000 EUR и не оценивает её как годовой доход.",
+      "expected_financial": {
+        "route_id": "FR_TALENT_INVESTOR",
+        "model": "INVESTMENT_CAPITAL",
+        "kind": "CAPITAL",
+        "period": "ONE_TIME",
+        "amount": 300000,
+        "currency": "EUR"
+      }
+    },
+    {
+      "case_id": "STUDENT_UNASKED_ADMISSION_AND_RESOURCE_ALTERNATIVES",
+      "profile_summary": "Admission, sponsor и scholarship не устанавливаются анкетой.",
+      "expected": {
+        "FR_STUDENT": "SUITABLE_WITH_CONDITIONS"
+      },
+      "expected_financial_kinds": [
+        "INCOME",
+        "SAVINGS",
+        "SPONSOR",
+        "SCHOLARSHIP"
+      ]
+    },
+    {
+      "case_id": "SPECIALIZED_ROUTES_NOT_PUBLISHED",
+      "expected_publishable": {
+        "FR_ICT": false,
+        "FR_FAMILY_REUNIFICATION": false,
+        "FR_ASYLUM": false,
+        "FR_STUDENT_TRAINEE": false,
+        "FR_VOLUNTEER": false
+      }
+    },
+    {
+      "case_id": "CITY_BASKET_COMPLETE",
+      "required_components": [
+        "RENT_STANDARD",
+        "UTILITIES",
+        "GROCERIES",
+        "TRANSPORT"
+      ],
+      "required_city_ids": [
+        "FR_PARIS",
+        "FR_LYON",
+        "FR_NANTES",
+        "FR_DIJON"
+      ]
+    },
+    {
+      "case_id": "STUDENT_EU_LTR_PARTIAL_COUNTING",
+      "expected_long_term": {
+        "route_id": "FR_STUDENT",
+        "residence_counts_for_pr": "PARTIAL",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null
+      }
+    },
+    {
+      "case_id": "ADULT_CHILD_REQUIRES_OWN_BASIS_WITHOUT_DATA_CONTRACT_FAILURE",
+      "profile_summary": "Семья включает ребёнка 19 лет; взрослый ребёнок оценивается через отдельное основание, а страна не исчезает из-за DATA_CONTRACT_PROBLEM.",
+      "expected_family": {
+        "child_age": 19,
+        "state": "CONDITION",
+        "join_stage": "SEPARATE_ROUTE"
+      }
+    }
+  ]
+}

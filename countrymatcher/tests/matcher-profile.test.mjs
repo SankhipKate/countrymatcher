@@ -983,6 +983,17 @@ test('route cards deduplicate financial actions by requirement identity', async 
   assert.match(mixed, /Финансовое требование[\s\S]*Удовлетворённое требование/u);
   assert.doesNotMatch(mixed.slice(mixed.indexOf('Финансовое требование')), /Условное требование/u);
 
+  const incomeOrSavings = { requirementId: 'FIN_OR', effect: 'NONE', summary: {
+    model: 'INCOME_OR_SAVINGS', state: 'PASS', alternatives: [
+      alternative('Собственные ресурсы', 1477.93, 1720),
+      { ...alternative('Собственные ресурсы', 17735.19, 20620), kind: 'SAVINGS', kindLabel: 'Накопления', period: 'ANNUAL' },
+    ],
+  } };
+  const incomeOrSavingsRoute = renderRoute({ ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', financialRequirements: [incomeOrSavings], conditionActions: [{ requirementId: 'FAMILY', text: 'Семья присоединяется позднее.', financialSummary: null }] }, 'Страна');
+  assert.equal((incomeOrSavingsRoute.match(/Собственные ресурсы —/gu) || []).length, 1);
+  assert.match(incomeOrSavingsRoute, /Собственные ресурсы — доход 1477.93 EUR\/мес \(1720 USD\/мес\) или накопления 17735.19 EUR\/год \(20620 USD\/год\)/u);
+  assert.match(incomeOrSavingsRoute, /Что нужно выполнить[\s\S]*Семья присоединяется позднее/u);
+
   const nonFinancial = renderRoute({
     ...base, routeStatus: 'SUITABLE_WITH_CONDITIONS', conditions: ['Получить документ.'],
     financialSummary: satisfied.summary, financialRequirements: [satisfied],
