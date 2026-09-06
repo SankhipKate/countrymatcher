@@ -36,6 +36,6 @@ Current Canon directory: [`source-documents/canon-v4.0/`](canon-v4.0/)
 - `PROJECT_OVERVIEW_v4.0.md`
 - `QUESTIONNAIRE_AND_RESULTS_v4.0.md`
 - `ROADMAP_v4.0.md`
-- `Правила_работы_над_Country_Matcher_v4.0.md`
+- `COUNTRY_MATCHER_WORKING_RULES_v4.0.md`
 
 README является только навигационной картой и не устанавливает новых правил.

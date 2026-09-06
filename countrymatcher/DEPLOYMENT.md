@@ -126,6 +126,7 @@ Runtime JS/CSS и динамические data URL используют отд�
 | `17.0.1` | Активные страны переведены на единый manifest для runtime и Pages; добавлены автоматическая синхронизация и drift-check механических release-артефактов, JSON оставлен единственным master очереди исследований, XLSX-копия очереди удалена; исправлена публикация country-comparison-ru.json в Pages artifact |
 
 | `17.0.2` | Закреплён полный Family Coverage contract для диапазона детей 0–25 и всех типов отношений; добавлен opt-in validator семейного покрытия и generic regression без изменения active country RP4, questionnaire, schema, engine или UI |
+| `18.0.0` | Восемнадцатая активная страна — Ирландия; добавлены IE RP4, Quality of Life и production-активация поверх 17.0.2 с уже действующим Family Coverage contract; учтены недоступность STEP для граждан РФ, multi-source финансирование Study, актуальная family-policy semantics и явные outcomes для взрослых детей 18–25 |
 
 ## Проверка перед merge
 

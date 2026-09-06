@@ -1,0 +1,3229 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "IE",
+  "country_name_ru": "Ирландия",
+  "research_date": "2026-09-06",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-12-03",
+    "migration_rules_next_review": "2027-03-03",
+    "financial_costs_next_review": "2027-03-03",
+    "taxes_next_review": "2027-03-03",
+    "lgbt_legal_next_review": "2027-09-03",
+    "lgbt_practical_next_review": "2027-09-03",
+    "schools_pets_next_review": "2027-09-03",
+    "climate_next_review": "2031-01-01"
+  },
+  "country_currency": "EUR",
+  "country_summary_ru": "В Ирландии нет отдельного маршрута для цифровых кочевников и нового пассивного инвестиционного маршрута. Для граждан РФ основные доступные пути — квалифицированная и общая местная работа, соглашение о приёме исследователя, учёба, разрешение Stamp 0 для финансово независимого лица и международная защита. Программа STEP существует, но новые заявления от граждан России и Беларуси сейчас не принимаются. Для граждан РФ требуется ирландская виза. Семейные правила существенно зависят от категории спонсора; зависимые совершеннолетние дети имеют отдельные, более строгие условия.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельного режима для цифровых кочевников или удалённой работы не найдено.",
+      "source_ids": [
+        "IE_SRC_STAMPS"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_STAMP0_INDEPENDENT"
+      ],
+      "explanation_ru": "Разрешение Stamp 0 охватывает финансово независимых лиц.",
+      "source_ids": [
+        "IE_SRC_STAMP0"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_STAMP0_INDEPENDENT"
+      ],
+      "explanation_ru": "То же разрешение Stamp 0 используется для переезда на пенсии.",
+      "source_ids": [
+        "IE_SRC_STAMP0"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_CSEP",
+        "IE_GEP"
+      ],
+      "explanation_ru": "Доступны разрешение для критически важных квалификаций и общее разрешение на работу.",
+      "source_ids": [
+        "IE_SRC_CSEP",
+        "IE_SRC_GEP"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_CSEP",
+        "IE_RESEARCHER"
+      ],
+      "explanation_ru": "Доступны разрешение для критически важных квалификаций и соглашение о приёме исследователя.",
+      "source_ids": [
+        "IE_SRC_CSEP",
+        "IE_SRC_RESEARCHER"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_ICT"
+      ],
+      "explanation_ru": "Доступно специализированное разрешение на внутрикорпоративный перевод; самостоятельная карточка скрыта согласно продуктовой границе публикации.",
+      "source_ids": [
+        "IE_SRC_ICT"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "UNAVAILABLE_TO_RU",
+      "explanation_ru": "Программа STEP существует, но Immigration Service Delivery прямо указывает, что новые заявления от граждан России и Беларуси не принимаются; отдельного общего маршрута самозанятости для граждан РФ не найдено.",
+      "source_ids": [
+        "IE_SRC_STEP"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Программа для инвесторов IIP закрыта для новых заявлений с 15 февраля 2023 года.",
+      "source_ids": [
+        "IE_SRC_IIP_CLOSE"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_STUDY"
+      ],
+      "explanation_ru": "Доступно учебное разрешение Stamp 2.",
+      "source_ids": [
+        "IE_SRC_STUDENT"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_FAMILY_NON_EEA"
+      ],
+      "explanation_ru": "Семейные процедуры существуют, но самостоятельная карточка семейного маршрута скрыта согласно продуктовой границе публикации.",
+      "source_ids": [
+        "IE_SRC_FAMILY"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Разрешения Stamp 4 и Stamp 5, а также долгосрочный вид на жительство являются последующими стадиями, а не общим первоначальным маршрутом.",
+      "source_ids": [
+        "IE_SRC_LTR",
+        "IE_SRC_STAMPS"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_PROTECTION"
+      ],
+      "explanation_ru": "Доступна международная защита.",
+      "source_ids": [
+        "IE_SRC_IPO"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "IE_RESEARCHER"
+      ],
+      "explanation_ru": "В категории «Другие основания» сохранено соглашение о приёме исследователя. Полный официальный перечень разрешений на работу проверен и сохранён в исследовании. Узкие семейные, корпоративные, служебные, восстановительные и профессиональные разрешения не публикуются как самостоятельные общие стратегии переезда согласно продуктовой границе публикации.",
+      "source_ids": [
+        "IE_SRC_RESEARCHER",
+        "IE_SRC_EMPLOYMENT_PERMIT_TYPES",
+        "IE_SRC_WORK_OVER_90"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "CONSULAR_VISA",
+    "visa_required": true,
+    "rule_ru": "Гражданину РФ требуется ирландская виза до поездки; заявления из России принимает визовый офис Ирландии в Москве. Ирландия не входит в Шенгенскую зону.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": null,
+    "processing_time_ru": "Срок зависит от категории и текущей очереди; единый срок не установлен.",
+    "source_ids": [
+      "IE_SRC_VISA_LIST",
+      "IE_SRC_ENTRY"
+    ]
+  },
+  "routes": [
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": null,
+      "route_id": "IE_STAMP0_INDEPENDENT",
+      "name_ru": "Stamp 0 для финансово независимого лица или пенсионера",
+      "official_term_ru": "Person of independent means / retire to Ireland — Stamp 0",
+      "route_type": "INCOME_FINANCIALLY_INDEPENDENT",
+      "covers_categories": [
+        "INCOME_FINANCIALLY_INDEPENDENT",
+        "RETIREMENT"
+      ],
+      "basis_ru": "Предварительное индивидуальное разрешение на проживание для полностью финансово самостоятельного лица без права работы.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_STAMP0_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "ENGINE",
+          "unmet_effect": "BLOCKS",
+          "condition_ru": "Требуется индивидуальный доход около 50 000 € в год.",
+          "source_ids": [
+            "IE_SRC_STAMP0"
+          ],
+          "confidence": "HIGH",
+          "profile_path": "INCOME_APPLICANT",
+          "met_ru": "Индивидуальный подтверждаемый доход достигает 50 000 € в год.",
+          "unmet_ru": "Индивидуальный подтверждаемый доход ниже 50 000 € в год.",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": true,
+                "amount": 50000,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "PENSION",
+                  "PASSIVE_INCOME",
+                  "INVESTMENT_INCOME",
+                  "OTHER_REGULAR_INCOME"
+                ],
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "IE_SRC_STAMP0"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "requirement_id": "IE_STAMP0_LUMP",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Дополнительно требуется крупная доступная сумма на непредвиденные расходы, ориентировочно сопоставимая со стоимостью жилья; официальный фиксированный номинал не установлен.",
+          "source_ids": [
+            "IE_SRC_STAMP0"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый официальный срок решения не опубликован.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_STAMP0"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_STAMP0_INDEPENDENT_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "NOT_AVAILABLE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Самостоятельное разрешение Stamp 0 для финансово независимого лица не относится к категориям, позволяющим выступать семейным спонсором; семейная связь сама по себе не создаёт права на сопровождение.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        {
+          "scenario_id": "IE_STAMP0_INDEPENDENT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "NOT_AVAILABLE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Самостоятельное разрешение Stamp 0 для финансово независимого лица не относится к категориям, позволяющим выступать семейным спонсором; ребёнок не получает семейное разрешение через этот статус.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Работа по найму этим статусом не разрешена либо требует отдельного основания.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_STAMP0",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Ежегодно возобновляемый Stamp 0.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "NOT_AVAILABLE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для отдельного долгосрочного статуса может потребоваться переход на квалифицирующее основание; Stamp 5 возможен после 96 месяцев подходящего законного проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STAMP0",
+          "IE_SRC_CITIZEN"
+        ]
+      },
+      "official_source_id": "IE_SRC_STAMP0"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "route_id": "IE_CSEP",
+      "name_ru": "Разрешение на работу для критически важных квалификаций",
+      "official_term_ru": "Critical Skills Employment Permit",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "LOCAL_EMPLOYMENT"
+      ],
+      "basis_ru": "Двухлетняя оферта ирландского работодателя по квалифицирующей профессии и оплате.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_CSEP_OFFER",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить квалифицирующую двухлетнюю оферту ирландского работодателя.",
+          "source_ids": [
+            "IE_SRC_CSEP"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "IE_CSEP_SALARY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Будущая годовая оплата должна достигать применимого порога: 40 904 €, 36 848 € для применимого недавнего выпускника либо 68 911 € для высокооплачиваемой категории.",
+          "source_ids": [
+            "IE_SRC_CSEP"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 40904,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "LOCAL_EMPLOYMENT"
+                ],
+                "source_geography": "DESTINATION_COUNTRY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "IE_SRC_CSEP"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Заявление подаётся не менее чем за 12 недель до предполагаемого начала работы; это не гарантированный срок решения.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_CSEP"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Заявление на разрешение для критически важных квалификаций подаётся через государственную интернет-систему до визового этапа.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Подать заявление на разрешение на работу через интернет.",
+          "source_ids": [
+            "IE_SRC_CSEP"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_CSEP",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_CSEP_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг, civil partner или de facto partner относится к nuclear family Category B и может подаваться одновременно с основным заявителем. Форма отношений должна соответствовать семейной политике: брак должен быть признаваемым по ирландскому праву; qualifying overseas civil partnership рассматривается как эквивалент брака; для de facto partner требуется genuine and durable relationship, включая как минимум два года совместного проживания.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_CSEP_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Не состоящий в браке несовершеннолетний ребёнок до 18 лет относится к nuclear family Category B и может подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_CSEP_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок может присоединиться после двух лет проживания спонсора Category B только как dependent adult child: требуется серьёзное медицинское или психологическое состояние, делающее самостоятельную жизнь невозможной, подтверждённая зависимость, предварительный Stamp 0 из-за пределов Ирландии и повышенный финансовый тест для зависимого взрослого родственника.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_CSEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_CSEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_CSEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Stamp 1 обычно на 12 месяцев; после 21 месяца квалифицирующей занятости возможен Stamp 4.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После 60 месяцев подходящего проживания по разрешениям на работу доступен долгосрочный вид на жительство.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STAMP4",
+          "IE_SRC_CITIZEN",
+          "IE_SRC_LTR"
+        ]
+      },
+      "official_source_id": "IE_SRC_CSEP"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "route_id": "IE_GEP",
+      "name_ru": "Общее разрешение на работу",
+      "official_term_ru": "General Employment Permit",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "basis_ru": "Оферта ирландского работодателя по профессии вне списка исключённых, обычно после проверки рынка труда.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_GEP_OFFER",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить допустимую оферту ирландского работодателя и выполнить применимые правила рынка труда.",
+          "source_ids": [
+            "IE_SRC_GEP"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "IE_GEP_SALARY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Будущая годовая оплата обычно должна достигать 36 605 €; для отдельных профессий/выпускников действуют 32 691 € или 34 009 €.",
+          "source_ids": [
+            "IE_SRC_GEP"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 36605,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "LOCAL_EMPLOYMENT"
+                ],
+                "source_geography": "DESTINATION_COUNTRY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "IE_SRC_GEP"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Официальный гарантированный единый срок решения не установлен; очередь публикуется отдельно и меняется.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_GEP"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Заявление на общее разрешение на работу подаётся через государственную интернет-систему до визового этапа.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Подать заявление на разрешение на работу через интернет.",
+          "source_ids": [
+            "IE_SRC_GEP"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_GEP",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_GEP_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 12,
+          "separation_months_max": 12,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг, civil partner или de facto partner спонсора Category C может присоединиться после 12 месяцев законной работы спонсора; применяются финансовые и жилищные требования семейной политики. Форма отношений должна соответствовать применимому правилу: qualifying overseas civil partnership рассматривается как эквивалент брака, а для de facto partner требуется genuine and durable relationship, включая как минимум два года совместного проживания.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_FAMILY_FIN"
+          ]
+        },
+        {
+          "scenario_id": "IE_GEP_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 12,
+          "separation_months_max": 12,
+          "member_long_term_path": null,
+          "condition_ru": "Не состоящий в браке несовершеннолетний ребёнок до 18 лет может присоединиться к спонсору Category C после 12 месяцев законной работы; применяются детские финансовые таблицы и жилищные требования.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_FAMILY_FIN"
+          ]
+        },
+        {
+          "scenario_id": "IE_GEP_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 60,
+          "separation_months_max": 60,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок может присоединиться после пяти лет проживания спонсора Category C только как dependent adult child: требуется серьёзное медицинское или психологическое состояние, делающее самостоятельную жизнь невозможной, подтверждённая зависимость, предварительный Stamp 0 из-за пределов Ирландии и повышенный финансовый тест для зависимого взрослого родственника.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_GEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_GEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_GEP",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Stamp 1 обычно на 12 месяцев; после 57 месяцев квалифицирующей занятости возможен Stamp 4.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После 60 месяцев подходящего проживания по разрешениям на работу доступен долгосрочный вид на жительство.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STAMP4",
+          "IE_SRC_CITIZEN",
+          "IE_SRC_LTR"
+        ]
+      },
+      "official_source_id": "IE_SRC_GEP"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "route_id": "IE_ICT",
+      "name_ru": "Внутрикорпоративный перевод",
+      "official_term_ru": "Intra-Company Transfer Employment Permit",
+      "route_type": "INTRA_COMPANY_TRANSFER",
+      "covers_categories": [
+        "INTRA_COMPANY_TRANSFER"
+      ],
+      "basis_ru": "Временный перевод руководителя, ключевого специалиста или стажёра между связанными иностранной и ирландской компаниями.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "IE_ICT_TRANSFER",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Требуется соответствующий внутрикорпоративный перевод в связанную ирландскую организацию.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "IE_ICT_SALARY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Оплата должна достигать 49 523 € для senior/key personnel или 36 605 € для trainee.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "INCOME_ONLY",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": 49523,
+                "currency": "EUR",
+                "period": "ANNUAL",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": [
+                  "LOCAL_EMPLOYMENT"
+                ],
+                "source_geography": "DESTINATION_COUNTRY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "IE_SRC_ICT"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Подача предусмотрена минимум за 12 недель до начала работы.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_ICT"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ONLINE",
+          "availability": "AVAILABLE",
+          "country_id": null,
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "NOT_APPLICABLE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Заявление на ICT permit подаётся через разрешениям на работу Online до визового этапа.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Подать заявление на разрешение на работу через интернет.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ]
+        },
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_ICT",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_ICT_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг, civil partner или de facto partner относится к nuclear family Category B и может подаваться одновременно с основным заявителем. Форма отношений должна соответствовать семейной политике: брак должен быть признаваемым по ирландскому праву; qualifying overseas civil partnership рассматривается как эквивалент брака; для de facto partner требуется genuine and durable relationship, включая как минимум два года совместного проживания.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_ICT_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Не состоящий в браке несовершеннолетний ребёнок до 18 лет относится к nuclear family Category B и может подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_ICT_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок может присоединиться после двух лет проживания спонсора Category B только как dependent adult child: требуется серьёзное медицинское или психологическое состояние, делающее самостоятельную жизнь невозможной, подтверждённая зависимость, предварительный Stamp 0 из-за пределов Ирландии и повышенный финансовый тест для зависимого взрослого родственника.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_ICT"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Stamp 1, привязанный к временному корпоративному переводу.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Для отдельного долгосрочного статуса может потребоваться переход на квалифицирующее основание; Stamp 5 возможен после 96 месяцев подходящего законного проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STAMP4",
+          "IE_SRC_CITIZEN"
+        ]
+      },
+      "official_source_id": "IE_SRC_ICT"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": null,
+      "route_id": "IE_STUDY",
+      "name_ru": "Учебное разрешение",
+      "official_term_ru": "Student permission — Stamp 2",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "basis_ru": "Зачисление на подходящую очную программу в Ирландии с финансовым обеспечением.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_STUDY_ADMISSION",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить зачисление на квалифицирующую очную программу.",
+          "source_ids": [
+            "IE_SRC_STUDENT"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "IE_STUDY_FIN",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "NOW",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить финансирование проживания на период учёбы: для курса более 8 месяцев ориентир первого учебного года — 10 000 € в дополнение к оплате обучения; допустимы собственные средства и/или подтверждённая поддержка спонсора, а также документированное государственное или стипендиальное финансирование.",
+          "source_ids": [
+            "IE_SRC_STUDENT_FIN",
+            "IE_SRC_AVATS_FINANCE"
+          ],
+          "confidence": "HIGH",
+          "financial": {
+            "model": "SPONSOR_OR_SCHOLARSHIP",
+            "alternatives": [
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": 10000,
+                "currency": "EUR",
+                "period": "ACADEMIC_YEAR",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "confidence": "HIGH",
+                "source_ids": [
+                  "IE_SRC_STUDENT_FIN"
+                ]
+              },
+              {
+                "kind": "SPONSOR",
+                "asked_in_questionnaire": false,
+                "amount": 10000,
+                "currency": "EUR",
+                "period": "ACADEMIC_YEAR",
+                "comparison": "AT_LEAST",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": null,
+                "confidence": "HIGH",
+                "source_ids": [
+                  "IE_SRC_STUDENT_FIN",
+                  "IE_SRC_AVATS_FINANCE"
+                ]
+              },
+              {
+                "kind": "SCHOLARSHIP",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "ACADEMIC_YEAR",
+                "comparison": "OFFICIAL_FORMULA",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "NOT_APPLICABLE",
+                "family_formula_ru": "Документированная государственная или иная стипендия учитывается в общем подтверждении средств на учёбу и проживание; если её недостаточно для требуемого общего финансового обеспечения, разница подтверждается другими допустимыми средствами.",
+                "confidence": "HIGH",
+                "source_ids": [
+                  "IE_SRC_AVATS_FINANCE"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от визового и учебного заявления; единый норматив решения не опубликован.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_STUDENT"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_STUDENT",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_STUDY_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "NOT_AVAILABLE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Обычный студент не относится к семейным спонсорам; исключения действуют для отдельных Category B учебных статусов, включая PhD и одобренные стипендиальные программы.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        {
+          "scenario_id": "IE_STUDY_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "NOT_AVAILABLE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Обычный студент не относится к семейным спонсорам; исключения действуют для отдельных Category B учебных статусов, включая PhD и одобренные стипендиальные программы.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа по найму этим статусом не разрешена либо требует отдельного основания.",
+          "source_ids": [
+            "IE_SRC_STUDENT",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_STUDENT",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_STUDENT",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Stamp 2 на срок учебной программы; после выпуска возможен ограниченный Stamp 1G.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Для отдельного долгосрочного статуса может потребоваться переход на квалифицирующее основание; Stamp 5 возможен после 96 месяцев подходящего законного проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STUDENT",
+          "IE_SRC_GRADUATE",
+          "IE_SRC_CITIZEN"
+        ]
+      },
+      "official_source_id": "IE_SRC_STUDENT"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "route_id": "IE_RESEARCHER",
+      "name_ru": "Разрешение исследователя по соглашение о приёме исследователя",
+      "official_term_ru": "Scientific researcher under Hosting Agreement",
+      "route_type": "HIGHLY_QUALIFIED_SPECIALIST",
+      "covers_categories": [
+        "HIGHLY_QUALIFIED_SPECIALIST",
+        "OTHER"
+      ],
+      "basis_ru": "Исследовательское основание через аккредитованную организацию и соглашение о приёме исследователя.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_RESEARCHER_HOST",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Получить соглашение о приёме исследователя от аккредитованной исследовательской организации.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный срок решения не опубликован.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_RESEARCHER"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_RESEARCHER_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Супруг, civil partner или de facto partner относится к nuclear family Category B и может подаваться одновременно с основным заявителем. Форма отношений должна соответствовать семейной политике: брак должен быть признаваемым по ирландскому праву; qualifying overseas civil partnership рассматривается как эквивалент брака; для de facto partner требуется genuine and durable relationship, включая как минимум два года совместного проживания.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_RESEARCHER_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "YES",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Не состоящий в браке несовершеннолетний ребёнок до 18 лет относится к nuclear family Category B и может подаваться одновременно с основным заявителем.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_RESEARCHER_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок может присоединиться после двух лет проживания спонсора Category B только как dependent adult child: требуется серьёзное медицинское или психологическое состояние, делающее самостоятельную жизнь невозможной, подтверждённая зависимость, предварительный Stamp 0 из-за пределов Ирландии и повышенный финансовый тест для зависимого взрослого родственника.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_RESEARCHER",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Stamp 1; после 21 месяца квалифицирующей работы возможен Stamp 4.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 5,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "После 60 месяцев подходящего проживания по разрешениям на работу доступен долгосрочный вид на жительство.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_STAMP4",
+          "IE_SRC_CITIZEN",
+          "IE_SRC_LTR"
+        ]
+      },
+      "official_source_id": "IE_SRC_RESEARCHER"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": null,
+      "route_id": "IE_FAMILY_NON_EEA",
+      "name_ru": "Присоединение к законно проживающему спонсору",
+      "official_term_ru": "Join non-EEA family member",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "basis_ru": "Самостоятельная семейная процедура для супруга, civil/de facto partner, несовершеннолетнего ребёнка или зависимого совершеннолетнего ребёнка допустимого non-EEA спонсора.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "IE_FAMILY_BASIS",
+          "type": "FAMILY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Иметь квалифицирующую семейную связь с допустимым спонсором.",
+          "source_ids": [
+            "IE_SRC_FAMILY"
+          ],
+          "confidence": "HIGH",
+          "requires_separate_basis": true
+        },
+        {
+          "requirement_id": "IE_FAMILY_FINANCIAL_POLICY",
+          "type": "OTHER_BASIS",
+          "subject": "FAMILY",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Финансовый тест зависит от категории спонсора и состава семьи. категория A: не менее 75 000 € совокупного валовой доход за три предыдущих года. категория B: отдельного общего порога для основной семьи нет, поскольку подходящий статус уже предполагает требуемый уровень. категория C: более 30 000 € до вычета налогов за предыдущий год; для несовершеннолетних детей применяются отдельные таблицы 2026 года. Учитывается доход только одного спонсора; все спонсоры не должны в основном зависеть от государственных выплат два года подряд перед подачей.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_FAQ"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "IE_FAMILY_CHILD_FINANCIAL_TABLE",
+          "type": "OTHER_BASIS",
+          "subject": "FAMILY",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Для категория C спонсор с детьми minimum annual net / indicative валовая зарплата 2026: 1 ребёнок 39 780 €/50 200 €; 2 — 45 032 €/60 200 €; 3 — 50 284 €/70 100 €; 4 — 55 016 €/80 000 €; 5 — 61 568 €/93 700 €; 6 — 67 600 €/106 300 €; 7 — 74 672 €/121 100 €; 8+ — 79 664 €/131 600 €.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FIN"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "IE_FAMILY_ADULT_RELATIVE_TABLE",
+          "type": "OTHER_BASIS",
+          "subject": "FAMILY",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "condition_ru": "Для dependent adult child и других зависимых совершеннолетних родственников действуют повышенные финансовые пороги; доход одного спонсора оценивается за каждый из трёх предыдущих лет по Table 2 и применяется вместе с повышенным dependency test.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Политический ориентир рассмотрения семейных заявлений — до 12 месяцев, но это не гарантированный норматив решения.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_FAMILY_FAQ"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "ORIGIN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "RU",
+          "city_ru": "Москва",
+          "coordinates": null,
+          "applicant_status_requirement": "CITIZEN_OR_RESIDENT",
+          "visa_required_for_ru": true,
+          "entry_condition_ru": "После одобрения основания гражданину РФ требуется долгосрочная ирландская виза D.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Оформить долгосрочную визу D через компетентный визовый офис.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_ENTRY"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_FAMILY_NON_EEA_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Партнёр присоединяется через отдельную семейную процедуру после выполнения срока, установленного для категории спонсора. Брак/civil partnership должны соответствовать правилам признания семейной политики; для de facto partner требуется genuine and durable relationship, включая как минимум два года совместного проживания.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_FAMILY_NON_EEA_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": "IE_FAMILY_NON_EEA",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Не состоящий в браке несовершеннолетний ребёнок до 18 лет присоединяется по семейной процедуре; срок зависит от категории спонсора.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_POLICY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_FAMILY_NON_EEA_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 60,
+          "member_long_term_path": null,
+          "condition_ru": "Dependent adult child допускается только при специальной зависимости из-за серьёзного медицинского или психологического состояния; для Category B семейное заявление возможно после двух лет, для Category C — после пяти лет. Сначала требуется Stamp 0 из-за пределов Ирландии и повышенный финансовый тест.",
+          "source_ids": [
+            "IE_SRC_FAMILY",
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_FAMILY_FIN",
+            "IE_SRC_FAMILY_POLICY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена работа по условиям данного статуса.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_FAMILY_FAQ",
+            "IE_SRC_STAMPS"
+          ]
+        },
+        "allowed_remote_activity_types": [
+          "REMOTE_EMPLOYMENT"
+        ]
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Семейный Stamp 1G/3/4 зависит от статуса спонсора.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Для отдельного долгосрочного статуса может потребоваться переход на квалифицирующее основание; Stamp 5 возможен после 96 месяцев подходящего законного проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_FAMILY",
+          "IE_SRC_CITIZEN"
+        ]
+      },
+      "official_source_id": "IE_SRC_FAMILY"
+    },
+    {
+      "route_subtype_ru": null,
+      "partner_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Работа по найму этим статусом не разрешена либо требует отдельного основания.",
+          "source_ids": [
+            "IE_SRC_PROTECTION",
+            "IE_SRC_FAMILY"
+          ]
+        },
+        "self_employment": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Самостоятельная деятельность этим статусом не разрешена.",
+          "source_ids": [
+            "IE_SRC_PROTECTION",
+            "IE_SRC_FAMILY"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "NOT_ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Статус не является самостоятельным разрешением на иностранную удалённую деятельность.",
+          "source_ids": [
+            "IE_SRC_PROTECTION",
+            "IE_SRC_FAMILY"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "route_id": "IE_PROTECTION",
+      "name_ru": "Международная защита",
+      "official_term_ru": "International protection",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "basis_ru": "Индивидуальное заявление о статусе беженца или дополнительной защите при доказанном риске.",
+      "publishable": true,
+      "is_humanitarian": true,
+      "requirements": [
+        {
+          "requirement_id": "IE_PROTECTION_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "condition_ru": "Подтвердить индивидуальный риск преследования либо серьёзного вреда и связь с предусмотренными законом основаниями.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_ACT_2026"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый гарантированный срок решения не установлен; отдельные категории рассматриваются в ускоренной или пограничной процедуре по закону 2026 года.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "IE_SRC_PROTECTION_ACT_2026"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "IE",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": null,
+          "entry_condition_ru": "Заявление подаётся в Ирландии или при обращении на границе.",
+          "rule_checked_at": "2026-09-03",
+          "condition_ru": "Лично заявить о необходимости международной защиты.",
+          "source_ids": [
+            "IE_SRC_IPO"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "IE_PROTECTION_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "После предоставления международной защиты действует двухлетний срок ожидания. Для statutory family reunification брак должен существовать до подачи заявления на международную защиту, а civil/de facto relationship — существовать до такой подачи; также применяются требования к способности содержать семью.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_FAMILY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_PROTECTION_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "После предоставления международной защиты действует двухлетний срок ожидания. Не состоящий в браке ребёнок до 18 лет относится к допустимым членам семьи statutory family reunification.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_FAMILY_2026"
+          ]
+        },
+        {
+          "scenario_id": "IE_PROTECTION_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 24,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "После предоставления международной защиты действует двухлетний срок ожидания. Совершеннолетний ребёнок допускается, если он долгосрочно зависит от спонсора либо имеет психическую или физическую инвалидность; также применяются требования к способности содержать семью.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_FAMILY_2026",
+            "IE_SRC_AGE_MAJORITY"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Разрешение доступно, если решение первой инстанции не получено в течение шести месяцев и задержка не вызвана заявителем.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_WORK_2026"
+          ]
+        },
+        "self_employment": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Разрешение доступно, если решение первой инстанции не получено в течение шести месяцев и задержка не вызвана заявителем.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_WORK_2026"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": 6,
+          "rule_ru": "Разрешение на доступ к рынку труда допускает работу и самостоятельную деятельность; отдельного режима именно для иностранной удалённой работы не установлено.",
+          "source_ids": [
+            "IE_SRC_PROTECTION_WORK_2026"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временное право оставаться на период рассмотрения; после положительного решения — статус беженца либо дополнительная защита.",
+        "renewal_status": "CONDITIONAL",
+        "renewal_months": 12,
+        "renewal_ru": "Продление зависит от сохранения основания и выполнения действующих условий.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "CONDITIONAL",
+        "pr_path_ru": "Для отдельного долгосрочного статуса может потребоваться переход на квалифицирующее основание; Stamp 5 возможен после 96 месяцев подходящего законного проживания.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": 5,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Обычная натурализация требует 1825/1826 дней засчитываемого проживания: непрерывный последний год и ещё четыре года в предшествующие восемь лет.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Требуется непрерывное законное проживание в течение года непосредственно перед подачей и достаточное засчитываемое проживание за предыдущий период.",
+        "language_requirements_ru": "Отдельного общего языкового экзамена как формального условия обычной натурализации в исследованных правилах не установлено.",
+        "source_ids": [
+          "IE_SRC_PROTECTION",
+          "IE_SRC_CITIZEN"
+        ]
+      },
+      "official_source_id": "IE_SRC_PROTECTION_ACT_2026",
+      "protection_details": {
+        "protection_types_ru": "Статус беженца и дополнительная защита.",
+        "recognized_grounds_ru": "Для беженца — обоснованный страх преследования по признаку расы, религии, национальности, политических убеждений или принадлежности к определённой социальной группе; для дополнительной защиты — риск серьёзного вреда.",
+        "individual_risk_rule_ru": "Риск оценивается индивидуально с учётом обстоятельств заявителя и страны происхождения.",
+        "protected_ground_link_ru": "Для статуса беженца требуется связь преследования с защищаемым основанием.",
+        "evidence_rule_ru": "Заявитель сообщает все существенные факты и представляет доступные доказательства; достоверность оценивается в процедуре.",
+        "admissibility_ru": "Допустимость, правила безопасной страны, ответственность государства и специальные процедуры применяются по International Protection закону 2026 года и непосредственно применимым актам ЕС с индивидуальной оценкой предусмотренных исключений.",
+        "safe_third_country_ru": "Применяются правила безопасной страны и распределения ответственности по дублинским правилам в пределах действующего права.",
+        "previous_applications_ru": "Предыдущие заявления и решения в других государствах учитываются при допустимости и ответственности.",
+        "right_to_remain_during_processing_ru": "Заявитель вправе оставаться в государстве до завершения предусмотренной процедуры и обжалования.",
+        "reception_housing_ru": "Доступ к системе приёма зависит от действующих правил и наличия мест; безусловная гарантия конкретного жилья не установлена.",
+        "assistance_ru": "Предусмотрены информационная, правовая и социальная поддержка в рамках системы приёма.",
+        "healthcare_ru": "Предусмотрен доступ к необходимой медицинской помощи в рамках режима приёма.",
+        "appeal_ru": "Решения по заявлениям, поданным с 12 июня 2026 года, обжалуются в Tribunal for Asylum and Returns Appeals (TARA).",
+        "status_after_positive_decision_ru": "После положительного решения предоставляется статус беженца или дополнительная защита с правами, установленными законом.",
+        "source_ids": [
+          "IE_SRC_PROTECTION_ACT_2026",
+          "IE_SRC_PROTECTION_2026",
+          "IE_SRC_PROTECTION_WORK_2026",
+          "IE_SRC_PROTECTION_FAMILY_2026",
+          "IE_SRC_TARA_2026"
+        ]
+      }
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "IE_DUBLIN",
+      "name_ru": "Дублин",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": 592713,
+      "population_agglomeration": null,
+      "size_basis_ru": "Столица и крупнейший городской центр; население Dublin City по Census 2022 — 592 713.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 2081,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Квартира с одной спальней в центре города, около 40 м².",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_DUBLIN"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 164,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Электричество, отопление и вода для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_DUBLIN"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 661,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продуктовая корзина для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_DUBLIN"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 158,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Месячные транспортные расходы одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_DUBLIN"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный океанический климат с мягкой зимой и прохладным летом.",
+        "cold_min_c": 3,
+        "cold_max_c": 8,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 12,
+        "hot_max_c": 20,
+        "hot_months": [
+          6,
+          7,
+          8
+        ],
+        "climate_normal_period": "1991–2020",
+        "notes_ru": "Диапазоны выведены из норм Met Éireann 1991–2020 для станции Dublin Airport: зимние средние суточные минимумы/максимумы и летние средние суточные минимумы/максимумы; это нормы, а не экстремумы.",
+        "source_ids": [
+          "IE_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "IE_SRC_CSO",
+        "IE_SRC_COST_DUBLIN",
+        "IE_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "IE_CORK",
+      "name_ru": "Корк",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": 224004,
+      "population_agglomeration": null,
+      "size_basis_ru": "Второй крупный городской центр; население Cork City по Census 2022 — 224 004.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1827,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Квартира с одной спальней в центре города, около 40 м².",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_CORK"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 154,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Электричество, отопление и вода для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_CORK"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 625,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продуктовая корзина для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_CORK"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 97.2,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Месячные транспортные расходы одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_CORK"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный океанический климат с мягкой зимой и прохладным летом.",
+        "cold_min_c": 4,
+        "cold_max_c": 9,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 12,
+        "hot_max_c": 19,
+        "hot_months": [
+          6,
+          7,
+          8
+        ],
+        "climate_normal_period": "1991–2020",
+        "notes_ru": "Диапазоны выведены из норм Met Éireann 1991–2020 для станции Cork Airport: зимние средние суточные минимумы/максимумы и летние средние суточные минимумы/максимумы; это нормы, а не экстремумы.",
+        "source_ids": [
+          "IE_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "IE_SRC_CSO",
+        "IE_SRC_COST_CORK",
+        "IE_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "IE_KILKENNY",
+      "name_ru": "Килкенни",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": 27184,
+      "population_agglomeration": null,
+      "size_basis_ru": "Небольшой самостоятельный региональный город; население town/built-up area по Census 2022 — 27 184.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1323,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Квартира с одной спальней в центре города, около 40 м².",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_KILKENNY"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "UTILITIES",
+          "amount": 113,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Электричество, отопление и вода для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_KILKENNY"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "GROCERIES",
+          "amount": 506,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Продуктовая корзина для одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_KILKENNY"
+          ],
+          "confidence": "MEDIUM"
+        },
+        {
+          "component": "TRANSPORT",
+          "amount": 72.7,
+          "currency": "USD",
+          "period": "MONTHLY",
+          "household_basis": "PER_PERSON",
+          "condition_ru": "Месячные транспортные расходы одного человека.",
+          "price_date": "2026-06-21",
+          "source_ids": [
+            "IE_SRC_COST_KILKENNY"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный океанический климат с мягкой зимой и прохладным летом.",
+        "cold_min_c": 2,
+        "cold_max_c": 8,
+        "cold_months": [
+          12,
+          1,
+          2
+        ],
+        "hot_min_c": 11,
+        "hot_max_c": 20,
+        "hot_months": [
+          6,
+          7,
+          8
+        ],
+        "climate_normal_period": "1991–2020",
+        "notes_ru": "Для Килкенни использована ближайшая репрезентативная внутренняя станция юго-востока в наборе Met Éireann 1991–2020; значения являются округлённым региональным ориентир, а не наблюдениями в пределах города и не экстремумами.",
+        "source_ids": [
+          "IE_SRC_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "IE_SRC_CSO",
+        "IE_SRC_COST_KILKENNY",
+        "IE_SRC_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Ирландия — государственно финансируемые начальные и средние школы",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Преимущественно английский; в Irish-medium schools — ирландский.",
+        "compulsory_age_min": 6,
+        "compulsory_age_max": 16,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Дети, обычно проживающие в государстве, имеют доступ к обязательному образованию; государственно финансируемые школы не взимают обычную плата за обучение, хотя возможны сопутствующие расходы.",
+        "source_ids": [
+          "IE_SRC_PUBLIC_SCHOOL"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [],
+    "international_school_cities": [
+      {
+        "city_name_ru": "Дублин",
+        "source_ids": [
+          "IE_SRC_INTL_DIRECTORY",
+          "IE_SRC_NAIS_FEES"
+        ]
+      },
+      {
+        "city_name_ru": "Грейстонс",
+        "source_ids": [
+          "IE_SRC_SEK"
+        ]
+      },
+      {
+        "city_name_ru": "Лимерик",
+        "source_ids": [
+          "IE_SRC_VILLIERS"
+        ]
+      }
+    ],
+    "international_school_tuition_observations": [
+      {
+        "school_name_ru": "Nord Anglia International School Dublin",
+        "grade_stage": "FIRST_GRADE",
+        "tuition": {
+          "amount": 19396,
+          "currency": "EUR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-24"
+        },
+        "source_ids": [
+          "IE_SRC_NAIS_FEES",
+          "IE_SRC_INTL_DIRECTORY"
+        ]
+      },
+      {
+        "school_name_ru": "Nord Anglia International School Dublin",
+        "grade_stage": "FINAL_GRADE",
+        "tuition": {
+          "amount": 25296,
+          "currency": "EUR",
+          "period": "ACADEMIC_YEAR",
+          "price_date": "2026-08-24"
+        },
+        "source_ids": [
+          "IE_SRC_NAIS_FEES",
+          "IE_SRC_INTL_DIRECTORY"
+        ]
+      }
+    ]
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Ввоз собак типа XL Bully в Ирландию запрещён с 1 октября 2024 года. Для остальных собак, кошек и хорьков из третьих стран требуются идентифицирующий микрочип, действующая вакцинация против бешенства после чипирования, выдержка не менее 21 дня после первичной вакцинации, применимый ветеринарный сертификат/сопроводительные документы и въезд через разрешённый пункт с предварительным уведомлением. Для происхождения из не включённой в список третьей страны требуется титр антител: кровь не ранее 30 дней после вакцинации и ожидание не менее трёх месяцев после забора до поездки. Собакам также требуется обработка от Echinococcus в установленное окно до прибытия, если исключение не применимо.",
+      "source_ids": [
+        "IE_SRC_DOGS",
+        "IE_SRC_PETS"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Для собак типа XL Bully владение возможно только по действующему свидетельству об освобождении от запрета для ранее имевшихся собак. Перечисленные пород с ограничениями и их помеси в общественных местах должны находиться на коротком прочном поводке и в наморднике под контролем лица требуемого возраста; действует лицензирование собак.",
+      "source_ids": [
+        "IE_SRC_DOGS"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-09-05",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Однополые отношения законны.",
+    "state_restrictions_ru": "Однополый гражданский брак признан; системной государственной криминализации отношений нет.",
+    "same_sex_marriage_recognized": "YES",
+    "same_sex_marriage_rule_ru": "Marriage Act 2015 разрешает гражданский брак парам без различия пола.",
+    "registered_partnership_recognized": "PARTIAL",
+    "registered_partnership_rule_ru": "Общее признание иностранных civil partnerships в ирландском праве остаётся ограниченным и зависит от конкретного режима. Однако действующая с 12 июня 2026 года Non-EEA Family Reunification Policy отдельно устанавливает, что зарубежное civil partnership, законно заключённое в юрисдикции, где такие партнёрства признаются, для этой семейной политики рассматривается как эквивалент брака. Поэтому один лишь факт заключения партнёрства после 16 мая 2016 года не является основанием автоматически отправлять пару в de facto path по Non-EEA family routes.",
+    "family_route_available": "YES",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Иностранный однополый брак не отклоняется только из-за пола супругов. Для зарубежного civil partnership общее гражданско-правовое признание зависит от применимого режима, однако действующая с 12 июня 2026 года Non-EEA Family Reunification Policy прямо рассматривает законно заключённое overseas civil partnership из юрисдикции, где такие партнёрства признаются, как эквивалент брака для этой семейной политики. На практике требуется подтвердить действительность и форму иностранного документа; незарегистрированные отношения оцениваются по de facto rules.",
+    "parenthood_ru": "Однополые супруги могут иметь семейные и родительские права, но конкретное иностранное свидетельство о родительстве, усыновлении или суррогатном рождении требует отдельной проверки.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "занятость",
+        "товары и услуги",
+        "образование",
+        "жильё"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Жалобы рассматриваются Workplace Relations Commission и судами в пределах применимого закона.",
+      "rule_ru": "Equal Status Acts и Employment Equality Acts запрещают дискриминацию по сексуальной ориентации в ключевых сферах.",
+      "source_ids": [
+        "IE_SRC_EQUALITY"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Сильная правовая защита не устраняет бытовую осторожность и дискриминацию; FRA 2024 фиксирует избегание публичного проявления отношений и отдельных мест частью респондентов.",
+    "regional_differences_ru": "Правовой режим национальный; специализированная инфраструктура плотнее в крупных городах, но методологически пригодного регионального safety ranking нет.",
+    "friendly_cities": [],
+    "legal_assessment": "FULL_RECOGNITION",
+    "practical_assessment": "OPEN",
+    "assessment_basis_ru": "Однополый брак и широкая антидискриминационная защита признаны национальным правом; практическая среда в целом открыта, при сохранении отдельных проблем.",
+    "source_ids": [
+      "IE_SRC_LGBT_LAW",
+      "IE_SRC_FOREIGN_CIVIL_PARTNERSHIP",
+      "IE_SRC_EQUALITY",
+      "IE_SRC_LGBT_ILGA",
+      "IE_SRC_FAMILY_POLICY_2026"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-09-03",
+    "tax_residency_rule_ru": "Лицо обычно считается налоговым резидентом при 183 днях в одном налоговом году либо 280 днях суммарно в текущем и предыдущем годах; год с 30 днями или менее не используется для создания резидентства по 280-day test.",
+    "typical_day_threshold": 183,
+    "other_residency_triggers_ru": "После трёх последовательных лет налогового резидентства возникает обычное налоговое резидентство; domicile отдельно влияет на объём налогообложения.",
+    "personal_income_tax_ru": "В 2026 году для одного лица без qualifying children первые 44 000 € облагаются по 20%, превышение — по 40%; применяются налоговые вычеты, USC и PRSI.",
+    "personal_income_tax_rates": [
+      {
+        "from_amount": 0,
+        "to_amount": 44000,
+        "rate_percent": 20,
+        "currency": "EUR",
+        "rule_ru": "Для single person без qualifying children в 2026 году.",
+        "source_ids": [
+          "IE_SRC_TAX_RATES"
+        ]
+      },
+      {
+        "from_amount": 44000,
+        "to_amount": null,
+        "rate_percent": 40,
+        "currency": "EUR",
+        "rule_ru": "Для части дохода single person без qualifying children сверх 44 000 € в 2026 году.",
+        "source_ids": [
+          "IE_SRC_TAX_RATES"
+        ]
+      }
+    ],
+    "social_contributions_ru": "На трудовой и самостоятельный доход начисляются PRSI по классу и Universal Social Charge; точные ставки зависят от вида, суммы и даты выплаты.",
+    "foreign_income_ru": "резидент с ирландским домицилием обычно облагается с мирового дохода; резидент без ирландского домицилия может применять налогообложение по факту перевода средств к некоторым иностранным доходам, но работа, физически выполняемая в Ирландии, требует отдельной квалификации.",
+    "double_taxation_with_russia_ru": "Ireland продолжает публиковать DTA с Россией. Указ Президента РФ №585 от 8 августа 2023 года односторонне приостановил перечисленные материальные положения соглашения со стороны России; поэтому режим конкретного российского дохода необходимо проверять по виду дохода, сохранившимся статьям и доступному Irish unilateral/соглашения налоговый зачёт. Общий автоматический вывод об освобождении от двойного налога не допускается.",
+    "source_ids": [
+      "IE_SRC_TAX_RES",
+      "IE_SRC_TAX_RATES",
+      "IE_SRC_DTA_RU",
+      "IE_SRC_RU_DTA_SUSPENSION",
+      "IE_SRC_TAX_OVERVIEW",
+      "IE_SRC_TAX_ORDINARY_RESIDENCE",
+      "IE_SRC_TAX_DOMICILE",
+      "IE_SRC_TAX_FOREIGN_WORK",
+      "IE_SRC_USC_2026"
+    ]
+  },
+  "open_items": [],
+  "completeness": {
+    "country_ready_status": "READY",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PETS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "IE_SRC_STAMP0",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Переезд в Ирландию на пенсии или как финансово независимое лицо",
+      "url": "https://www.irishimmigration.ie/coming-to-live-in-ireland/i-want-to-retire-to-ireland/",
+      "supports_ru": "Stamp 0, предварительная подача, €50 000 годового индивидуального дохода, дополнительная крупная сумма, страховка и запрет работы.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-25",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_STAMPS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Иммиграционные разрешения и штампы",
+      "url": "https://www.irishimmigration.ie/registering-your-immigration-permission/information-on-registering/immigration-permission-stamps/",
+      "supports_ru": "Условия Stamp 0/1/1G/2/3/4/5, право на работу и зачёт проживания.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-05",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_CSEP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Enterprise, Tourism and Employment",
+      "title_ru": "Critical Skills Employment Permit",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/critical-skills-employment-permit/",
+      "supports_ru": "Двухлетняя оферта, профессии, пороги оплаты и требования CSEP.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_EMPLOYMENT_PERMIT_TYPES",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Enterprise, Tourism and Employment",
+      "title_ru": "Девять типов разрешениям на работу",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/",
+      "supports_ru": "Официальный перечень девяти типов разрешениям на работу и назначение каждого типа.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_WORK_OVER_90",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Варианты работы в Ирландии более 90 дней",
+      "url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/",
+      "supports_ru": "Официальный inventory специальных permissions: visiting academic, volunteer, Minister of Religion, nurse adaptation, locum doctor и другие основания.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-10-14",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_GEP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Enterprise, Tourism and Employment",
+      "title_ru": "General Employment Permit",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/general-employment-permit/",
+      "supports_ru": "Оферта, списки профессий, Labour Market Needs Test и пороги GEP.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_ICT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Enterprise, Tourism and Employment",
+      "title_ru": "Intra-Company Transfer Employment Permit",
+      "url": "https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/intra-company-transfer-employment-permit/",
+      "supports_ru": "Условия корпоративного перевода и пороги оплаты.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_STEP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Start-up Entrepreneur Programme",
+      "url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-options-for-working-in-ireland/coming-to-work-for-more-than-90-days/start-up-entrepreneur-programme-step/",
+      "supports_ru": "Программа STEP, требование инновационного проекта и 50 000 € финансирования; также прямое действующее ограничение: новые заявления от граждан России и Беларуси не принимаются.",
+      "checked_at": "2026-09-05",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-10-14",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_IIP_CLOSE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Закрытие Immigrant Investor Programme",
+      "url": "https://www.irishimmigration.ie/faqs-closure-of-the-immigrant-investor-programme-iip/",
+      "supports_ru": "IIP закрыта для новых заявлений с 15 февраля 2023 года.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2024-01-25",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_STUDENT_FIN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Финансовые требования к студентам",
+      "url": "https://www.irishimmigration.ie/coming-to-study-in-ireland/what-are-my-study-options/a-fee-paying-private-primary-or-secondary-school/information-on-student-finances/",
+      "supports_ru": "Финансовое требование для студентов: 10 000 € для курса более 8 месяцев; допустима документированная поддержка спонсора и государственное финансирование, наряду с собственными средствами.",
+      "checked_at": "2026-09-05",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-06-30",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_STUDENT",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Student permission",
+      "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/student-permission/",
+      "supports_ru": "Условия учебного разрешения, продление и право на работу.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_GRADUATE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Third Level Graduate Programme",
+      "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/third-level-graduate-programme/",
+      "supports_ru": "Stamp 1G после ирландского образования и переход к трудовому основанию.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_RESEARCHER",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Scientific researcher",
+      "url": "https://www.irishimmigration.ie/coming-to-work-in-ireland/what-are-my-work-visa-options/applying-for-a-long-stay-employment-visa/scientific-researcher/",
+      "supports_ru": "соглашение о приёме исследователя, долгосрочная виза и семейное сопровождение.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-03-07",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_STAMP4",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Переход работников на Stamp 4",
+      "url": "https://www.irishimmigration.ie/registering-your-immigration-permission/how-to-renew-your-current-permission/information-on-stamp-4-upgrades/",
+      "supports_ru": "Переход CSEP/исследователя через 21 месяц, GEP/ICT через 57 месяцев.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-02-25",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_FAMILY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Присоединение к гражданину третьей страны",
+      "url": "https://www.irishimmigration.ie/coming-to-join-family-in-ireland/joining-a-non-eea-non-swiss-national/join-non-eea-family-member/",
+      "supports_ru": "Категории спонсоров, сроки присоединения супруга/партнёра, несовершеннолетних и зависимых совершеннолетних детей; Category B/C waiting periods.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-12",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_FAMILY_FAQ",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "FAQ о присоединении семьи",
+      "url": "https://www.irishimmigration.ie/coming-to-join-family-in-ireland/frequently-asked-questions-for-joining-family/",
+      "supports_ru": "Категории спонсоров, de facto partnership, несовершеннолетние и dependent adult children, сроки 2/5 лет, Stamp 0 и семейные финансовые правила.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-29",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_FAMILY_FIN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Финансовые пороги семейного присоединения",
+      "url": "https://www.irishimmigration.ie/coming-to-join-family-in-ireland/financial-thresholds/",
+      "supports_ru": "Финансовые таблицы 2026 года и правило одного дохода спонсора.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-12",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_LTR",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "долгосрочный вид на жительство",
+      "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/long-term-residency/",
+      "supports_ru": "60 месяцев квалифицирующего проживания по разрешениям на работу и пятилетнее разрешение.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-02-06",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_CITIZEN",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Калькулятор срока натурализации",
+      "url": "https://www.irishimmigration.ie/naturalisation-residency-calculator/",
+      "supports_ru": "1825/1826 дней за девять лет, включая непрерывный последний год.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PROTECTION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "International Protection Act 2015, revised",
+      "url": "https://www.irishstatutebook.ie/eli/2015/act/66/enacted/en/html",
+      "supports_ru": "Основания, допустимость, процедуры и статусы международной защиты.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2015-12-30",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PROTECTION_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Justice, Home Affairs and Migration",
+      "title_ru": "Вступление в силу International Protection закону 2026 года",
+      "url": "https://www.gov.ie/en/department-of-justice-home-affairs-and-migration/press-releases/minister-jim-ocallaghan-announces-commencement-of-the-international-protection-act-2026/",
+      "supports_ru": "Подтверждает начало нового режима международной защиты 12 июня 2026 года и необходимость проверки актуальных процедурных правил.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-12",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_IPO",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "International Protection Office",
+      "title_ru": "Applying for international protection",
+      "url": "https://www.ipo.gov.ie/en/ipo/pages/apply_for_protection",
+      "supports_ru": "Подача, интервью, решение и обжалование по международной защите.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_ENTRY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Visa offices",
+      "url": "https://www.irishimmigration.ie/visa-offices/",
+      "supports_ru": "Визовый офис в Москве принимает заявления из России.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-05-22",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_VISA_LIST",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "Immigration Act 2004 (Visas) Order",
+      "url": "https://www.irishstatutebook.ie/eli/2014/si/473/made/en/print",
+      "supports_ru": "Россия не входит в перечень безвизовых граждан; требуется ирландская виза.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_CSO",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Central Statistics Office Ireland",
+      "title_ru": "Census 2022: population distribution",
+      "url": "https://www.cso.ie/en/releasesandpublications/ep/p-cpp1/censusofpopulation2022profile1-populationdistribution/",
+      "supports_ru": "Официальные данные населения городов и классификация населённых пунктов.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2023-06-29",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_COST_DUBLIN",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Стоимость жизни в Дублине",
+      "url": "https://livingcost.org/cost/ireland/dublin",
+      "supports_ru": "Сопоставимые городские наблюдения аренды, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-09-03",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-21",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_COST_CORK",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Стоимость жизни в Корке",
+      "url": "https://livingcost.org/cost/ireland/cork",
+      "supports_ru": "Сопоставимые городские наблюдения аренды, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-09-03",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-21",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_COST_KILKENNY",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Livingcost.org",
+      "title_ru": "Стоимость жизни в Килкенни",
+      "url": "https://livingcost.org/cost/ireland/kilkenny",
+      "supports_ru": "Сопоставимые городские наблюдения аренды, коммунальных услуг, продуктов и транспорта.",
+      "checked_at": "2026-09-03",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-21",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_CLIMATE",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "Met Éireann",
+      "title_ru": "Климатические нормы Ирландии 1991–2020",
+      "url": "https://www.met.ie/climate/30-year-averages",
+      "supports_ru": "Температурные нормы для репрезентативных станций Дублина, Корка и внутренней юго-восточной части страны, используемой для Килкенни.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2023-07-18",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PUBLIC_SCHOOL",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Government of Ireland",
+      "title_ru": "Education",
+      "url": "https://www.gov.ie/en/department-of-education/policies/education/",
+      "supports_ru": "Обязательное образование с 6 до 16 лет и государственно финансируемая школьная система.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2019-08-02",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_INTL_DIRECTORY",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "International Schools Database",
+      "title_ru": "Международные школы Ирландии",
+      "url": "https://www.international-schools-database.com/country/ireland",
+      "supports_ru": "Country-wide directory: подтверждённые школы сосредоточены в Дублине; семь школ в одном городе.",
+      "checked_at": "2026-09-03",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_NAIS_FEES",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Nord Anglia International School Dublin",
+      "title_ru": "плата за обучение fees 2026–2027",
+      "url": "https://www.nordangliaeducation.com/nais-dublin/admissions/tuition-fees",
+      "supports_ru": "Годовая стоимость обучения по классам, включая Grade 1 и Grade 12.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-05",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_SEK",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "SEK International School Dublin",
+      "title_ru": "SEK International School Dublin",
+      "url": "https://dublin.sek.es/en/",
+      "supports_ru": "International/IB school в Грейстонсе, графство Уиклоу.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_VILLIERS",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Villiers School",
+      "title_ru": "International Baccalaureate Diploma Programme",
+      "url": "https://www.villiers-school.com/international-baccalaureate/",
+      "supports_ru": "IB Diploma school в Лимерике.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PETS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Department of Agriculture, Food and the Marine",
+      "title_ru": "Ввоз собак, кошек и хорьков в Ирландию",
+      "url": "https://www.pettravel.gov.ie/pets/dogscatsferrets/other/",
+      "supports_ru": "Официальные правила ввоза домашних животных из третьих стран.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_DOGS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Government of Ireland",
+      "title_ru": "Обязанности владельца собаки",
+      "url": "https://www.gov.ie/en/department-of-agriculture-food-and-the-marine/publications/my-legal-responsibilities-as-a-dog-owner/",
+      "supports_ru": "Запрет ввоза собак типа XL Bully с 1 октября 2024 года и правила ограниченных пород.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2024-04-21",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_RES",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "Определение налогового резидентства",
+      "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/how-to-know-if-you-are-resident-for-tax-purposes.aspx",
+      "supports_ru": "Тест 183 дней или 280 дней за два года.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_RATES",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "Income Tax rates and bands",
+      "url": "https://www.revenue.ie/en/personal-tax-credits-reliefs-and-exemptions/tax-relief-charts/index.aspx",
+      "supports_ru": "Ставки Income Tax 20% и 40% и годовые диапазоны.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_OVERVIEW",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "Tax residence overview",
+      "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/index.aspx",
+      "supports_ru": "Worldwide income, Irish-source income и duties physically performed in Ireland.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-11-24",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_ORDINARY_RESIDENCE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "обычное налоговое резидентство",
+      "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/ordinarily-resident-tax-purposes.aspx",
+      "supports_ru": "обычное налоговое резидентство после трёх последовательных лет и последствия после выезда.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-11-24",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_DOMICILE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "Domicile и налогообложение по факту перевода средств",
+      "url": "https://www.revenue.ie/en/jobs-and-pensions/tax-residence/domicile-domicile-levy.aspx",
+      "supports_ru": "Domicile и налогообложение по факту перевода средств для Irish резидент без ирландского домицилия persons.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-11-24",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TAX_FOREIGN_WORK",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "Работа в Ирландии с оплатой из-за рубежа",
+      "url": "https://www.revenue.ie/en/life-events-and-personal-circumstances/moving-to-or-from-ireland/moving-or-returning-to-ireland/how-your-tax-residence-status-affects-irish-tax.aspx",
+      "supports_ru": "Employment duties performed in Ireland облагаются через PAYE даже при оплате иностранной компанией; применяются IT, PRSI и USC.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-11-24",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_USC_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Revenue Ireland",
+      "title_ru": "USC rates and thresholds 2026",
+      "url": "https://www.revenue.ie/en/jobs-and-pensions/usc/standard-rates-thresholds.aspx",
+      "supports_ru": "USC 2026: 0,5% на первые 12 012 €, 2% на следующие 16 688 €, 3% на следующие 41 344 €, 8% на остаток.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-01",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_RU_DTA_SUSPENSION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Президент Российской Федерации",
+      "title_ru": "Указ №585 о приостановлении отдельных положений налоговых соглашений",
+      "url": "http://publication.pravo.gov.ru/document/0001202308080005",
+      "supports_ru": "Односторонняя приостановка Россией перечисленных положений DTA с рядом государств, включая Ирландию.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2023-08-08",
+      "language": "ru"
+    },
+    {
+      "source_id": "IE_SRC_DTA_RU",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Revenue Ireland",
+      "title_ru": "Ireland–Russia double taxation соглашения",
+      "url": "https://www.revenue.ie/en/tax-professionals/tax-agreements/double-taxation-treaties/R/russia.aspx",
+      "supports_ru": "Текст двустороннего соглашения об избежании двойного налогообложения.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_LGBT_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "Marriage Act 2015",
+      "url": "https://www.irishstatutebook.ie/eli/2015/act/35/enacted/en/html",
+      "supports_ru": "Гражданский брак доступен парам без различия пола.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2015-10-29",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_FOREIGN_CIVIL_PARTNERSHIP",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Citizens Information Board Ireland",
+      "title_ru": "Признание иностранных civil partnerships",
+      "url": "https://www.citizensinformation.ie/en/birth-family-relationships/civil-partnerships/civil-partnerships/",
+      "supports_ru": "Общий гражданско-правовой режим иностранных civil partnerships после прекращения регистрации новых Irish civil partnerships; этот источник не отменяет специальное правило Non-EEA Family Reunification Policy 2026 о marriage-equivalent treatment qualifying overseas civil partnerships.",
+      "checked_at": "2026-09-05",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2025-11-21",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_EQUALITY",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "Equal Status Act 2000",
+      "url": "https://www.irishstatutebook.ie/eli/2000/act/8/enacted/en/html",
+      "supports_ru": "Защита от дискриминации по сексуальной ориентации в товарах, услугах и образовании.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2000-04-26",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_LGBT_ILGA",
+      "source_type": "INTERNATIONAL_OR_RIGHTS_ORGANIZATION",
+      "authority": "ILGA-Europe",
+      "title_ru": "Rainbow Map 2026 — Ireland",
+      "url": "https://rainbowmap.ilga-europe.org/countries/ireland/",
+      "supports_ru": "Систематизированная оценка законодательства и сохраняющихся пробелов 2026 года.",
+      "checked_at": "2026-09-03",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PROTECTION_ACT_2026",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "International Protection закону 2026 года",
+      "url": "https://www.irishstatutebook.ie/eli/2026/act/9/enacted/en/print.html",
+      "supports_ru": "Действующий с 12 июня 2026 года режим заявлений, допустимости, ускоренных и пограничных процедур, решений, обжалования и содержания защиты.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-04-22",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PROTECTION_WORK_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Labour Market Access Permission",
+      "url": "https://www.irishimmigration.ie/my-situation-has-changed-since-i-arrived-in-ireland/labour-market-access-permission/",
+      "supports_ru": "Доступ заявителя к employment и self-employment после шести месяцев без решения первой инстанции при соблюдении условий.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-30",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_PROTECTION_FAMILY_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Family reunification of international protection holders",
+      "url": "https://www.irishimmigration.ie/coming-to-join-family-in-ireland/family-reunification-of-international-protection-holders/",
+      "supports_ru": "Семейное воссоединение по International Protection Act 2026: двухлетний срок ожидания; spouse/civil/de facto timing; minor child и adult child with long-term dependency or disability.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-07-03",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_TARA_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Tribunal for Asylum and Returns Appeals",
+      "title_ru": "What we do",
+      "url": "https://www.protectionappeals.ie/about-the-tribunal/what-we-do/",
+      "supports_ru": "TARA рассматривает апелляции по заявлениям, поданным с 12 июня 2026 года.",
+      "checked_at": "2026-09-03",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-07-02",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_FAMILY_POLICY_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "Non-EEA Family Reunification Policy — 12 June 2026",
+      "url": "https://www.irishimmigration.ie/wp-content/uploads/2026/06/Family-Reunification-Policy-12-June-2026.pdf",
+      "supports_ru": "Действующая семейная политика с 12 июня 2026 года: категории спонсоров и waiting periods; §7.10 qualifying overseas civil partnership; §7.12–7.13 de facto partnership; §7.22–7.23 minor/dependent adult child; §10.15–10.21 dependent adult relatives.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-06-12",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_AGE_MAJORITY",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Irish Statute Book",
+      "title_ru": "Age of Majority Act 1985 — совершеннолетие с 18 лет",
+      "url": "https://www.irishstatutebook.ie/eli/1985/act/2/section/2",
+      "supports_ru": "Устанавливает full age с 18 лет; используется для границы между minor child и adult child в закрытом family domain 0–25.",
+      "checked_at": "2026-09-06",
+      "confidence": "HIGH",
+      "published_or_updated_at": "1985-02-12",
+      "language": "en"
+    },
+    {
+      "source_id": "IE_SRC_AVATS_FINANCE",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Immigration Service Delivery Ireland",
+      "title_ru": "AVATS — сведения о финансовой поддержке",
+      "url": "https://www.irishimmigration.ie/coming-to-visit-ireland/giving-your-details-on-avats-for-a-visa-preclearance-application/",
+      "supports_ru": "AVATS прямо допускает собственные средства, одного или нескольких спонсоров, государственное финансирование и иные формы поддержки, включая стипендию.",
+      "checked_at": "2026-09-05",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "en"
+    }
+  ],
+  "pending_changes": []
+}
