@@ -453,7 +453,7 @@
         "LOCAL_EMPLOYMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Реальный offer/contract от работодателя в Черногории для конкретной позиции.",
+      "basis_ru": "Реальное предложение работы или трудовой договор от работодателя в Черногории для конкретной позиции.",
       "publishable": true,
       "requirements": [
         {
@@ -464,7 +464,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить письменный offer/contract от Montenegrin employer для конкретной работы; current foreign income пользователя не заменяет будущий local contract.",
+          "condition_ru": "Получить письменное предложение или договор от работодателя в Черногории для конкретной работы; текущий иностранный доход пользователя не заменяет будущий местный договор.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -477,7 +477,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Предоставить подтверждение уровня образования/квалификации, предусмотренное employment procedure.",
+          "condition_ru": "Предоставить подтверждение уровня образования или квалификации, предусмотренное процедурой трудоустройства.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -490,7 +490,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -621,7 +621,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -639,7 +639,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -647,7 +647,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -658,7 +658,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -666,7 +666,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -674,7 +674,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -692,17 +692,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 24,
-        "renewal_ru": "Initial employment permit — до 1 года; закон предусматривает продление в пределах applicable employment framework.",
+        "renewal_ru": "Первоначальное разрешение на работу — до 1 года; закон предусматривает продление в пределах применимых правил трудоустройства.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -721,7 +721,7 @@
         "LOCAL_EMPLOYMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Сезонный трудовой договор/offer у Montenegrin employer.",
+      "basis_ru": "Сезонный трудовой договор или предложение работы от работодателя в Черногории.",
       "publishable": true,
       "requirements": [
         {
@@ -732,7 +732,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить qualifying seasonal job offer у Montenegrin employer.",
+          "condition_ru": "Получить подходящее предложение сезонной работы у работодателя в Черногории.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -745,7 +745,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -836,7 +836,7 @@
           "visa_required_for_ru": null,
           "entry_condition_ru": "Для сезонной занятости используется специальный порядок подачи, установленный Законом об иностранцах; действующее правило краткосрочного въезда является отдельным вопросом и не заменяет оформление разрешения на работу.",
           "rule_checked_at": "2026-08-19",
-          "condition_ru": "Подача по специальной процедуре seasonal residence/work permit.",
+          "condition_ru": "Подача по специальной процедуре разрешения на сезонное проживание и работу.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -878,7 +878,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Работа разрешена только в рамках seasonal employment permit и указанного работодателя/работы.",
+          "rule_ru": "Работа разрешена только в рамках разрешения на сезонную занятость и у указанного работодателя на указанной работе.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -886,7 +886,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -894,7 +894,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -905,7 +905,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -913,7 +913,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -921,7 +921,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -939,17 +939,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "CONDITIONAL",
         "renewal_months": 2,
-        "renewal_ru": "Seasonal permit выдается до 6 месяцев в течение года и при предусмотренных условиях может быть продлён ещё до 2 месяцев, максимум 8 месяцев в году.",
+        "renewal_ru": "Сезонное разрешение выдаётся на срок до 6 месяцев в течение года и при предусмотренных условиях может быть продлено ещё на срок до 2 месяцев, максимум до 8 месяцев в году.",
         "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Период seasonal residence/work сам по себе не исключён текущей Article 86, но ежегодная ограниченность максимум 8 месяцев не создаёт 5-летней непрерывности; для PR требуется переход на иной qualifying continuous basis.",
+        "pr_path_ru": "Период сезонного проживания и работы сам по себе не исключён действующей статьёй 86, но ежегодный лимит максимум 8 месяцев не создаёт пятилетней непрерывности; для ПМЖ требуется переход на иное засчитываемое непрерывное основание.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -968,7 +968,7 @@
         "HIGHLY_QUALIFIED_SPECIALIST"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Qualifying contract с Montenegrin IT/ICT employer минимум на предусмотренный законом срок.",
+      "basis_ru": "Подходящий договор с работодателем в сфере IT/ICT в Черногории минимум на предусмотренный законом срок.",
       "publishable": true,
       "requirements": [
         {
@@ -979,7 +979,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить qualifying employment contract с Montenegrin IT/ICT employer не менее чем на 12 месяцев.",
+          "condition_ru": "Получить подходящий трудовой договор с работодателем в сфере IT/ICT в Черногории не менее чем на 12 месяцев.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -992,7 +992,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -1123,7 +1123,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1133,7 +1133,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Local employment разрешён в пределах qualifying IT/ICT contract и permit.",
+          "rule_ru": "Местная занятость разрешена в пределах подходящего договора в сфере IT/ICT и выданного разрешения.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1141,7 +1141,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1149,7 +1149,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1160,7 +1160,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1168,7 +1168,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1176,7 +1176,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1194,17 +1194,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 36,
-        "renewal_ru": "Special IT/ICT permit может быть выдан до 3 лет и продлён ещё до 3 лет при сохранении условий.",
+        "renewal_ru": "Специальное разрешение для IT/ICT может быть выдано на срок до 3 лет и продлено ещё на срок до 3 лет при сохранении условий.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -1223,7 +1223,7 @@
         "HIGHLY_QUALIFIED_SPECIALIST"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Qualifying healthcare contract + применимая профессиональная квалификация.",
+      "basis_ru": "Подходящий договор в сфере здравоохранения и применимая профессиональная квалификация.",
       "publishable": true,
       "requirements": [
         {
@@ -1234,7 +1234,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить qualifying contract с Montenegrin healthcare employer не менее чем на 12 месяцев.",
+          "condition_ru": "Получить подходящий договор с работодателем в сфере здравоохранения в Черногории не менее чем на 12 месяцев.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -1247,7 +1247,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Для регулируемой healthcare activity требуется соответствующая квалификация/признание по применимым профессиональным правилам.",
+          "condition_ru": "Для регулируемой деятельности в сфере здравоохранения требуется соответствующая квалификация или её признание по применимым профессиональным правилам.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -1260,7 +1260,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -1391,7 +1391,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1401,7 +1401,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Работа разрешена по qualifying healthcare permit в пределах соответствующей профессии/работодателя.",
+          "rule_ru": "Работа разрешена по подходящему разрешению в сфере здравоохранения в пределах соответствующей профессии и у соответствующего работодателя.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1409,7 +1409,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1417,7 +1417,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1428,7 +1428,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1436,7 +1436,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1444,7 +1444,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1462,17 +1462,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 36,
-        "renewal_ru": "Special healthcare permit может быть выдан до 3 лет и продлён ещё до 3 лет при сохранении условий.",
+        "renewal_ru": "Специальное разрешение в сфере здравоохранения может быть выдано на срок до 3 лет и продлено ещё на срок до 3 лет при сохранении условий.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -1759,7 +1759,7 @@
         "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Реальная предпринимательская деятельность либо executive-director role в компании, где заявитель sole owner или владеет более 51%.",
+      "basis_ru": "Реальная предпринимательская деятельность либо работа исполнительным директором компании, где заявитель является единственным владельцем или владеет более 51%.",
       "publishable": true,
       "requirements": [
         {
@@ -1770,7 +1770,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Зарегистрировать qualifying Montenegrin entrepreneur/company basis и подтвердить ownership/director status; current savings не заменяют сам business basis.",
+          "condition_ru": "Зарегистрировать подходящее предпринимательское основание или компанию в Черногории и подтвердить статус владельца или директора; текущие сбережения не заменяют само бизнес-основание.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -1783,7 +1783,7 @@
           "timing": "AFTER_APPROVAL",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Для последующего продления controlling owner/director category действует performance condition: подтверждённые уплаченные налоги и contributions не менее 5 000 EUR в год. Это не первоначальный investment threshold.",
+          "condition_ru": "Для последующего продления категории контролирующего владельца или директора действует условие по результатам деятельности: подтверждённые уплаченные налоги и взносы не менее 5 000 EUR в год. Это не первоначальный инвестиционный порог.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -1796,7 +1796,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -1927,7 +1927,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1937,7 +1937,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа в собственной/управляемой компании допускается в рамках выданного business/work basis.",
+          "rule_ru": "Работа в собственной или управляемой компании допускается в рамках выданного основания для бизнеса и работы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1945,7 +1945,7 @@
         "self_employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная предпринимательская деятельность разрешена в пределах зарегистрированного basis.",
+          "rule_ru": "Самостоятельная предпринимательская деятельность разрешена в пределах зарегистрированного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1953,7 +1953,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1964,7 +1964,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1972,7 +1972,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1980,7 +1980,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -1998,17 +1998,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "CONDITIONAL",
         "renewal_months": 12,
-        "renewal_ru": "Продление возможно при сохранении business basis и выполнении действующего annual tax/contribution performance condition не менее 5 000 EUR.",
+        "renewal_ru": "Продление возможно при сохранении предпринимательского основания и выполнении действующего годового требования по уплате налогов и взносов не менее 5 000 EUR.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -2027,7 +2027,7 @@
         "INVESTMENT"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Владение/совладение не менее 1/2 qualifying real estate в Черногории с tax-assessed value не ниже 150 000 EUR.",
+      "basis_ru": "Владение или совладение не менее чем половиной подходящей недвижимости в Черногории с налоговой оценочной стоимостью не ниже 150 000 EUR.",
       "publishable": true,
       "requirements": [
         {
@@ -2038,7 +2038,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Владеть или приобрести qualifying property в Черногории: доля не менее 1/2 и tax-assessed value не ниже 150 000 EUR. Documented savings пользователя сами по себе не доказывают этот basis.",
+          "condition_ru": "Владеть или приобрести подходящую недвижимость в Черногории: доля не менее половины и налоговая оценочная стоимость не ниже 150 000 EUR. Подтверждённые сбережения пользователя сами по себе не доказывают это основание.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -2051,7 +2051,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -2182,7 +2182,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2192,7 +2192,7 @@
         "employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Property residence сам по себе не даёт local employment right; требуется отдельный work basis.",
+          "rule_ru": "Проживание на основании недвижимости само по себе не даёт права на местную работу; требуется отдельное рабочее основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2200,7 +2200,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2208,7 +2208,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2219,7 +2219,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2227,7 +2227,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2235,7 +2235,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2253,17 +2253,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 12,
-        "renewal_ru": "Residence может продлеваться при сохранении qualifying property basis и общих условий.",
+        "renewal_ru": "Разрешение на проживание может продлеваться при сохранении подходящего основания в виде недвижимости и общих условий.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "В current consolidated Article 86 property residence больше не перечислен как excluded period; при сохранении непрерывности он подпадает под общий 5-летний temporary-residence PR rule.",
+        "pr_path_ru": "В действующей консолидированной статье 86 проживание на основании недвижимости больше не перечислено как исключаемый период; при сохранении непрерывности оно подпадает под общее пятилетнее правило перехода от временного проживания к ПМЖ.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -2284,7 +2284,7 @@
         "STUDY"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Реальное enrolment/admission в qualifying secondary/higher education programme.",
+      "basis_ru": "Реальное зачисление в подходящую программу среднего или высшего образования.",
       "publishable": true,
       "requirements": [
         {
@@ -2295,7 +2295,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить certificate of enrolment/admission; current income не заменяет admission basis.",
+          "condition_ru": "Получить подтверждение зачисления; текущий доход не заменяет основание в виде зачисления.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -2308,7 +2308,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -2439,7 +2439,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2449,7 +2449,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Holder student residence имеет statutory labour-market access; отдельный universal 15-hour cap для обычного higher-education student в исследованной норме не установлен.",
+          "rule_ru": "Обладатель студенческого разрешения на проживание имеет предусмотренный законом доступ к рынку труда; отдельный универсальный лимит 15 часов для обычного студента высшего учебного заведения в исследованной норме не установлен.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2457,7 +2457,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самозанятость зависит от применимых registration/business rules и не выводится автоматически из student status.",
+          "rule_ru": "Самозанятость зависит от применимых правил регистрации и ведения бизнеса и не следует автоматически из студенческого статуса.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2465,7 +2465,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote work возможна только при соблюдении immigration/tax and other applicable rules; student status не является специальным DNV basis.",
+          "rule_ru": "Удалённая работа на иностранного работодателя возможна только при соблюдении миграционных, налоговых и иных применимых правил; студенческий статус не является специальным основанием DNV.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2482,7 +2482,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2490,7 +2490,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2498,7 +2498,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -2516,17 +2516,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 12,
-        "renewal_ru": "Permit привязан к учебному году/программе; закон допускает ограниченное продолжение после nominal study period.",
+        "renewal_ru": "Разрешение привязано к учебному году или программе; закон допускает ограниченное продолжение после номинального периода обучения.",
         "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
         "years_to_pr": 5,
         "residence_counts_for_pr": "PARTIAL",
-        "pr_path_ru": "Current Article 86 засчитывает время secondary education/study только наполовину. Поэтому route сам по себе не даёт 5 credited years за 5 календарных лет и для обычного PR-пути практически потребуется последующий qualifying basis.",
+        "pr_path_ru": "Действующая статья 86 засчитывает время среднего образования или учёбы только наполовину. Поэтому этот маршрут сам по себе не даёт 5 засчитанных лет за 5 календарных лет, и для обычного пути к ПМЖ практически потребуется последующее подходящее основание.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -2856,7 +2856,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Иметь qualifying service contract между foreign provider/company и Montenegrin legal entity; для foreign employee также применяются employment history/social-insurance evidence, а для regulated service — qualifications.",
+          "condition_ru": "Иметь подходящий договор на оказание услуг между иностранным поставщиком или компанией и юридическим лицом в Черногории; для иностранного сотрудника также применяются подтверждения трудовой истории и социального страхования, а для регулируемой услуги — квалификационные требования.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -2869,7 +2869,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -3000,7 +3000,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3010,7 +3010,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Работа разрешена только в рамках contracted-services permit/contract.",
+          "rule_ru": "Работа разрешена только в рамках разрешения и договора на оказание услуг.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3018,7 +3018,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3026,7 +3026,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3037,7 +3037,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3045,7 +3045,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3053,7 +3053,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3071,17 +3071,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "CONDITIONAL",
         "renewal_months": 12,
-        "renewal_ru": "Permit — до 1 года и может продлеваться до завершения услуги, но общий срок special route ограничен законом.",
+        "renewal_ru": "Разрешение выдаётся на срок до 1 года и может продлеваться до завершения услуги, но общий срок специального маршрута ограничен законом.",
         "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Текущий PR rule не исключает этот temporary residence/work period, но maximum route duration ниже 5 лет, поэтому для непрерывного PR-пути нужен переход на другое qualifying basis.",
+        "pr_path_ru": "Действующее правило ПМЖ не исключает этот период временного проживания и работы, но максимальная длительность маршрута меньше 5 лет, поэтому для непрерывного пути к ПМЖ нужен переход на другое подходящее основание.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -3100,7 +3100,7 @@
         "OTHER"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Research/hosting agreement с qualifying research/higher-education/other permitted entity.",
+      "basis_ru": "Исследовательский договор или соглашение с принимающей организацией, заключённое с подходящим исследовательским, образовательным или иным разрешённым учреждением.",
       "publishable": true,
       "requirements": [
         {
@@ -3111,7 +3111,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Заключить qualifying research/hosting agreement.",
+          "condition_ru": "Заключить подходящий исследовательский договор или соглашение с принимающей организацией.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -3124,7 +3124,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Для research basis требуется applicable scientific/higher-education qualification согласно действующей норме.",
+          "condition_ru": "Для исследовательского основания требуется применимая научная квалификация или квалификация в сфере высшего образования согласно действующей норме.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -3137,7 +3137,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -3268,7 +3268,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3278,7 +3278,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Research residence даёт labour access в пределах statutory research/teaching activity; закон отдельно допускает ограниченную teaching/professorial activity.",
+          "rule_ru": "Исследовательское разрешение на проживание даёт доступ к работе в пределах предусмотренной законом исследовательской или преподавательской деятельности; закон отдельно допускает ограниченную преподавательскую и профессорскую деятельность.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3286,7 +3286,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3294,7 +3294,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3305,7 +3305,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3313,7 +3313,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3321,7 +3321,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3339,17 +3339,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 12,
-        "renewal_ru": "Permit следует сроку research basis; после завершения предусмотрен ограниченный период для job-search/business transition при выполнении условий.",
+        "renewal_ru": "Срок разрешения соответствует сроку исследовательского основания; после завершения предусмотрен ограниченный период для поиска работы или перехода к бизнес-деятельности при выполнении условий.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -3368,7 +3368,7 @@
         "OTHER"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Подтверждённое участие в official exchange/youth programme и требуемое institutional financing/support.",
+      "basis_ru": "Подтверждённое участие в официальной программе обмена или молодёжной программе и требуемое финансирование или поддержка учреждения.",
       "publishable": true,
       "requirements": [
         {
@@ -3379,7 +3379,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Иметь подтверждение участия в qualifying exchange/youth programme и institution confirmation of financing/support.",
+          "condition_ru": "Иметь подтверждение участия в подходящей программе обмена или молодёжной программе и подтверждение финансирования или поддержки со стороны учреждения.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -3459,7 +3459,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3469,7 +3469,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Для student exchange statutory work is limited by the applicable programme rule; published law uses a 15-hour weekly limit for the relevant exchange/student category.",
+          "rule_ru": "Для студенческого обмена право на работу ограничено применимыми правилами программы; опубликованный закон устанавливает лимит 15 часов в неделю для соответствующей категории участников обмена или студентов.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3477,7 +3477,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3485,7 +3485,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3496,7 +3496,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3504,7 +3504,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3512,7 +3512,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3538,9 +3538,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -3570,7 +3570,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить formal confirmation and programme for specialization/professional/practical training.",
+          "condition_ru": "Получить официальное подтверждение и программу специализации, профессиональной или практической подготовки.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -3583,7 +3583,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -3714,7 +3714,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3732,7 +3732,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3740,7 +3740,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3751,7 +3751,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3759,7 +3759,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3767,7 +3767,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3793,9 +3793,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -3825,7 +3825,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Получить certificate от health institution в Черногории с указанием treatment period.",
+          "condition_ru": "Получить справку от медицинского учреждения в Черногории с указанием периода лечения.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -3838,7 +3838,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -3969,7 +3969,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3979,7 +3979,7 @@
         "employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Medical-treatment residence сам по себе не предоставляет automatic labour-market access.",
+          "rule_ru": "Проживание на основании лечения само по себе не предоставляет автоматического доступа к рынку труда.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3987,7 +3987,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -3995,7 +3995,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4006,7 +4006,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4014,7 +4014,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4022,7 +4022,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4040,17 +4040,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 12,
-        "renewal_ru": "Residence может продлеваться на срок, необходимый для лечения.",
+        "renewal_ru": "Разрешение на проживание может продлеваться на срок, необходимый для лечения.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -4069,7 +4069,7 @@
         "OTHER"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Законодательно определённые humanitarian circumstances, включая trafficking/domestic-violence victims, abandoned/unaccompanied minors и иные особо оправданные случаи.",
+      "basis_ru": "Предусмотренные законом гуманитарные обстоятельства, включая торговлю людьми, домашнее насилие, брошенных или несопровождаемых несовершеннолетних и иные особо оправданные случаи.",
       "publishable": true,
       "requirements": [
         {
@@ -4080,7 +4080,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Наличие индивидуального statutory humanitarian ground; это не экономическая migration route и не выводится из гражданства РФ.",
+          "condition_ru": "Наличие индивидуального гуманитарного основания, предусмотренного законом; это не экономический миграционный маршрут и оно не следует из гражданства РФ.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -4093,7 +4093,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Для statutory humanitarian residence действуют специальные исключения из части обычных residence prerequisites; конкретный набор зависит от ground.",
+          "condition_ru": "Для гуманитарного проживания, предусмотренного законом, действуют специальные исключения из части обычных предварительных требований к проживанию; конкретный набор зависит от основания.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -4160,7 +4160,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4170,7 +4170,7 @@
         "employment": {
           "status": "ALLOWED",
           "available_after_months": null,
-          "rule_ru": "Humanitarian residence holder имеет statutory free access to labour market.",
+          "rule_ru": "Обладатель гуманитарного разрешения на проживание имеет предусмотренный законом свободный доступ к рынку труда.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4178,7 +4178,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4186,7 +4186,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4203,7 +4203,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4211,7 +4211,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4219,7 +4219,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4237,17 +4237,17 @@
         "initial_status_ru": "Временное проживание по соответствующему правовому основанию.",
         "renewal_status": "CONDITIONAL",
         "renewal_months": 12,
-        "renewal_ru": "Продление возможно пока сохраняются humanitarian grounds и applicable conditions.",
+        "renewal_ru": "Продление возможно, пока сохраняются гуманитарные основания и выполняются применимые условия.",
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -4291,7 +4291,7 @@
           "timing": "AT_APPLICATION",
           "evaluation_mode": "DISPLAY_ONLY",
           "unmet_effect": "NONE",
-          "condition_ru": "Подтвердить средства к существованию по общему residence framework. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
+          "condition_ru": "Подтвердить средства к существованию по общим правилам проживания. Опубликованный подзаконный ориентир — не менее 10 EUR на каждый день запрашиваемого проживания; точная сумма зависит от периода и допустимых доказательств.",
           "financial": {
             "model": "INCOME_OR_SAVINGS",
             "alternatives": [
@@ -4422,7 +4422,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4432,7 +4432,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Разрешена activity в пределах religious-service basis; обычная local employment требует отдельного work basis.",
+          "rule_ru": "Разрешена деятельность в пределах основания религиозного служения; обычная местная занятость требует отдельного рабочего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4440,7 +4440,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4448,7 +4448,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4459,7 +4459,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4467,7 +4467,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4475,7 +4475,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4497,13 +4497,13 @@
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -4533,7 +4533,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "unmet_effect": "BECOMES_CONDITION",
           "requires_separate_basis": true,
-          "condition_ru": "Иметь qualifying European Voluntary Service agreement/programme и предусмотренное подтверждение принимающей организации.",
+          "condition_ru": "Иметь подходящее соглашение или программу European Voluntary Service и предусмотренное подтверждение принимающей организации.",
           "source_ids": [
             "ME_SRC_01"
           ],
@@ -4613,7 +4613,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Family reunification оформляется отдельным заявлением после получения sponsor residence; супруг/зарегистрированный same-sex life partner и несовершеннолетние дети до 18 лет входят в базовую family framework. Физический приезд семьи и административное одобрение residence — разные этапы.",
+          "condition_ru": "Воссоединение семьи оформляется отдельным заявлением после получения основным заявителем разрешения на проживание; супруг(а), зарегистрированный однополый партнёр и несовершеннолетние дети до 18 лет входят в базовый круг членов семьи. Физический приезд семьи и административное одобрение проживания — разные этапы.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4623,7 +4623,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Разрешена volunteer activity в пределах approved programme; ordinary employment требует отдельного basis.",
+          "rule_ru": "Разрешена волонтёрская деятельность в пределах одобренной программы; обычная работа требует отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4631,7 +4631,7 @@
         "self_employment": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4639,7 +4639,7 @@
         "remote_foreign_work": {
           "status": "SEPARATE_PERMISSION_REQUIRED",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4650,7 +4650,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4658,7 +4658,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4666,7 +4666,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4688,13 +4688,13 @@
         "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
         "years_to_pr": 5,
         "residence_counts_for_pr": "YES",
-        "pr_path_ru": "Permanent residence по общему правилу возможен после 5 последовательных лет qualifying temporary residence; допустимые отсутствия в пятилетнем периоде ограничены законом.",
+        "pr_path_ru": "Постоянное проживание по общему правилу возможно после 5 последовательных лет засчитываемого временного проживания; допустимые отсутствия в пятилетнем периоде ограничены законом.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",
@@ -4713,7 +4713,7 @@
         "INTERNATIONAL_PROTECTION"
       ],
       "route_subtype_ru": null,
-      "basis_ru": "Индивидуальные факты persecution/serious-harm risk в рамках protection law.",
+      "basis_ru": "Индивидуальные факты преследования или риска серьёзного вреда в рамках законодательства о международной защите.",
       "publishable": true,
       "requirements": [
         {
@@ -4748,7 +4748,7 @@
           "coordinates": null,
           "applicant_status_requirement": "PHYSICAL_PRESENCE",
           "visa_required_for_ru": null,
-          "entry_condition_ru": "Заявление/намерение о международной защите заявляется по правилам protection procedure; законность экономического migration basis не заменяет protection grounds.",
+          "entry_condition_ru": "Заявление или намерение получить международную защиту оформляется по правилам процедуры защиты; наличие законного экономического миграционного основания не заменяет оснований для международной защиты.",
           "rule_checked_at": "2026-08-19",
           "condition_ru": "Физическое присутствие в Черногории и индивидуальное заявление о международной защите.",
           "source_ids": [
@@ -4792,7 +4792,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного basis либо требует отдельного подходящего основания.",
+          "rule_ru": "Самостоятельная деятельность допускается только в пределах данного основания либо требует отдельного подходящего основания.",
           "source_ids": [
             "ME_SRC_01",
             "ME_SRC_10"
@@ -4801,7 +4801,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Иностранная remote activity не считается автоматически разрешённой этим residence basis и требует применимого основания.",
+          "rule_ru": "Удалённая работа на иностранного работодателя не считается автоматически разрешённой этим основанием проживания и требует применимого основания.",
           "source_ids": [
             "ME_SRC_01",
             "ME_SRC_10"
@@ -4819,7 +4819,7 @@
         "employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Работа family member зависит от sponsor category: immediate access прямо предусмотрен для family of Montenegrin citizen/PR; family of ordinary foreign work holder получает labour access после одного года family residence; для иных sponsors требуется отдельная проверка/основание.",
+          "rule_ru": "Право члена семьи на работу зависит от категории основного заявителя: немедленный доступ прямо предусмотрен для семьи гражданина Черногории или постоянного резидента; семья обычного иностранного работника получает доступ к работе после одного года семейного проживания; для иных категорий требуется отдельная проверка основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4827,7 +4827,7 @@
         "self_employment": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Самостоятельная деятельность family member зависит от применимой family/work category и при необходимости отдельного basis.",
+          "rule_ru": "Самостоятельная деятельность члена семьи зависит от применимой семейной или рабочей категории и при необходимости отдельного основания.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4835,7 +4835,7 @@
         "remote_foreign_work": {
           "status": "CONDITIONAL",
           "available_after_months": null,
-          "rule_ru": "Foreign remote work family member не разрешается автоматически одной только family-residence category; требуется применимый legal basis.",
+          "rule_ru": "Удалённая работа члена семьи на иностранного работодателя не разрешается автоматически только на основании семейного проживания; требуется применимое правовое основание.",
           "source_ids": [
             "ME_SRC_01"
           ]
@@ -4861,9 +4861,9 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 10,
         "residence_counts_for_citizenship": "CONDITIONAL",
-        "citizenship_path_ru": "Обычная натурализация требует 10 лет lawful continuous residence и дополнительных условий; точный зачёт конкретного специального residence basis к citizenship timeline проверяется на момент будущей подачи.",
+        "citizenship_path_ru": "Обычная натурализация требует 10 лет законного непрерывного проживания и выполнения дополнительных условий; точный зачёт конкретного специального основания проживания в срок до гражданства проверяется на момент будущей подачи.",
         "renunciation_required": true,
-        "presence_rule_ru": "Для general PR пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
+        "presence_rule_ru": "Для общего ПМЖ пятилетний период допускает отсутствия в сумме до 10 месяцев либо одно непрерывное отсутствие до 6 месяцев.",
         "language_requirements_ru": "Для обычной натурализации требуется базовое знание черногорского языка; отдельного универсального языкового требования для первоначального временного проживания нет.",
         "source_ids": [
           "ME_SRC_01",

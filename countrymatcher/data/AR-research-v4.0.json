@@ -232,7 +232,11 @@
                       "period": "MONTHLY",
                       "family_context_ru": "Один заявитель",
                       "evidence": [
-                        { "source_id": "AR_DNV_CITIZEN_REMOTE", "source_date": "2026-02-26", "evidence_type": "REPORTED_PRACTICE" }
+                        {
+                          "source_id": "AR_DNV_CITIZEN_REMOTE",
+                          "source_date": "2026-02-26",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
                       ],
                       "note_ru": "Опубликованный практический диапазон, не официальный государственный минимум."
                     },
@@ -242,9 +246,13 @@
                       "period": "MONTHLY",
                       "family_context_ru": "Один заявитель",
                       "evidence": [
-                        { "source_id": "AR_DNV_REWIRE_2026", "source_date": "2026-07-16", "evidence_type": "REPORTED_PRACTICE" }
+                        {
+                          "source_id": "AR_DNV_REWIRE_2026",
+                          "source_date": "2026-07-16",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
                       ],
-                      "note_ru": "Отдельный опубликованный ориентир, использованный в утверждённом screening rule."
+                      "note_ru": "Отдельный опубликованный ориентир, использованный в утверждённом правиле предварительного отбора."
                     }
                   ],
                   "disclaimer_ru": "Это практические ориентиры, а не официальный порог DNM. Для предварительного подбора Country Matcher использует 2 000 USD в месяц; решение по документам принимает миграционный орган."
@@ -254,7 +262,10 @@
                   "currency": "USD",
                   "period": "MONTHLY",
                   "amount": 2000,
-                  "source_ids": ["AR_DNV_CITIZEN_REMOTE", "AR_DNV_REWIRE_2026"]
+                  "source_ids": [
+                    "AR_DNV_CITIZEN_REMOTE",
+                    "AR_DNV_REWIRE_2026"
+                  ]
                 }
               }
             ]
@@ -334,7 +345,7 @@
               "AR_CITIZENSHIP_DNU"
             ]
           },
-      "condition_ru": "Заявитель может использовать этот маршрут, но партнёр и ребёнок не получают статус автоматически. Чтобы переехать вместе, для них потребуется другое подходящее законное основание.",
+          "condition_ru": "Заявитель может использовать этот маршрут, но партнёр и ребёнок не получают статус автоматически. Чтобы переехать вместе, для них потребуется другое подходящее законное основание.",
           "source_ids": [
             "AR_DNV",
             "AR_MIGRATION_LAW"
@@ -379,18 +390,18 @@
       "partner_work_rights": null,
       "long_term_path": {
         "first_permit_months": 6,
-    "initial_status_ru": "Краткосрочная резиденция цифрового кочевника действует до 180 дней.",
+        "initial_status_ru": "Краткосрочная резиденция цифрового кочевника действует до 180 дней.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 6,
-    "renewal_ru": "Возможно одно продление ещё до 180 дней.",
+        "renewal_ru": "Возможно одно продление ещё до 180 дней.",
         "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
         "years_to_pr": null,
         "residence_counts_for_pr": "NO",
-    "pr_path_ru": "Сам этот статус не является долгосрочным маршрутом к ПМЖ; для такого пути потребуется перейти на подходящую категорию проживания.",
+        "pr_path_ru": "Сам этот статус не является долгосрочным маршрутом к ПМЖ; для такого пути потребуется перейти на подходящую категорию проживания.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": null,
         "residence_counts_for_citizenship": "NO",
-    "citizenship_path_ru": "Срок пребывания в статусе цифрового кочевника не используется как подтверждённый отсчёт для гражданства.",
+        "citizenship_path_ru": "Срок пребывания в статусе цифрового кочевника не используется как подтверждённый отсчёт для гражданства.",
         "renunciation_required": null,
         "presence_rule_ru": "Для самого DNV действует срок до 180 дней и возможное одно продление; долгосрочные сроки начинают оцениваться после смены основания.",
         "language_requirements_ru": "Отдельное языковое требование для DNV не установлено.",

@@ -324,7 +324,10 @@
                     "additional_adult_amount": 500,
                     "child_amount": 500
                   },
-                  "source_ids": ["UY_SRC_52", "UY_SRC_54"]
+                  "source_ids": [
+                    "UY_SRC_52",
+                    "UY_SRC_54"
+                  ]
                 }
               }
             ]
@@ -380,48 +383,48 @@
       ],
       "family_scenarios": [
         {
-        "scenario_id": "UY_PERMANENT_COMMON_PARTNER",
-        "applies_to": "PARTNER",
-        "relationship_types": [
-          "MARRIED",
-          "REGISTERED_PARTNERSHIP"
-        ],
-        "child_age_min": null,
-        "child_age_max": null,
+          "scenario_id": "UY_PERMANENT_COMMON_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
-      "join_stage": "WITH_INITIAL_APPLICATION",
+          "join_stage": "WITH_INITIAL_APPLICATION",
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-        "condition_ru": "Каждый взрослый оформляет отдельное заявление.",
-        "administrative_separate_filing": true,
-        "source_ids": [
-          "UY_SRC_01",
-          "UY_SRC_07"
-        ]
-      },
-      {
-        "scenario_id": "UY_PERMANENT_COMMON_CHILD",
-        "applies_to": "CHILD",
-        "relationship_types": null,
-        "child_age_min": 0,
-        "child_age_max": 17,
-        "simultaneous_move": "CONDITIONAL",
-        "separate_route_required": false,
-        "linked_route_id": null,
-        "join_stage": "WITH_INITIAL_APPLICATION",
-        "separation_months_min": null,
-        "separation_months_max": null,
-        "member_long_term_path": null,
-        "condition_ru": "Для ребёнка оформляется отдельное дело.",
-        "administrative_separate_filing": true,
-        "source_ids": [
-          "UY_SRC_01",
-          "UY_SRC_07"
-        ]
-      }
+          "condition_ru": "Каждый взрослый оформляет отдельное заявление.",
+          "administrative_separate_filing": true,
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_PERMANENT_COMMON_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для ребёнка оформляется отдельное дело.",
+          "administrative_separate_filing": true,
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
+        }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -629,14 +632,14 @@
       ],
       "family_scenarios": [
         {
-        "scenario_id": "UY_TEMP_WORK_PARTNER",
-        "applies_to": "PARTNER",
-        "relationship_types": [
-          "MARRIED",
-          "REGISTERED_PARTNERSHIP"
-        ],
-        "child_age_min": null,
-        "child_age_max": null,
+          "scenario_id": "UY_TEMP_WORK_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -644,31 +647,31 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_07"
-        ]
-      },
-      {
-        "scenario_id": "UY_TEMP_WORK_CHILD",
-        "applies_to": "CHILD",
-        "relationship_types": null,
-        "child_age_min": 0,
-        "child_age_max": 17,
-        "simultaneous_move": "CONDITIONAL",
-        "separate_route_required": false,
-        "linked_route_id": null,
-        "join_stage": "WITH_INITIAL_APPLICATION",
-        "separation_months_min": null,
-        "separation_months_max": null,
-        "member_long_term_path": null,
-        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_07"
-        ]
-      }
+          "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_WORK_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -752,7 +755,7 @@
         "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
         "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
-        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "language_requirements_ru": "Для гражданства требуется способность понимать испанский язык и изъясняться на нём.",
         "source_ids": [
           "UY_SRC_02",
           "UY_SRC_07",
@@ -905,14 +908,14 @@
       ],
       "family_scenarios": [
         {
-        "scenario_id": "UY_TEMP_STUDY_PARTNER",
-        "applies_to": "PARTNER",
-        "relationship_types": [
-          "MARRIED",
-          "REGISTERED_PARTNERSHIP"
-        ],
-        "child_age_min": null,
-        "child_age_max": null,
+          "scenario_id": "UY_TEMP_STUDY_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -920,31 +923,31 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_07"
-        ]
-      },
-      {
-        "scenario_id": "UY_TEMP_STUDY_CHILD",
-        "applies_to": "CHILD",
-        "relationship_types": null,
-        "child_age_min": 0,
-        "child_age_max": 17,
-        "simultaneous_move": "CONDITIONAL",
-        "separate_route_required": false,
-        "linked_route_id": null,
-        "join_stage": "WITH_INITIAL_APPLICATION",
-        "separation_months_min": null,
-        "separation_months_max": null,
-        "member_long_term_path": null,
-        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_07"
-        ]
-      }
+          "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_STUDY_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -1028,7 +1031,7 @@
         "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
         "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
-        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "language_requirements_ru": "Для гражданства требуется способность понимать испанский язык и изъясняться на нём.",
         "source_ids": [
           "UY_SRC_02",
           "UY_SRC_07",
@@ -1116,14 +1119,14 @@
       ],
       "family_scenarios": [
         {
-        "scenario_id": "UY_TEMP_SPECIALIST_PARTNER",
-        "applies_to": "PARTNER",
-        "relationship_types": [
-          "MARRIED",
-          "REGISTERED_PARTNERSHIP"
-        ],
-        "child_age_min": null,
-        "child_age_max": null,
+          "scenario_id": "UY_TEMP_SPECIALIST_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -1131,33 +1134,33 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-        "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_06",
-          "UY_SRC_07"
-        ]
-      },
-      {
-        "scenario_id": "UY_TEMP_SPECIALIST_CHILD",
-        "applies_to": "CHILD",
-        "relationship_types": null,
-        "child_age_min": 0,
-        "child_age_max": 17,
-        "simultaneous_move": "CONDITIONAL",
-        "separate_route_required": false,
-        "linked_route_id": null,
-        "join_stage": "WITH_INITIAL_APPLICATION",
-        "separation_months_min": null,
-        "separation_months_max": null,
-        "member_long_term_path": null,
-        "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
-        "source_ids": [
-          "UY_SRC_02",
-          "UY_SRC_06",
-          "UY_SRC_07"
-        ]
-      }
+          "condition_ru": "Супруг или формально признанный партнёр оформляет собственное заявление и подтверждает признаваемую семейную связь по применимой процедуре; документальное и правовое признание проверяется.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_SPECIALIST_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        }
       ],
       "applicant_work_rights": {
         "employment": {
@@ -1241,7 +1244,7 @@
         "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
         "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
-        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "language_requirements_ru": "Для гражданства требуется способность понимать испанский язык и изъясняться на нём.",
         "source_ids": [
           "UY_SRC_02",
           "UY_SRC_06",
@@ -1317,7 +1320,11 @@
                       "period": "MONTHLY",
                       "family_context_ru": "Один заявитель",
                       "evidence": [
-                        { "source_id": "UY_SRC_60", "source_date": "2026-08-16", "evidence_type": "REPORTED_PRACTICE" }
+                        {
+                          "source_id": "UY_SRC_60",
+                          "source_date": "2026-08-16",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
                       ],
                       "note_ru": "Опубликованный практический диапазон, не официальный минимум."
                     },
@@ -1328,7 +1335,11 @@
                       "period": "MONTHLY",
                       "family_context_ru": "Один заявитель",
                       "evidence": [
-                        { "source_id": "UY_SRC_61", "source_date": "2026-07-02", "evidence_type": "REPORTED_PRACTICE" }
+                        {
+                          "source_id": "UY_SRC_61",
+                          "source_date": "2026-07-02",
+                          "evidence_type": "REPORTED_PRACTICE"
+                        }
                       ],
                       "note_ru": "Отдельный опубликованный рекомендуемый диапазон."
                     }
@@ -1340,7 +1351,10 @@
                   "currency": "USD",
                   "period": "MONTHLY",
                   "amount": 1500,
-                  "source_ids": ["UY_SRC_60", "UY_SRC_61"]
+                  "source_ids": [
+                    "UY_SRC_60",
+                    "UY_SRC_61"
+                  ]
                 }
               }
             ]
@@ -1476,10 +1490,10 @@
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": null,
         "residence_counts_for_citizenship": "NO",
-        "citizenship_path_ru": "Путь к citizenship требует перехода на засчитываемый статус проживания.",
+        "citizenship_path_ru": "Путь к гражданству требует перехода на засчитываемый статус проживания.",
         "renunciation_required": false,
-        "presence_rule_ru": "Сам nomad document ограничен 6 месяцами и одним продлением.",
-        "language_requirements_ru": "Для nomad document отдельное языковое требование не опубликовано.",
+        "presence_rule_ru": "Сам документ цифрового кочевника ограничен 6 месяцами и одним продлением.",
+        "language_requirements_ru": "Для документа цифрового кочевника отдельное языковое требование не опубликовано.",
         "source_ids": [
           "UY_SRC_04",
           "UY_SRC_05",
@@ -1744,7 +1758,7 @@
       ],
       "family_scenarios": [
         {
-      "scenario_id": "UY_PROTECTION_FAM",
+          "scenario_id": "UY_PROTECTION_FAM",
           "applies_to": "PARTNER_AND_CHILDREN",
           "relationship_types": [
             "MARRIED",
@@ -1756,11 +1770,11 @@
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
-      "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-      "condition_ru": "После признания статуса защиты семейное единство распространяется по запросу и при индивидуальной проверке семейной связи, оснований исключения из защиты и прекращения статуса.",
+          "condition_ru": "После признания статуса защиты семейное единство распространяется по запросу и при индивидуальной проверке семейной связи, оснований исключения из защиты и прекращения статуса.",
           "source_ids": [
             "UY_SRC_11"
           ]
@@ -1837,18 +1851,18 @@
         "initial_status_ru": "Во время рассмотрения действует временное удостоверение личности и право оставаться в стране; после признания предоставляются удостоверение личности резидента и проездной документ беженца по процедуре Ley 18.076.",
         "renewal_status": "NOT_RESEARCHED",
         "renewal_months": null,
-        "renewal_ru": "Отдельный обычный цикл продления protection status исследованием не установлен; применяется специальная процедура Ley 18.076.",
+        "renewal_ru": "Отдельный обычный цикл продления статуса защиты исследованием не установлен; применяется специальная процедура Ley 18.076.",
         "pr_path_status": "NOT_RESEARCHED",
         "years_to_pr": null,
         "residence_counts_for_pr": "NOT_RESEARCHED",
-        "pr_path_ru": "Правовая связь признанного статуса беженца с постоянным статусом подтверждена; конкретный механизм перехода и универсальный срок до permanent residence в исследовании не установлены.",
+        "pr_path_ru": "Правовая связь признанного статуса беженца с постоянным статусом подтверждена; конкретный механизм перехода и универсальный срок до постоянного проживания в исследовании не установлены.",
         "citizenship_path_status": "CONDITIONAL",
         "years_to_citizenship": 5,
         "residence_counts_for_citizenship": "YES",
         "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
         "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
-        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "language_requirements_ru": "Для гражданства требуется способность понимать испанский язык и изъясняться на нём.",
         "source_ids": [
           "UY_SRC_11",
           "UY_SRC_22",
@@ -2053,7 +2067,7 @@
         "citizenship_path_ru": "Применяется срок 3 года фактического проживания при наличии семьи в Уругвае либо 5 лет без неё.",
         "renunciation_required": false,
         "presence_rule_ru": "Выезд более чем на 6 последовательных месяцев прерывает отсчёт фактического проживания для гражданства.",
-        "language_requirements_ru": "Для citizenship требуется способность понимать и выражаться по-испански.",
+        "language_requirements_ru": "Для гражданства требуется способность понимать испанский язык и изъясняться на нём.",
         "source_ids": [
           "UY_SRC_07",
           "UY_SRC_08",

@@ -2933,7 +2933,7 @@
           "evaluation_mode": "UNASKED_CONDITION",
           "requires_separate_basis": true,
           "unmet_effect": "BECOMES_CONDITION",
-          "condition_ru": "Получить подходящий исследовательский договор, hosting agreement или иное предусмотренное ст. 72 основание.",
+          "condition_ru": "Получить подходящий исследовательский договор, соглашение с принимающей организацией или иное предусмотренное ст. 72 основание.",
           "source_ids": [
             "ES_RESEARCHER",
             "ES_LAW14"
@@ -3074,7 +3074,7 @@
       },
       "long_term_path": {
         "first_permit_months": 36,
-        "initial_status_ru": "Разрешение для исследования — 3 года либо срок договора/hosting agreement, если он короче.",
+        "initial_status_ru": "Разрешение для исследования — 3 года либо срок договора или соглашения с принимающей организацией, если он короче.",
         "renewal_status": "AVAILABLE",
         "renewal_months": 24,
         "renewal_ru": "Продление — 2 года.",
