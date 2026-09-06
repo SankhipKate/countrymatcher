@@ -173,6 +173,44 @@ test('missing family scenario remains a data-contract problem', () => {
   assert.match(result.dataContractProblems.join(' '), /no applicable family scenario/u);
 });
 
+test('missing applicable relationship scenario remains a data-contract problem', () => {
+  const profile = structuredClone(marriedPartnerProfile);
+  const result = evaluateFamilyScenarios(
+    routeWith(scenario({ relationship_types: ['UNREGISTERED_PARTNERSHIP'] })),
+    profile,
+    [{ route_id: 'TEST_ROUTE' }],
+  );
+  assert.equal(result.state, 'DATA_CONTRACT_PROBLEM');
+  assert.notEqual(result.state, 'BLOCKER');
+});
+
+test('NOT_RESEARCHED remains a data-contract problem rather than legal unavailability', () => {
+  const result = evaluate(scenario({
+    simultaneous_move: 'NOT_RESEARCHED',
+    separate_route_required: null,
+    join_stage: 'NOT_RESEARCHED',
+    source_ids: [],
+  }));
+  assert.equal(result.state, 'DATA_CONTRACT_PROBLEM');
+  assert.notEqual(result.classification, 'NOT_AVAILABLE');
+});
+
+test('a covered child cannot mask a family coverage gap for another child', () => {
+  const childProfile = structuredClone(marriedPartnerProfile);
+  childProfile.family.partner_included = false;
+  childProfile.family.relationship_type = null;
+  childProfile.family.adults_count = 1;
+  childProfile.family.children = [{ age_years: 5 }, { age_years: 21 }];
+  const result = evaluateFamilyScenarios(
+    routeWith(scenario({ applies_to: 'CHILD', relationship_types: null, child_age_min: 0, child_age_max: 17 })),
+    childProfile,
+    [{ route_id: 'TEST_ROUTE' }],
+  );
+  assert.equal(result.state, 'DATA_CONTRACT_PROBLEM');
+  assert.equal(result.memberResults.find(({ memberId }) => memberId === 'CHILD_1').state, 'CONDITION');
+  assert.equal(result.memberResults.find(({ memberId }) => memberId === 'CHILD_2').state, 'DATA_CONTRACT_PROBLEM');
+});
+
 const baseEntry = {
   entry_type: 'VISA_FREE',
   visa_required: false,

@@ -132,6 +132,16 @@ family_formula и family_formula_ordered не используются одно�
 
 Исследуй отдельную цепочку каждого переезжающего взрослого и ребёнка. Если член семьи использует отдельный уже исследованный маршрут, укажи linked_route_id. Зафиксируй одновременность переезда, этап присоединения, ориентир разлуки и долгосрочную цепочку. Если член семьи может ехать одновременно в рамках семейного пути, но для него требуется отдельное административное заявление/дело, пометь сценарий `administrative_separate_filing: true`: сама такая процедура не является condition. Не используй этот marker, чтобы скрыть более позднее присоединение, отдельный иммиграционный маршрут или реальную eligibility uncertainty.
 
+Сопоставь family research с полным закрытым доменом действующей анкеты: `relationship_type = MARRIED | REGISTERED_PARTNERSHIP | UNREGISTERED_PARTNERSHIP` и возраст каждого ребёнка 0–25 включительно. Для каждого маршрута построй family coverage matrix `route_id × family profile → researched outcome → RP4 representation`. Для каждой строки укажи questionnaire input или диапазон, `scenario_id`, outcome, `source_ids` либо blocking `open_item` и coverage status. Это reconciliation artefact, а не новое поле RP4.
+
+Для ребёнка исследуй country-specific legal boundaries внутри 0–25 и определи outcome для каждой части диапазона. Не вводи универсальные интервалы, не интерполируй неизвестные возраста и не считай отсутствие информации legal NO. Для партнёра проверь каждый relationship type и определи direct recognition, conditional/formalization path, later/separate path, explicit `NOT_AVAILABLE` либо `NOT_RESEARCHED` gap.
+
+Не считай scenario одного relationship type автоматическим покрытием другого. Текущий validator признаёт статическое coverage только при прямом присутствии questionnaire input в `relationship_types`; он не выводит formalization transition из `condition_ru`, `scenario_id` или другого текста. Допустимый conditional/formalization path отдельно подтверди и отрази в reconciliation family coverage matrix. Отдельного formalization mapping в текущую schema не добавляй.
+
+Resolved family scenario обязан иметь `source_ids`, подтверждающие material applicability: используемую возрастную границу, relationship applicability, dependency rule или другое условие coverage. Не считай broad/unbounded scenario доказанным только потому, что его age boundary технически `null`: открытая граница допустима лишь при подтверждающем её источнике.
+
+Если часть domain действительно не исследована, добавь ограниченный этой частью `NOT_RESEARCHED` scenario, route-specific `FAMILY` open item с `blocks_publication = true` и не публикуй маршрут до закрытия пробела. Явный `NOT_AVAILABLE` используй только при подтверждённом юридическом основании, с конкретным объяснением и источником.
+
 СРОКИ, ПМЖ И ГРАЖДАНСТВО
 
 Не смешивай срок рассмотрения с длительностью ВНЖ.
@@ -287,7 +297,11 @@ completeness обязан содержать ровно 14 блоков из с�
 - каталог отдельных international schools не является acceptance criterion нового исследования; legacy `international_schools[].city_id` по-прежнему должен существовать в `cities[]`;
 - optional `international_school_tuition_observations[]` содержит только `FIRST_GRADE`/`FINAL_GRADE`, annual/academic-year prices и valid `source_ids`; отсутствие одной точки означает отсутствие range, а не интерполяцию;
 - THIRD_COUNTRY AVAILABLE/CONDITIONAL имеет country_id, city_ru и visa_required_for_ru;
-- каждый маршрут имеет минимум один family_scenario;
+- family scenarios каждого маршрута покрывают без необъяснённых дыр каждый возраст ребёнка 0–25 и все три relationship outcomes анкеты;
+- каждая resolved возрастная граница, relationship applicability и иное material family condition подтверждены `source_ids`; `null` age boundary не считается evidence сам по себе;
+- каждая непроверенная часть family domain представлена ограниченным `NOT_RESEARCHED` scenario и связанным route-specific blocking `FAMILY` open item;
+- ни один `publishable = true` маршрут не содержит unresolved family gap;
+- явная невозможность представлена `NOT_AVAILABLE` с конкретным объяснением и источником, а не отсутствием scenario;
 - READY не используется при BLOCKING_GAP;
 - детских садов нет ни в данных, ни в отчёте;
 - отчёт, JSON, open_items и completeness не противоречат друг другу.
