@@ -23,5 +23,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+          cache: pip
+          cache-dependency-path: countrymatcher/requirements.txt
       - name: Verify project
         run: bash ./verify
