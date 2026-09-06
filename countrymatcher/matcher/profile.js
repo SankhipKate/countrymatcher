@@ -252,10 +252,20 @@ export function describeResultIntro(routes, changed = false) {
     heading: changed ? 'Результат обновлён после уточнения' : 'Сейчас нет маршрутов, доступных для надёжной оценки',
     routeLabel: 'Сейчас нет маршрутов с завершёнными данными, которые можно надёжно оценить по вашим ответам.',
   };
-  const allUnsuitable = routes?.length > 0 && routes.every((route) => route.routeStatus === 'UNSUITABLE');
+  const presentationGroups = routes.map(routePresentationGroup);
+  const allUnsuitable = presentationGroups.every((group) => group === 'UNSUITABLE');
+  const hasOrdinarySuitable = presentationGroups.includes('SUITABLE')
+    || presentationGroups.includes('SUITABLE_WITH_CONDITIONS');
+  const hasSeparateBasis = presentationGroups.includes('REQUIRES_SEPARATE_BASIS');
+  const separateBasisHeadline = hasSeparateBasis && !hasOrdinarySuitable;
   return {
     heading: changed ? 'Результат обновлён после уточнения' : allUnsuitable ? 'Сейчас подходящих вариантов не найдено' : 'Результат по стране',
-    routeLabel: allUnsuitable ? 'Первый из проверенных неподходящих маршрутов' : 'Наиболее подходящий вариант по вашим ответам',
+    routeLabel: allUnsuitable
+      ? 'Первый из проверенных неподходящих маршрутов'
+      : separateBasisHeadline
+        ? 'Возможные варианты при наличии соответствующего основания'
+        : 'Наиболее подходящий вариант по вашим ответам',
+    showBestRouteInHeadline: !separateBasisHeadline,
   };
 }
 
