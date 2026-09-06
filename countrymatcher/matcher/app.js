@@ -1,4 +1,5 @@
 import { assertActiveResearchPackage, calculateActiveMatcher } from '../js/engine/rp4-engine.js';
+import { activeRp4FilenamesFromManifest } from '../js/active-country-manifest.js';
 import { ROUTE_PRESENTATION_LABELS_RU, routePresentationGroup } from '../js/engine/route-presentation-contract.js';
 import { collectCurrencyCodes, FX_FALLBACK_URL, hasCompleteFxOutage, loadCalculationContext, summarizeFxContext } from '../pilot/fx-context.js';
 import { countryOptions, parseCountryCode, searchCountries } from './countries.js';
@@ -41,25 +42,6 @@ function withBuildId(url, buildId = currentBuildId()) {
   versioned.searchParams.set('v', buildId);
   return versioned;
 }
-const ACTIVE_RP4_PACKAGES = [
-  'ES-research-v4.0.json',
-  'AR-research-v4.0.json',
-  'UY-research-v4.0.json',
-  'BR-research-v4.0.json',
-  'PT-research-v4.0.json',
-  'MX-research-v4.0.json',
-  'PY-research-v4.0.json',
-  'CO-research-v4.0.json',
-  'ME-research-v4.0.json',
-  'CL-research-v4.0.json',
-  'GR-research-v4.0.json',
-  'CR-research-v4.0.json',
-  'EC-research-v4.0.json',
-  'TH-research-v4.0.json',
-  'MT-research-v4.0.json',
-  'ZA-research-v4.0.json',
-  'DE-research-v4.0.json',
-];
 const QUALITY_OF_LIFE_EDITORIAL_FILE = 'quality-of-life-ru.json';
 const COUNTRY_CONSULTANTS_FILE = 'country-consultants-ru.json';
 const INDEXED_UNIT_RATES_FILE = 'indexed-unit-rates.json';
@@ -2022,14 +2004,21 @@ async function init() {
   syncChildren(); syncConditional(); showStep(1, false);
   try {
     const buildId = currentBuildId();
+    const packagesPromise = fetch(withBuildId(new URL('active-countries.json', DATA_BASE), buildId))
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}: active-countries.json`);
+        const manifest = await response.json();
+        const filenames = activeRp4FilenamesFromManifest(manifest);
+        return Promise.all(filenames.map(async (filename) => {
+          const packageResponse = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
+          if (!packageResponse.ok) throw new Error(`HTTP ${packageResponse.status}: ${filename}`);
+          const pkg = await packageResponse.json();
+          assertActiveResearchPackage(pkg);
+          return pkg;
+        }));
+      });
     const [packages, schemaResponse, editorial, consultants, indexedUnits, countryComparison] = await Promise.all([
-      Promise.all(ACTIVE_RP4_PACKAGES.map(async (filename) => {
-        const response = await fetch(withBuildId(new URL(filename, DATA_BASE), buildId));
-        if (!response.ok) throw new Error(`HTTP ${response.status}: ${filename}`);
-        const pkg = await response.json();
-        assertActiveResearchPackage(pkg);
-        return pkg;
-      })),
+      packagesPromise,
       fetch(withBuildId(new URL('schemas/user-profile-v1.schema.json', DATA_BASE), buildId)),
       fetch(withBuildId(new URL(QUALITY_OF_LIFE_EDITORIAL_FILE, DATA_BASE), buildId))
         .then((response) => response.ok ? response.json() : { countries: {} })

@@ -1,14 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readActiveRp4Packages } from './helpers/active-country-manifest.mjs';
 
-const matcher = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
-const declaration = matcher.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-assert.ok(declaration, 'ACTIVE_RP4_PACKAGES declaration');
-const filenames = [...declaration[1].matchAll(/'([^']+)'/g)].map((match) => match[1]);
-const packages = await Promise.all(filenames.map(async (filename) => JSON.parse(
-  await readFile(new URL(`../data/${filename}`, import.meta.url), 'utf8'),
-)));
+const packages = await readActiveRp4Packages();
 
 test('active numeric SAVINGS alternatives with documentary history remain questionnaire-evaluable', () => {
   const audited = [];

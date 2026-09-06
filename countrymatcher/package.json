@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "pretest": "node scripts/ensure-node-deps.mjs",
-    "test": "node --test --test-concurrency=1 tests/*.test.mjs"
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "release:sync": "node scripts/release-sync.mjs"
   },
   "engines": {
     "node": ">=20"

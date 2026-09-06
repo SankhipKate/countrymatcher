@@ -20,7 +20,9 @@
 
 - универсальная анкета формирует профиль `user-profile-v1`;
 - активный matcher загружает RP4-пакеты перечисленных ниже активных стран;
+<!-- BEGIN GENERATED ACTIVE_COUNTRIES_INLINE -->
 - активные страны: Испания, Аргентина, Уругвай, Бразилия, Португалия, Мексика, Парагвай, Колумбия, Черногория, Чили, Греция, Коста-Рика, Эквадор, Таиланд, Мальта, Южно-Африканская Республика и Германия;
+<!-- END GENERATED ACTIVE_COUNTRIES_INLINE -->
 - generic Canon 4.0 engine проверяет `requirements[]`, включая финансовые модели, family scenarios, application methods и long-term path;
 - маршруты с `publishable: false` исключаются до evaluation;
 - узкоспециализированные самостоятельные family/ICT/corporate/maritime routes сохраняются в research inventory, но не публикуются как пользовательские route cards; family scenarios внутри обычных основных маршрутов сохраняются;
@@ -69,7 +71,9 @@
 - `matcher/profile.js` — формирование и проверка `user-profile-v1`;
 - `matcher/funnel.js` — бесплатный preview и состояния результата до подтверждения полного доступа;
 - `js/engine/rp4-engine.js` — единственный активный generic evaluator Research Package 4.0;
+<!-- BEGIN GENERATED ACTIVE_RP4_PATHS -->
 - `data/{ES,AR,UY,BR,PT,MX,PY,CO,ME,CL,GR,CR,EC,TH,MT,ZA,DE}-research-v4.0.json` — активные Research Package;
+<!-- END GENERATED ACTIVE_RP4_PATHS -->
 - `data/quality-of-life-ru.json` — отдельный presentation-only editorial слой качества жизни;
 - `data/country-consultants-ru.json` — country-configured presentation-only коллаборации с миграционными консультантами; они не участвуют в matching, статусах или сортировке;
 - `matcher/consultants.js` — generic helper для выбора активных консультантов страны и формирования outbound Telegram URL;

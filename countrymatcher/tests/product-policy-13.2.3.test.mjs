@@ -3,16 +3,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readActiveRp4Packages } from './helpers/active-country-manifest.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const appRoot = path.resolve(here, '..');
 const repoRoot = path.resolve(appRoot, '..');
-const dataRoot = path.join(appRoot, 'data');
-const matcherSource = fs.readFileSync(path.join(appRoot, 'matcher', 'app.js'), 'utf8');
-const activeDeclaration = matcherSource.match(/const ACTIVE_RP4_PACKAGES = \[([\s\S]*?)\];/);
-assert.ok(activeDeclaration, 'ACTIVE_RP4_PACKAGES declaration');
-const packages = [...activeDeclaration[1].matchAll(/'([A-Z]{2}-research-v4\.0\.json)'/g)]
-  .map((match) => match[1]);
+const packages = await readActiveRp4Packages();
 const explicitlyHidden = new Set([
   'AR_SPECIALIST_TRANSFER',
   'BR_CORPORATE_EXECUTIVE_RN11','BR_FAMILY_REUNIFICATION',
@@ -27,7 +23,7 @@ const explicitlyHidden = new Set([
 ]);
 
 function countries() {
-  return packages.map((name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), 'utf8')));
+  return packages;
 }
 
 test('approved narrow-route publication exclusions remain nonpublishable', () => {
