@@ -129,6 +129,7 @@ Runtime JS/CSS и динамические data URL используют отд�
 | `18.0.0` | Восемнадцатая активная страна — Ирландия; добавлены IE RP4, Quality of Life и production-активация поверх 17.0.2 с уже действующим Family Coverage contract; учтены недоступность STEP для граждан РФ, multi-source финансирование Study, актуальная family-policy semantics и явные outcomes для взрослых детей 18–25 |
 | `18.0.1` | Исправлен руглиш только в пользовательских русских текстах активных RP4-пакетов и Quality of Life без изменения matching-логики, порогов, структуры данных или внутренних research-полей |
 | `19.0.0` | Девятнадцатая активная страна — Франция; добавлены FR RP4, Quality of Life и production-активация поверх 18.0.1 с Ирландией; уточнены family coverage, самостоятельные route basis, Visitor, долгосрочные пути и ограничения для собак первой категории; финансовые альтернативы одного requirement объединены в один пользовательский пункт |
+| `19.0.1` | Исправлены generic presentation поведения результата: country-level headline для `REQUIRES_SEPARATE_BASIS` стал нейтральным и не дописывает `bestRoute`, включая соседство с `INTERNATIONAL_PROTECTION`/`UNSUITABLE`; прокрутка при переключении страны учитывает sticky-header на desktop/mobile. Matching, statuses, ranking, route cards и access semantics не изменены |
 
 ## Проверка перед merge
 

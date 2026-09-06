@@ -749,7 +749,7 @@ function renderCountryResult(calculation, changed = false, active = false, previ
   const { sortedRoutes, best, countryId, countryName, flag } = countryPresentation(calculation);
   const children = calculation.profile.children?.length || 0;
   const family = `${calculation.profile.adults} ${calculation.profile.adults === 1 ? 'взрослый' : 'взрослых'}${children ? `, ${children} ${children === 1 ? 'ребёнок' : 'детей'}` : ''}`;
-  const { routeLabel } = describeResultIntro(calculation.routes, changed);
+  const { routeLabel, showBestRouteInHeadline } = describeResultIntro(calculation.routes, changed);
   if (!sortedRoutes.length || !best) return `<article id="country-panel-${html(countryId)}" class="country-detail-panel" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${html(routeLabel)}</p></div></div></article>`;
   const incomeCurrency = calculation.country.resultCurrency || 'USD';
   const incomeAmount = calculation.applicantProvableIncome?.amount;
@@ -800,7 +800,10 @@ function renderCountryResult(calculation, changed = false, active = false, previ
         return `<tr data-city-index="${index}" data-size="${city.size || ''}" data-cost="${comparisonCost ?? ''}" data-cold-low="${coldBounds[0] ?? ''}" data-cold-high="${coldBounds[1] ?? coldBounds[0] ?? ''}" data-hot-low="${hotBounds[0] ?? ''}" data-hot-high="${hotBounds[1] ?? hotBounds[0] ?? ''}"><td data-label="Город"><div class="city-name">${html(city.name)}</div><div class="city-role-list">${badges.map((category) => `<span>${html(category)}</span>`).join('')}</div></td><td data-label="Тип города">${html(citySizeLabel(city.size))}</td><td data-label="Расходы в мес" class="city-cost">${comparisonCost == null ? 'Нет данных' : currency(comparisonCost)}</td><td data-label="Холодный сезон">${coldValue == null ? 'Нет данных' : html(formatCityTemperatureRange(coldValue))}</td><td data-label="Жаркий сезон">${hotValue == null ? 'Нет данных' : html(formatCityTemperatureRange(hotValue))}</td></tr>`;
       }).join('')}</tbody></table></div>`
     : '<p>Для этой страны пока нет городской модели.</p>';
-  return `<article id="country-panel-${html(countryId)}" class="country-detail-panel${previewCollapsed ? ' is-preview-collapsed' : ''}" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${routeLabel}: <b>${html(best?.routeName || 'не определён')}</b></p></div></div><div class="country-comparison-body">
+  const headline = showBestRouteInHeadline
+    ? `${html(routeLabel)}: <b>${html(best?.routeName || 'не определён')}</b>`
+    : html(routeLabel);
+  return `<article id="country-panel-${html(countryId)}" class="country-detail-panel${previewCollapsed ? ' is-preview-collapsed' : ''}" role="tabpanel" data-country-panel="${html(countryId)}"${active ? '' : ' hidden'}><div class="country-result-banner"><span class="country-flag" aria-hidden="true">${flag}</span><div class="country-summary-text"><h2>${html(countryName)}</h2><p>${headline}</p></div></div><div class="country-comparison-body">
     <div class="kpi-grid three"><div class="kpi"><span>Состав семьи</span><b>${html(family)}</b></div><div class="kpi"><span>Подтверждаемый доход</span><b>${incomeValue}</b></div><div class="kpi"><span>${thresholdLabel}</span><b>${thresholdValue}</b></div></div>
     <section><div class="section-title-row"><div><h3 data-clarity-unmask="true">Все проверенные варианты</h3></div></div><div class="alternative-routes">${sortedRoutes.map((route) => routeCard(route, countryName, route.routeId === best?.routeId)).join('')}</div></section>
     ${entryBlock}

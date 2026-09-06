@@ -456,7 +456,61 @@ test('local-currency threshold is displayed beside its dynamic USD equivalent', 
   assert.match(text, /90[\s\u00a0]909.*\(USD\)/i);
 });
 
-test('all unsuitable routes are not presented as the best option', () => {
+test('country headline keeps the best-option wording when a suitable route exists', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE' },
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
+  ]);
+  assert.equal(intro.routeLabel, 'Наиболее подходящий вариант по вашим ответам');
+  assert.equal(intro.showBestRouteInHeadline, true);
+});
+
+test('country headline keeps the best-option wording for ordinary suitable-with-conditions routes', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS' },
+    { routeStatus: 'UNSUITABLE' },
+  ]);
+  assert.equal(intro.routeLabel, 'Наиболее подходящий вариант по вашим ответам');
+});
+
+test('country headline uses separate-basis wording when only separate-basis routes remain', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
+  ]);
+  assert.equal(intro.routeLabel, 'Возможные варианты при наличии соответствующего основания');
+  assert.equal(intro.showBestRouteInHeadline, false);
+  assert.doesNotMatch(intro.routeLabel, /Наиболее подходящий вариант по вашим ответам/);
+});
+
+test('country headline uses separate-basis wording for separate-basis plus unsuitable routes', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
+    { routeStatus: 'UNSUITABLE' },
+  ]);
+  assert.equal(intro.routeLabel, 'Возможные варианты при наличии соответствующего основания');
+  assert.equal(intro.showBestRouteInHeadline, false);
+});
+
+test('country headline uses separate-basis wording when international protection also remains', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'REQUIRES_SEPARATE_BASIS' },
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'INTERNATIONAL_PROTECTION' },
+    { routeStatus: 'UNSUITABLE' },
+  ]);
+  assert.equal(intro.routeLabel, 'Возможные варианты при наличии соответствующего основания');
+  assert.equal(intro.showBestRouteInHeadline, false);
+  assert.doesNotMatch(intro.routeLabel, /Наиболее подходящий вариант по вашим ответам/);
+});
+
+test('international-protection-only headline keeps the existing result contract', () => {
+  const intro = describeResultIntro([
+    { routeStatus: 'SUITABLE_WITH_CONDITIONS', presentationGroup: 'INTERNATIONAL_PROTECTION' },
+  ]);
+  assert.equal(intro.routeLabel, 'Наиболее подходящий вариант по вашим ответам');
+  assert.equal(intro.showBestRouteInHeadline, true);
+});
+
+test('all unsuitable routes keep the existing unsuitable-only result contract', () => {
   const intro = describeResultIntro([{ routeStatus: 'UNSUITABLE' }, { routeStatus: 'UNSUITABLE' }]);
   assert.equal(intro.heading, 'Сейчас подходящих вариантов не найдено');
   assert.equal(intro.routeLabel, 'Первый из проверенных неподходящих маршрутов');
@@ -818,6 +872,10 @@ test('result UI shows city comparisons and a human-readable row-based LGBT secti
 
   assert.equal(app.includes('Для выбранного размера города в пакете пока нет отдельной модели'), false);
   assert.match(styles, /\.country-workspace\{display:grid/);
+  assert.match(styles, /:root\{--control-radius:12px;--site-header-height:74px\}/);
+  assert.match(styles, /\.site-header\{height:var\(--site-header-height\)\}/);
+  assert.match(styles, /\.country-workspace\{scroll-margin-top:calc\(var\(--site-header-height\) \+ 16px\)\}/);
+  assert.match(styles, /@media\(max-width:760px\)\{:root\{--site-header-height:68px\}/);
   assert.match(styles, /\.country-tabs\{position:sticky/);
   assert.match(styles, /@media\(max-width:900px\)[\s\S]*overflow-x:auto/);
   assert.equal(app.includes('Ваш бюджет не указан'), false);
@@ -1118,6 +1176,15 @@ test('country navigation omits route names and every route uses native collapsib
   assert.match(cardSource, /Почему не подходит/);
   assert.match(cardSource, /unsuitable \? blockersBlock : body/);
   assert.equal(/if \(unsuitable\)[^\n]*\$\{body\}/.test(cardSource), false);
+});
+
+test('country result omits best-route suffix for separate-basis headline only', async () => {
+  const app = await readFile(new URL('../matcher/app.js', import.meta.url), 'utf8');
+  const resultRenderer = app.slice(app.indexOf('function renderCountryResult'), app.indexOf('function renderQualityOfLife'));
+  assert.match(resultRenderer, /showBestRouteInHeadline/u);
+  assert.ok(resultRenderer.includes("? `${html(routeLabel)}: <b>${html(best?.routeName || 'не определён')}</b>`"));
+  assert.ok(resultRenderer.includes(': html(routeLabel);'));
+  assert.ok(resultRenderer.includes('<p>${headline}</p>'));
 });
 
 test('result UI renders localized methods, entry guidance, duration, and deduplicated work rights', async () => {
