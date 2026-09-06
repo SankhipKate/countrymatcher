@@ -1,0 +1,221 @@
+{
+  "country_id": "IE",
+  "research_date": "2026-09-06",
+  "base_profile_id": "TP_U01",
+  "base_profile_source": "countrymatcher/tests/fixtures/universal-profile-samples-v1.json",
+  "execution_rule_ru": "Каждый input_overrides применяется к полному base profile до вызова evaluateCountry; expected проверяется по route_id.",
+  "profiles": [
+    {
+      "id": "IE_TEST_CSEP_SOLO",
+      "description_ru": "Один заявитель без местной оферты: CSEP должен быть conditional, а не unsuitable.",
+      "input_overrides": {
+        "family.adults_count": 1,
+        "family.partner_included": false,
+        "family.relationship_type": null,
+        "family.children": []
+      },
+      "expected": {
+        "route_id": "IE_CSEP",
+        "status": "SUITABLE_WITH_CONDITIONS"
+      }
+    },
+    {
+      "id": "IE_TEST_STEP_UNAVAILABLE_RU",
+      "description_ru": "STEP существует, но новые заявления граждан РФ не принимаются; route отсутствует в routes[] и coverage = UNAVAILABLE_TO_RU.",
+      "input_overrides": {
+        "citizenships": [
+          "RU"
+        ]
+      },
+      "expected": {
+        "route_coverage_category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+        "coverage_result": "UNAVAILABLE_TO_RU",
+        "route_id_absent": "IE_STEP"
+      }
+    },
+    {
+      "id": "IE_TEST_STUDENT_NO_SAVINGS",
+      "description_ru": "Нулевые собственные сбережения не делают Study unsuitable, потому что официально допустимы sponsor/government/scholarship funding; финансовый requirement остаётся condition.",
+      "input_overrides": {
+        "income.savings.amount": 0,
+        "income.savings.currency": "EUR"
+      },
+      "expected": {
+        "route_id": "IE_STUDY",
+        "status": "SUITABLE_WITH_CONDITIONS",
+        "financial_effect": "CONDITION"
+      }
+    },
+    {
+      "id": "IE_TEST_STUDENT_10000",
+      "description_ru": "Сбережения 10 000 € не снимают необходимость документально подтвердить допустимый источник финансирования и зачисление; route остаётся conditional.",
+      "input_overrides": {
+        "income.savings.amount": 10000,
+        "income.savings.currency": "EUR"
+      },
+      "expected": {
+        "route_id": "IE_STUDY",
+        "status": "SUITABLE_WITH_CONDITIONS"
+      }
+    },
+    {
+      "id": "IE_TEST_GEP_FAMILY",
+      "description_ru": "GEP с партнёром и ребёнком: отражается позднее присоединение после года работы.",
+      "input_overrides": {
+        "family.adults_count": 2,
+        "family.partner_included": true,
+        "family.relationship_type": "MARRIED",
+        "family.children": [
+          {
+            "age_years": 13
+          }
+        ]
+      },
+      "expected": {
+        "route_id": "IE_GEP",
+        "family_timing": "AFTER_INITIAL_RESIDENCE"
+      }
+    },
+    {
+      "id": "IE_TEST_RU_VISA",
+      "description_ru": "Для гражданина РФ ни один origin-country маршрут не считается безвизовым.",
+      "input_overrides": {
+        "citizenships": [
+          "RU"
+        ],
+        "residence.current_country": "PH"
+      },
+      "expected": {
+        "entry_type": "CONSULAR_VISA",
+        "visa_required": true
+      }
+    },
+    {
+      "id": "IE_TEST_STAMP0_FAMILY",
+      "description_ru": "Финансово независимый заявитель с партнёром: сам Stamp 0 не даёт семейного сопровождения, поэтому маршрут оценивается без ложного simultaneous family pass.",
+      "input_overrides": {
+        "family.adults_count": 2,
+        "family.partner_included": true,
+        "family.relationship_type": "REGISTERED_PARTNERSHIP",
+        "income.primary.monthly_provable.amount": 5000,
+        "income.primary.monthly_provable.currency": "EUR"
+      },
+      "expected": {
+        "route_id": "IE_STAMP0_INDEPENDENT",
+        "family_timing": "NOT_AVAILABLE"
+      }
+    },
+    {
+      "id": "IE_TEST_PROTECTION_WORK",
+      "description_ru": "Заявитель международной защиты без решения первой инстанции шесть месяцев: доступ к работе и self-employment остаётся условным до выдачи LMA Permission.",
+      "input_overrides": {
+        "route_specific_answers.IE_PROTECTION.months_without_first_instance_decision": 6,
+        "route_specific_answers.IE_PROTECTION.delay_attributable_to_applicant": false
+      },
+      "expected": {
+        "route_id": "IE_PROTECTION",
+        "work_available_after_months": 6,
+        "status": "SUITABLE_WITH_CONDITIONS"
+      }
+    },
+    {
+      "id": "IE_TEST_PROTECTION_FAMILY",
+      "description_ru": "После предоставления международной защиты семейное воссоединение не считается одновременным: базовое ожидание — 24 месяца.",
+      "input_overrides": {
+        "family.adults_count": 2,
+        "family.partner_included": true,
+        "family.relationship_type": "MARRIED",
+        "route_specific_answers.IE_PROTECTION.status_granted": true
+      },
+      "expected": {
+        "route_id": "IE_PROTECTION",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 24
+      }
+    },
+    {
+      "id": "IE_TEST_CSEP_ADULT_CHILD_18",
+      "description_ru": "CSEP с ребёнком 18 лет: это отдельный dependent-adult path, а не missing family data; базовое ожидание Category B — 24 месяца.",
+      "input_overrides": {
+        "family.children": [
+          {
+            "age_years": 18
+          }
+        ]
+      },
+      "expected": {
+        "route_id": "IE_CSEP",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 24
+      }
+    },
+    {
+      "id": "IE_TEST_CSEP_ADULT_CHILD_25",
+      "description_ru": "CSEP с ребёнком 25 лет остаётся разрешимым в questionnaire domain через тот же условный adult-dependent path; 25 не является legal cutoff.",
+      "input_overrides": {
+        "family.children": [
+          {
+            "age_years": 25
+          }
+        ]
+      },
+      "expected": {
+        "route_id": "IE_CSEP",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 24
+      }
+    },
+    {
+      "id": "IE_TEST_GEP_ADULT_CHILD",
+      "description_ru": "GEP с совершеннолетним dependent child: Category C adult path возникает после пяти лет, а не после годового nuclear-family периода.",
+      "input_overrides": {
+        "family.children": [
+          {
+            "age_years": 19
+          }
+        ]
+      },
+      "expected": {
+        "route_id": "IE_GEP",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 60
+      }
+    },
+    {
+      "id": "IE_TEST_PROTECTION_ADULT_CHILD",
+      "description_ru": "International protection с ребёнком 18+ имеет отдельный statutory dependent-child path после 24 месяцев при применимой dependency/disability condition.",
+      "input_overrides": {
+        "family.children": [
+          {
+            "age_years": 22
+          }
+        ],
+        "route_specific_answers.IE_PROTECTION.status_granted": true
+      },
+      "expected": {
+        "route_id": "IE_PROTECTION",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 24
+      }
+    },
+    {
+      "id": "IE_TEST_FAMILY_DOMAIN_MIXED",
+      "description_ru": "Registered partner и ребёнок 25 лет одновременно: оба questionnaire inputs должны иметь прямой/исследованный family outcome без data-contract gap.",
+      "input_overrides": {
+        "family.adults_count": 2,
+        "family.partner_included": true,
+        "family.relationship_type": "REGISTERED_PARTNERSHIP",
+        "family.children": [
+          {
+            "age_years": 25
+          }
+        ]
+      },
+      "expected": {
+        "route_id": "IE_CSEP",
+        "family_timing": "AFTER_INITIAL_RESIDENCE",
+        "separation_months": 24
+      }
+    }
+  ]
+}
