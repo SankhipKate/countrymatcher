@@ -457,6 +457,16 @@ Official legal rule, researched `practical_financial_guidance` и `practical_scr
 
 Если используется отдельный уже исследованный маршрут, его данные не дублируются: применяется `linked_route_id`. Когда `separate_route_required = true` или `join_stage = SEPARATE_ROUTE`, без `linked_route_id` требуется собственный `member_long_term_path`. Явное `NOT_RESEARCHED` не является blocker пользователя: это блокирующий пробел исследования, и такой маршрут не допускается в пользовательскую выдачу для MVP до закрытия семейной ветки.
 
+### 14.4 Отсутствующий family outcome
+
+Для каждого переезжающего партнёра и каждого ребёнка family resolver обязан найти хотя бы один применимый resolved scenario. Такой scenario даёт обычный family `PASS`, `CONDITION` или `BLOCKER` по правилам настоящего раздела. Явный исследованный `join_stage = NOT_AVAILABLE` с конкретным объяснением и evidence является юридическим family blocker.
+
+Если внутри допустимого domain анкеты применимый scenario отсутствует либо применимый scenario содержит незакрытую семантику `NOT_RESEARCHED`, результат равен `DATA_CONTRACT_PROBLEM`, а не `BLOCKER` и не `UNSUITABLE`. Отсутствие scenario никогда не интерпретируется как неявный `NOT_AVAILABLE`.
+
+Маршрут с `DATA_CONTRACT_PROBLEM` исключается из пользовательского расчёта до исправления Research Package. Если из-за family data-contract problems не остаётся оцениваемых маршрутов, продукт не утверждает, что переезд семьи юридически невозможен. `DATA_CONTRACT_PROBLEM` не преобразуется в `UNSUITABLE`.
+
+Runtime condition для оформления признаваемой формы отношений описывает обработку уже полученных RP4-данных, но сам по себе не доказывает полноту country research. Пока RP4 не имеет отдельного структурированного formalization mapping, validator не переносит coverage между разными значениями `relationship_types`; подтверждение такого перехода остаётся обязательной частью Research -> Canon reconciliation matrix.
+
 ## 15. Международная защита
 
 Международная защита всегда требует индивидуальных обстоятельств и доказательств и не становится `SUITABLE` только из-за гражданства или ЛГБТ-профиля.

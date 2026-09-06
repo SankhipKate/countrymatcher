@@ -6,7 +6,11 @@ One command performs:
 2. Cross-reference and cross-object integrity validation.
 
 Usage:
-    python countrymatcher/data/validate.py path/to/XX-research-v4.0.json
+    python countrymatcher/data/validate-v4.0.py path/to/XX-research-v4.0.json
+    python countrymatcher/data/validate-v4.0.py --family-coverage path/to/XX-research-v4.0.json
+
+The optional family-coverage audit is intentionally not part of the legacy
+integrity gate until active country packages have completed migration.
 
 Exit code 0 = both stages passed; 1 = validation errors; 2 = usage/read/dependency error.
 """
@@ -20,6 +24,12 @@ from typing import Any, Iterable
 
 REQUIRED_CITY_ROLES = {"CAPITAL", "LARGE", "MEDIUM", "SMALL"}
 FINAL_CANON_REVISION = "2026-08-08-final-lock"
+QUESTIONNAIRE_CHILD_AGES = range(0, 26)
+QUESTIONNAIRE_RELATIONSHIP_TYPES = {
+    "MARRIED",
+    "REGISTERED_PARTNERSHIP",
+    "UNREGISTERED_PARTNERSHIP",
+}
 
 
 def load_active_engine_financial_capabilities() -> dict[str, list[str]]:
@@ -774,15 +784,120 @@ def validate_integrity(data: dict[str, Any]) -> list[str]:
 validate = validate_integrity
 
 
+def validate_family_coverage(data: dict[str, Any]) -> list[str]:
+    """Audit family-domain completeness without interpreting legal prose.
+
+    Kept separate from validate_integrity during legacy RP4 migration. The
+    checks operate only on structured scenario/open-item semantics.
+    """
+    errors: list[str] = []
+    open_items = data.get("open_items", [])
+
+    for route in data.get("routes", []):
+        if not isinstance(route, dict):
+            continue
+        route_id = route.get("route_id", "<unknown>")
+        path = f"$.routes[{route_id}].family_scenarios"
+        scenarios = [item for item in route.get("family_scenarios", []) if isinstance(item, dict)]
+        scenario_ids = [item.get("scenario_id") for item in scenarios if isinstance(item.get("scenario_id"), str)]
+        for scenario_id in sorted(duplicates(scenario_ids)):
+            fail(f"{path}: duplicate scenario_id {scenario_id}", errors)
+
+        family_gap_items = [
+            item for item in open_items
+            if isinstance(item, dict)
+            and item.get("block") == "FAMILY"
+            and item.get("related_route_id") == route_id
+            and item.get("blocks_publication") is True
+        ]
+
+        unresolved = []
+        child_covered: set[int] = set()
+        partner_scenarios = []
+
+        for index, scenario in enumerate(scenarios):
+            scenario_path = f"{path}[{index}]"
+            age_min = scenario.get("child_age_min")
+            age_max = scenario.get("child_age_max")
+            if age_min is not None and age_max is not None and age_min > age_max:
+                fail(f"{scenario_path}: child_age_min={age_min} exceeds child_age_max={age_max}", errors)
+
+            is_unresolved = (
+                scenario.get("simultaneous_move") == "NOT_RESEARCHED"
+                or scenario.get("join_stage") == "NOT_RESEARCHED"
+                or scenario.get("separate_route_required") is None
+            )
+            if is_unresolved:
+                unresolved.append(scenario)
+            elif not scenario.get("source_ids"):
+                fail(f"{scenario_path}: resolved family applicability requires non-empty source_ids", errors)
+
+            if scenario.get("join_stage") == "NOT_AVAILABLE":
+                if not str(scenario.get("condition_ru", "")).strip():
+                    fail(f"{scenario_path}: NOT_AVAILABLE requires a non-empty condition_ru", errors)
+                if not scenario.get("source_ids"):
+                    fail(f"{scenario_path}: researched NOT_AVAILABLE requires non-empty source_ids", errors)
+
+            separate_path = scenario.get("separate_route_required") is True or scenario.get("join_stage") == "SEPARATE_ROUTE"
+            if separate_path and not scenario.get("linked_route_id") and scenario.get("member_long_term_path") is None:
+                fail(f"{scenario_path}: separate family path requires linked_route_id or member_long_term_path", errors)
+
+            applies_to = scenario.get("applies_to")
+            if applies_to in {"CHILD", "PARTNER_AND_CHILDREN"} and not (
+                age_min is not None and age_max is not None and age_min > age_max
+            ):
+                lower = 0 if age_min is None else age_min
+                upper = 25 if age_max is None else age_max
+                child_covered.update(age for age in QUESTIONNAIRE_CHILD_AGES if lower <= age <= upper)
+            if applies_to in {"PARTNER", "PARTNER_AND_CHILDREN"}:
+                partner_scenarios.append(scenario)
+                if not isinstance(scenario.get("relationship_types"), list):
+                    fail(f"{scenario_path}: partner-applicable scenario requires structured relationship_types", errors)
+
+        missing_ages = sorted(set(QUESTIONNAIRE_CHILD_AGES) - child_covered)
+        if missing_ages:
+            fail(f"{path}: uncovered questionnaire child ages {missing_ages}", errors)
+
+        missing_relationships = []
+        for relationship_type in sorted(QUESTIONNAIRE_RELATIONSHIP_TYPES):
+            resolved = False
+            for scenario in partner_scenarios:
+                relationship_types = scenario.get("relationship_types")
+                if not isinstance(relationship_types, list):
+                    continue
+                if relationship_type in relationship_types:
+                    resolved = True
+                    break
+            if not resolved:
+                missing_relationships.append(relationship_type)
+        if missing_relationships:
+            fail(f"{path}: relationship inputs have no structured outcome {missing_relationships}", errors)
+
+        if route.get("publishable") is True and (missing_ages or missing_relationships):
+            fail(f"{path}: publishable route has unresolved family coverage", errors)
+
+        if unresolved and not family_gap_items:
+            fail(
+                f"{path}: NOT_RESEARCHED/unresolved family scenario requires a route-specific "
+                "blocking FAMILY open_item",
+                errors,
+            )
+        if unresolved and route.get("publishable") is True:
+            fail(f"{path}: publishable route has unresolved family coverage", errors)
+
+    return errors
+
+
 def main() -> int:
-    if len(sys.argv) != 2:
+    family_coverage = len(sys.argv) == 3 and sys.argv[1] == "--family-coverage"
+    if (family_coverage and len(sys.argv) != 3) or (not family_coverage and len(sys.argv) != 2):
         print(
-            "Usage: python countrymatcher/data/validate.py path/to/XX-research-v4.0.json",
+            "Usage: python countrymatcher/data/validate-v4.0.py [--family-coverage] path/to/XX-research-v4.0.json",
             file=sys.stderr,
         )
         return 2
 
-    path = Path(sys.argv[1])
+    path = Path(sys.argv[2] if family_coverage else sys.argv[1])
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except Exception as exc:
@@ -815,6 +930,14 @@ def main() -> int:
         return 1
 
     print("Integrity validation PASS")
+    if family_coverage:
+        family_errors = validate_family_coverage(data)
+        if family_errors:
+            print(f"Family coverage audit FAILED: {len(family_errors)} error(s)")
+            for error in family_errors:
+                print(f"- {error}")
+            return 1
+        print("Family coverage audit PASS")
     return 0
 
 
