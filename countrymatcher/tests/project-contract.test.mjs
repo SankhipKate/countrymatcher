@@ -36,9 +36,9 @@ async function activeRp4CountryNames() {
   return manifest.map(({ name }) => name);
 }
 
-test('repository has one application folder, one backlog, one source-document folder, and the root verifier', async () => {
+test('repository has the documented root structure', async () => {
   const visible = (await readdir(repositoryRoot)).filter((name) => !name.startsWith('.')).sort();
-  assert.deepEqual(visible, ['countrymatcher', 'research-backlog', 'source-documents', 'verify']);
+  assert.deepEqual(visible, ['README.md', 'countrymatcher', 'research-backlog', 'source-documents', 'verify']);
   const appChildren = await readdir(appRoot);
   assert.equal(appChildren.includes('research-backlog'), false);
   assert.equal(appChildren.includes('source-documents'), false);
