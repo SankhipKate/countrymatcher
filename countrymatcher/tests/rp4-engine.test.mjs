@@ -472,6 +472,14 @@ test('Uruguay general residence family paths stay separate from applicant-only f
     ['UY_PROTECTION', 'UY_PROTECTION_FAM', 'PARTNER_AND_CHILDREN', ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP']],
     ['UY_HUMANITARIAN', 'UY_HUMANITARIAN_FAM', 'PARTNER_AND_CHILDREN', ['MARRIED', 'REGISTERED_PARTNERSHIP', 'UNREGISTERED_PARTNERSHIP']],
   ]);
+
+  for (const routeId of ['UY_PERMANENT_COMMON', 'UY_TEMP_WORK', 'UY_TEMP_STUDY', 'UY_TEMP_SPECIALIST']) {
+    const scenarios = uruguay.routes.find(({ route_id }) => route_id === routeId).family_scenarios;
+    assert.ok(scenarios.some(({ applies_to, relationship_types }) => applies_to === 'PARTNER'
+      && relationship_types?.includes('UNREGISTERED_PARTNERSHIP')), routeId);
+    assert.ok(scenarios.some(({ applies_to, child_age_min, child_age_max }) => applies_to === 'CHILD'
+      && child_age_min === 18 && child_age_max === 25), routeId);
+  }
 });
 
 test('country entry facts reach calculation without changing route statuses', () => {

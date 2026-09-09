@@ -366,6 +366,37 @@
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
           ]
+        },
+        {
+          "scenario_id": "FR_VISITOR_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -609,6 +640,37 @@
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
           ]
+        },
+        {
+          "scenario_id": "FR_VISITOR_SPONSOR_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -829,6 +891,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
+          ]
+        },
+        {
+          "scenario_id": "FR_EMPLOYEE_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -1080,6 +1173,37 @@
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
           ]
+        },
+        {
+          "scenario_id": "FR_BLUE_CARD_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1289,6 +1413,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
+          ]
+        },
+        {
+          "scenario_id": "FR_ICT_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -1555,6 +1710,37 @@
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
           ]
+        },
+        {
+          "scenario_id": "FR_SELF_EMPLOYED_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1799,6 +1985,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
+          ]
+        },
+        {
+          "scenario_id": "FR_TALENT_INVESTOR_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -2088,6 +2305,37 @@
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
           ]
+        },
+        {
+          "scenario_id": "FR_STUDENT_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -2344,6 +2592,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
+          ]
+        },
+        {
+          "scenario_id": "FR_FAMILY_REUNIFICATION_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -2863,6 +3142,37 @@
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
           ]
+        },
+        {
+          "scenario_id": "FR_TALENT_QUALIFIED_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -3113,6 +3423,37 @@
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
           ]
+        },
+        {
+          "scenario_id": "FR_TALENT_INNOVATIVE_EMP_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -3336,6 +3677,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
+          ]
+        },
+        {
+          "scenario_id": "FR_TALENT_RESEARCHER_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -3621,6 +3993,37 @@
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
           ]
+        },
+        {
+          "scenario_id": "FR_TALENT_BUSINESS_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -3858,6 +4261,37 @@
           "source_ids": [
             "FR_SRC_TALENT_FAMILY"
           ]
+        },
+        {
+          "scenario_id": "FR_TALENT_MEDICAL_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_TALENT_FAMILY",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -4055,6 +4489,37 @@
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
           ]
+        },
+        {
+          "scenario_id": "FR_STUDENT_TRAINEE_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -4248,6 +4713,37 @@
           "condition_ru": "Ребёнок 18 лет и старше не входит в категорию несовершеннолетних детей по этому семейному механизму и должен иметь собственное основание для переезда и пребывания во Франции.",
           "source_ids": [
             "FR_SRC_FAMILY_REUNIFICATION"
+          ]
+        },
+        {
+          "scenario_id": "FR_VOLUNTEER_PRIVATE_FAMILY_TIES_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Семейный статус зависит от основания основного держателя.",
+            "renewal_ru": "Продлевается при сохранении семейной связи и условий основного статуса.",
+            "years_to_pr": 5,
+            "years_to_citizenship": 5,
+            "renunciation_required": false,
+            "source_ids": [
+              "FR_SRC_FAMILY_REUNIFICATION",
+              "FR_SRC_LONG_TERM"
+            ]
+          },
+          "condition_ru": "Если пара не оформляет признаваемый брак, PACS или подтверждённое фактическое партнёрство не приравнивается автоматически к супругу в основном family route; возможен отдельный последующий путь по личным и семейным связям после индивидуальной оценки устойчивости связи и жизни во Франции.",
+          "source_ids": [
+            "FR_SRC_PRIVATE_FAMILY_TIES"
           ]
         }
       ],
@@ -4489,13 +4985,13 @@
       ],
       "climate": {
         "category_ru": "Умеренный переходный с континентальным влиянием",
-        "cold_min_c": 1.0,
-        "cold_max_c": 7.0,
+        "cold_min_c": 1,
+        "cold_max_c": 7,
         "cold_months": [
           1
         ],
-        "hot_min_c": 17.0,
-        "hot_max_c": 28.0,
+        "hot_min_c": 17,
+        "hot_max_c": 28,
         "hot_months": [
           7
         ],
@@ -4577,13 +5073,13 @@
       ],
       "climate": {
         "category_ru": "Мягкий океанический",
-        "cold_min_c": 3.0,
-        "cold_max_c": 9.0,
+        "cold_min_c": 3,
+        "cold_max_c": 9,
         "cold_months": [
           1
         ],
-        "hot_min_c": 15.0,
-        "hot_max_c": 25.0,
+        "hot_min_c": 15,
+        "hot_max_c": 25,
         "hot_months": [
           7
         ],
