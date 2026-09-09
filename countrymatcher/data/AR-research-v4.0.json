@@ -350,6 +350,70 @@
             "AR_DNV",
             "AR_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "AR_NOMAD_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_DNV",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_DNV",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_NOMAD_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_DNV",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -546,6 +610,70 @@
           "source_ids": [
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_RENT_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_RENT_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
           ]
         }
       ],
@@ -773,6 +901,70 @@
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "AR_PENS_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_PENS_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -953,6 +1145,70 @@
           "source_ids": [
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_WORKER_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_WORKER_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
           ]
         }
       ],
@@ -1150,6 +1406,70 @@
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "AR_SPEC_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_SPEC_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1330,6 +1650,70 @@
           "source_ids": [
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_STUDY_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_STUDY_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
           ]
         }
       ],
@@ -1513,6 +1897,70 @@
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "AR_FAMILY_DERIV_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_FAMILY_DERIV_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1693,6 +2141,70 @@
           "source_ids": [
             "AR_FAMILY",
             "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_HUM_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный путь при подтверждённой инвалидности; возраст сам по себе права на семейную резиденцию не создаёт.",
+          "source_ids": [
+            "AR_FAMILY",
+            "AR_MIGRATION_LAW"
+          ]
+        },
+        {
+          "scenario_id": "AR_HUM_FAM_UNREGISTERED_FORMALIZATION",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": true,
+          "linked_route_id": "AR_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи должен иметь собственное законное миграционное основание или использовать применимый семейный маршрут.",
+            "renewal_ru": "Продление зависит от собственного основания члена семьи.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 2,
+            "renunciation_required": null,
+            "source_ids": [
+              "AR_FAMILY",
+              "AR_MIGRATION_LAW",
+              "AR_PR",
+              "AR_CITIZENSHIP_DNU"
+            ]
+          },
+          "condition_ru": "Для семейного миграционного основания незарегистрированное партнёрство должно быть формализовано как юридически признаваемая unión convivencial и подтверждено установленными документами.",
+          "source_ids": [
+            "AR_MIGRATION_LAW",
+            "AR_FAMILY"
           ]
         }
       ],
@@ -2044,7 +2556,11 @@
         {
           "scenario_id": "AR_INV_FAM",
           "applies_to": "PARTNER_AND_CHILDREN",
-          "relationship_types": null,
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
           "child_age_min": null,
           "child_age_max": null,
           "simultaneous_move": "NOT_RESEARCHED",
@@ -2575,6 +3091,15 @@
       "blocks_publication": false,
       "missing_ru": "Для отображаемых городов не подтверждена полная базовая корзина RENT_STANDARD, GROCERIES, UTILITIES и TRANSPORT: отсутствует сопоставимый компонент GROCERIES.",
       "handling_ru": "Считать отсутствующий компонент непрепятствующим публикации исследовательским пробелом. Сравнивать все отображаемые города по единому пересечению сопоставимых компонентов: если компонент отсутствует хотя бы в одном городе, исключать его из общего сравнения без подстановки нуля или интерполяции."
+    },
+    {
+      "item_id": "AR_GAP_INVESTOR_FAMILY_COVERAGE",
+      "block": "FAMILY",
+      "priority": "HIGH",
+      "related_route_id": "AR_INVESTOR_HIDDEN",
+      "blocks_publication": true,
+      "missing_ru": "Для скрытого инвесторского маршрута не исследовано полное покрытие партнёров и детей в domain действующей анкеты.",
+      "handling_ru": "Сохранить маршрут publishable=false и провести отдельное исследование после подтверждения действующей инвесторской процедуры."
     }
   ],
   "completeness": {
@@ -2599,8 +3124,10 @@
       },
       {
         "block": "FAMILY",
-        "status": "COMPLETE",
-        "open_item_ids": []
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "AR_GAP_INVESTOR_FAMILY_COVERAGE"
+        ]
       },
       {
         "block": "WORK_RIGHTS",

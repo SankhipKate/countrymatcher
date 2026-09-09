@@ -424,6 +424,46 @@
             "UY_SRC_01",
             "UY_SRC_07"
           ]
+        },
+        {
+          "scenario_id": "UY_PERMANENT_COMMON_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_PERMANENT_COMMON_UNREGISTERED_CONCUBINAGE",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Незарегистрированная пара должна подтвердить признаваемое уругвайским правом concubinato и требуемые факты совместной жизни.",
+          "source_ids": [
+            "UY_SRC_01",
+            "UY_SRC_07"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -667,6 +707,46 @@
           "separation_months_max": null,
           "member_long_term_path": null,
           "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_WORK_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_WORK_UNREGISTERED_CONCUBINAGE",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Незарегистрированная пара должна подтвердить признаваемое уругвайским правом concubinato и требуемые факты совместной жизни.",
           "source_ids": [
             "UY_SRC_02",
             "UY_SRC_07"
@@ -947,6 +1027,46 @@
             "UY_SRC_02",
             "UY_SRC_07"
           ]
+        },
+        {
+          "scenario_id": "UY_TEMP_STUDY_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_STUDY_UNREGISTERED_CONCUBINAGE",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Незарегистрированная пара должна подтвердить признаваемое уругвайским правом concubinato и требуемые факты совместной жизни.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_07"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1155,6 +1275,48 @@
           "separation_months_max": null,
           "member_long_term_path": null,
           "condition_ru": "Несовершеннолетний имеет семейный путь временной резиденции, связанный с подходящим родственником; требуется отдельное заявление и выполнение процедурных и документальных требований.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_SPECIALIST_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
+          "source_ids": [
+            "UY_SRC_02",
+            "UY_SRC_06",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_TEMP_SPECIALIST_UNREGISTERED_CONCUBINAGE",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Незарегистрированная пара должна подтвердить признаваемое уругвайским правом concubinato и требуемые факты совместной жизни.",
           "source_ids": [
             "UY_SRC_02",
             "UY_SRC_06",
@@ -1441,6 +1603,36 @@
             "UY_SRC_04",
             "UY_SRC_05"
           ]
+        },
+        {
+          "scenario_id": "UY_DIGITAL_NOMAD_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": null,
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Член семьи оформляет собственный применимый законный статус; конкретное основание определяется его обстоятельствами.",
+            "renewal_ru": "Продление зависит от требований выбранного членом семьи собственного основания; сроки PR и citizenship определяются этим конкретным маршрутом.",
+            "years_to_pr": null,
+            "years_to_citizenship": null,
+            "renunciation_required": null,
+            "source_ids": [
+              "UY_SRC_04",
+              "UY_SRC_05"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
+          "source_ids": [
+            "UY_SRC_04",
+            "UY_SRC_05",
+            "UY_SRC_07"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1592,6 +1784,25 @@
           "separation_months_max": null,
           "member_long_term_path": null,
           "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
+          "source_ids": [
+            "UY_SRC_09",
+            "UY_SRC_07"
+          ]
+        },
+        {
+          "scenario_id": "UY_PERMANENT_URUGUAYAN_LINK_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
           "source_ids": [
             "UY_SRC_09",
             "UY_SRC_07"
@@ -1766,7 +1977,7 @@
             "UNREGISTERED_PARTNERSHIP"
           ],
           "child_age_min": 0,
-          "child_age_max": 17,
+          "child_age_max": null,
           "simultaneous_move": "CONDITIONAL",
           "separate_route_required": false,
           "linked_route_id": null,
@@ -1979,6 +2190,25 @@
           "separation_months_max": null,
           "member_long_term_path": null,
           "condition_ru": "Члены семьи оформляют собственные заявления/семейные основания; одновременность зависит от подтверждения связи и требований процедуры.",
+          "source_ids": [
+            "UY_SRC_07",
+            "UY_SRC_08"
+          ]
+        },
+        {
+          "scenario_id": "UY_HUMANITARIAN_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет входит в семейный domain при подтверждённой инвалидности и предусмотренной законом зависимости.",
           "source_ids": [
             "UY_SRC_07",
             "UY_SRC_08"
