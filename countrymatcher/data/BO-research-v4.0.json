@@ -1,0 +1,3306 @@
+{
+  "schema_version": "4.0",
+  "canon_revision": "2026-08-08-final-lock",
+  "country_id": "BO",
+  "country_name_ru": "Боливия",
+  "research_date": "2026-09-07",
+  "review_schedule": {
+    "entry_consular_next_review": "2026-12-06",
+    "migration_rules_next_review": "2026-12-06",
+    "financial_costs_next_review": "2026-10-06",
+    "taxes_next_review": "2026-12-06",
+    "lgbt_legal_next_review": "2026-12-06",
+    "lgbt_practical_next_review": "2026-12-06",
+    "schools_pets_next_review": "2026-12-06",
+    "climate_next_review": "2027-09-06"
+  },
+  "country_currency": "BOB",
+  "country_summary_ru": "Для граждан РФ Боливия допускает безвизовый въезд и последующую подачу внутри страны. Основные долгосрочные варианты — работа по найму, самостоятельная доходная деятельность, учёба и международная защита при индивидуальном основании. Семья использует отдельную последующую процедуру t27/t28.",
+  "route_coverage": [
+    {
+      "category": "DIGITAL_NOMAD_REMOTE_WORK",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельного разрешения для цифрового кочевника нет; t23 не подтверждает исключительно иностранную удалённую работу.",
+      "source_ids": [
+        "BO_MIGRATION_REGULATION",
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "INCOME_FINANCIALLY_INDEPENDENT",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Финансовая состоятельность является доказательством, но не самостоятельным основанием проживания.",
+      "source_ids": [
+        "BO_MIGRATION_LAW",
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "RETIREMENT",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельной пенсионной резиденции нет.",
+      "source_ids": [
+        "BO_MIGRATION_LAW",
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "LOCAL_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_EMPLOYED_WORK"
+      ],
+      "explanation_ru": "Действует t22 для оплачиваемой работы по найму.",
+      "source_ids": [
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "HIGHLY_QUALIFIED_SPECIALIST",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельной специальной категории нет; применяется общий рабочий маршрут.",
+      "source_ids": [
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "INTRA_COMPANY_TRANSFER",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Отдельный общий ICT-маршрут не подтверждён; специализированные соглашения сохранены в скрытом inventory.",
+      "source_ids": [
+        "BO_MIGRATION_REGULATION",
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_SELF_EMPLOYED_WORK"
+      ],
+      "explanation_ru": "Действует t23 для доходной деятельности без трудовой зависимости.",
+      "source_ids": [
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "INVESTMENT",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Business multiple visa не является видом на жительство или residence-by-investment.",
+      "source_ids": [
+        "BO_MIGRATION_REGULATION"
+      ]
+    },
+    {
+      "category": "STUDY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_STUDY"
+      ],
+      "explanation_ru": "Действуют t29/t30 для обучения на 1–3 года.",
+      "source_ids": [
+        "BO_DIGEMIG_RU"
+      ]
+    },
+    {
+      "category": "FAMILY",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_FAMILY"
+      ],
+      "explanation_ru": "Действуют отдельные t27/t28 для взрослого и несовершеннолетнего родственника.",
+      "source_ids": [
+        "BO_DIGEMIG_RU",
+        "BO_SERECI_UNION"
+      ]
+    },
+    {
+      "category": "GENERAL_RESIDENCE",
+      "result": "NO_ROUTE",
+      "linked_route_ids": [],
+      "explanation_ru": "Первоначальная временная резиденция требует конкретного основания; definitive residence является последующей стадией.",
+      "source_ids": [
+        "BO_MIGRATION_LAW",
+        "BO_MIGRATION_REGULATION"
+      ]
+    },
+    {
+      "category": "INTERNATIONAL_PROTECTION",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_INTERNATIONAL_PROTECTION"
+      ],
+      "explanation_ru": "Ley 251 регулирует индивидуальную процедуру защиты.",
+      "source_ids": [
+        "BO_REFUGEE_LAW"
+      ]
+    },
+    {
+      "category": "OTHER",
+      "result": "ROUTE_EXISTS",
+      "linked_route_ids": [
+        "BO_HEALTH_HUMANITARIAN",
+        "BO_AGREEMENT_RELIGIOUS_WORK",
+        "BO_SHORT_BUSINESS_TRANSITORY"
+      ],
+      "explanation_ru": "Существуют узкие медицинские, гуманитарные, религиозные и краткосрочные категории.",
+      "source_ids": [
+        "BO_MIGRATION_REGULATION",
+        "BO_DIGEMIG_RU"
+      ]
+    }
+  ],
+  "entry_for_russian_citizen": {
+    "entry_type": "VISA_FREE",
+    "visa_required": false,
+    "rule_ru": "Обычный российский паспорт позволяет въезд без визы до 90 календарных дней в каждом периоде 180 дней; для проживания оформляется соответствующий статус.",
+    "authorization_validity_days": null,
+    "maximum_stay_days": 90,
+    "processing_time_ru": null,
+    "source_ids": [
+      "BO_RU_ENTRY"
+    ]
+  },
+  "routes": [
+    {
+      "route_id": "BO_EMPLOYED_WORK",
+      "name_ru": "Временная резиденция по работе по найму",
+      "official_term_ru": "Permanencia temporal por trabajo con relación de dependencia laboral",
+      "route_type": "LOCAL_EMPLOYMENT",
+      "covers_categories": [
+        "LOCAL_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Работа в Боливии по приглашению, трудовому либо гражданскому договору с подходящей организацией.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BO_EMP_BASIS",
+          "type": "EMPLOYMENT_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Получить приглашение от боливийской организации либо подходящий трудовой/гражданский договор и документы работодателя.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "BO_EMP_SOLVENCY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": 3,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BO_DIGEMIG_RU"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Официальные материалы требуют доказательства финансовой состоятельности, но отдельный практический поиск не выявил устойчивого универсального числового ориентира для этого маршрута.",
+                  "figures": [],
+                  "disclaimer_ru": "Не превращать стоимость жизни, остаток на счёте в отдельном деле или неофициальную рекомендацию посредника в миграционный порог: решение принимается по документам конкретного заявителя."
+                }
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "ONE_TIME",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": 3,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BO_DIGEMIG_RU"
+                ],
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Официальные материалы требуют доказательства финансовой состоятельности, но отдельный практический поиск не выявил устойчивого универсального числового ориентира для этого маршрута.",
+                  "figures": [],
+                  "disclaimer_ru": "Не превращать стоимость жизни, остаток на счёте в отдельном деле или неофициальную рекомендацию посредника в миграционный порог: решение принимается по документам конкретного заявителя."
+                }
+              }
+            ]
+          },
+          "condition_ru": "Подтвердить финансовую состоятельность выписками за последние три месяца, договором, доходом от аренды/продажи либо иными связанными документами; фиксированного порога нет.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 1,
+        "official_rule_ru": "Официальный срок — 24 часа после подачи полного комплекта; подготовка, легализация и получение документов в этот срок не входят.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача через Estado Digital ED-9 либо лично в департаментской администрации DIGEMIG после законного въезда.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_EMP_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_EMP_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_EMP_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_EMP_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_EMP_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах одобренного рабочего основания.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция на 1, 2 или 3 года в зависимости от выбранного срока и подтверждённой деятельности.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении основания; после трёх лет можно выбрать definitive residence либо новую временную процедуру.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Постоянная резиденция доступна после трёх лет временной резиденции по подходящему рабочему основанию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Общая натурализация требует более трёх лет непрерывного законного проживания, подтверждаемой деятельности и экзамена.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_DIGEMIG_RU"
+    },
+    {
+      "route_id": "BO_SELF_EMPLOYED_WORK",
+      "name_ru": "Временная резиденция для самостоятельной доходной деятельности",
+      "official_term_ru": "Permanencia temporal por trabajo sin relación de dependencia laboral",
+      "route_type": "ENTREPRENEURSHIP_SELF_EMPLOYMENT",
+      "covers_categories": [
+        "ENTREPRENEURSHIP_SELF_EMPLOYMENT"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Доходная деятельность без трудовой зависимости, заявленная и осуществляемая в Боливии.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BO_SELF_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Подать декларацию с описанием доходной деятельности, места её осуществления и предполагаемого срока пребывания.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "BO_SELF_SOLVENCY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": 3,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BO_DIGEMIG_RU"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Официальные материалы требуют доказательства финансовой состоятельности, но отдельный практический поиск не выявил устойчивого универсального числового ориентира для этого маршрута.",
+                  "figures": [],
+                  "disclaimer_ru": "Не превращать стоимость жизни, остаток на счёте в отдельном деле или неофициальную рекомендацию посредника в миграционный порог: решение принимается по документам конкретного заявителя."
+                }
+              },
+              {
+                "kind": "SAVINGS",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "ONE_TIME",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": 3,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BO_DIGEMIG_RU"
+                ],
+                "confidence": "HIGH",
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Официальные материалы требуют доказательства финансовой состоятельности, но отдельный практический поиск не выявил устойчивого универсального числового ориентира для этого маршрута.",
+                  "figures": [],
+                  "disclaimer_ru": "Не превращать стоимость жизни, остаток на счёте в отдельном деле или неофициальную рекомендацию посредника в миграционный порог: решение принимается по документам конкретного заявителя."
+                }
+              }
+            ]
+          },
+          "condition_ru": "Подтвердить финансовую состоятельность допустимыми документами; фиксированного порога нет.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 1,
+        "official_rule_ru": "Официальный срок — 24 часа после подачи полного комплекта; подготовка, легализация и получение документов в этот срок не входят.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача через Estado Digital ED-9 либо лично в департаментской администрации DIGEMIG после законного въезда.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_SELF_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SELF_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SELF_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SELF_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_SELF_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах заявленной доходной деятельности.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция на 1, 2 или 3 года в зависимости от выбранного срока и подтверждённой деятельности.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении основания; после трёх лет можно выбрать definitive residence либо новую временную процедуру.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Постоянная резиденция доступна после трёх лет временной резиденции по подходящему рабочему основанию.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Общая натурализация требует более трёх лет непрерывного законного проживания, подтверждаемой деятельности и экзамена.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_DIGEMIG_RU"
+    },
+    {
+      "route_id": "BO_STUDY",
+      "name_ru": "Временная студенческая резиденция",
+      "official_term_ru": "Permanencia temporal para estudiantes de 1, 2 o 3 años",
+      "route_type": "STUDY",
+      "covers_categories": [
+        "STUDY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Обучение в признанном образовательном учреждении Боливии.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BO_STUDY_BASIS",
+          "type": "STUDY_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Получить и подтвердить зачисление или обучение в подходящем учреждении.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        },
+        {
+          "requirement_id": "BO_STUDY_SOLVENCY",
+          "type": "FINANCIAL",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "DISPLAY_ONLY",
+          "unmet_effect": "NONE",
+          "financial": {
+            "model": "INCOME_OR_SAVINGS",
+            "alternatives": [
+              {
+                "kind": "INCOME",
+                "asked_in_questionnaire": false,
+                "amount": null,
+                "currency": null,
+                "period": "MONTHLY",
+                "comparison": "NO_FIXED_THRESHOLD",
+                "history_months": null,
+                "allowed_income_types": null,
+                "source_geography": "ANY",
+                "family_formula_ru": null,
+                "source_ids": [
+                  "BO_DIGEMIG_RU"
+                ],
+                "confidence": "HIGH",
+                "income_owners": [
+                  "APPLICANT"
+                ],
+                "practical_financial_guidance": {
+                  "evaluation_mode": "DISPLAY_ONLY",
+                  "status": "NOT_FOUND",
+                  "summary_ru": "Официальные материалы требуют доказательства финансовой состоятельности, но отдельный практический поиск не выявил устойчивого универсального числового ориентира для этого маршрута.",
+                  "figures": [],
+                  "disclaimer_ru": "Не превращать стоимость жизни, остаток на счёте в отдельном деле или неофициальную рекомендацию посредника в миграционный порог: решение принимается по документам конкретного заявителя."
+                }
+              }
+            ]
+          },
+          "condition_ru": "Подтвердить финансовую состоятельность без фиксированного числового порога.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": 1,
+        "official_rule_ru": "Официальный срок — 24 часа после подачи полного комплекта; подготовка, легализация и получение документов в этот срок не входят.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача через ED-9 или лично после законного въезда и при наличии документов об обучении.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_STUDY_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_STUDY_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_STUDY_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_STUDY_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_STUDY_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция на 1, 2 или 3 года в зависимости от выбранного срока и подтверждённой деятельности.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении основания; после трёх лет можно выбрать definitive residence либо новую временную процедуру.",
+        "pr_path_status": "REQUIRES_CHANGE_OF_BASIS",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Учебная категория сама по себе не ведёт к definitive residence; нужен переход на подходящее основание.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Хотя учебная резиденция не даёт права на постоянную резиденцию, статья 20 DS Nº1923 допускает натурализацию после более чем трёх лет непрерывной временной резиденции; требуется подтвердить законный непрерывный статус, деятельность и выполнить остальные условия.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_DIGEMIG_RU"
+    },
+    {
+      "route_id": "BO_INTERNATIONAL_PROTECTION",
+      "name_ru": "Международная защита в Боливии",
+      "official_term_ru": "Solicitud de reconocimiento de la condición de persona refugiada",
+      "route_type": "INTERNATIONAL_PROTECTION",
+      "is_humanitarian": true,
+      "covers_categories": [
+        "INTERNATIONAL_PROTECTION"
+      ],
+      "route_subtype_ru": "Refugee protection under Ley Nº251",
+      "basis_ru": "Индивидуальный обоснованный риск, соответствующий определению беженца; гражданство РФ само по себе не создаёт права.",
+      "publishable": true,
+      "requirements": [
+        {
+          "requirement_id": "BO_PROTECTION_BASIS",
+          "type": "PROTECTION_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Подтвердить индивидуальные факты и риск, соответствующие Ley 251.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Единый срок окончательного решения не установлен; временный документ выдаётся на 60 дней и продлевается до решения.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_REFUGEE_LAW"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "ANY",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Ley 251 запрещает наказывать заявителя за нерегулярный въезд или присутствие и обеспечивает доступ к процедуре.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Заявление подаётся письменно в Боливии в течение 90 дней после въезда; позднюю подачу CONARE может принять как исключение.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_PROTECTION_PARTNER",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED",
+            "REGISTERED_PARTNERSHIP",
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Ley 251 распространяет семейное единство на супруга или conviviente при отсутствии индивидуального основания исключения.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        {
+          "scenario_id": "BO_PROTECTION_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Заявление регистрирует семью и dependants; защита распространяется на потомков и детей под опекой при применимости закона.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        {
+          "scenario_id": "BO_PROTECTION_CHILD_ADULT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний потомок или подопечный оценивается по family-unity rule и фактической зависимости/опеке; автоматического результата только из возраста нет.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах одобренного рабочего основания.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах заявленной доходной деятельности.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах одобренного рабочего основания.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "self_employment": {
+          "status": "ALLOWED",
+          "available_after_months": null,
+          "rule_ru": "Разрешена в пределах заявленной доходной деятельности.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "CONDITIONAL",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_REFUGEE_LAW"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 2,
+        "initial_status_ru": "Временный документ заявителя действует 60 дней и продлевается; после признания предоставляется бессрочное пребывание и иностранная ID-карта на 5 лет.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": 2,
+        "renewal_ru": "Документ заявителя продлевается на 60 дней до решения; ID признанного беженца продлевается каждые 5 лет.",
+        "pr_path_status": "DIRECT",
+        "years_to_pr": 0,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Признанный беженец получает бессрочное пребывание непосредственно, без обычного перехода к definitive residence.",
+        "citizenship_path_status": "CONDITIONAL",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "CONDITIONAL",
+        "citizenship_path_ru": "CONARE содействует натурализации; применяется отдельная процедура и актуальные требования к непрерывности.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Выезд требует уведомления CONARE; возвращение в страну происхождения и получение её защиты могут повлиять на статус.",
+        "language_requirements_ru": "Для защиты отдельного языкового требования нет.",
+        "source_ids": [
+          "BO_REFUGEE_LAW",
+          "BO_CONSTITUTION"
+        ]
+      },
+      "protection_details": {
+        "protection_types_ru": "Статус беженца и временное документирование заявителя по Ley 251.",
+        "recognized_grounds_ru": "Преследование по расе, религии, национальности, социальной группе или политическим взглядам, а также расширенное региональное определение.",
+        "individual_risk_rule_ru": "Решение индивидуально; российское гражданство или ЛГБТ-идентичность сами по себе не гарантируют признание.",
+        "protected_ground_link_ru": "Риск должен соответствовать одному из оснований или расширенному определению Ley 251.",
+        "evidence_rule_ru": "Заявитель представляет доступные доказательства; CONARE оценивает факты и достоверность, применяя benefit of doubt когда допустимо.",
+        "admissibility_ru": "Письменная подача обычно в течение 90 дней после въезда; исключения оценивает CONARE.",
+        "safe_third_country_ru": "Автоматический вывод Country Matcher о безопасной третьей стране не делается.",
+        "previous_applications_ru": "Предыдущие обращения и статусы раскрываются и оцениваются в индивидуальном деле.",
+        "right_to_remain_during_processing_ru": "Временный документ обеспечивает законное пребывание заявителю, семье и dependants до решения.",
+        "reception_housing_ru": "Универсальная гарантия отдельного жилья каждому заявителю законом не установлена.",
+        "assistance_ru": "Доступна административная помощь; конкретный объём материальной поддержки зависит от программ и обстоятельств.",
+        "healthcare_ru": "Временный документ даёт право на образование, здоровье и работу.",
+        "appeal_ru": "Отказ обжалуется в течение 15 рабочих дней; решение комиссии по обжалованию выносится в срок до 15 рабочих дней.",
+        "status_after_positive_decision_ru": "Признанный беженец получает бессрочное пребывание и пятилетний возобновляемый документ личности.",
+        "source_ids": [
+          "BO_REFUGEE_LAW"
+        ]
+      },
+      "official_source_id": "BO_REFUGEE_LAW"
+    },
+    {
+      "route_id": "BO_FAMILY",
+      "name_ru": "Отдельная семейная временная резиденция",
+      "official_term_ru": "Отдельная семейная временная резиденция",
+      "route_type": "FAMILY",
+      "covers_categories": [
+        "FAMILY"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "t27/t28 требуют родства, брака/признанной unión libre, зависимости, affinity, adoption или guardianship и sponsor, уже проживающего в Боливии.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "BO_FAMILY_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "t27/t28 требуют родства, брака/признанной unión libre, зависимости, affinity, adoption или guardianship и sponsor, уже проживающего в Боливии.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от конкретной подпроцедуры; применяются опубликованные правила соответствующего trámite.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_DIGEMIG_RU",
+          "BO_SERECI_UNION"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача по правилам конкретной узкой процедуры.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_FAMILY_SELF_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_FAMILY_SELF_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_FAMILY_SELF_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_FAMILY_SELF_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_FAMILY_SELF_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция на 1, 2 или 3 года в зависимости от выбранного срока и подтверждённой деятельности.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении основания; после трёх лет можно выбрать definitive residence либо новую временную процедуру.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Обычная семейная временная резиденция засчитывается к постоянной резиденции после трёх лет; специальное сокращение применяется только к прямо предусмотренным законом связям с гражданином Боливии.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Общий путь натурализации доступен после более чем трёх лет непрерывной законной временной резиденции; двухлетний путь относится только к супругу гражданина Боливии либо лицу с боливийским ребёнком или родителем.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_DIGEMIG_RU"
+    },
+    {
+      "route_id": "BO_HEALTH_HUMANITARIAN",
+      "name_ru": "Медицинские и гуманитарные основания",
+      "official_term_ru": "Медицинские и гуманитарные основания",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Узкое медицинское либо установленное законом гуманитарное обстоятельство.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "BO_HEALTH_HUMANITARIAN_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Узкое медицинское либо установленное законом гуманитарное обстоятельство.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от конкретной подпроцедуры; применяются опубликованные правила соответствующего trámite.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_MIGRATION_REGULATION",
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача по правилам конкретной узкой процедуры.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_HEALTH_HUMANITARIAN_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_HEALTH_HUMANITARIAN_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_HEALTH_HUMANITARIAN_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_HEALTH_HUMANITARIAN_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_HEALTH_HUMANITARIAN_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Медицинская либо гуманитарная временная резиденция сроком до одного года с продлением при сохранении специального основания.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно по периодам до одного года, пока сохраняется медицинское или установленное гуманитарное основание.",
+        "pr_path_status": "NOT_AVAILABLE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Медицинская резиденция после двух лет и исключительная гуманитарная резиденция не образуют непрерывного проживания для постоянной резиденции; требуется переход на засчитываемое основание.",
+        "citizenship_path_status": "NOT_AVAILABLE",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "На одном медицинском или гуманитарном основании нельзя накопить требуемое непрерывное проживание для общей натурализации; необходим переход на засчитываемую временную категорию.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_MIGRATION_REGULATION"
+    },
+    {
+      "route_id": "BO_AGREEMENT_RELIGIOUS_WORK",
+      "name_ru": "Работа по соглашению или религиозное основание",
+      "official_term_ru": "Работа по соглашению или религиозное основание",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Государственное/частное соглашение либо подтверждённая религиозная деятельность по специальной процедуре.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "BO_AGREEMENT_RELIGIOUS_WORK_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Государственное/частное соглашение либо подтверждённая религиозная деятельность по специальной процедуре.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от конкретной подпроцедуры; применяются опубликованные правила соответствующего trámite.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_MIGRATION_REGULATION",
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача по правилам конкретной узкой процедуры.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_AGREEMENT_RELIGIOUS_WORK_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_AGREEMENT_RELIGIOUS_WORK_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_AGREEMENT_RELIGIOUS_WORK_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_AGREEMENT_RELIGIOUS_WORK_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_AGREEMENT_RELIGIOUS_WORK_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 12,
+        "initial_status_ru": "Временная резиденция на 1, 2 или 3 года в зависимости от выбранного срока и подтверждённой деятельности.",
+        "renewal_status": "AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Продление возможно при сохранении основания; после трёх лет можно выбрать definitive residence либо новую временную процедуру.",
+        "pr_path_status": "AVAILABLE_AFTER_RESIDENCE",
+        "years_to_pr": 3,
+        "residence_counts_for_pr": "YES",
+        "pr_path_ru": "Временная работа по государственному/частному соглашению или подтверждённая религиозная работа относится к рабочей резиденции и засчитывается к постоянной резиденции после трёх лет.",
+        "citizenship_path_status": "AVAILABLE",
+        "years_to_citizenship": 3,
+        "residence_counts_for_citizenship": "YES",
+        "citizenship_path_ru": "Более трёх лет непрерывной законной рабочей резиденции позволяют использовать общий путь натурализации при выполнении остальных требований.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_MIGRATION_REGULATION"
+    },
+    {
+      "route_id": "BO_SHORT_BUSINESS_TRANSITORY",
+      "name_ru": "Краткосрочные business/transitory permissions",
+      "official_term_ru": "Краткосрочные business/transitory permissions",
+      "route_type": "OTHER",
+      "covers_categories": [
+        "OTHER"
+      ],
+      "route_subtype_ru": null,
+      "basis_ru": "Краткосрочная деловая, инвестиционная, транзитная, рабочая, учебная, семейная или медицинская цель без самостоятельной долгосрочной резиденции.",
+      "publishable": false,
+      "requirements": [
+        {
+          "requirement_id": "BO_SHORT_BUSINESS_TRANSITORY_BASIS",
+          "type": "OTHER_BASIS",
+          "subject": "APPLICANT",
+          "timing": "AT_APPLICATION",
+          "evaluation_mode": "UNASKED_CONDITION",
+          "unmet_effect": "BECOMES_CONDITION",
+          "requires_separate_basis": true,
+          "condition_ru": "Краткосрочная деловая, инвестиционная, транзитная, рабочая, учебная, семейная или медицинская цель без самостоятельной долгосрочной резиденции.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ],
+          "confidence": "HIGH"
+        }
+      ],
+      "processing_time": {
+        "official_days": null,
+        "official_rule_ru": "Срок зависит от конкретной подпроцедуры; применяются опубликованные правила соответствующего trámite.",
+        "practical_range_ru": null,
+        "official_source_ids": [
+          "BO_MIGRATION_REGULATION",
+          "BO_DIGEMIG_RU"
+        ],
+        "practical_source_ids": []
+      },
+      "application_methods": [
+        {
+          "method": "IN_COUNTRY",
+          "availability": "AVAILABLE",
+          "country_id": "BO",
+          "city_ru": null,
+          "coordinates": null,
+          "applicant_status_requirement": "PHYSICAL_PRESENCE",
+          "visa_required_for_ru": false,
+          "entry_condition_ru": "Гражданин РФ должен законно въехать и сохранять законный миграционный статус.",
+          "rule_checked_at": "2026-09-06",
+          "condition_ru": "Подача по правилам конкретной узкой процедуры.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "family_scenarios": [
+        {
+          "scenario_id": "BO_SHORT_BUSINESS_TRANSITORY_FAM_PARTNER_MARRIED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "MARRIED"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "После получения основным заявителем статуса и CIE супруг(а) подаёт отдельное заявление t27; требуется легализованное свидетельство о браке. Для иностранного однополого брака подтверждённый безопасный путь проходит через признанную в Боливии unión libre.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SHORT_BUSINESS_TRANSITORY_FAM_PARTNER_REGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "REGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Иностранное партнёрство оформляется или признаётся в Боливии как unión libre; затем партнёр подаёт t27 с судебным решением.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SHORT_BUSINESS_TRANSITORY_FAM_PARTNER_UNREGISTERED",
+          "applies_to": "PARTNER",
+          "relationship_types": [
+            "UNREGISTERED_PARTNERSHIP"
+          ],
+          "child_age_min": null,
+          "child_age_max": null,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Сначала требуется регистрация или судебное признание unión libre в Боливии, затем отдельная t27.",
+          "source_ids": [
+            "BO_DIGEMIG_RU",
+            "BO_SERECI_UNION"
+          ]
+        },
+        {
+          "scenario_id": "BO_SHORT_BUSINESS_TRANSITORY_FAM_CHILD_MINOR",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 0,
+          "child_age_max": 17,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Несовершеннолетний ребёнок подаёт отдельное заявление t28 после оформления статуса/CIE основного заявителя; нужны документы о рождении, усыновлении или опеке.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        {
+          "scenario_id": "BO_SHORT_BUSINESS_TRANSITORY_FAM_CHILD_ADULT_DEPENDENT",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "BO_FAMILY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": {
+            "initial_status_ru": "Отдельная временная семейная резиденция t27/t28 на 1, 2 или 3 года.",
+            "renewal_ru": "Продление возможно при сохранении семейного основания и выполнении актуальных требований.",
+            "years_to_pr": 3,
+            "years_to_citizenship": 3,
+            "renunciation_required": false,
+            "source_ids": [
+              "BO_MIGRATION_LAW",
+              "BO_MIGRATION_REGULATION",
+              "BO_DIGEMIG_RU"
+            ]
+          },
+          "condition_ru": "Совершеннолетний ребёнок использует t27 при доказанной экономической зависимости: нотариальное письмо sponsor и соответствующая декларация.",
+          "source_ids": [
+            "BO_DIGEMIG_RU"
+          ]
+        }
+      ],
+      "applicant_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "partner_work_rights": {
+        "employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее рабочее основание t22.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "self_employment": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Требуется отдельное подходящее основание t23.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "remote_foreign_work": {
+          "status": "SEPARATE_PERMISSION_REQUIRED",
+          "available_after_months": null,
+          "rule_ru": "Отдельное разрешение для иностранной удалённой работы не подтверждено; требуется подходящее рабочее основание.",
+          "source_ids": [
+            "BO_MIGRATION_REGULATION",
+            "BO_DIGEMIG_RU"
+          ]
+        },
+        "allowed_remote_activity_types": []
+      },
+      "long_term_path": {
+        "first_permit_months": 6,
+        "initial_status_ru": "Транзитная или объектно-определённая краткосрочная категория сроком до 180 дней в зависимости от цели.",
+        "renewal_status": "NOT_AVAILABLE",
+        "renewal_months": null,
+        "renewal_ru": "Самостоятельного долгосрочного продления эта объединённая краткосрочная категория не даёт; для проживания требуется допустимая смена на временную резиденцию по конкретному основанию.",
+        "pr_path_status": "NOT_AVAILABLE",
+        "years_to_pr": null,
+        "residence_counts_for_pr": "NO",
+        "pr_path_ru": "Краткосрочная транзитная/деловая категория сама по себе не ведёт к постоянной резиденции.",
+        "citizenship_path_status": "NOT_AVAILABLE",
+        "years_to_citizenship": null,
+        "residence_counts_for_citizenship": "NO",
+        "citizenship_path_ru": "Краткосрочное пребывание не образует требуемую непрерывную временную резиденцию для натурализации.",
+        "renunciation_required": false,
+        "presence_rule_ru": "Для временной резиденции отсутствие без разрешения свыше 90 дней в году создаёт риск отмены; для definitive residence — два года непрерывного отсутствия.",
+        "language_requirements_ru": "Отдельный языковой сертификат не установлен; с 12 лет предусмотрен экзамен по элементарной истории и культуре Боливии.",
+        "source_ids": [
+          "BO_MIGRATION_LAW",
+          "BO_MIGRATION_REGULATION",
+          "BO_CONSTITUTION",
+          "BO_DIGEMIG_RU"
+        ]
+      },
+      "official_source_id": "BO_MIGRATION_REGULATION"
+    }
+  ],
+  "cities": [
+    {
+      "city_id": "BO_LA_PAZ",
+      "name_ru": "Ла-Пас",
+      "structural_roles": [
+        "CAPITAL",
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Ла-Пас: роль CAPITAL + LARGE определена относительно набора городов Боливии.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 2000,
+          "currency": "BOB",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Средняя аренда однокомнатной квартиры вне центра города; единая сопоставимая база для всех четырёх городов.",
+          "price_date": "2026-09-07",
+          "source_ids": [
+            "BO_COST_LA_PAZ"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Высокогорный прохладный",
+        "cold_min_c": -2,
+        "cold_max_c": 14,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 4,
+        "hot_max_c": 15,
+        "hot_months": [
+          11
+        ],
+        "climate_normal_period": "Weather Spark modeled historical climate; source normal period not stated",
+        "notes_ru": "Административный центр; холодные ночи и умеренные дневные температуры.",
+        "source_ids": [
+          "BO_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "BO_INE_2024",
+        "BO_COST_LA_PAZ",
+        "BO_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BO_SANTA_CRUZ",
+      "name_ru": "Санта-Крус-де-ла-Сьерра",
+      "structural_roles": [
+        "LARGE"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Санта-Крус-де-ла-Сьерра: роль LARGE определена относительно набора городов Боливии.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 2169.36,
+          "currency": "BOB",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Средняя аренда однокомнатной квартиры вне центра города; единая сопоставимая база для всех четырёх городов.",
+          "price_date": "2026-09-07",
+          "source_ids": [
+            "BO_COST_SANTA_CRUZ"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Жаркий влажный низменный",
+        "cold_min_c": 16,
+        "cold_max_c": 25,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 22,
+        "hot_max_c": 30,
+        "hot_months": [
+          1
+        ],
+        "climate_normal_period": "Weather Spark modeled historical climate; source normal period not stated",
+        "notes_ru": "Жарко и влажно; возможны краткие похолодания surazos.",
+        "source_ids": [
+          "BO_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "BO_INE_2024",
+        "BO_COST_SANTA_CRUZ",
+        "BO_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BO_COCHABAMBA",
+      "name_ru": "Кочабамба",
+      "structural_roles": [
+        "MEDIUM"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Кочабамба: роль MEDIUM определена относительно набора городов Боливии.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1200,
+          "currency": "BOB",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Средняя аренда однокомнатной квартиры вне центра города; единая сопоставимая база для всех четырёх городов.",
+          "price_date": "2026-06-19",
+          "source_ids": [
+            "BO_COST_COCHABAMBA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Мягкий сухой долинный",
+        "cold_min_c": 4,
+        "cold_max_c": 23,
+        "cold_months": [
+          6
+        ],
+        "hot_min_c": 12,
+        "hot_max_c": 26,
+        "hot_months": [
+          10
+        ],
+        "climate_normal_period": "Weather Spark modeled historical climate; source normal period not stated",
+        "notes_ru": "Большая суточная амплитуда и мягкие дневные температуры.",
+        "source_ids": [
+          "BO_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "BO_INE_2024",
+        "BO_COST_COCHABAMBA",
+        "BO_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    },
+    {
+      "city_id": "BO_TARIJA",
+      "name_ru": "Тариха",
+      "structural_roles": [
+        "SMALL"
+      ],
+      "population_municipality": null,
+      "population_agglomeration": null,
+      "size_basis_ru": "Тариха: роль SMALL определена относительно набора городов Боливии.",
+      "cost_components": [
+        {
+          "component": "RENT_STANDARD",
+          "amount": 1800,
+          "currency": "BOB",
+          "period": "MONTHLY",
+          "household_basis": "PER_HOUSEHOLD",
+          "condition_ru": "Средняя аренда однокомнатной квартиры вне центра города; единая сопоставимая база для всех четырёх городов.",
+          "price_date": "2026-06-19",
+          "source_ids": [
+            "BO_COST_TARIJA"
+          ],
+          "confidence": "MEDIUM"
+        }
+      ],
+      "climate": {
+        "category_ru": "Умеренный долинный",
+        "cold_min_c": 4,
+        "cold_max_c": 21,
+        "cold_months": [
+          7
+        ],
+        "hot_min_c": 16,
+        "hot_max_c": 24,
+        "hot_months": [
+          12
+        ],
+        "climate_normal_period": "Weather Spark modeled historical climate; source normal period not stated",
+        "notes_ru": "Прохладные зимние ночи и умеренно тёплое лето.",
+        "source_ids": [
+          "BO_CLIMATE"
+        ]
+      },
+      "source_ids": [
+        "BO_INE_2024",
+        "BO_COST_TARIJA",
+        "BO_CLIMATE"
+      ],
+      "confidence": "MEDIUM"
+    }
+  ],
+  "schools": {
+    "public_school_rules": [
+      {
+        "jurisdiction_ru": "Боливия — национальная государственная система",
+        "foreign_child_access": "AVAILABLE",
+        "language_ru": "Основной язык — испанский, с межкультурным и многоязычным компонентом.",
+        "compulsory_age_min": 6,
+        "compulsory_age_max": 17,
+        "is_free": true,
+        "tuition": null,
+        "rule_ru": "Государственное образование бесплатно и обязательно до bachillerato. В 2026 году первый класс начинается с шести лет; начальная и средняя ступени длятся по шесть лет. Иностранный ребёнок может предъявить боливийский или иностранный документ, а отсутствие документов или миграционного статуса не препятствует зачислению; обучение, пройденное за рубежом, сопоставляется по применимым таблицам эквивалентности.",
+        "source_ids": [
+          "BO_CONSTITUTION",
+          "BO_EDUCATION_LAW",
+          "BO_EDUCATION_2026"
+        ]
+      }
+    ],
+    "international_school_status": "AVAILABLE",
+    "international_schools": [],
+    "international_school_cities": [
+      {
+        "city_name_ru": "Ла-Пас",
+        "source_ids": [
+          "BO_SCHOOL_LA_PAZ"
+        ]
+      },
+      {
+        "city_name_ru": "Санта-Крус-де-ла-Сьерра",
+        "source_ids": [
+          "BO_SCHOOL_SANTA_CRUZ"
+        ]
+      },
+      {
+        "city_name_ru": "Кочабамба",
+        "source_ids": [
+          "BO_SCHOOL_COCHABAMBA"
+        ]
+      }
+    ],
+    "international_school_tuition_observations": []
+  },
+  "pets": {
+    "import_restrictions": {
+      "status": "RESTRICTIONS_FOUND",
+      "explanation_ru": "Для собаки или кошки требуется индивидуальный официальный экспортный зоосанитарный сертификат страны происхождения, санитарные и вакцинационные сведения и проверка в пункте въезда. Национальный blanket breed ban не подтверждён.",
+      "source_ids": [
+        "BO_SENASAG_PETS"
+      ]
+    },
+    "after_entry_restrictions": {
+      "status": "RESEARCHED_NO_RELIABLE_DATA",
+      "explanation_ru": "Единый национальный режим владения после въезда не подтверждён; муниципальные правила могут различаться.",
+      "source_ids": [
+        "BO_SENASAG_PETS"
+      ]
+    }
+  },
+  "lgbt": {
+    "checked_at": "2026-09-06",
+    "same_sex_relations_legal": "YES",
+    "same_sex_relations_rule_ru": "Добровольные однополые отношения взрослых не криминализированы.",
+    "state_restrictions_ru": "Общенациональная процедура равного брака не установлена. В августе 2026 года зарегистрирован первый однополый брак по индивидуальному судебному решению после почти четырёх лет разбирательств; для остальных пар основным общедоступным признанием остаётся unión libre.",
+    "same_sex_marriage_recognized": "NO",
+    "same_sex_marriage_rule_ru": "Первый однополый брак зарегистрирован по индивидуальному судебному решению в августе 2026 года, но равный брак пока не доступен как единая общенациональная административная процедура.",
+    "registered_partnership_recognized": "YES",
+    "registered_partnership_rule_ru": "С 2023 года SERECI регистрирует unión libre пар одного или разного пола по одинаковым требованиям.",
+    "family_route_available": "CONDITIONAL",
+    "foreign_documents_recognized": "CONDITIONAL",
+    "foreign_document_rule_ru": "Автоматическое признание иностранного однополого брака или партнёрства не предполагается; подтверждён путь через оформление или признание unión libre в Боливии и t27.",
+    "parenthood_ru": "Родительство и усыновление оцениваются по документам и применимому семейному праву; равный совместный режим для однополой пары не утверждается.",
+    "anti_discrimination": {
+      "areas_ru": [
+        "Конституционный запрет дискриминации"
+      ],
+      "applies_to_foreigners": "YES",
+      "complaint_mechanisms_ru": "Применимы общие административные и судебные способы защиты.",
+      "rule_ru": "Конституция запрещает дискриминацию, включая сексуальную ориентацию и гендерную идентичность.",
+      "source_ids": [
+        "BO_CONSTITUTION"
+      ]
+    },
+    "systemic_practical_restrictions_ru": "Регистрация unión libre стала общедоступнее, однако сообщения о дискриминации в работе, образовании, госуслугах и здравоохранении сохраняются. Первый однополый брак потребовал почти четырёх лет судебного процесса и пока не создал автоматической общенациональной процедуры.",
+    "regional_differences_ru": "Надёжный сравнительный рейтинг городов не найден.",
+    "friendly_cities": [],
+    "legal_assessment": "PARTIAL_RECOGNITION",
+    "practical_assessment": "HETEROGENEOUS",
+    "assessment_basis_ru": "Однополые свободные союзы регистрируются по единым правилам; первый брак признан индивидуальным судом, но общенационального marriage equality ещё нет, а практические источники фиксируют дискриминацию и административные барьеры.",
+    "source_ids": [
+      "BO_CONSTITUTION",
+      "BO_SERECI_UNION",
+      "BO_DIGEMIG_RU",
+      "BO_LGBT_PRACTICE_2025",
+      "BO_LGBT_MARRIAGE_CASE_2026"
+    ]
+  },
+  "taxes": {
+    "checked_at": "2026-09-06",
+    "tax_residency_rule_ru": "Применяется территориальный/source-based подход; конкретная резидентность зависит от фактических обстоятельств и налоговых норм.",
+    "typical_day_threshold": null,
+    "other_residency_triggers_ru": "Универсальный day-count threshold для любого физического лица в исследованных материалах не установлен.",
+    "personal_income_tax_ru": "RC-IVA имеет номинальную ставку 13% с применимыми расчётами и налоговыми кредитами; это не плоские 13% любого мирового дохода.",
+    "personal_income_tax_rates": [],
+    "social_contributions_ru": "Базовые удержания работника составляют около 12.71% gross salary плюс solidarity contribution для более высоких доходов.",
+    "foreign_income_ru": "Иностранная выплата не гарантирует foreign-source treatment, если работа физически выполняется в Боливии.",
+    "double_taxation_with_russia_ru": "Действующего соглашения России и Боливии об избежании двойного налогообложения нет.",
+    "source_ids": [
+      "BO_TAX",
+      "BO_TAX_TREATIES"
+    ]
+  },
+  "open_items": [],
+  "completeness": {
+    "country_ready_status": "READY",
+    "blocks": [
+      {
+        "block": "ROUTE_COVERAGE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ROUTES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "ENTRY_APPLICATION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "FAMILY",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "WORK_RIGHTS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LONG_TERM",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PROTECTION",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "TAXES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CITIES_COST",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "CLIMATE",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SCHOOLS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "PETS",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "LGBT",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      },
+      {
+        "block": "SOURCES",
+        "status": "COMPLETE",
+        "open_item_ids": []
+      }
+    ]
+  },
+  "sources": [
+    {
+      "source_id": "BO_MIGRATION_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Asamblea Legislativa / Lexivox",
+      "title_ru": "Ley Nº370 de Migración",
+      "url": "https://www.lexivox.org/norms/BO-L-N370.html",
+      "supports_ru": "Категории пребывания, права мигрантов, постоянная резиденция и семейные правила.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_MIGRATION_REGULATION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Órgano Ejecutivo / Lexivox",
+      "title_ru": "DS Nº1923 — Reglamento de la Ley de Migración",
+      "url": "https://www.lexivox.org/norms/BO-DS-N1923.html",
+      "supports_ru": "Рабочие, учебные, семейные и иные миграционные категории, смена статуса и отсутствие.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_CONSTITUTION",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Estado Plurinacional de Bolivia",
+      "title_ru": "Constitución Política del Estado",
+      "url": "https://www.lexivox.org/norms/BO-CPE-20090207.html",
+      "supports_ru": "Равенство, антидискриминация, натурализация и гражданство.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_DIGEMIG_RU",
+      "source_type": "OFFICIAL_FORM_OR_INSTRUCTION",
+      "authority": "Dirección General de Migración",
+      "title_ru": "Russia-specific current procedures",
+      "url": "https://migracion.gob.bo:3004/api/tramites_ext/pais/rus",
+      "supports_ru": "Текущие требования, стоимость, каналы и сроки t22/t23/t27/t28/t29/t30 и последующих процедур.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_RU_ENTRY",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Посольство России в Боливии",
+      "title_ru": "Безвизовый режим Россия—Боливия",
+      "url": "https://bolivia.mid.ru/ru/consular-services/bolivia/vizovye_voprosy/",
+      "supports_ru": "До 90 дней в каждом периоде 180 дней для обычного российского паспорта.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "ru"
+    },
+    {
+      "source_id": "BO_REFUGEE_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Asamblea Legislativa / Lexivox",
+      "title_ru": "Ley Nº251 de protección a personas refugiadas",
+      "url": "https://www.lexivox.org/norms/BO-L-N251.html",
+      "supports_ru": "Основания защиты, семейное единство, документы, работа и бессрочный статус.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_SERECI_UNION",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "TSE / SERECI",
+      "title_ru": "Reglamento de uniones libres RA 175/2023",
+      "url": "https://web.oep.org.bo/wp-content/uploads/2023/07/RESOLUCION-ADM-175-22-06-2023.pdf",
+      "supports_ru": "Регистрация свободных союзов пар одного или разного пола.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2023-06-22",
+      "language": "es"
+    },
+    {
+      "source_id": "BO_SENASAG_PETS",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "SENASAG",
+      "title_ru": "Importación de animales de compañía",
+      "url": "https://www.senasag.gob.bo/index.php/tramites-y-servicios/convocatorias/regensa-en-linea/494-capitulo-7-1-emision-de-permisos-zoosanitarios-de-importacion",
+      "supports_ru": "Официальный экспортный зоосанитарный сертификат и пограничная проверка.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_INE_2024",
+      "source_type": "OFFICIAL_STATISTICS",
+      "authority": "INE Bolivia",
+      "title_ru": "Censo de Población y Vivienda 2024",
+      "url": "https://cpv2024.ine.gob.bo/",
+      "supports_ru": "Контекст населения и ролей городов.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_CLIMATE",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Weather Spark",
+      "title_ru": "Bolivia climate by city",
+      "url": "https://weatherspark.com/countries/BO",
+      "supports_ru": "Моделируемые диапазоны температур по городам.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BO_COST_LA_PAZ",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Cost of Living in La Paz",
+      "url": "https://www.numbeo.com/cost-of-living/in/La-Paz",
+      "supports_ru": "Средняя аренда однокомнатной квартиры вне центра: 2 000 BOB в месяц.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BO_COST_SANTA_CRUZ",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Cost of Living in Santa Cruz",
+      "url": "https://www.numbeo.com/cost-of-living/in/Santa-Cruz-Bolivia",
+      "supports_ru": "Средняя аренда однокомнатной квартиры вне центра: 2 169,36 BOB в месяц.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BO_COST_COCHABAMBA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Cost of Living in Cochabamba",
+      "url": "https://www.numbeo.com/cost-of-living/in/Cochabamba",
+      "supports_ru": "Средняя аренда однокомнатной квартиры вне центра: 1 200 BOB в месяц; обновление 19 июня 2026 года.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BO_COST_TARIJA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Numbeo",
+      "title_ru": "Cost of Living in Tarija",
+      "url": "https://www.numbeo.com/cost-of-living/in/Tarija-Bolivia",
+      "supports_ru": "Средняя аренда однокомнатной квартиры вне центра: 1 800 BOB в месяц; обновление 19 июня 2026 года.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-06-19",
+      "language": "en"
+    },
+    {
+      "source_id": "BO_SCHOOL_LA_PAZ",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "American Cooperative School",
+      "title_ru": "American Cooperative School La Paz",
+      "url": "https://acslp.org/",
+      "supports_ru": "International/English-medium school in La Paz.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_SCHOOL_SANTA_CRUZ",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Santa Cruz Cooperative School",
+      "title_ru": "Santa Cruz Cooperative School",
+      "url": "https://sccs.edu.bo/",
+      "supports_ru": "International/English-medium school in Santa Cruz.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_SCHOOL_COCHABAMBA",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Cochabamba Cooperative School",
+      "title_ru": "Cochabamba Cooperative School",
+      "url": "https://ccs.edu.bo/",
+      "supports_ru": "International/English-medium school in Cochabamba.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": null,
+      "language": "es"
+    },
+    {
+      "source_id": "BO_TAX",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "PwC",
+      "title_ru": "Bolivia individual taxes — other taxes",
+      "url": "https://taxsummaries.pwc.com/bolivia/individual/other-taxes",
+      "supports_ru": "Employee contributions and tax context, updated 2026-07-21.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-21",
+      "language": "en"
+    },
+    {
+      "source_id": "BO_TAX_TREATIES",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "PwC",
+      "title_ru": "Bolivia corporate withholding taxes — treaty list",
+      "url": "https://taxsummaries.pwc.com/bolivia/corporate/withholding-taxes",
+      "supports_ru": "In-force DTA list; Russia is absent, updated 2026-07-21.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-07-21",
+      "language": "en"
+    },
+    {
+      "source_id": "BO_EDUCATION_LAW",
+      "source_type": "LAW_OR_REGULATION",
+      "authority": "Ministerio de Educación / Gaceta Oficial",
+      "title_ru": "Ley Nº070 de la Educación Avelino Siñani–Elizardo Pérez",
+      "url": "https://www.minedu.gob.bo/files/documentos-normativos/leyes/LEY_070_AVELINO_SINANI_ELIZARDO_PEREZ.pdf",
+      "supports_ru": "Всеобщность, бесплатность и обязательность образования до bachillerato; по шесть лет начальной и средней школы.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2010-12-20",
+      "language": "es"
+    },
+    {
+      "source_id": "BO_EDUCATION_2026",
+      "source_type": "OFFICIAL_GOVERNMENT_RULE",
+      "authority": "Ministerio de Educación",
+      "title_ru": "Resolución Ministerial Nº0001/2026 — Normas Generales para la Gestión Educativa",
+      "url": "https://www.minedu.gob.bo/files/documentos-normativos/resoluciones-ministeriales/1_RM_0001_EDUCACIN_REGULAR.pdf",
+      "supports_ru": "Возраст поступления, документы иностранного ученика, зачисление независимо от миграционного статуса и признание обучения за рубежом.",
+      "checked_at": "2026-09-07",
+      "confidence": "HIGH",
+      "published_or_updated_at": "2026-01-01",
+      "language": "es"
+    },
+    {
+      "source_id": "BO_LGBT_PRACTICE_2025",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "U.S. Department of State archive",
+      "title_ru": "Bolivia human-rights report excerpts — LGBTI discrimination",
+      "url": "https://2021-2025.state.gov/report/custom/0392c06f3e/",
+      "supports_ru": "Сообщения о дискриминации ЛГБТИ в работе, образовании, государственных и медицинских услугах.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": null,
+      "language": "en"
+    },
+    {
+      "source_id": "BO_LGBT_MARRIAGE_CASE_2026",
+      "source_type": "RELIABLE_SECONDARY",
+      "authority": "Reuters",
+      "title_ru": "Первый юридически признанный однополый брак в Боливии",
+      "url": "https://www.reuters.com/world/americas/landmark-bolivia-same-sex-marriage-could-pave-way-more-couples-activists-say-2026-08-26/",
+      "supports_ru": "Индивидуальное судебное признание первого однополого брака в августе 2026 года; общенациональная доступность брака не установлена, процесс сопровождался длительными барьерами.",
+      "checked_at": "2026-09-07",
+      "confidence": "MEDIUM",
+      "published_or_updated_at": "2026-08-26",
+      "language": "en"
+    }
+  ],
+  "pending_changes": []
+}

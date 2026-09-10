@@ -118,5 +118,11 @@
     "name": "Нидерланды",
     "region": "Европа",
     "introduced_version": "20.0.0"
+  },
+  {
+    "code": "BO",
+    "name": "Боливия",
+    "region": "Южная Америка",
+    "introduced_version": "21.0.0"
   }
 ]
