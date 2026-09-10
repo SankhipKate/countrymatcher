@@ -112,5 +112,11 @@
     "name": "Франция",
     "region": "Европа",
     "introduced_version": "19.0.0"
+  },
+  {
+    "code": "NL",
+    "name": "Нидерланды",
+    "region": "Европа",
+    "introduced_version": "20.0.0"
   }
 ]

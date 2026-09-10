@@ -1,0 +1,54 @@
+{
+  "country_id": "NL",
+  "schema_version": "4.0",
+  "profiles": [
+    {
+      "profile_id": "NL_TP_HSM_30_PLUS",
+      "description_ru": "Кандидат 30+ с будущим оффером recognised sponsor и зарплатой на пороге.",
+      "expected_route_id": "NL_HSM",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    },
+    {
+      "profile_id": "NL_TP_REMOTE_ONLY",
+      "description_ru": "Только иностранная удалённая работа, без местного оффера или business basis.",
+      "expected_route_id": null,
+      "expected_status": "UNSUITABLE"
+    },
+    {
+      "profile_id": "NL_TP_STUDENT",
+      "description_ru": "Зачисление и подтверждённые средства на учёбу.",
+      "expected_route_id": "NL_STUDY",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    },
+    {
+      "profile_id": "NL_TP_SELF_EMPLOYED",
+      "description_ru": "Business plan и средства есть, RVO essential-interest decision ещё не получен.",
+      "expected_route_id": "NL_SELF_EMPLOYED",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    },
+    {
+      "profile_id": "NL_TP_ASYLUM_GENERIC_LGBT",
+      "description_ru": "Только LGBT-флаг без индивидуального риска и доказательств.",
+      "expected_route_id": null,
+      "expected_status": "UNSUITABLE"
+    },
+    {
+      "profile_id": "NL_TP_STARTUP_FUNDS_BY_FACILITATOR",
+      "description_ru": "Инновационный start-up с подходящим фасилитатором, который финансирует проживание заявителя на срок до года.",
+      "expected_route_id": "NL_STARTUP",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    },
+    {
+      "profile_id": "NL_TP_STUDENT_SCHOLARSHIP",
+      "description_ru": "Зачисление в вуз и подтверждение нормы средств стипендией вместо собственных накоплений.",
+      "expected_route_id": "NL_STUDY",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    },
+    {
+      "profile_id": "NL_TP_ASYLUM_UNMARRIED_PARTNER",
+      "description_ru": "Получатель убежища после 12 июня 2026 года хочет воссоединиться с незарегистрированным партнёром; обычный asylum family reunification не применяется, возможна лишь отдельная оценка по статье 8 ЕКПЧ.",
+      "expected_route_id": "NL_ART8_FAMILY_LIFE",
+      "expected_status": "SUITABLE_WITH_CONDITIONS"
+    }
+  ]
+}
