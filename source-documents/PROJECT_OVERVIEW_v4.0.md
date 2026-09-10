@@ -27,7 +27,8 @@ Country Matcher — браузерный сервис для граждан Ро
 - Южно-Африканская Республика;
 - Германия;
 - Ирландия;
-- Франция.
+- Франция;
+- Нидерланды.
 <!-- END GENERATED ACTIVE_COUNTRIES_LIST -->
 
 Сервис не заменяет миграционного юриста и не обещает выдачу визы или ВНЖ. Он показывает:
@@ -58,7 +59,7 @@ Country Matcher — браузерный сервис для граждан Ро
 Активные страновые данные находятся в:
 
 <!-- BEGIN GENERATED ACTIVE_RP4_PATHS -->
-- `countrymatcher/data/{ES,AR,UY,BR,PT,MX,PY,CO,ME,CL,GR,CR,EC,TH,MT,ZA,DE,IE,FR}-research-v4.0.json`.
+- `countrymatcher/data/{ES,AR,UY,BR,PT,MX,PY,CO,ME,CL,GR,CR,EC,TH,MT,ZA,DE,IE,FR,NL}-research-v4.0.json`.
 <!-- END GENERATED ACTIVE_RP4_PATHS -->
 
 Quality of Life хранится отдельно в `countrymatcher/data/quality-of-life-ru.json` и не является Research Package.

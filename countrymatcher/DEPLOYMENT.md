@@ -132,6 +132,7 @@ Runtime JS/CSS и динамические data URL используют отд�
 | `19.0.1` | Исправлены generic presentation поведения результата: country-level headline для `REQUIRES_SEPARATE_BASIS` стал нейтральным и не дописывает `bestRoute`, включая соседство с `INTERNATIONAL_PROTECTION`/`UNSUITABLE`; прокрутка при переключении страны учитывает sticky-header на desktop/mobile. Matching, statuses, ranking, route cards и access semantics не изменены |
 | `19.0.2` | Завершено структурированное family coverage для Аргентины, Уругвая и Франции: добавлены исследованные outcomes для детей 18–25 лет и ранее не покрытых типов партнёрства; unresolved investor family gap Аргентины сохранён как route-specific blocking `NOT_RESEARCHED`; schema, questionnaire, engine и UI не изменены |
 | `19.0.3` | Завершено структурированное family coverage для Португалии и Парагвая: в PT добавлены route-specific outcomes для детей 18–25 лет с сохранением blocking `NOT_RESEARCHED` у Skilled Job Seeker; в PY закрыты adult-child outcomes обычных маршрутов и исправлена family semantics международной защиты по Ley N.º 1938; schema, questionnaire, engine и UI не изменены |
+| `20.0.0` | Двадцатая активная страна — Нидерланды; добавлены NL RP4 и Quality of Life, route-specific application methods, актуальные asylum/family semantics, полное family coverage 0–25, исправленные renewal/work-rights и multi-source study funding |
 
 ## Проверка перед merge
 

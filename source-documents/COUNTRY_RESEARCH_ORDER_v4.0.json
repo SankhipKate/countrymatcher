@@ -1,6 +1,6 @@
 {
   "schema_version": "4.0",
-  "updated_at": "2026-09-06",
+  "updated_at": "2026-09-10",
   "countries": [
     {
       "overall_rank": 1,
@@ -119,7 +119,7 @@
       "country": "Нидерланды",
       "region": "Европа",
       "category": "Признан однополый брак",
-      "research_status": "В очереди"
+      "research_status": "Подключена"
     },
     {
       "overall_rank": 18,

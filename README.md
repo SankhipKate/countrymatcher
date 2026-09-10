@@ -61,7 +61,7 @@ The same root verifier is used locally and in GitHub Actions. It coordinates pac
 
 ## Production Snapshot
 
-At version `19.0.1`, CountryMatcher has **19 active countries** in production, all evaluated through the shared generic engine.
+At version `20.0.0`, CountryMatcher has **20 active countries** in production, all evaluated through the shared generic engine.
 
 The current production version is tracked in [`countrymatcher/VERSION`](countrymatcher/VERSION), and the active-country list is maintained in the detailed project README.
 
