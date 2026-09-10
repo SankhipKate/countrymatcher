@@ -349,6 +349,25 @@
             "PY_SRC_MIGRATION_LAW",
             "PY_SRC_TEMP"
           ]
+        },
+        {
+          "scenario_id": "PY_TEMP_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет относится к семейному кругу для воссоединения только при подтверждённой инвалидности; возраст сам по себе права на семейное сопровождение не создаёт.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -640,6 +659,26 @@
             "PY_SRC_MIGRATION_LAW",
             "PY_SRC_INVESTOR_DNM"
           ]
+        },
+        {
+          "scenario_id": "PY_INVESTOR_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет имеет подтверждённое семейное покрытие только при инвалидности; для него требуется отдельное оформление применимой общей временной резиденции.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -846,6 +885,26 @@
             "PY_SRC_FAMILY_PARAGUAYAN",
             "PY_SRC_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "PY_FAMILY_PARAGUAYAN_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет имеет подтверждённое семейное покрытие только при инвалидности; для него требуется отдельное оформление применимой общей временной резиденции.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1049,6 +1108,26 @@
           "source_ids": [
             "PY_SRC_MIGRATION_LAW"
           ]
+        },
+        {
+          "scenario_id": "PY_FAMILY_REPATRIATED_FAM_ADULT_DISABLED_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "administrative_separate_filing": true,
+          "separate_route_required": true,
+          "linked_route_id": "PY_GENERAL_TEMPORARY",
+          "join_stage": "SEPARATE_ROUTE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет имеет подтверждённое семейное покрытие только при инвалидности; для него требуется отдельное оформление применимой общей временной резиденции.",
+          "source_ids": [
+            "PY_SRC_MIGRATION_LAW",
+            "PY_SRC_TEMP"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1210,15 +1289,15 @@
           ],
           "child_age_min": null,
           "child_age_max": null,
-          "simultaneous_move": "CONDITIONAL",
+          "simultaneous_move": "YES",
           "administrative_separate_filing": true,
-          "separate_route_required": true,
-          "linked_route_id": "PY_GENERAL_TEMPORARY",
-          "join_stage": "SEPARATE_ROUTE",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Партнёру требуется собственное применимое миграционное основание и отдельное оформление статуса; сама форма отношений не заменяет это основание.",
+          "condition_ru": "После признания беженцем действие статуса по семейному единству распространяется на супруга или фактического партнёра; совместная семейная подача не требует отдельного миграционного основания.",
           "source_ids": [
             "PY_SRC_REFUGE",
             "PY_SRC_REFUGEE_LAW"
@@ -1229,16 +1308,16 @@
           "applies_to": "CHILD",
           "relationship_types": null,
           "child_age_min": 0,
-          "child_age_max": 17,
-          "simultaneous_move": "CONDITIONAL",
+          "child_age_max": 25,
+          "simultaneous_move": "YES",
           "administrative_separate_filing": true,
-          "separate_route_required": true,
-          "linked_route_id": "PY_GENERAL_TEMPORARY",
-          "join_stage": "SEPARATE_ROUTE",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Для ребёнка оформляется собственное применимое миграционное дело с родительскими/опекунскими формальностями; отдельная административная подача сама по себе не означает более низкое право на этот маршрут.",
+          "condition_ru": "После признания беженцем действие статуса по семейному единству распространяется на прямых потомков; Ley N.º 1938 не устанавливает для прямых потомков возрастного предела.",
           "source_ids": [
             "PY_SRC_REFUGE",
             "PY_SRC_REFUGEE_LAW"
@@ -1847,7 +1926,7 @@
       "title_ru": "Ley N.º 6984/2022 «De Migraciones»",
       "url": "https://silpy.congreso.gov.py/ley/143992",
       "supports_ru": "Действующая миграционная рамка, категории residence, права резидентов, family/repatriate provisions и общие правила статуса.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"
@@ -1859,7 +1938,7 @@
       "title_ru": "Residencia Temporal",
       "url": "https://migraciones.gov.py/residencia-temporal/",
       "supports_ru": "Общая Temporary Residence до 2 лет, текущая процедура, документы и in-country filing.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"
@@ -2003,7 +2082,7 @@
       "title_ru": "Formalización de una solicitud de estatuto de refugiado",
       "url": "https://www2.mre.gov.py/conare/index.php/servicios-1/formalizacion-de-una-solicitud-de-estatuto-de-refugiado",
       "supports_ru": "Заявление на международную защиту подаётся в Парагвае/на границе и рассматривается индивидуально.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"
@@ -2015,7 +2094,7 @@
       "title_ru": "Ley N.º 1938 — General sobre Refugiados",
       "url": "https://www.bacn.gov.py/leyes-paraguayas/3818/ley-n-1938--general-sobre-refugiados",
       "supports_ru": "Правовые основания и процедура refugee protection; российское гражданство само по себе не создаёт основания.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "es"

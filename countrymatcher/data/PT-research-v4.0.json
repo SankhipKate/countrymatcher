@@ -305,6 +305,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_REMOTE_WORK_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -520,6 +539,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_OWN_INCOME_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -695,6 +733,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_EMPLOYMENT_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -869,6 +926,25 @@
             "PT_SRC_01",
             "PT_SRC_02",
             "PT_SRC_12"
+          ]
+        },
+        {
+          "scenario_id": "PT_INDEPENDENT_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
           ]
         }
       ],
@@ -1199,6 +1275,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_ENTREPRENEUR_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1372,6 +1467,25 @@
             "PT_SRC_01",
             "PT_SRC_02",
             "PT_SRC_12"
+          ]
+        },
+        {
+          "scenario_id": "PT_STARTUP_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
           ]
         }
       ],
@@ -1560,6 +1674,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_HQ_NATIONAL_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1747,6 +1880,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_BLUE_CARD_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -1933,6 +2085,25 @@
             "PT_SRC_01",
             "PT_SRC_02",
             "PT_SRC_12"
+          ]
+        },
+        {
+          "scenario_id": "PT_RESEARCHER_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
           ]
         }
       ],
@@ -2202,6 +2373,25 @@
             "PT_SRC_02",
             "PT_SRC_12"
           ]
+        },
+        {
+          "scenario_id": "PT_HIGHER_EDUCATION_FAMILY_ADULT_INCAPABLE_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для совершеннолетнего ребёнка 18–25 лет семейный путь по статусу студента подтверждён только при недееспособности ребёнка и его нахождении на иждивении.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -2374,6 +2564,25 @@
             "PT_SRC_01",
             "PT_SRC_02",
             "PT_SRC_12"
+          ]
+        },
+        {
+          "scenario_id": "PT_ICT_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать семейный механизм, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
           ]
         }
       ],
@@ -2592,6 +2801,25 @@
           "source_ids": [
             "PT_SRC_02"
           ]
+        },
+        {
+          "scenario_id": "PT_FAMILY_REUNIFICATION_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 0,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может использовать воссоединение семьи, если он находится на иждивении пары или одного из супругов и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии; срок присоединения зависит от применимого исключения или общего режима ожидания.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -2780,6 +3008,42 @@
             "PT_SRC_64",
             "PT_SRC_32"
           ]
+        },
+        {
+          "scenario_id": "PT_EU_PORTUGUESE_FAMILY_CHILD_18_20",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 20,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Прямой потомок младше 21 года входит в семейную категорию гражданина ЕС/Португалии без отдельного требования доказывать иждивение.",
+          "source_ids": [
+            "PT_SRC_64"
+          ]
+        },
+        {
+          "scenario_id": "PT_EU_PORTUGUESE_FAMILY_CHILD_21_25",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 21,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Прямой потомок 21–25 лет входит в семейную категорию гражданина ЕС/Португалии только при нахождении на иждивении.",
+          "source_ids": [
+            "PT_SRC_64"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -2967,6 +3231,25 @@
             "PT_SRC_02",
             "PT_SRC_13"
           ]
+        },
+        {
+          "scenario_id": "PT_ARI_FAMILY_ADULT_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "WITH_INITIAL_APPLICATION",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Совершеннолетний ребёнок 18–25 лет может входить в семью держателя ARI, если он находится на иждивении, не состоит в браке и продолжает обучение; закон не ограничивает это обучение учебным заведением в Португалии.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_13"
+          ]
         }
       ],
       "applicant_work_rights": {
@@ -3125,7 +3408,7 @@
             "UNREGISTERED_PARTNERSHIP"
           ],
           "child_age_min": 0,
-          "child_age_max": 17,
+          "child_age_max": 25,
           "simultaneous_move": "NOT_RESEARCHED",
           "separate_route_required": null,
           "linked_route_id": null,
@@ -3133,7 +3416,7 @@
           "separation_months_min": null,
           "separation_months_max": null,
           "member_long_term_path": null,
-          "condition_ru": "Семейный результат зависит от последующего действующего статуса и применимого family mechanism.",
+          "condition_ru": "Семейный результат для Skilled Job Seeker остаётся неисследованным до появления операционного режима маршрута и подтверждённых family rules.",
           "source_ids": [
             "PT_SRC_06"
           ]
@@ -3270,6 +3553,24 @@
           "source_ids": [
             "PT_SRC_30",
             "PT_SRC_32"
+          ]
+        },
+        {
+          "scenario_id": "PT_PROTECTION_FAMILY_ADULT_INCAPABLE_CHILD",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "CONDITIONAL",
+          "separate_route_required": false,
+          "linked_route_id": null,
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": null,
+          "separation_months_max": null,
+          "member_long_term_path": null,
+          "condition_ru": "Для совершеннолетнего ребёнка 18–25 лет семейный путь международной защиты подтверждён только при недееспособности ребёнка и его нахождении на иждивении.",
+          "source_ids": [
+            "PT_SRC_30"
           ]
         }
       ],
@@ -3455,6 +3756,25 @@
           "separation_months_max": 24,
           "member_long_term_path": null,
           "condition_ru": "После выдачи гуманитарного или исключительного разрешения на проживание семья использует отдельный механизм reagrupamento familiar. Общий срок для последующего воссоединения — 24 месяца действующей резиденции основного заявителя; для подходящего супруга или приравненного партнёра возможен 15-месячный срок при 18 месяцах предшествующего совместного проживания. Для несовершеннолетних или недееспособных иждивенцев, а также в иных предусмотренных законом исключениях срок может не применяться или быть сокращён.",
+          "source_ids": [
+            "PT_SRC_01",
+            "PT_SRC_02"
+          ]
+        },
+        {
+          "scenario_id": "PT_HUMANITARIAN_FAMILY_ADULT_CHILD_LATER",
+          "applies_to": "CHILD",
+          "relationship_types": null,
+          "child_age_min": 18,
+          "child_age_max": 25,
+          "simultaneous_move": "NO",
+          "separate_route_required": true,
+          "linked_route_id": "PT_FAMILY_REUNIFICATION",
+          "join_stage": "AFTER_INITIAL_RESIDENCE",
+          "separation_months_min": 0,
+          "separation_months_max": 24,
+          "member_long_term_path": null,
+          "condition_ru": "После получения основным заявителем гуманитарного или исключительного статуса совершеннолетний ребёнок 18–25 лет может использовать отдельный механизм воссоединения семьи, если он находится на иждивении и либо является недееспособным, либо не состоит в браке и учится в образовательном учреждении в Португалии; срок зависит от применимого режима ожидания.",
           "source_ids": [
             "PT_SRC_01",
             "PT_SRC_02"
@@ -4366,6 +4686,15 @@
       "handling_ru": "Keep the route as current legal fact, set application method NOT_AVAILABLE and publishable=false; recheck on official launch/regulation."
     },
     {
+      "item_id": "PT_BLOCK_SKILLED_JOB_SEEKER_FAMILY_NOT_RESEARCHED",
+      "block": "FAMILY",
+      "priority": "HIGH",
+      "related_route_id": "PT_SKILLED_JOB_SEEKER",
+      "blocks_publication": true,
+      "missing_ru": "Семейные правила Skilled Job Seeker для партнёра и детей 0–25 лет пока не подтверждены, поскольку маршрут ещё не запущен операционно и применимые family rules не опубликованы.",
+      "handling_ru": "Сохранять family scenario как NOT_RESEARCHED и publishable=false; повторно исследовать family coverage после официального запуска/имплементационного регулирования маршрута."
+    },
+    {
       "item_id": "PT_GAP_REMOTE_MADEIRA_RMMG",
       "block": "ROUTES",
       "priority": "MEDIUM",
@@ -4426,8 +4755,10 @@
       },
       {
         "block": "FAMILY",
-        "status": "COMPLETE",
-        "open_item_ids": []
+        "status": "PARTIAL_NON_BLOCKING",
+        "open_item_ids": [
+          "PT_BLOCK_SKILLED_JOB_SEEKER_FAMILY_NOT_RESEARCHED"
+        ]
       },
       {
         "block": "WORK_RIGHTS",
@@ -4495,7 +4826,7 @@
       "title_ru": "Lei n.º 23/2007 — Lei de Estrangeiros (consolidada)",
       "url": "https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2007-67564445",
       "supports_ru": "Базовые категории проживания, права резидента на труд, сроки и правила поддержания временной резиденции.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "pt"
@@ -4843,7 +5174,7 @@
       "title_ru": "Lei n.º 27/2008 — Asilo e Proteção Subsidiária (consolidada)",
       "url": "https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2008-74902145",
       "supports_ru": "Refugee and subsidiary-protection grounds, procedure and rights.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": null,
       "language": "pt"
@@ -5251,7 +5582,7 @@
       "title_ru": "Lei n.º 37/2006 — livre circulação e residência de cidadãos da União e familiares",
       "url": "https://diariodarepublica.pt/dr/legislacao-consolidada/lei/2006-128792849",
       "supports_ru": "Отдельный режим въезда/проживания для граждан ЕС и их семей, также распространённый на familiares de cidadãos portugueses; включает permanent-residence framework.",
-      "checked_at": "2026-08-16",
+      "checked_at": "2026-09-10",
       "confidence": "HIGH",
       "published_or_updated_at": "2023-06-02",
       "language": "pt"
